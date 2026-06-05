@@ -1,0 +1,20 @@
+# Only needed so uv recognizes this as a project — not a publishable package
+[project]
+name = "lca-deepagents-python"
+version = "0.1.0"
+requires-python = ">=3.11,<3.14"
+
+dependencies = [
+    "deepagents>=0.5.9",
+    "langgraph>=1.0.0,<2.0",
+    "langchain>=1.0.0,<2.0",
+    "langchain-core>=1.3.3,<2.0",
+    "langchain-anthropic",
+    "langchain-openai",
+    "langgraph-cli[inmem]>=0.4.0",
+    "python-dotenv",
+]
+
+[tool.ruff]
+lint.select = ["E", "F", "I", "UP"]
+lint.ignore = ["T201", "E501", "UP006", "UP007"]
