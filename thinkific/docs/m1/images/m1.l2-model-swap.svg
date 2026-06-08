@@ -1,0 +1,58 @@
+<svg width="740" height="420" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="740" height="420" fill="#F2FAFF" rx="8"/>
+  <text x="370" y="32" text-anchor="middle" font-size="15" font-weight="700" fill="#1E3A5F">Swapping the Model</text>
+  <text x="370" y="51" text-anchor="middle" font-size="11" fill="#6A8EB0">The SDK scaffolding is identical; only the model-specific SUFFIX changes</text>
+
+  <!-- ═══ LEFT AGENT (Haiku) ═══ -->
+  <rect x="60" y="68" width="270" height="276" rx="6" fill="white" stroke="#1E3A5F" stroke-width="2"/>
+  <rect x="72" y="80" width="246" height="28" rx="4" fill="#1E3A5F"/>
+  <text x="195" y="99" text-anchor="middle" font-size="11" font-weight="700" fill="white">anthropic:claude-haiku-4-5</text>
+
+  <!-- BASE (same) -->
+  <rect x="72" y="118" width="246" height="44" rx="4" fill="#E3EAF2" stroke="#1E3A5F" stroke-width="1"/>
+  <text x="195" y="137" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1E3A5F">BASE: SDK behavior prompt</text>
+  <text x="195" y="153" text-anchor="middle" font-size="9" fill="#2A9A5A">identical ✓</text>
+
+  <!-- Filesystem (same) -->
+  <rect x="72" y="168" width="246" height="44" rx="4" fill="#FFE8CC" stroke="#D4834A" stroke-width="1"/>
+  <text x="195" y="187" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7A3A10">Filesystem tools + middleware</text>
+  <text x="195" y="203" text-anchor="middle" font-size="9" fill="#2A9A5A">identical ✓</text>
+
+  <!-- SUFFIX (present) -->
+  <rect x="72" y="218" width="246" height="114" rx="4" fill="#E6D8F5" stroke="#7A4FB0" stroke-width="1"/>
+  <text x="195" y="237" text-anchor="middle" font-size="10.5" font-weight="700" fill="#4A2A7A">SUFFIX: harness profile</text>
+  <text x="195" y="259" text-anchor="middle" font-size="9" fill="#5A2F8A">&lt;use_parallel_tool_calls&gt;</text>
+  <text x="195" y="276" text-anchor="middle" font-size="9" fill="#5A2F8A">&lt;investigate_before_answering&gt;</text>
+  <text x="195" y="293" text-anchor="middle" font-size="9" fill="#5A2F8A">&lt;tool_result_reflection&gt;</text>
+  <text x="195" y="318" text-anchor="middle" font-size="9" font-style="italic" fill="#7A4FB0">profile defines one ✓</text>
+
+  <!-- ═══ CENTER COMPARATORS ═══ -->
+  <text x="365" y="146" text-anchor="middle" font-size="18" font-weight="700" fill="#2A9A5A">=</text>
+  <text x="365" y="196" text-anchor="middle" font-size="18" font-weight="700" fill="#2A9A5A">=</text>
+  <text x="365" y="280" text-anchor="middle" font-size="18" font-weight="700" fill="#D4834A">≠</text>
+
+  <!-- ═══ RIGHT AGENT (gpt-4.1-mini) ═══ -->
+  <rect x="400" y="68" width="270" height="276" rx="6" fill="white" stroke="#1E3A5F" stroke-width="2"/>
+  <rect x="412" y="80" width="246" height="28" rx="4" fill="#555E6B"/>
+  <text x="535" y="99" text-anchor="middle" font-size="11" font-weight="700" fill="white">openai:gpt-4.1-mini</text>
+
+  <!-- BASE (same) -->
+  <rect x="412" y="118" width="246" height="44" rx="4" fill="#E3EAF2" stroke="#1E3A5F" stroke-width="1"/>
+  <text x="535" y="137" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1E3A5F">BASE: SDK behavior prompt</text>
+  <text x="535" y="153" text-anchor="middle" font-size="9" fill="#2A9A5A">identical ✓</text>
+
+  <!-- Filesystem (same) -->
+  <rect x="412" y="168" width="246" height="44" rx="4" fill="#FFE8CC" stroke="#D4834A" stroke-width="1"/>
+  <text x="535" y="187" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7A3A10">Filesystem tools + middleware</text>
+  <text x="535" y="203" text-anchor="middle" font-size="9" fill="#2A9A5A">identical ✓</text>
+
+  <!-- SUFFIX (none) -->
+  <rect x="412" y="218" width="246" height="114" rx="4" fill="#F7F7FA" stroke="#B0B0C0" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="535" y="263" text-anchor="middle" font-size="10.5" font-weight="700" fill="#9AB0C8">SUFFIX</text>
+  <text x="535" y="284" text-anchor="middle" font-size="9" fill="#9AB0C8">no registered profile</text>
+  <text x="535" y="300" text-anchor="middle" font-size="9" font-style="italic" fill="#9AB0C8">→ no SUFFIX at all</text>
+
+  <!-- ═══ FOOTNOTE ═══ -->
+  <text x="370" y="372" text-anchor="middle" font-size="10" fill="#5A7A9F">BASE and the filesystem come from the deepagents SDK; identical no matter the model or provider.</text>
+  <text x="370" y="388" text-anchor="middle" font-size="10" fill="#5A7A9F">The SUFFIX is model-specific: some models ship one (and they differ), others have none.</text>
+</svg>

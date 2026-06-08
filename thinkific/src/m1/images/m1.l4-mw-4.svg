@@ -1,0 +1,43 @@
+<svg width="740" height="430" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="mw4-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#5A7A9F"/></marker>
+  </defs>
+  <rect width="740" height="430" fill="#F2FAFF" rx="8"/>
+  <text x="370" y="40" text-anchor="middle" font-size="15" font-weight="700" fill="#1E3A5F">…and that changes the final answer</text>
+
+  <!-- user question -->
+  <rect x="220" y="56" width="300" height="40" rx="20" fill="#CCE5FF" stroke="#3A74D4" stroke-width="1.2"/>
+  <text x="370" y="81" text-anchor="middle" font-size="11" fill="#1A3A7A">User: "Summarize notes.txt for me."</text>
+
+  <line x1="300" y1="98" x2="200" y2="128" stroke="#5A7A9F" stroke-width="1.3" marker-end="url(#mw4-arr)"/>
+  <line x1="440" y1="98" x2="540" y2="128" stroke="#5A7A9F" stroke-width="1.3" marker-end="url(#mw4-arr)"/>
+
+  <!-- WITHOUT -->
+  <rect x="40" y="132" width="320" height="252" rx="6" fill="white" stroke="#C0504D" stroke-width="1.6"/>
+  <text x="200" y="156" text-anchor="middle" font-size="11" font-weight="700" fill="#A03A37">WITHOUT the middleware</text>
+  <text x="200" y="174" text-anchor="middle" font-size="8.5" fill="#9AB0C8">a bare model, no file tools</text>
+
+  <rect x="62" y="190" width="276" height="40" rx="6" fill="#F6ECEC" stroke="#C0504D" stroke-width="1"/>
+  <text x="200" y="214" text-anchor="middle" font-size="9" fill="#7A2A28">no read_file tool available</text>
+
+  <rect x="62" y="246" width="276" height="116" rx="8" fill="#FBEDED" stroke="#C0504D" stroke-width="1.2"/>
+  <text x="200" y="270" text-anchor="middle" font-size="9.5" font-weight="700" fill="#A03A37">Answer</text>
+  <text x="200" y="296" text-anchor="middle" font-size="9.5" fill="#7A2A28">"I don't have access to your</text>
+  <text x="200" y="312" text-anchor="middle" font-size="9.5" fill="#7A2A28">files, so I can't read</text>
+  <text x="200" y="328" text-anchor="middle" font-size="9.5" fill="#7A2A28">notes.txt."</text>
+
+  <!-- WITH -->
+  <rect x="380" y="132" width="320" height="252" rx="6" fill="white" stroke="#3A8A55" stroke-width="1.6"/>
+  <text x="540" y="156" text-anchor="middle" font-size="11" font-weight="700" fill="#2A7A45">WITH FilesystemMiddleware</text>
+  <text x="540" y="174" text-anchor="middle" font-size="8.5" fill="#9AB0C8">file tools + instructions injected</text>
+
+  <rect x="402" y="190" width="276" height="40" rx="6" fill="#ECF6EF" stroke="#3A8A55" stroke-width="1"/>
+  <text x="540" y="208" text-anchor="middle" font-size="9" fill="#1F6A3A">calls read_file("notes.txt")</text>
+  <text x="540" y="222" text-anchor="middle" font-size="8" fill="#4A9A66">→ reads the file contents</text>
+
+  <rect x="402" y="246" width="276" height="116" rx="8" fill="#EDF7F0" stroke="#3A8A55" stroke-width="1.2"/>
+  <text x="540" y="270" text-anchor="middle" font-size="9.5" font-weight="700" fill="#2A7A45">Answer</text>
+  <text x="540" y="296" text-anchor="middle" font-size="9.5" fill="#1F6A3A">"Your notes cover three topics:</text>
+  <text x="540" y="312" text-anchor="middle" font-size="9.5" fill="#1F6A3A">the migration plan, open</text>
+  <text x="540" y="328" text-anchor="middle" font-size="9.5" fill="#1F6A3A">questions, and next steps."</text>
+</svg>

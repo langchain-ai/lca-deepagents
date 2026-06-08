@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>m1.l2-creating-a-deep-agent</title>
+    <meta name="description" content="">
+
+    <!-- Syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+
+    <!-- React -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom-client.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        /* LCA Blue hljs theme */
+        .hljs {
+            background: #030710;
+            color: #e5f4ff;
+        }
+        .hljs-keyword,
+        .hljs-selector-tag,
+        .hljs-built_in,
+        .hljs-name {
+            color: #7fc8ff;
+        }
+        .hljs-string,
+        .hljs-attr,
+        .hljs-symbol,
+        .hljs-bullet,
+        .hljs-addition {
+            color: #f6ffdb;
+        }
+        .hljs-title,
+        .hljs-section,
+        .hljs-title.function_ {
+            color: #b2deff;
+        }
+        .hljs-variable,
+        .hljs-template-variable,
+        .hljs-params {
+            color: #cce9ff;
+        }
+        .hljs-comment,
+        .hljs-quote,
+        .hljs-deletion {
+            color: #4a6a8a;
+            font-style: italic;
+        }
+        .hljs-number,
+        .hljs-literal,
+        .hljs-type,
+        .hljs-class .hljs-title {
+            color: #fbb0a5;
+        }
+        .hljs-meta,
+        .hljs-meta .hljs-keyword {
+            color: #4a6a8a;
+        }
+        .hljs-emphasis {
+            font-style: italic;
+        }
+        .hljs-strong {
+            font-weight: bold;
+        }
+        .hljs-link {
+            text-decoration: underline;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #ffffff;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #030710;
+            border-bottom: 10px solid #7fc8ff;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #2a2a2a;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #3a3a3a;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        code {
+            background: #f3f4f6;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.875em;
+            color: #374151;
+        }
+
+        pre {
+            background: #030710;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 600px;
+            margin-bottom: 1rem;
+            border: 1px solid #0d1b2a;
+            position: relative;
+        }
+
+        /* RunCode Styles */
+        .run-code {
+            display: block;
+            padding: 0;
+            margin: -0.5rem 0 1.5rem 0;
+            text-align: right;
+        }
+
+
+
+        .run-code summary {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            cursor: pointer;
+            font-weight: 400;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #7fc8ff;
+            list-style: none;
+            background: #030710;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .run-code summary:hover {
+            background: #0d1b2a;
+            color: #b2deff;
+        }
+
+        .run-code summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .run-code summary img {
+            opacity: 0.7;
+            filter: invert(1) brightness(0.8);
+        }
+
+        .run-code-content {
+            text-align: left;
+        }
+
+        .run-code-content pre {
+            margin: 0.5rem 0 0 0;
+        }
+
+        pre code {
+            background: transparent;
+            padding: 0;
+            color: #e5f4ff;
+        }
+
+        /* Line highlighting */
+        .highlight-line {
+            background-color: rgba(29, 59, 89, 0.55) !important;
+            border-left: 3px solid #7fc8ff;
+            margin-left: -8px;
+            padding-left: 5px;
+        }
+
+        pre .copy-button-inline {
+            position: absolute;
+            top: 0.5rem;
+            right: 1rem;
+            padding: 0;
+            border: none;
+            background: transparent url('symbols/copy.png') center/18px no-repeat;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            width: 28px;
+            height: 28px;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
+        }
+
+        pre .copy-button-inline:hover {
+            opacity: 1;
+            filter: invert(1) brightness(1);
+        }
+
+        pre .copy-button-inline.copied {
+            background-image: none;
+            color: #7fc8ff;
+            font-size: 1.1rem;
+            opacity: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        blockquote {
+            border-left: 4px solid #0066cc;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: #555;
+            font-style: italic;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #f4f4f4;
+            font-weight: 600;
+        }
+
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* MCQ Styles */
+        .mcq-container {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid #e5e7eb;
+            background-color: #f9fafb;
+        }
+
+        .mcq-question {
+            font-size: 1.05rem;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+
+        .mcq-choices {
+            margin: 1rem 0;
+            padding-left: 0;
+        }
+
+        .mcq-choice {
+            padding: 0.75rem 1rem;
+            margin: 0.5rem 0;
+            color: #374151;
+            background-color: #ffffff;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mcq-choice:hover {
+            border-color: #d1d5db;
+            background-color: #f9fafb;
+        }
+
+        .mcq-choice.correct {
+            background-color: #dcfce7;
+            border-color: #86efac;
+            color: #166534;
+        }
+
+        .mcq-choice.incorrect {
+            background-color: #fee2e2;
+            border-color: #fca5a5;
+            color: #991b1b;
+        }
+
+        .mcq-answer {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: #f3f4f6;
+            border: 1px solid #d1d5db;
+        }
+
+        .mcq-answer-header {
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        .mcq-explanation {
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        /* Tip Styles */
+        .tip {
+            margin: 1.5rem 0;
+            padding: 1.25rem 1.5rem 1.25rem 3.5rem;
+            border-radius: 12px;
+            border: 1px solid #99d3ff;
+            background-color: #e5f4ff;
+            color: #1e4d7a;
+            position: relative;
+        }
+
+        .tip::before {
+            content: "";
+            display: block;
+            position: absolute;
+            left: 1rem;
+            top: 1.35rem;
+            width: 28px;
+            height: 28px;
+            background-image: url('symbols/tip.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            filter: invert(25%) sepia(60%) saturate(600%) hue-rotate(190deg) brightness(90%) contrast(95%);
+        }
+
+        .tip strong {
+            color: #1e4d7a;
+        }
+
+        .tip code {
+            background-color: #cce9ff;
+            color: #1e4d7a;
+        }
+
+        .tip a {
+            color: #1e4d7a;
+            text-decoration: underline;
+        }
+
+        .tip a:hover {
+            color: #1e4d7a;
+        }
+
+        /* Tabs Code Block Styles */
+        .code-block-container {
+            margin: 1rem 0;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #0d1b2a;
+            background: #030710;
+        }
+
+        .code-block-container:first-child {
+            margin-top: 0;
+        }
+
+        .code-block-header {
+            background: #030710;
+            padding: 0.5rem 0.75rem 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: none;
+        }
+
+        .language-tabs {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .language-tab {
+            padding: 0.375rem 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: #4a6a8a;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .language-tab:hover {
+            color: #e5f4ff;
+        }
+
+        .language-tab.active {
+            color: #e5f4ff;
+            border-bottom-color: #7fc8ff;
+        }
+
+        .copy-button {
+            padding: 0;
+            border: none;
+            background: transparent url('symbols/copy.png') center/20px no-repeat;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
+        }
+
+        .copy-button:hover {
+            opacity: 1;
+            filter: invert(1) brightness(1);
+        }
+
+        .copy-button.copied {
+            background-image: none;
+            color: #7fc8ff;
+            font-size: 1.25rem;
+        }
+
+        .code-block-content {
+            background: #030710;
+            margin: 0;
+            padding: 0;
+        }
+
+        .code-block-content pre {
+            margin: 0;
+            background: transparent;
+            padding: 0.5rem 1rem !important;
+            border: none;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .code-block-content code {
+            background: transparent;
+            color: #e5f4ff;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            display: block;
+            padding: 0 !important;
+        }
+
+        .code-block-content code.hljs {
+            padding: 0 !important;
+        }
+
+        /* Video Styles */
+        .video-container {
+            margin: 1.5rem auto;
+            width: 100%;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <p><a href="https://langchain-ai.github.io/lca-deepagents/m1/m1.l2-creating-a-deep-agent.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
+<style>@import url('../shared/sd-components.css');</style>
+<script src="../shared/sd-components.js"></script>
+
+<h1 id="creating-a-deep-agent">Creating a Deep Agent</h1>
+<h2 id="using-a-coding-agent">Using a Coding Agent</h2>
+<p>Before we explore, let's get a bare agent running. Paste the prompt below into<br />
+your coding agent (Claude Code, Cursor, etc.) and let it build the file.</p>
+<pre><code class="language-text">Create a minimal LangChain Deep Agent in lca-deepagents/python/m1/scratch_agent.py:
+
+- Import the shared model from python/models.py. Because the script lives in
+  python/m1/, add the project root to sys.path first:
+      import sys
+      from pathlib import Path
+      sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+      from models import model
+- Create the agent with create_deep_agent(model=model); pass NOTHING else:
+  no tools, no system prompt, no filesystem config.
+- Invoke it once with the message &quot;What is an LLM?&quot; and print the final
+  message's .content.
+
+Also create lca-deepagents/python/.env (next to models.py; you can copy the
+provided .env.example). models.py already calls load_dotenv() on this file, so
+scratch_agent.py needs no dotenv code of its own. Use these placeholders — I'll
+paste my real keys in afterward:
+
+    # LangSmith — tracing &amp; observability (lets you open the run in LangSmith)
+    LANGSMITH_API_KEY=lsv2_...
+    LANGSMITH_TRACING=true
+    LANGSMITH_PROJECT=lca-deepagents
+
+    # Model provider keys — set the one your model in models.py uses
+    ANTHROPIC_API_KEY=your-anthropic-api-key   # default: anthropic:claude-haiku-4-5
+    OPENAI_API_KEY=your-openai-api-key         # only if you switch to an openai: model
+
+python-dotenv, langchain, langchain-anthropic, and deepagents are already in the
+project's pyproject.toml, so no new dependencies are needed.
+
+Run it with (from the lca-deepagents repo root):
+  uv run --project python python/m1/scratch_agent.py
+</code></pre>
+<p>Once your coding agent has created the file, run it:</p>
+<details class="run-code"><summary>&lt;/&gt; run this code</summary><div class="run-code-content"><div class="language-tabs-block" data-languages="{&quot;Python&quot;: [{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;bash&quot;, &quot;code&quot;: &quot;pushd ~/Documents/Github/lca-deepagents/python/m1\nuv run scratch_agent.py\npopd&quot;, &quot;highlights&quot;: [], &quot;noHeader&quot;: true}]}"></div></div></details>
+
+<div class="callout">
+<strong>Troubleshooting</strong>
+<ul>
+<li><strong><code>ModuleNotFoundError: No module named 'dotenv'</code></strong> (or any package) — you ran the script with <code>python3</code> directly. Use <code>uv run</code> instead; it activates the project's virtual environment where all dependencies live.</li>
+<li><strong><code>error: Failed to spawn</code></strong> / <strong><code>Project directory does not exist</code></strong> — you're in the wrong directory. The <code>--project python</code> flag is a relative path. Run the command from the <code>lca-deepagents</code> repo root.</li>
+</ul>
+</div>
+
+<p>Notice what you <em>didn't</em> pass: no tools, no system prompt, no filesystem. Yet<br />
+the agent still answers, still knows how to behave, and still has file tools.<br />
+Where did all of that come from? That's what the next lessons uncover.</p>
+<h2 id="references">References</h2>
+<p><strong>Documentation:</strong><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/overview" target="_blank" rel="noopener noreferrer">Deep Agents overview</a><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/models" target="_blank" rel="noopener noreferrer">Models (Deep Agents)</a><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/customization#prompt-assembly" target="_blank" rel="noopener noreferrer">Customization &amp; prompt assembly (Deep Agents)</a><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/context-engineering" target="_blank" rel="noopener noreferrer">Context engineering (Deep Agents)</a><br />
+- <a href="https://github.com/langchain-ai/deepagents" target="_blank" rel="noopener noreferrer">deepagents README (GitHub)</a><br />
+- <a href="https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents/deepagents/profiles/harness" target="_blank" rel="noopener noreferrer">Built-in harness profiles (GitHub)</a></p>
+
+    <script>
+        // Handle MCQ choice clicks
+        function handleMcqClick(choiceElement, isCorrect, mcqId) {
+            // Get all choices in this MCQ
+            const container = document.getElementById('mcq-' + mcqId);
+            const choices = container.querySelectorAll('.mcq-choice');
+
+            // Clear all previous selections (remove correct/incorrect classes)
+            choices.forEach(choice => {
+                choice.classList.remove('correct', 'incorrect');
+            });
+
+            // Color the clicked choice
+            if (isCorrect) {
+                choiceElement.classList.add('correct');
+            } else {
+                choiceElement.classList.add('incorrect');
+            }
+
+            // Show the explanation
+            const answerDiv = document.getElementById('mcq-answer-' + mcqId);
+            answerDiv.style.display = 'block';
+        }
+
+        // Initialize syntax highlighting and line highlights
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Run syntax highlighting first
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+
+            // Apply line highlighting after syntax highlighting
+            applyLineHighlights();
+        });
+
+        function applyLineHighlights() {
+            // Find all code blocks and check for adjacent highlight comments
+            document.querySelectorAll('pre code').forEach((codeBlock) => {
+                const pre = codeBlock.parentElement;
+
+                // Check for a comment node right before or after the pre element
+                let commentNode = null;
+
+                // Check previous sibling
+                let sibling = pre.previousSibling;
+                while (sibling) {
+                    if (sibling.nodeType === Node.COMMENT_NODE) {
+                        commentNode = sibling;
+                        break;
+                    }
+                    // Skip whitespace text nodes
+                    if (sibling.nodeType === Node.TEXT_NODE && sibling.textContent.trim() === '') {
+                        sibling = sibling.previousSibling;
+                        continue;
+                    }
+                    break;
+                }
+
+                // Check next sibling if not found before
+                if (!commentNode) {
+                    sibling = pre.nextSibling;
+                    while (sibling) {
+                        if (sibling.nodeType === Node.COMMENT_NODE) {
+                            commentNode = sibling;
+                            break;
+                        }
+                        // Skip whitespace text nodes
+                        if (sibling.nodeType === Node.TEXT_NODE && sibling.textContent.trim() === '') {
+                            sibling = sibling.nextSibling;
+                            continue;
+                        }
+                        break;
+                    }
+                }
+
+                // Parse the comment if found
+                if (commentNode) {
+                    const match = commentNode.textContent.match(/code-highlight-\d+:(.*)/);
+                    if (match) {
+                        const lines = match[1].split(',').map(n => parseInt(n.trim()));
+
+                        // Split the code content by line
+                        let codeLines = codeBlock.innerHTML.split('\n');
+
+                        // Remove trailing empty line if present
+                        if (codeLines[codeLines.length - 1] === '') {
+                            codeLines.pop();
+                        }
+
+                        // Wrap highlighted lines
+                        const wrappedLines = codeLines.map((line, i) => {
+                            if (lines.includes(i + 1)) {
+                                return `<span class="highlight-line">${line}</span>`;
+                            }
+                            return line;
+                        });
+
+                        codeBlock.innerHTML = wrappedLines.join('\n');
+
+                        // Remove the comment node and any whitespace between it and the pre element
+                        const commentParent = commentNode.parentNode;
+                        let nextNode = commentNode.nextSibling;
+                        commentNode.remove();
+
+                        // Remove any whitespace text nodes between where the comment was and the pre
+                        while (nextNode && nextNode !== pre && nextNode.nodeType === Node.TEXT_NODE && nextNode.textContent.trim() === '') {
+                            const toRemove = nextNode;
+                            nextNode = nextNode.nextSibling;
+                            toRemove.remove();
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        function TabsCodeBlock({ tabs, blockId }) {
+            const [activeIndex, setActiveIndex] = useState(0);
+            const [copied, setCopied] = useState(false);
+
+            const activeTab = tabs[activeIndex];
+            const activeCode = activeTab.code;
+            const activeLanguage = activeTab.language;
+
+            const copyToClipboard = async () => {
+                try {
+                    // Try modern Clipboard API first
+                    await navigator.clipboard.writeText(activeCode);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                } catch (err) {
+                    // Fallback for iframes: use document.execCommand
+                    try {
+                        const textarea = document.createElement('textarea');
+                        textarea.value = activeCode;
+                        textarea.style.position = 'fixed';
+                        textarea.style.opacity = '0';
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        const successful = document.execCommand('copy');
+                        document.body.removeChild(textarea);
+
+                        if (successful) {
+                            setCopied(true);
+                            setTimeout(() => setCopied(false), 2000);
+                        } else {
+                            console.error('Copy command failed');
+                        }
+                    } catch (fallbackErr) {
+                        console.error('Fallback copy failed:', fallbackErr);
+                    }
+                }
+            };
+
+            useEffect(() => {
+                // Apply syntax highlighting when code changes
+                const container = document.getElementById(`code-${blockId}`);
+                const codeEl = container?.querySelector('code');
+                if (codeEl && window.hljs) {
+                    // Remove existing highlight classes
+                    codeEl.removeAttribute('data-highlighted');
+                    codeEl.className = `language-${activeLanguage}`;
+                    // Reapply highlighting
+                    hljs.highlightElement(codeEl);
+
+                    // Apply line highlighting if highlights are present
+                    const highlights = activeTab.highlights;
+                    if (highlights && highlights.length > 0) {
+                        // Split the code content by line
+                        let codeLines = codeEl.innerHTML.split('\n');
+
+                        // Remove trailing empty line if present
+                        if (codeLines[codeLines.length - 1] === '') {
+                            codeLines.pop();
+                        }
+
+                        // Wrap highlighted lines
+                        const wrappedLines = codeLines.map((line, i) => {
+                            if (highlights.includes(i + 1)) {
+                                return `<span class="highlight-line">${line}</span>`;
+                            }
+                            return line;
+                        });
+
+                        codeEl.innerHTML = wrappedLines.join('\n');
+                    }
+                }
+            }, [activeCode, activeLanguage, blockId, activeTab.highlights]);
+
+            return (
+                <div className="code-block-container">
+                    <div className="code-block-header">
+                        <div className="language-tabs">
+                            {tabs.map((tab, index) => (
+                                <button
+                                    key={index}
+                                    className={`language-tab ${activeIndex === index ? 'active' : ''}`}
+                                    onClick={() => setActiveIndex(index)}
+                                >
+                                    {tab.title}
+                                </button>
+                            ))}
+                        </div>
+                        <button
+                            className={`copy-button ${copied ? 'copied' : ''}`}
+                            onClick={copyToClipboard}
+                            title={copied ? 'Copied!' : 'Copy code'}
+                            aria-label={copied ? 'Copied!' : 'Copy code'}
+                        >
+                            {copied ? '✓' : ''}
+                        </button>
+                    </div>
+                    <div className="code-block-content" id={`code-${blockId}`}>
+                        <pre><code className={`language-${activeLanguage}`}>{activeCode}</code></pre>
+                    </div>
+                </div>
+            );
+        }
+
+        // Global language state (shared across all blocks)
+        const globalLanguageState = {
+            current: 'Python',
+            listeners: new Set()
+        };
+
+        function useGlobalLanguage() {
+            const [language, setLanguage] = useState(globalLanguageState.current);
+
+            useEffect(() => {
+                const listener = (newLang) => setLanguage(newLang);
+                globalLanguageState.listeners.add(listener);
+                return () => globalLanguageState.listeners.delete(listener);
+            }, []);
+
+            const updateLanguage = (newLang) => {
+                globalLanguageState.current = newLang;
+                globalLanguageState.listeners.forEach(listener => listener(newLang));
+            };
+
+            return [language, updateLanguage];
+        }
+
+        function LanguageTabsCodeBlock({ languages, blockId }) {
+            const [globalLanguage] = useGlobalLanguage();
+            const [activeIndex, setActiveIndex] = useState(0);
+            const [copied, setCopied] = useState(false);
+
+            // Get tabs for the currently selected global language
+            const tabs = languages[globalLanguage] || Object.values(languages)[0] || [];
+            const activeTab = tabs[activeIndex] || {};
+            const activeCode = activeTab.code || '';
+            const activeLanguage = activeTab.language || 'text';
+
+            // Reset active index when global language changes
+            useEffect(() => {
+                setActiveIndex(0);
+            }, [globalLanguage]);
+
+            const copyToClipboard = async () => {
+                try {
+                    await navigator.clipboard.writeText(activeCode);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                } catch (err) {
+                    try {
+                        const textarea = document.createElement('textarea');
+                        textarea.value = activeCode;
+                        textarea.style.position = 'fixed';
+                        textarea.style.opacity = '0';
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        const successful = document.execCommand('copy');
+                        document.body.removeChild(textarea);
+
+                        if (successful) {
+                            setCopied(true);
+                            setTimeout(() => setCopied(false), 2000);
+                        }
+                    } catch (fallbackErr) {
+                        console.error('Copy failed:', fallbackErr);
+                    }
+                }
+            };
+
+            useEffect(() => {
+                const el = document.getElementById(`code-${blockId}`);
+                // Check if el is already a code element or if we need to find one inside
+                const codeEl = el?.tagName === 'CODE' ? el : el?.querySelector('code');
+                if (codeEl && window.hljs) {
+                    codeEl.removeAttribute('data-highlighted');
+                    codeEl.className = `language-${activeLanguage}`;
+                    hljs.highlightElement(codeEl);
+
+                    // Apply line highlighting if highlights are present
+                    const highlights = activeTab.highlights;
+                    if (highlights && highlights.length > 0) {
+                        // Split the code content by line
+                        let codeLines = codeEl.innerHTML.split('\n');
+
+                        // Remove trailing empty line if present
+                        if (codeLines[codeLines.length - 1] === '') {
+                            codeLines.pop();
+                        }
+
+                        // Wrap highlighted lines
+                        const wrappedLines = codeLines.map((line, i) => {
+                            if (highlights.includes(i + 1)) {
+                                return `<span class="highlight-line">${line}</span>`;
+                            }
+                            return line;
+                        });
+
+                        codeEl.innerHTML = wrappedLines.join('\n');
+                    }
+                }
+            }, [activeCode, activeLanguage, blockId, activeTab.highlights]);
+
+            if (tabs.length === 0) {
+                return <div>No code available for this language</div>;
+            }
+
+            // If tab has noHeader flag, render without header (like a regular code block)
+            if (tabs[0]?.noHeader) {
+                return (
+                    <div style={{ position: 'relative' }}>
+                        <pre style={{
+                            background: '#f9fafb',
+                            padding: '0',
+                            borderRadius: '12px',
+                            overflow: 'auto',
+                            marginBottom: '1rem',
+                            border: '1px solid #e5e7eb',
+                            position: 'relative'
+                        }}>
+                            <button
+                                className="copy-button-inline"
+                                onClick={copyToClipboard}
+                                title={copied ? 'Copied!' : 'Copy code'}
+                                aria-label={copied ? 'Copied!' : 'Copy code'}
+                                style={{
+                                    position: 'absolute',
+                                    top: '0.5rem',
+                                    right: '1rem',
+                                    padding: '0',
+                                    border: 'none',
+                                    background: copied ? 'none' : 'transparent url("symbols/copy.png") center/18px no-repeat',
+                                    cursor: 'pointer',
+                                    borderRadius: '4px',
+                                    width: '28px',
+                                    height: '28px',
+                                    opacity: copied ? 1 : 0.6,
+                                    color: copied ? '#7fc8ff' : 'transparent',
+                                    fontSize: copied ? '1.1rem' : '0',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}
+                            >
+                                {copied ? '✓' : ''}
+                            </button>
+                            <code
+                                id={`code-${blockId}`}
+                                className={`language-${activeLanguage}`}
+                                style={{
+                                    display: 'block',
+                                    padding: '1rem'
+                                }}
+                            >
+                                {activeCode}
+                            </code>
+                        </pre>
+                    </div>
+                );
+            }
+
+            // Multiple tabs - show header with tab switcher
+            return (
+                <div className="code-block-container">
+                    <div className="code-block-header">
+                        <div className="language-tabs">
+                            {tabs.map((tab, index) => (
+                                <button
+                                    key={index}
+                                    className={`language-tab ${activeIndex === index ? 'active' : ''}`}
+                                    onClick={() => setActiveIndex(index)}
+                                >
+                                    {tab.title}
+                                </button>
+                            ))}
+                        </div>
+                        <button
+                            className={`copy-button ${copied ? 'copied' : ''}`}
+                            onClick={copyToClipboard}
+                            title={copied ? 'Copied!' : 'Copy code'}
+                            aria-label={copied ? 'Copied!' : 'Copy code'}
+                        >
+                            {copied ? '✓' : ''}
+                        </button>
+                    </div>
+                    <div className="code-block-content" id={`code-${blockId}`}>
+                        <pre><code className={`language-${activeLanguage}`}>{activeCode}</code></pre>
+                    </div>
+                </div>
+            );
+        }
+
+        function LanguageSelector({ availableLanguages }) {
+            const [currentLanguage, setCurrentLanguage] = useGlobalLanguage();
+            const [isVisible, setIsVisible] = useState(true);
+            const lastScrollY = useRef(0);
+
+            useEffect(() => {
+                const handleScroll = () => {
+                    const currentScrollY = window.scrollY;
+
+                    // Show when scrolling up or at the top
+                    if (currentScrollY < lastScrollY.current || currentScrollY < 10) {
+                        setIsVisible(true);
+                    }
+                    // Hide when scrolling down (and not near the top)
+                    else if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+                        setIsVisible(false);
+                    }
+
+                    lastScrollY.current = currentScrollY;
+                };
+
+                window.addEventListener('scroll', handleScroll, { passive: true });
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            return (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    zIndex: 100,
+                    background: '#ffffff',
+                    borderBottom: '2px solid #e5e7eb',
+                    padding: '1rem 0',
+                    transform: isVisible ? 'translateY(0)' : 'translateY(-100%)',
+                    transition: 'transform 0.3s ease-in-out'
+                }}>
+                    <div style={{
+                        display: 'flex',
+                        gap: '0.5rem',
+                        justifyContent: 'center'
+                    }}>
+                        {availableLanguages.map(lang => (
+                            <button
+                                key={lang}
+                                onClick={() => setCurrentLanguage(lang)}
+                                style={{
+                                    padding: '0.5rem 1.5rem',
+                                    border: 'none',
+                                    background: currentLanguage === lang ? '#d1d5db' : '#fafafa',
+                                    color: currentLanguage === lang ? '#1f2937' : '#6b7280',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    fontWeight: '600',
+                                    fontSize: '0.9375rem',
+                                    transition: 'all 0.2s'
+                                }}
+                            >
+                                {lang}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+        // Mount all tabs blocks
+        function mountTabsBlocks() {
+            const blocks = document.querySelectorAll('.tabs-block');
+
+            blocks.forEach((container, index) => {
+                const tabsJson = container.getAttribute('data-tabs');
+
+                try {
+                    const tabs = JSON.parse(tabsJson);
+                    const blockId = `tabs-${index}`;
+
+                    const createRoot = ReactDOM.createRoot || ReactDOMClient?.createRoot;
+                    if (createRoot) {
+                        const root = createRoot(container);
+                        root.render(
+                            <TabsCodeBlock
+                                tabs={tabs}
+                                blockId={blockId}
+                            />
+                        );
+                    }
+                } catch (error) {
+                    console.error('Error mounting tabs block:', error);
+                }
+            });
+        }
+
+        // Add copy buttons to regular code blocks
+        function addCopyButtonsToCodeBlocks() {
+            // Find all pre blocks that aren't inside tabs-block containers
+            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre)');
+
+            preBlocks.forEach(pre => {
+                // Skip if already has a copy button
+                if (pre.querySelector('.copy-button-inline')) return;
+
+                const code = pre.querySelector('code');
+                if (!code) return;
+
+                // Create copy button
+                const button = document.createElement('button');
+                button.className = 'copy-button-inline';
+                button.setAttribute('aria-label', 'Copy code');
+                button.setAttribute('title', 'Copy code');
+
+                button.addEventListener('click', async () => {
+                    const text = code.textContent;
+
+                    try {
+                        // Try modern Clipboard API
+                        await navigator.clipboard.writeText(text);
+                        button.classList.add('copied');
+                        button.textContent = '✓';
+                        setTimeout(() => {
+                            button.classList.remove('copied');
+                            button.textContent = '';
+                        }, 2000);
+                    } catch (err) {
+                        // Fallback for iframes
+                        try {
+                            const textarea = document.createElement('textarea');
+                            textarea.value = text;
+                            textarea.style.position = 'fixed';
+                            textarea.style.opacity = '0';
+                            document.body.appendChild(textarea);
+                            textarea.select();
+                            const successful = document.execCommand('copy');
+                            document.body.removeChild(textarea);
+
+                            if (successful) {
+                                button.classList.add('copied');
+                                button.textContent = '✓';
+                                setTimeout(() => {
+                                    button.classList.remove('copied');
+                                    button.textContent = '';
+                                }, 2000);
+                            }
+                        } catch (fallbackErr) {
+                            console.error('Copy failed:', fallbackErr);
+                        }
+                    }
+                });
+
+                pre.appendChild(button);
+            });
+        }
+
+        // Mount language tabs blocks with global language selector
+        function mountLanguageTabsBlocks() {
+            const blocks = document.querySelectorAll('.language-tabs-block');
+
+            if (blocks.length === 0) {
+                return; // No language-aware blocks on this page
+            }
+
+            // Collect all available languages from all blocks
+            const allLanguages = new Set();
+
+            blocks.forEach((container) => {
+                const languagesJson = container.getAttribute('data-languages');
+                try {
+                    const languages = JSON.parse(languagesJson);
+                    Object.keys(languages).forEach(lang => allLanguages.add(lang));
+                } catch (error) {
+                    console.error('Error parsing language tabs block:', error);
+                }
+            });
+
+            if (allLanguages.size === 0) return;
+
+            const availableLanguages = Array.from(allLanguages);
+
+            // Set initial global language
+            globalLanguageState.current = availableLanguages[0];
+
+            // Mount the language selector at the top of the body
+            const selectorContainer = document.createElement('div');
+            document.body.insertBefore(selectorContainer, document.body.firstChild);
+
+            // Add spacer to prevent content from hiding under fixed header
+            const spacer = document.createElement('div');
+            spacer.style.height = '80px'; // Approximate height of selector
+            document.body.insertBefore(spacer, document.body.firstChild.nextSibling);
+
+            const createRoot = ReactDOM.createRoot || ReactDOMClient?.createRoot;
+            if (createRoot) {
+                const selectorRoot = createRoot(selectorContainer);
+                selectorRoot.render(
+                    <LanguageSelector availableLanguages={availableLanguages} />
+                );
+
+                // Mount each code block in its original location
+                blocks.forEach((container, index) => {
+                    const languagesJson = container.getAttribute('data-languages');
+                    try {
+                        const languages = JSON.parse(languagesJson);
+                        const blockId = `lang-tabs-${index}`;
+
+                        const blockRoot = createRoot(container);
+                        blockRoot.render(
+                            <LanguageTabsCodeBlock
+                                languages={languages}
+                                blockId={blockId}
+                            />
+                        );
+                    } catch (error) {
+                        console.error('Error mounting language tabs block:', error);
+                    }
+                });
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                mountLanguageTabsBlocks();
+                mountTabsBlocks();
+                addCopyButtonsToCodeBlocks();
+            });
+        } else {
+            mountLanguageTabsBlocks();
+            mountTabsBlocks();
+            addCopyButtonsToCodeBlocks();
+        }
+    </script>
+</body>
+</html>

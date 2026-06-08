@@ -1,0 +1,29 @@
+<svg width="740" height="430" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="740" height="430" fill="#F2FAFF" rx="8"/>
+  <text x="370" y="34" text-anchor="middle" font-size="15" font-weight="700" fill="#1E3A5F">One middleware up close: FilesystemMiddleware</text>
+  <text x="370" y="54" text-anchor="middle" font-size="11" fill="#6A8EB0">On its wrap_model_call hook it appends real text to your system message</text>
+
+  <!-- what you wrote: USER system_prompt -->
+  <rect x="64" y="72" width="612" height="74" rx="6" fill="#DCEBFF" stroke="#3A74D4" stroke-width="1.4"/>
+  <text x="80" y="91" font-size="8.5" font-weight="700" fill="#3A74D4" letter-spacing="0.5">YOUR system_prompt — the USER segment</text>
+  <text x="80" y="114" font-size="11.5" fill="#1A3A7A" font-family="'IBM Plex Mono', monospace">"You are a research assistant. Research the question using the files</text>
+  <text x="80" y="133" font-size="11.5" fill="#1A3A7A" font-family="'IBM Plex Mono', monospace"> in the workspace, then write a short summary of what you find."</text>
+
+  <text x="370" y="164" text-anchor="middle" font-size="10" font-weight="700" fill="#B5703A">↓   FilesystemMiddleware appends this to the same message, on every call   ↓</text>
+
+  <!-- appended verbatim by the middleware -->
+  <rect x="64" y="176" width="612" height="226" rx="6" fill="#FFF4E8" stroke="#D4834A" stroke-width="2"/>
+  <text x="80" y="196" font-size="8.5" font-weight="700" fill="#B5703A" letter-spacing="0.5">+ APPENDED TO THE SYSTEM MESSAGE — verbatim from FilesystemMiddleware</text>
+
+  <text x="82" y="221" font-size="9.5" fill="#5A3A1A" font-family="'IBM Plex Mono', monospace">## Filesystem Tools  `ls`, `read_file`, `write_file`, `edit_file`, `glob`, `grep`</text>
+  <text x="82" y="245" font-size="9.5" fill="#5A3A1A" font-family="'IBM Plex Mono', monospace">You have access to a filesystem which you can interact with using these</text>
+  <text x="82" y="261" font-size="9.5" fill="#5A3A1A" font-family="'IBM Plex Mono', monospace">tools. All file paths must start with a /. … use pagination (offset/limit)</text>
+  <text x="82" y="277" font-size="9.5" fill="#5A3A1A" font-family="'IBM Plex Mono', monospace">when reading large files.</text>
+  <text x="82" y="301" font-size="9.5" fill="#5A3A1A" font-family="'IBM Plex Mono', monospace">- ls: list files in a directory</text>
+  <text x="82" y="317" font-size="9.5" fill="#5A3A1A" font-family="'IBM Plex Mono', monospace">- read_file: read a file from the filesystem</text>
+  <text x="82" y="333" font-size="9.5" fill="#5A3A1A" font-family="'IBM Plex Mono', monospace">- write_file: write to a file</text>
+
+  <line x1="80" y1="350" x2="660" y2="350" stroke="#EBD2B6" stroke-width="1"/>
+  <text x="80" y="372" font-size="9.5" fill="#7A3A10">…and ls · read_file · write_file · edit_file · glob · grep are registered as tools —</text>
+  <text x="80" y="388" font-size="9.5" fill="#7A3A10">none of which you passed to create_deep_agent.</text>
+</svg>

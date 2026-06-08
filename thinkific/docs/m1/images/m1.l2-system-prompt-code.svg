@@ -1,0 +1,46 @@
+<svg width="740" height="372" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="740" height="372" fill="#F2FAFF" rx="8"/>
+  <text x="370" y="30" text-anchor="middle" font-size="15" font-weight="700" fill="#1E3A5F">What exactly is a system prompt?</text>
+  <text x="370" y="49" text-anchor="middle" font-size="11" fill="#6A8EB0">Two arguments in the code you write: one is the model, one is the system prompt</text>
+
+  <!-- editor window -->
+  <rect x="48" y="62" width="442" height="244" rx="8" fill="#FBFCFE" stroke="#C9D6E5" stroke-width="1.5"/>
+  <rect x="48" y="62" width="442" height="26" rx="8" fill="#EAF0F8"/>
+  <rect x="48" y="80" width="442" height="8" fill="#EAF0F8"/>
+  <circle cx="64" cy="75" r="4" fill="#E0A0A0"/>
+  <circle cx="78" cy="75" r="4" fill="#E7C98A"/>
+  <circle cx="92" cy="75" r="4" fill="#A8CDA0"/>
+  <text x="110" y="79" font-size="9" fill="#8AA0B8">agent.py</text>
+
+  <!-- highlight bars (drawn before text) -->
+  <rect x="52" y="182" width="434" height="22" rx="3" fill="#D4F2E0" stroke="#2A9A5A" stroke-width="1.5"/>
+  <rect x="52" y="206" width="434" height="22" rx="3" fill="#CCE5FF" stroke="#3A74D4" stroke-width="1.5"/>
+
+  <!-- code (monospace); faded lines are gray, highlighted lines are dark -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" xml:space="preserve">
+    <text x="64" y="118" fill="#AEB9C6">from deepagents import create_deep_agent</text>
+    <text x="64" y="140" fill="#AEB9C6">from models import model</text>
+    <text x="64" y="174" fill="#AEB9C6">agent = create_deep_agent(</text>
+    <text x="64" y="197" fill="#1A6A3A" font-weight="700">    model=model,</text>
+    <text x="64" y="221" fill="#1A3A7A" font-weight="700">    system_prompt="You are a drawling cowboy.",</text>
+    <text x="64" y="250" fill="#AEB9C6">)</text>
+    <text x="64" y="284" fill="#AEB9C6">agent.invoke({"messages": "Round up the herd."})</text>
+  </g>
+
+  <!-- connector: model -->
+  <line x1="486" y1="193" x2="504" y2="188" stroke="#2A9A5A" stroke-width="1.5"/>
+  <rect x="504" y="170" width="214" height="36" rx="6" fill="white" stroke="#2A9A5A" stroke-width="1.5"/>
+  <text x="514" y="186" font-size="10" font-weight="700" fill="#1A6A3A">THE MODEL</text>
+  <text x="514" y="199" font-size="8.5" fill="#2A7A4A">the LLM engine; swap it freely</text>
+
+  <!-- connector: system prompt -->
+  <line x1="486" y1="217" x2="504" y2="231" stroke="#3A74D4" stroke-width="1.5"/>
+  <rect x="504" y="212" width="214" height="44" rx="6" fill="white" stroke="#3A74D4" stroke-width="1.5"/>
+  <text x="514" y="229" font-size="10" font-weight="700" fill="#1A3A7A">THE SYSTEM PROMPT</text>
+  <text x="514" y="242" font-size="8.5" fill="#3A74D4">text the model reads on every</text>
+  <text x="514" y="253" font-size="8.5" fill="#3A74D4">call (this is the USER part)</text>
+
+  <!-- footer takeaways -->
+  <text x="370" y="332" text-anchor="middle" font-size="10" fill="#5A7A9F">The model is the engine; the system prompt is the text that steers it, identical on every call.</text>
+  <text x="370" y="350" text-anchor="middle" font-size="9" fill="#9AB0C8">Your system_prompt is only the USER part; the SDK wraps its BASE instructions (and any SUFFIX) around it.</text>
+</svg>

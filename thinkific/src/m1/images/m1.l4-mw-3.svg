@@ -1,0 +1,33 @@
+<svg width="740" height="430" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="740" height="430" fill="#F2FAFF" rx="8"/>
+  <text x="370" y="40" text-anchor="middle" font-size="15" font-weight="700" fill="#1E3A5F">What the model now sees</text>
+  <text x="370" y="60" text-anchor="middle" font-size="11" fill="#6A8EB0">The request that reaches the model, after the middleware has run</text>
+
+  <!-- system message -->
+  <rect x="56" y="84" width="380" height="300" rx="6" fill="white" stroke="#1E3A5F" stroke-width="2"/>
+  <text x="246" y="104" text-anchor="middle" font-size="9" fill="#9AB0C8" letter-spacing="0.8">SYSTEM MESSAGE  →  MODEL</text>
+
+  <rect x="72" y="116" width="348" height="92" rx="4" fill="#E3EAF2" stroke="#1E3A5F" stroke-width="1"/>
+  <text x="246" y="137" text-anchor="middle" font-size="11" font-weight="700" fill="#1E3A5F">BASE behavior guidance</text>
+  <text x="246" y="156" text-anchor="middle" font-size="8.5" fill="#5A7A9F">be concise · verify your work · ask before assuming</text>
+  <text x="246" y="170" text-anchor="middle" font-size="8.5" fill="#5A7A9F">( + any USER / SUFFIX )</text>
+  <text x="246" y="192" text-anchor="middle" font-size="8" fill="#9AB0C8">— what create_deep_agent assembled —</text>
+
+  <rect x="72" y="218" width="348" height="150" rx="4" fill="#FFE8CC" stroke="#D4834A" stroke-width="2"/>
+  <text x="246" y="240" text-anchor="middle" font-size="11" font-weight="700" fill="#7A3A10">Filesystem Tools</text>
+  <text x="246" y="258" text-anchor="middle" font-size="8.5" fill="#B5703A">how and when to use the file tools…</text>
+  <text x="246" y="284" text-anchor="middle" font-size="8" fill="#9AB0C8">— appended by FilesystemMiddleware —</text>
+  <text x="246" y="312" text-anchor="middle" font-size="9" font-weight="700" fill="#7A3A10">tools registered:</text>
+  <text x="246" y="330" text-anchor="middle" font-size="8.5" fill="#5A7A9F">ls · read_file · write_file</text>
+  <text x="246" y="345" text-anchor="middle" font-size="8.5" fill="#5A7A9F">edit_file · glob · grep</text>
+
+  <!-- annotation -->
+  <rect x="470" y="150" width="216" height="170" rx="6" fill="white" stroke="#1E3A5F" stroke-width="1.4"/>
+  <text x="486" y="176" font-size="11" font-weight="700" fill="#1E3A5F">You passed none of this.</text>
+  <text x="486" y="202" font-size="10" fill="#3A4A5F">The orange block was added</text>
+  <text x="486" y="217" font-size="10" fill="#3A4A5F">by middleware at request time,</text>
+  <text x="486" y="232" font-size="10" fill="#3A4A5F">not by you.</text>
+  <text x="486" y="262" font-size="10" fill="#3A4A5F">So the model now "knows" it</text>
+  <text x="486" y="277" font-size="10" fill="#3A4A5F">can read and write files —</text>
+  <text x="486" y="292" font-size="10" fill="#3A4A5F">and which tools to call.</text>
+</svg>

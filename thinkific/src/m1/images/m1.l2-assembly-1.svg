@@ -1,0 +1,13 @@
+<svg width="740" height="430" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="740" height="430" fill="#F2FAFF" rx="8"/>
+  <text x="370" y="32" text-anchor="middle" font-size="15" font-weight="700" fill="#1E3A5F">System Prompt Assembly</text>
+  <text x="370" y="51" text-anchor="middle" font-size="11" fill="#6A8EB0">One system message, pieced together step by step</text>
+
+  <rect x="58" y="66" width="344" height="344" rx="6" fill="white" stroke="#1E3A5F" stroke-width="2"/>
+  <text x="230" y="84" text-anchor="middle" font-size="9" fill="#9AB0C8" letter-spacing="0.8">SYSTEM MESSAGE  →  MODEL</text>
+
+  <!-- BASE -->
+  <rect x="72" y="140" width="300" height="46" rx="4" fill="#E3EAF2" stroke="#1E3A5F" stroke-width="1"/>
+  <text x="222" y="159" text-anchor="middle" font-size="11" font-weight="700" fill="#1E3A5F">BASE: SDK behavior prompt</text>
+  <text x="222" y="174" text-anchor="middle" font-size="8.5" fill="#5A7A9F">always present · a harness profile may replace it (CUSTOM)</text>
+</svg>

@@ -201,3 +201,26 @@ details[open] > summary {
   border-radius: 6px 6px 0 0;
 }
 details > *:not(summary) { padding: 0 16px; }
+
+/* ── Code-block copy button: always-visible icon, never overlapping the code ── */
+/* Extra top padding reserves a band for the button so the first line stays clear. */
+pre { padding-top: 2.85rem; }
+
+/* Self-contained clipboard icon (inline SVG data-URI) so the button shows even
+   when the pipeline's symbols/copy.png isn't copied next to the page. */
+pre .copy-button-inline {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
+  background-position: center;
+  background-size: 16px;
+  background-repeat: no-repeat;
+  background-color: rgba(127, 200, 255, 0.14);
+  filter: none;
+  opacity: 0.85;
+  border-radius: 6px;
+}
+
+pre .copy-button-inline:hover {
+  filter: none;
+  opacity: 1;
+  background-color: rgba(127, 200, 255, 0.30);
+}
