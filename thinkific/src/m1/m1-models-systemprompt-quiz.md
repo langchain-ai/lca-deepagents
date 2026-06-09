@@ -19,6 +19,10 @@
     explanation="The model is the only thing that changes. The SDK wraps the same BASE instructions and file tools around every model — one-line swap in models.py, everything else stays put."
 />
 
+<hr style="border:none;border-top:1px solid #e5e7eb;margin:2rem 0;" />
+
+*Bonus — harness profiles are covered in a later lesson:*
+
 <MCQ
     question="Which part of a Deep Agent's assembled system prompt is model-specific?"
     choices='["The BASE prompt — each provider ships its own version", "The SUFFIX — it comes from a harness profile registered for that specific model", "The filesystem instructions — tailored per provider", "None — the entire system prompt is identical across all models"]'
