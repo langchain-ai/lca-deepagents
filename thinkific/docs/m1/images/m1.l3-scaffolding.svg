@@ -85,5 +85,5 @@
 
   <!-- Footer -->
   <text x="370" y="380" text-anchor="middle" font-size="10" fill="#5A7A9F">The system section is what both Haiku and Sonnet received, word for word. Open your LangSmith run to see it.</text>
-  <text x="370" y="396" text-anchor="middle" font-size="9.5" fill="#9AB0C8">What each section means and why the SDK injects it is covered in the next lesson.</text>
+  <text x="370" y="396" text-anchor="middle" font-size="9.5" fill="#9AB0C8">The "user" label at the bottom is LangSmith's name for the human message role — not the USER segment in the assembly above.</text>
 </svg>
