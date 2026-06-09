@@ -637,6 +637,9 @@ buildSlideshow({
 <p><img src="images/m1.l3-scaffolding.svg" alt="LangSmith-style view of what the model receives: a system message assembled by the SDK (Core Behavior, Professional Objectivity, Doing Tasks, and more) followed by the user's question. The system section is identical for every model; only the engine reading it changes." style="width: 740px; max-width: 100%;" /></p>
 <h3 id="what-is-the-user">What is the USER?</h3>
 <p>The USER is the <code>system_prompt</code> argument you pass to <code>create_deep_agent</code>. It sits at the very front of the assembled prompt. It's optional: if you pass nothing, the agent still runs fine on the BASE alone.</p>
+<blockquote>
+<p><strong>Not to be confused with the "user" label in the LangSmith diagram above.</strong> That label is the message role for the human's chat turn. The USER segment here is part of the <em>system</em> message — it's your instructions to the agent, not the question you asked it.</p>
+</blockquote>
 <p>In Lab 2, you'll experiment with different personas (pirate, cowboy, Shakespeare) to see how a single line of text steers the agent's voice without touching anything else.</p>
 <h3 id="what-is-the-base">What is the BASE?</h3>
 <p>The BASE is the "batteries included" part: built-in behavior guidance the SDK injects on every call, regardless of what you pass.</p>
