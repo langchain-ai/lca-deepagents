@@ -580,6 +580,17 @@
 
 <div class="lt-panel active" id="p-models" role="tabpanel">
 <h2 id="models-use-any-provider">Models: Use Any Provider</h2>
+<div style="margin:1.5rem 0;padding:1.25rem 1.5rem;border-radius:12px;border:1px solid #99d3ff;background-color:#e5f4ff;color:#1e4d7a;display:flex;gap:1.25rem;align-items:flex-start;">
+<img src="images/langchain-symbol.png" alt="LangChain" style="width:44px;height:44px;flex-shrink:0;margin-top:2px;object-fit:contain;" />
+<div>
+<p style="margin:0 0 0.5rem;">LangChain's model-agnostic design means you can swap in whatever fits your needs:</p>
+<ul style="margin:0;padding-left:1.2rem;">
+<li>a cheaper model to cut costs</li>
+<li>an open-source model for privacy</li>
+<li>a more capable one for complex reasoning</li>
+</ul>
+</div>
+</div>
 <p>Every lab gets its model from a single shared file, <strong><code>python/models.py</code></strong>. It<br />
 exports a <code>model</code> object built with <code>init_chat_model(...)</code>, and the lab scripts<br />
 simply do <code>from models import model</code>. To use a different model or provider, edit<br />
@@ -675,42 +686,6 @@ again, so you have two runs to compare.</p>
 </table>
 </div>
 </details>
-</div>
-<hr style="border:none;border-top:1px solid #e5e7eb;margin:2rem 0;" />
-<p>Both models received the same starting message before they ever saw your question, assembled by the SDK, not by you. That pre-built message is the scaffolding: the behavior rules and file tools Deep Agents injects automatically, identical regardless of which model you pick.</p>
-<p><img src="images/m1.l3-scaffolding.svg" alt="LangSmith-style view of what the model receives: a system message assembled by the SDK (Core Behavior, Professional Objectivity, Doing Tasks, and more) followed by the user's question. The system section is identical for every model; only the engine reading it changes." style="width: 740px; max-width: 100%;" /></p>
-<p>Different model, different output style, but same scaffolding. Haiku answers<br />
-directly; Sonnet structures its response with headers, numbered steps, and a<br />
-comparison table. <strong>That's the model's character, not the SDK's.</strong></p>
-<div style="margin:1.5rem 0;padding:1.25rem 1.5rem;border-radius:12px;border:1px solid #99d3ff;background-color:#e5f4ff;color:#1e4d7a;display:flex;gap:1.25rem;align-items:flex-start;">
-<img src="images/langchain-symbol.png" alt="LangChain" style="width:44px;height:44px;flex-shrink:0;margin-top:2px;object-fit:contain;" />
-<div>
-<p style="margin:0 0 0.5rem;">LangChain's model-agnostic design means you can swap in whatever fits your needs:</p>
-<ul style="margin:0;padding-left:1.2rem;">
-<li>a cheaper model to cut costs</li>
-<li>an open-source model for privacy</li>
-<li>a more capable one for complex reasoning</li>
-</ul>
-</div>
-</div>
-<p><strong>The discovery:</strong> Deep Agents always injects a BASE system prompt automatically, plus filesystem tools via middleware, <em>regardless of what arguments you pass</em>. The key insight is that these come from the <strong>SDK</strong>, not the model provider, so swapping the model leaves the scaffolding identical. The details are covered in the next lesson; for now, just observe that the scaffolding doesn't change when you swap models.</p>
-<p align="center">
-  <img src="images/m1.l2-model-swap.svg" alt="Two agents side by side, claude-haiku-4-5 and openai gpt-4.1-mini. Their BASE prompt and filesystem tools are identical; only the SUFFIX differs: Haiku has a harness-profile SUFFIX, gpt-4.1-mini has none." width="680">
-</p>
-<h3 id="check-the-trace-in-langsmith">Check the trace in LangSmith</h3>
-<p>Open both runs in <strong>LangSmith</strong>, click the LLM call, and compare the first<br />
-<code>system</code> message and the tool list:</p>
-<ul>
-<li>The <strong>BASE prompt</strong> and the <strong>filesystem tools</strong> are identical across both models. The filesystem tools come from middleware rather than BASE itself (middleware is covered in the next lesson), but like BASE, they don't change when you swap models.</li>
-<li>The one part that tracks the model is the <strong>SUFFIX</strong>: <code>claude-haiku-4-5</code> and<br />
-<code>claude-sonnet-4-6</code> each ship one (and they differ), while <code>gpt-4.1-mini</code> has<br />
-  no registered profile, so it shows no SUFFIX at all.</li>
-</ul>
-<div class="tip">
-<p><strong>Swapping providers.</strong> The default in <code>models.py</code> uses Anthropic so the lab<br />
-runs with just <code>ANTHROPIC_API_KEY</code>. To see the scaffolding survive a <em>provider</em><br />
-change, set <code>OPENAI_API_KEY</code> and uncomment the <code>openai:gpt-4.1-mini</code> line. The<br />
-BASE prompt and filesystem tools won't budge; only the model-specific SUFFIX does.</p>
 </div>
 </div>
 <h2 id="references">References</h2>
