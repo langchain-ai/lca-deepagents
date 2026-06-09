@@ -668,6 +668,12 @@ buildSlideshow({
 <details>
 <summary>Extension: Harness Profiles (Under The Hood) [click to expand]</summary>
 <p><br></p>
+<p>A harness profile is model-specific configuration the framework injects automatically; that suffix you see at the bottom of every system prompt is how it patches known weaknesses for that particular model without you having to think about it.</p>
+<details>
+<summary>🎥 LangSmith trace walkthrough [click to expand]</summary>
+<p><br></p>
+<Video src="TODO" />
+</details>
 <p>The <strong>SUFFIX</strong> is model-specific tuning, and it comes from a <strong>harness profile</strong>:<br />
 a small bundle of defaults the SDK attaches automatically based on the model id.<br />
 A profile sets a <code>system_prompt_suffix</code> (the SUFFIX, appended after BASE), and it<br />
