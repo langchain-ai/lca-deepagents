@@ -637,7 +637,7 @@ buildSlideshow({
 <p>The USER is the <code>system_prompt</code> argument you pass to <code>create_deep_agent</code>. It sits at the very front of the assembled prompt. It's optional: if you pass nothing, the agent still runs fine on the BASE alone.</p>
 <p>In Lab 2, you'll experiment with different personas (pirate, cowboy, Shakespeare) to see how a single line of text steers the agent's voice without touching anything else.</p>
 <h3 id="what-is-the-base">What is the BASE?</h3>
-<p>The BASE is the "batteries included" part: built-in behavior guidance and tooling the SDK injects on every call, regardless of what you pass.</p>
+<p>The BASE is the "batteries included" part: built-in behavior guidance the SDK injects on every call, regardless of what you pass.</p>
 <details>
 <summary>🎥 LangSmith trace walkthrough [click to expand]</summary>
 <p><br></p>
@@ -646,9 +646,8 @@ buildSlideshow({
 <p>Open any run in <strong>LangSmith</strong>, click the LLM call, and look at the <code>system</code> message. The <code>user</code> turn at the bottom is the question you sent. Everything in the <code>system</code> message above it is the assembled prompt. A few sections you'll see:</p>
 <ul>
 <li><strong>Core Behavior</strong>: how the agent should respond: be concise, don't over-explain, ask only the minimum followup if underspecified.</li>
-<li><strong>write_todos</strong>: how the agent manages a planning list for multi-step tasks.</li>
-<li><strong>Filesystem Tools</strong>: the file commands wired in out of the box: <code>ls</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code>, <code>glob</code>, <code>grep</code>. You never added them; the SDK included them automatically.</li>
 </ul>
+<p>You'll also see <strong>write_todos</strong> and <strong>Filesystem Tools</strong> sections in the same system message. Those are appended by middleware, not BASE; middleware is covered in a later lesson.</p>
 <p>These are the two ways to set the system prompt your agent ships with:</p>
 <table>
 <thead>
@@ -660,7 +659,7 @@ buildSlideshow({
 <tbody>
 <tr>
 <td style="vertical-align:top">
-<p>No <code>system_prompt</code> passed. The agent runs on BASE alone.</p>
+<p>No <code>system_prompt</code> passed. The agent runs on BASE; middleware still appends its tools and instructions.</p>
 </td>
 <td style="vertical-align:top">
 <p><code>system_prompt</code> passed. Your text becomes the USER segment and sits in front of BASE; both are active.</p>

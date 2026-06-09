@@ -613,7 +613,7 @@ again, so you have two runs to compare.</p>
 <div class="language-tabs-block" data-languages="{&quot;Python&quot;: [{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;bash&quot;, &quot;code&quot;: &quot;uv run ./python/m1/scratch_agent.py&quot;, &quot;highlights&quot;: [], &quot;noHeader&quot;: true}]}"></div>
 </div>
 </details>
-<p>The SDK (Software Development Kit) wraps the same base instructions and file tools around every model; the model itself still determines how it responds.</p>
+<p>The SDK (Software Development Kit) wraps the same BASE instructions around every model, and middleware adds the same filesystem tools on top; the model itself still determines how it responds.</p>
 <p>Here are two real responses to "What is an LLM?", one from each model:</p>
 <div style="display:flex;gap:20px;align-items:flex-start;margin:1.5rem 0;">
 <details style="flex:1;border:1px solid #e5e7eb;border-radius:8px;padding:0.75rem 1rem;">
@@ -701,12 +701,7 @@ comparison table. <strong>That's the model's character, not the SDK's.</strong><
 </ul>
 </div>
 </div>
-<p><strong>The discovery:</strong> Deep Agents always injects a BASE system prompt and a<br />
-filesystem backend automatically, <em>regardless of what arguments you pass</em>. The<br />
-key insight is that these come from the <strong>SDK</strong>, not the model provider, so<br />
-swapping the model leaves the scaffolding identical. The details of what the<br />
-SDK injects and why are covered in the next lesson; for now, just observe that<br />
-the scaffolding doesn't change when you swap models.</p>
+<p><strong>The discovery:</strong> Deep Agents always injects a BASE system prompt automatically, plus filesystem tools via middleware, <em>regardless of what arguments you pass</em>. The key insight is that these come from the <strong>SDK</strong>, not the model provider, so swapping the model leaves the scaffolding identical. The details are covered in the next lesson; for now, just observe that the scaffolding doesn't change when you swap models.</p>
 <p align="center">
   <img src="images/m1.l2-model-swap.svg" alt="Two agents side by side, claude-haiku-4-5 and openai gpt-4.1-mini. Their BASE prompt and filesystem tools are identical; only the SUFFIX differs: Haiku has a harness-profile SUFFIX, gpt-4.1-mini has none." width="680">
 </p>
@@ -714,8 +709,7 @@ the scaffolding doesn't change when you swap models.</p>
 <p>Open both runs in <strong>LangSmith</strong>, click the LLM call, and compare the first<br />
 <code>system</code> message and the tool list:</p>
 <ul>
-<li>The <strong>BASE prompt</strong> and the <strong>file tools</strong> are identical. That's the SDK<br />
-  scaffolding, and it doesn't care which model you picked.</li>
+<li>The <strong>BASE prompt</strong> and the <strong>filesystem tools</strong> are identical across both models. The filesystem tools come from middleware rather than BASE itself (middleware is covered in the next lesson), but like BASE, they don't change when you swap models.</li>
 <li>The one part that tracks the model is the <strong>SUFFIX</strong>: <code>claude-haiku-4-5</code> and<br />
 <code>claude-sonnet-4-6</code> each ship one (and they differ), while <code>gpt-4.1-mini</code> has<br />
   no registered profile, so it shows no SUFFIX at all.</li>
@@ -724,7 +718,7 @@ the scaffolding doesn't change when you swap models.</p>
 <p><strong>Swapping providers.</strong> The default in <code>models.py</code> uses Anthropic so the lab<br />
 runs with just <code>ANTHROPIC_API_KEY</code>. To see the scaffolding survive a <em>provider</em><br />
 change, set <code>OPENAI_API_KEY</code> and uncomment the <code>openai:gpt-4.1-mini</code> line. The<br />
-BASE prompt and file tools won't budge; only the model-specific SUFFIX does.</p>
+BASE prompt and filesystem tools won't budge; only the model-specific SUFFIX does.</p>
 </div>
 </div>
 <h2 id="references">References</h2>
