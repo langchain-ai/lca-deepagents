@@ -5,7 +5,7 @@
   </defs>
   <rect width="740" height="430" fill="#F2FAFF" rx="8"/>
   <text x="370" y="40" text-anchor="middle" font-size="15" font-weight="700" fill="#1E3A5F">Where middleware runs</text>
-  <text x="370" y="60" text-anchor="middle" font-size="11" fill="#6A8EB0">Fixed hook points in the agent loop — the SDK installs the required ones</text>
+  <text x="370" y="60" text-anchor="middle" font-size="11" fill="#6A8EB0">Fixed hook points in the agent loop; the SDK installs the required ones</text>
 
   <!-- faded echo cards behind the per-turn block: the same step ran on earlier turns -->
   <rect x="138" y="148" width="432" height="56" rx="8" fill="#E2EAF4" stroke="#C2D2E4" stroke-width="1" opacity="0.5"/>
@@ -50,5 +50,5 @@
   <rect x="120" y="300" width="500" height="74" rx="6" fill="white" stroke="#1E3A5F" stroke-width="1.2"/>
   <text x="370" y="326" text-anchor="middle" font-size="11" fill="#3A4A5F">At any of these points a middleware can read or rewrite the request,</text>
   <text x="370" y="344" text-anchor="middle" font-size="11" fill="#3A4A5F">add tools, change the agent's state, or pause the run.</text>
-  <text x="370" y="364" text-anchor="middle" font-size="9.5" fill="#6A8EB0">You don't wire them up — create_deep_agent installs the required ones.</text>
+  <text x="370" y="364" text-anchor="middle" font-size="9.5" fill="#6A8EB0">You don't wire them up; create_deep_agent installs the required ones.</text>
 </svg>

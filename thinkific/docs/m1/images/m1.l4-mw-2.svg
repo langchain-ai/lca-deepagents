@@ -5,7 +5,7 @@
 
   <!-- what you wrote: USER system_prompt -->
   <rect x="64" y="72" width="612" height="74" rx="6" fill="#DCEBFF" stroke="#3A74D4" stroke-width="1.4"/>
-  <text x="80" y="91" font-size="8.5" font-weight="700" fill="#3A74D4" letter-spacing="0.5">YOUR system_prompt — the USER segment</text>
+  <text x="80" y="91" font-size="8.5" font-weight="700" fill="#3A74D4" letter-spacing="0.5">YOUR system_prompt: the USER segment</text>
   <text x="80" y="114" font-size="11.5" fill="#1A3A7A" font-family="'IBM Plex Mono', monospace">"You are a research assistant. Research the question using the files</text>
   <text x="80" y="133" font-size="11.5" fill="#1A3A7A" font-family="'IBM Plex Mono', monospace"> in the workspace, then write a short summary of what you find."</text>
 
@@ -13,7 +13,7 @@
 
   <!-- appended verbatim by the middleware -->
   <rect x="64" y="176" width="612" height="226" rx="6" fill="#FFF4E8" stroke="#D4834A" stroke-width="2"/>
-  <text x="80" y="196" font-size="8.5" font-weight="700" fill="#B5703A" letter-spacing="0.5">+ APPENDED TO THE SYSTEM MESSAGE — verbatim from FilesystemMiddleware</text>
+  <text x="80" y="196" font-size="8.5" font-weight="700" fill="#B5703A" letter-spacing="0.5">+ APPENDED TO THE SYSTEM MESSAGE: verbatim from FilesystemMiddleware</text>
 
   <text x="82" y="221" font-size="9.5" fill="#5A3A1A" font-family="'IBM Plex Mono', monospace">## Filesystem Tools  `ls`, `read_file`, `write_file`, `edit_file`, `glob`, `grep`</text>
   <text x="82" y="245" font-size="9.5" fill="#5A3A1A" font-family="'IBM Plex Mono', monospace">You have access to a filesystem which you can interact with using these</text>
@@ -24,6 +24,6 @@
   <text x="82" y="333" font-size="9.5" fill="#5A3A1A" font-family="'IBM Plex Mono', monospace">- write_file: write to a file</text>
 
   <line x1="80" y1="350" x2="660" y2="350" stroke="#EBD2B6" stroke-width="1"/>
-  <text x="80" y="372" font-size="9.5" fill="#7A3A10">…and ls · read_file · write_file · edit_file · glob · grep are registered as tools —</text>
+  <text x="80" y="372" font-size="9.5" fill="#7A3A10">…and ls · read_file · write_file · edit_file · glob · grep are registered as tools;</text>
   <text x="80" y="388" font-size="9.5" fill="#7A3A10">none of which you passed to create_deep_agent.</text>
 </svg>

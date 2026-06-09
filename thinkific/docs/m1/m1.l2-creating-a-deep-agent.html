@@ -549,15 +549,15 @@ your coding agent (Claude Code, Cursor, etc.) and let it build the file.</p>
 
 Also create lca-deepagents/python/.env (next to models.py; you can copy the
 provided .env.example). models.py already calls load_dotenv() on this file, so
-scratch_agent.py needs no dotenv code of its own. Use these placeholders — I'll
+scratch_agent.py needs no dotenv code of its own. Use these placeholders; I'll
 paste my real keys in afterward:
 
-    # LangSmith — tracing &amp; observability (lets you open the run in LangSmith)
+    # LangSmith: tracing &amp; observability (lets you open the run in LangSmith)
     LANGSMITH_API_KEY=lsv2_...
     LANGSMITH_TRACING=true
     LANGSMITH_PROJECT=lca-deepagents
 
-    # Model provider keys — set the one your model in models.py uses
+    # Model provider keys: set the one your model in models.py uses
     ANTHROPIC_API_KEY=your-anthropic-api-key   # default: anthropic:claude-haiku-4-5
     OPENAI_API_KEY=your-openai-api-key         # only if you switch to an openai: model
 
@@ -573,8 +573,8 @@ Run it with (from the lca-deepagents repo root):
 <div class="callout">
 <strong>Troubleshooting</strong>
 <ul>
-<li><strong><code>ModuleNotFoundError: No module named 'dotenv'</code></strong> (or any package) — you ran the script with <code>python3</code> directly. Use <code>uv run</code> instead; it activates the project's virtual environment where all dependencies live.</li>
-<li><strong><code>error: Failed to spawn</code></strong> / <strong><code>Project directory does not exist</code></strong> — you're in the wrong directory. Run the command from the <code>lca-deepagents</code> repo root.</li>
+<li><strong><code>ModuleNotFoundError: No module named 'dotenv'</code></strong> (or any package): you ran the script with <code>python3</code> directly. Use <code>uv run</code> instead; it activates the project's virtual environment where all dependencies live.</li>
+<li><strong><code>error: Failed to spawn</code></strong> / <strong><code>Project directory does not exist</code></strong>: you're in the wrong directory. Run the command from the <code>lca-deepagents</code> repo root.</li>
 </ul>
 </div>
 

@@ -536,7 +536,7 @@
 <p><br></p>
 <Video src="TODO" />
 </details>
-<p>When a conversation runs long enough, older messages push the total token count toward the model's context limit. Deep Agents handles this automatically with <strong>SummarizationMiddleware</strong> — it watches the context fill up and compacts old messages into a summary before the model ever sees them.</p>
+<p>When a conversation runs long enough, older messages push the total token count toward the model's context limit. Deep Agents handles this automatically with <strong>SummarizationMiddleware</strong>; it watches the context fill up and compacts old messages into a summary before the model ever sees them.</p>
 <hr />
 <h2 id="how-the-context-window-fills-up">How the context window fills up</h2>
 <p>Think of the context window like a thermometer. Every new message adds tokens and the level rises. When it crosses <strong>85%</strong> of the model's limit, the middleware fires.</p>
@@ -549,12 +549,12 @@ buildSlideshow({
     {
       src: 'images/m2.4-compaction.svg',
       tag: 'Slide 1 of 2',
-      caption: `When the context window hits 85% capacity, the middleware fires. Messages below the keep cutoff (amber) are replaced by a single summary block (green), right at the boundary. The recent messages at the top are untouched. The thermometer drops back down — room to grow again.`
+      caption: `When the context window hits 85% capacity, the middleware fires. Messages below the keep cutoff (amber) are replaced by a single summary block (green), right at the boundary. The recent messages at the top are untouched. The thermometer drops back down; room to grow again.`
     },
     {
       src: 'images/m2.4-compaction2.svg',
       tag: 'Slide 2 of 2',
-      caption: `When the window fills a second time, the same process runs — but now the previous summary sits at the bottom of the history alongside new old messages. Both get folded into a new combined summary (darker green). The recent messages are still untouched. This rolling compaction continues indefinitely.`
+      caption: `When the window fills a second time, the same process runs, but now the previous summary sits at the bottom of the history alongside new old messages. Both get folded into a new combined summary (darker green). The recent messages are still untouched. This rolling compaction continues indefinitely.`
     },
   ]
 });
@@ -564,28 +564,28 @@ buildSlideshow({
 <h2 id="what-the-summary-contains">What the summary contains</h2>
 <p>The middleware makes a separate LLM call to generate the summary. It uses a structured prompt that asks the model to extract:</p>
 <ul>
-<li><strong>Session intent</strong> — what the user is trying to accomplish</li>
-<li><strong>Key facts &amp; decisions</strong> — important context from the conversation</li>
-<li><strong>Artifacts</strong> — files or resources created or modified</li>
-<li><strong>Next steps</strong> — what remains to do</li>
+<li><strong>Session intent</strong>: what the user is trying to accomplish</li>
+<li><strong>Key facts &amp; decisions</strong>: important context from the conversation</li>
+<li><strong>Artifacts</strong>: files or resources created or modified</li>
+<li><strong>Next steps</strong>: what remains to do</li>
 </ul>
 <p>The resulting text is injected as a single <code>HumanMessage</code> at the top of the preserved recent messages. The model picks up the conversation as if it had been there the whole time.</p>
 <details>
 <summary>Summarization details (for LangGraph users)</summary>
 <p><br></p>
 <p><strong><code>state["messages"]</code> never shrinks.</strong> Every message ever sent is retained in state. The list only grows.</p>
-<p><strong>The effective list is transient.</strong> Before each model call the middleware assembles the list the model actually sees — it is never stored back in state:</p>
+<p><strong>The effective list is transient.</strong> Before each model call the middleware assembles the list the model actually sees; it is never stored back in state:</p>
 <pre><code class="language-python">effective_list = [S_n] + state[&quot;messages&quot;][cutoff_index:]
 #                 ↑ oldest (index 0)          ↑ recent messages
 </code></pre>
-<p><code>S_n</code> is the summary from the last compaction event. It sits at index 0 — the oldest position — acting as a stand-in for everything that was dropped.</p>
+<p><code>S_n</code> is the summary from the last compaction event. It sits at index 0, the oldest position, acting as a stand-in for everything that was dropped.</p>
 <p><strong><code>state["_summarization_event"]</code></strong> is the only state that changes at compaction time:</p>
 <pre><code class="language-python">{
     &quot;cutoff_index&quot;:    int,          # ignore state[&quot;messages&quot;][:cutoff_index]
-    &quot;summary_message&quot;: HumanMessage, # S_n — the summary text
+    &quot;summary_message&quot;: HumanMessage, # S_n: the summary text
 }
 </code></pre>
-<p><strong>Rolling compaction (n → n+1).</strong> When the effective list fills up again, the middleware assembles it the same way. <code>S_n</code> is at index 0 of that list, so it gets included in what is sent to the summarizer — absorbed into the new <code>S_n+1</code>. The <code>cutoff_index</code> advances further into <code>state["messages"]</code>, permanently skipping the messages that are now covered by <code>S_n+1</code>.</p>
+<p><strong>Rolling compaction (n → n+1).</strong> When the effective list fills up again, the middleware assembles it the same way. <code>S_n</code> is at index 0 of that list, so it gets included in what is sent to the summarizer, absorbed into the new <code>S_n+1</code>. The <code>cutoff_index</code> advances further into <code>state["messages"]</code>, permanently skipping the messages that are now covered by <code>S_n+1</code>.</p>
 <pre><code>After compaction n:
   state[&quot;messages&quot;]   = [m0  m1  m2  m3  m4 | m5  m6  m7]
                                               ↑ cutoff_index = 5
@@ -602,21 +602,21 @@ After more turns, compaction n+1 fires:
 </details>
 <hr />
 <h2 id="seeing-it-in-action">Seeing it in action</h2>
-<p>The default trigger is 85% of the model's real context window — 170,000 tokens for Claude Haiku 4.5. To observe it in a demo we set <code>model.profile["max_input_tokens"]</code> to a small value so the threshold is hit after a few turns:</p>
+<p>The default trigger is 85% of the model's real context window: 170,000 tokens for Claude Haiku 4.5. To observe it in a demo we set <code>model.profile["max_input_tokens"]</code> to a small value so the threshold is hit after a few turns:</p>
 <div class="tabs-block" data-tabs="[{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m2/m2.4_MessageHistory.py\nMODEL = \&quot;anthropic:claude-haiku-4-5\&quot;\nmodel = init_chat_model(MODEL)\n\n# Lower the reported context window so summarization fires at ~1700 tokens\n# instead of the real 170,000-token threshold.\nmodel.profile = {**model.profile, \&quot;max_input_tokens\&quot;: 700}\n\nagent = create_deep_agent(\n    model=model,\n    checkpointer=MemorySaver(),\n    system_prompt=\&quot;You are a helpful assistant. Keep every response to one sentence.\&quot;,\n)&quot;, &quot;highlights&quot;: []}]"></div>
 
 <div class="tip"><p><strong>Passing <code>model</code> not <code>MODEL</code>.</strong> Notice <code>create_deep_agent(model=model, ...)</code> receives the model <em>object</em>, not the string <code>"anthropic:claude-haiku-4-5"</code>. Passing the string would re-initialize the model internally and ignore the <code>profile</code> override.</p></div>
 
-<p>When summarization fires, a private <code>_summarization_event</code> key appears in the agent's state. The <code>state["messages"]</code> list itself is never modified — the summarization happens only on what gets <em>sent</em> to the model each turn.</p>
+<p>When summarization fires, a private <code>_summarization_event</code> key appears in the agent's state. The <code>state["messages"]</code> list itself is never modified; the summarization happens only on what gets <em>sent</em> to the model each turn.</p>
 <details class="run-code"><summary>&lt;/&gt; run this code</summary><div class="run-code-content"><div class="language-tabs-block" data-languages="{&quot;Python&quot;: [{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;bash&quot;, &quot;code&quot;: &quot;pushd ~/Documents/Github/lca-deepagents/python\nuv run python m2/m2.4_MessageHistory.py\npopd&quot;, &quot;highlights&quot;: [], &quot;noHeader&quot;: true}]}"></div></div></details>
 
 <hr />
 <h2 id="recap">Recap</h2>
 <ul>
-<li><strong>SummarizationMiddleware</strong> intercepts every LLM request via <code>wrap_model_call</code> — it runs before the model sees any messages</li>
+<li><strong>SummarizationMiddleware</strong> intercepts every LLM request via <code>wrap_model_call</code>; it runs before the model sees any messages</li>
 <li>When total tokens exceed 85% of <code>max_input_tokens</code>, old messages are partitioned at the <strong>keep cutoff</strong> and replaced with a summary</li>
 <li>The summary is generated by a separate LLM call using the same model as the agent</li>
-<li><code>state["messages"]</code> is never mutated — summarization is tracked in a private <code>_summarization_event</code> field</li>
+<li><code>state["messages"]</code> is never mutated; summarization is tracked in a private <code>_summarization_event</code> field</li>
 <li>Passing <code>model.profile["max_input_tokens"]</code> overrides the threshold, making it practical to demo</li>
 </ul>
 <h2 id="next">Next</h2>
@@ -624,7 +624,7 @@ After more turns, compaction n+1 fires:
 <hr />
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/context-engineering" target="_blank" rel="noopener noreferrer">SummarizationMiddleware — Deep Agents</a><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/context-engineering" target="_blank" rel="noopener noreferrer">SummarizationMiddleware: Deep Agents</a><br />
 - <a href="https://docs.langchain.com/oss/python/deepagents/context-engineering" target="_blank" rel="noopener noreferrer">Context Engineering overview</a></p>
 
     <script>

@@ -3,7 +3,7 @@
 
   <!-- Title -->
   <text x="370" y="32" text-anchor="middle" font-size="15" font-weight="700" fill="#1E3A5F">What is the scaffolding?</text>
-  <text x="370" y="51" text-anchor="middle" font-size="11" fill="#6A8EB0">The system message the SDK assembles — identical for every model you choose</text>
+  <text x="370" y="51" text-anchor="middle" font-size="11" fill="#6A8EB0">The system message the SDK assembles; identical for every model you choose</text>
 
   <!-- ═══ PANEL (LangSmith-style input view) ═══ -->
   <rect x="40" y="62" width="390" height="302" rx="6" fill="white" stroke="#C9D6E5" stroke-width="1.5"/>

@@ -19,7 +19,7 @@
   <text x="222" y="211" text-anchor="middle" font-size="11" font-weight="700" fill="#4A2A7A">SUFFIX: harness profile</text>
   <text x="222" y="226" text-anchor="middle" font-size="9" fill="#7A4FB0">optional · model-specific tuning</text>
 
-  <!-- Middleware section — very faded -->
+  <!-- Middleware section: very faded -->
   <g opacity="0.2">
     <line x1="72" y1="252" x2="372" y2="252" stroke="#6A6A8A" stroke-width="1.5" stroke-dasharray="5,3"/>
     <text x="222" y="248" text-anchor="middle" font-size="8.5" fill="#6A6A8A">▼  appended by mandatory middleware · every request  ▼</text>
@@ -35,13 +35,13 @@
     <text x="222" y="367" text-anchor="middle" font-size="10" fill="#7A3A10"><tspan font-weight="700">task</tspan> (subagents)  ·  SubAgentMiddleware</text>
   </g>
 
-  <!-- create_deep_agent bracket — full opacity -->
+  <!-- create_deep_agent bracket: full opacity -->
   <path d="M 410 92 L 416 92 L 416 236 L 410 236" fill="none" stroke="#1E3A5F" stroke-width="1.5"/>
   <line x1="416" y1="164" x2="424" y2="164" stroke="#1E3A5F" stroke-width="1.5"/>
   <text x="430" y="156" font-size="10" font-weight="700" fill="#1E3A5F">create_deep_agent</text>
   <text x="430" y="170" font-size="9" fill="#5A7A9F">assembles these three</text>
 
-  <!-- Middleware bracket — faded -->
+  <!-- Middleware bracket: faded -->
   <g opacity="0.2">
     <path d="M 410 260 L 416 260 L 416 382 L 410 382" fill="none" stroke="#D4834A" stroke-width="1.5"/>
     <line x1="416" y1="321" x2="424" y2="321" stroke="#D4834A" stroke-width="1.5"/>

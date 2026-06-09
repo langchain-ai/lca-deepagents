@@ -536,8 +536,8 @@
         <strong>Question:</strong> What does the string 'anthropic:claude-haiku-4-5' in init_chat_model('anthropic:claude-haiku-4-5') specify?
     </div>
     <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '54ea92d1')"><strong>A)</strong> Just the model — the provider is inferred from the API key</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '54ea92d1')"><strong>B)</strong> Just the provider — the model defaults to the latest version</div>
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '54ea92d1')"><strong>A)</strong> Just the model; the provider is inferred from the API key</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '54ea92d1')"><strong>B)</strong> Just the provider; the model defaults to the latest version</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '54ea92d1')"><strong>C)</strong> Both the provider and the model, letting one function target any LangChain-supported backend</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '54ea92d1')"><strong>D)</strong> The API endpoint URL to call</div>
     </div>
@@ -559,22 +559,22 @@
     </div>
     <div id="mcq-answer-fb087222" class="mcq-answer" style="display: none;">
         <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
-        <div class="mcq-explanation">The model is the only thing that changes. The SDK wraps the same BASE instructions and file tools around every model — one-line swap in models.py, everything else stays put.</div>
+        <div class="mcq-explanation">The model is the only thing that changes. The SDK wraps the same BASE instructions and file tools around every model; one-line swap in models.py, everything else stays put.</div>
     </div>
 </div>
 
 <hr style="border:none;border-top:1px solid #e5e7eb;margin:2rem 0;" />
 
-<p><em>Bonus — harness profiles are covered in a later lesson:</em></p>
+<p><em>Bonus: harness profiles are covered in a later lesson:</em></p>
 <div class="mcq-container" id="mcq-e845cdc3">
     <div class="mcq-question">
         <strong>Question:</strong> Which part of a Deep Agent's assembled system prompt is model-specific?
     </div>
     <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'e845cdc3')"><strong>A)</strong> The BASE prompt — each provider ships its own version</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, 'e845cdc3')"><strong>B)</strong> The SUFFIX — it comes from a harness profile registered for that specific model</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'e845cdc3')"><strong>C)</strong> The filesystem instructions — tailored per provider</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'e845cdc3')"><strong>D)</strong> None — the entire system prompt is identical across all models</div>
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'e845cdc3')"><strong>A)</strong> The BASE prompt; each provider ships its own version</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, 'e845cdc3')"><strong>B)</strong> The SUFFIX; it comes from a harness profile registered for that specific model</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'e845cdc3')"><strong>C)</strong> The filesystem instructions; tailored per provider</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'e845cdc3')"><strong>D)</strong> None; the entire system prompt is identical across all models</div>
     </div>
     <div id="mcq-answer-e845cdc3" class="mcq-answer" style="display: none;">
         <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
@@ -594,7 +594,7 @@
     </div>
     <div id="mcq-answer-660603ff" class="mcq-answer" style="display: none;">
         <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
-        <div class="mcq-explanation">The SDK slots the USER segment — your system_prompt — at the very front of the assembled prompt, ahead of the BASE behavior instructions and any SUFFIX. It is the first thing the model reads, which is why it reliably shapes tone and persona.</div>
+        <div class="mcq-explanation">The SDK slots the USER segment, your system_prompt, at the very front of the assembled prompt, ahead of the BASE behavior instructions and any SUFFIX. It is the first thing the model reads, which is why it reliably shapes tone and persona.</div>
     </div>
 </div>
 
@@ -610,7 +610,7 @@
     </div>
     <div id="mcq-answer-b781f17a" class="mcq-answer" style="display: none;">
         <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
-        <div class="mcq-explanation">Defining the string is not enough — it must be passed explicitly: create_deep_agent(model=model, system_prompt=SYSTEM_PROMPT). Without the argument, the agent never receives the USER segment and falls back to the BASE behavior only.</div>
+        <div class="mcq-explanation">Defining the string is not enough; it must be passed explicitly: create_deep_agent(model=model, system_prompt=SYSTEM_PROMPT). Without the argument, the agent never receives the USER segment and falls back to the BASE behavior only.</div>
     </div>
 </div>
 

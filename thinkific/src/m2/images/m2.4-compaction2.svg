@@ -75,7 +75,7 @@
   <text x="499" y="261" text-anchor="middle" font-size="9" fill="#2A7A4A">decisions &#xb7; next steps</text>
   <text x="499" y="278" text-anchor="middle" font-size="9" fill="#4A9A6A" font-style="italic">&#x2190; replaced 7 messages + prior summary</text>
 
-  <!-- Empty space below (freed context) — visually just the white container -->
+  <!-- Empty space below (freed context); visually just the white container -->
 
   <!-- Thermometer (After, ~30% full, green) -->
   <rect x="611" y="86" width="16" height="336" rx="8" fill="#EAF0F8" stroke="#9AB0C8" stroke-width="1.5"/>
