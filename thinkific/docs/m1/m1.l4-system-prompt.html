@@ -633,6 +633,7 @@ buildSlideshow({
   ]
 });
 </script>
+<p><img src="images/m1.l3-scaffolding.svg" alt="LangSmith-style view of what the model receives: a system message assembled by the SDK (Core Behavior, Professional Objectivity, Doing Tasks, and more) followed by the user's question. The system section is identical for every model; only the engine reading it changes." style="width: 740px; max-width: 100%;" /></p>
 <h3 id="what-is-the-user">What is the USER?</h3>
 <p>The USER is the <code>system_prompt</code> argument you pass to <code>create_deep_agent</code>. It sits at the very front of the assembled prompt. It's optional: if you pass nothing, the agent still runs fine on the BASE alone.</p>
 <p>In Lab 2, you'll experiment with different personas (pirate, cowboy, Shakespeare) to see how a single line of text steers the agent's voice without touching anything else.</p>
@@ -643,7 +644,6 @@ buildSlideshow({
 <p><br></p>
 <Video src="TODO" />
 </details>
-<p><img src="images/m1.l3-scaffolding.svg" alt="LangSmith-style view of what the model receives: a system message assembled by the SDK (Core Behavior, Professional Objectivity, Doing Tasks, and more) followed by the user's question. The system section is identical for every model; only the engine reading it changes." style="width: 740px; max-width: 100%;" /></p>
 <p>Open any run in <strong>LangSmith</strong>, click the LLM call, and look at the <code>system</code> message. The <code>user</code> turn at the bottom is the question you sent. Everything in the <code>system</code> message above it is the assembled prompt. A few sections you'll see:</p>
 <ul>
 <li><strong>Core Behavior</strong>: how the agent should respond: be concise, don't over-explain, ask only the minimum followup if underspecified.</li>
