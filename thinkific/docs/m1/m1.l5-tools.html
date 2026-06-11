@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>m1.l4-system-prompt</title>
+    <title>m1.l5-tools</title>
     <meta name="description" content="">
 
     <!-- Syntax highlighting -->
@@ -526,11 +526,11 @@
     </style>
 </head>
 <body>
-    <p><a href="https://langchain-ai.github.io/lca-deepagents/m1/m1.l4-system-prompt.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
+    <p><a href="https://langchain-ai.github.io/lca-deepagents/m1/m1.l5-tools.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
 <style>@import url('../shared/sd-components.css');</style>
 <script src="../shared/sd-components.js"></script>
 
-<h1 id="the-system-prompt">The System Prompt</h1>
+<h1 id="tools">Tools</h1>
 <style>
 .lt-bar {
   display: flex;
@@ -540,8 +540,8 @@
   border-bottom: 2px solid #CCE9FF;
 }
 .lt-group { display: flex; gap: 3px; }
-.lt-sys    { --c: #7A5AF8; }
-.lt-wrap   { --c: #B45309; }
+.lt-tools { --c: #0369A1; }
+.lt-wrap  { --c: #B45309; }
 .lt-tab {
   font: 500 14px 'IBM Plex Mono', monospace;
   padding: 9px 14px;
@@ -570,211 +570,342 @@
 </style>
 
 <div class="lt-bar" role="tablist" aria-label="Lesson sections">
-  <div class="lt-group lt-sys">
-    <button class="lt-tab active" data-p="sys" role="tab" aria-selected="true">System Prompt</button>
+  <div class="lt-group lt-tools">
+    <button class="lt-tab active" data-p="tools" role="tab" aria-selected="true">Tools</button>
   </div>
   <div class="lt-group lt-wrap">
-    <button class="lt-tab" data-p="lab2" role="tab" aria-selected="false">Lab 2</button>
+    <button class="lt-tab" data-p="lab3" role="tab" aria-selected="false">Lab 3</button>
   </div>
 </div>
 
-<div class="lt-panel active" id="p-sys" role="tabpanel">
-<h2 id="the-system-prompt_1">The System Prompt</h2>
-<p>The system prompt <strong>guides the model and is part of every model call</strong>; it is<br />
-re-sent on every turn, ahead of the conversation. <code>create_deep_agent</code> assembles<br />
-it from up to <strong>three parts</strong>:</p>
+<div class="lt-panel active" id="p-tools" role="tabpanel">
+<h2 id="tools-extending-the-agent">Tools: Extending the Agent</h2>
+<p>Tools are functions you give an agent so it can act: look things up, run queries, call APIs, write files. The agent decides when to call them and what to pass; you define what they do.</p>
+<p>Every deep agent ships with a built-in set of tools, loaded automatically by the SDK. You already saw these appear in the LangSmith trace in the previous lesson, as <code>write_todos</code> and <code>Filesystem Tools</code> sections inside the system message:</p>
 <table>
 <thead>
 <tr>
-<th>Part</th>
-<th>Where it comes from</th>
+<th>Tool(s)</th>
+<th>What it does</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>USER</strong></td>
-<td>The <code>system_prompt</code> argument <em>you</em> pass to <code>create_deep_agent</code>. Optional.</td>
+<td><code>write_todos</code></td>
+<td>Manage a running to-do list for multi-step planning</td>
 </tr>
 <tr>
-<td><strong>BASE</strong></td>
-<td>The SDK's built-in <code>BASE_AGENT_PROMPT</code> (behavior guidance). Always present, unless a harness profile replaces it.</td>
+<td><code>ls</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code></td>
+<td>Read and write files in the agent's working directory</td>
 </tr>
 <tr>
-<td><strong>SUFFIX</strong></td>
-<td>Model-specific tuning from a <strong>harness profile</strong> (<code>system_prompt_suffix</code>). Optional.</td>
+<td><code>glob</code>, <code>grep</code></td>
+<td>Search files by name pattern or content</td>
+</tr>
+<tr>
+<td><code>execute</code></td>
+<td>Run shell commands (requires a sandbox backend)</td>
+</tr>
+<tr>
+<td><code>task</code></td>
+<td>Delegate work to a sub-agent with an isolated context</td>
 </tr>
 </tbody>
 </table>
-<div class="sd-wrap" id="ss-assembly"></div>
-<script>
-buildSlideshow({
-  id: 'ss-assembly',
-  slides: [
-    {
-      src: 'images/m1.l2-assembly-1.svg',
-      tag: 'Step 1 of 4 · BASE',
-      caption: `It starts with the SDK's BASE prompt: built-in behavior guidance (be concise, verify your work, ask before assuming). Every deep agent gets it, on every call, no matter the model.`
-    },
-    {
-      src: 'images/m1.l2-assembly-2.svg',
-      tag: 'Step 2 of 4 · USER',
-      caption: `The USER segment is the system_prompt you provide. It's free-form text where you give the agent its character: a persona and tone, ground rules and constraints, or the domain and task to focus on.`
-    },
-    {
-      src: 'images/m1.l2-assembly-3.svg',
-      tag: 'Step 3 of 4 · SUFFIX',
-      caption: `A model's harness profile may add a SUFFIX at the end, for model-specific tuning. USER, then BASE, then SUFFIX is exactly what create_deep_agent assembles.`
-    },
-    {
-      src: 'images/m1.l4-assembly-preview.svg',
-      tag: 'Step 4 of 4 · preview',
-      caption: `There's one more layer, middleware, that appends additional sections at request time.`
-    },
-  ]
-});
-</script>
-<p>The diagram above shows the abstract structure. Here's what the assembled prompt actually looks like in a LangSmith trace:</p>
-<p><img src="images/m1.l3-scaffolding.svg" alt="LangSmith-style view of what the model receives: a system message assembled by the SDK (Core Behavior, Professional Objectivity, Doing Tasks, and more) followed by the user's question. The system section is identical for every model; only the engine reading it changes." style="width: 740px; max-width: 100%;" /></p>
-<h3 id="what-is-the-user">What is the USER?</h3>
-<p>The USER is the <code>system_prompt</code> argument you pass to <code>create_deep_agent</code>. It sits at the very front of the assembled prompt. It's optional: if you pass nothing, the agent still runs fine on the BASE alone.</p>
-<blockquote>
-<p><strong>Not to be confused with the "user" label in the LangSmith diagram above.</strong> That label is the message role for the human's chat turn. The USER segment here is part of the <em>system</em> message; it's your instructions to the agent, not the question you asked it.</p>
-</blockquote>
-<p>In Lab 2, you'll experiment with different personas (pirate, cowboy, Shakespeare) to see how a single line of text steers the agent's voice without touching anything else.</p>
-<h3 id="what-is-the-base">What is the BASE?</h3>
-<p>The BASE is the "batteries included" part: built-in behavior guidance the SDK injects on every call, regardless of what you pass.</p>
-<details>
-<summary>🎥 LangSmith trace walkthrough [click to expand]</summary>
-<p><br></p>
-<Video src="TODO" />
-</details>
-<p>Open any run in <strong>LangSmith</strong>, click the LLM call, and look at the <code>system</code> message. The <code>user</code> turn at the bottom is the question you sent. Everything in the <code>system</code> message above it is the assembled prompt. A few sections you'll see:</p>
-<ul>
-<li><strong>Core Behavior</strong>: how the agent should respond: be concise, don't over-explain, ask only the minimum followup if underspecified.</li>
-</ul>
-<p>You'll also see <strong>write_todos</strong> and <strong>Filesystem Tools</strong> sections in the same system message. Those are appended by middleware, not BASE.</p>
-<p>These are the two ways to set the system prompt your agent ships with:</p>
-<table>
-<thead>
-<tr>
-<th style="width:50%">The Default System Prompt</th>
-<th style="width:50%">USER: Customizing the System Prompt</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="vertical-align:top">
-<p>No <code>system_prompt</code> passed. The agent runs on BASE; middleware still appends its tools and instructions.</p>
-</td>
-<td style="vertical-align:top">
-<p><code>system_prompt</code> passed. Your text becomes the USER segment and sits in front of BASE; both are active.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<details>
-<summary>Extension: Harness Profiles (Under The Hood) [click to expand]</summary>
-<p><br></p>
-<p>A harness profile is model-specific configuration the framework injects automatically; that suffix you see at the bottom of the base system prompt text is how it patches known weaknesses for that particular model without you having to think about it. A profile can set a <code>system_prompt_suffix</code> (the SUFFIX, appended after BASE), replace BASE outright with a <code>base_system_prompt</code> (the CUSTOM variant), or drop optional middleware.</p>
-<details>
-<summary>🎥 LangSmith trace walkthrough [click to expand]</summary>
-<p><br></p>
-<Video src="TODO" />
-</details>
-<p>The SDK ships built-in profiles for several models (they live in<br />
-<code>deepagents/profiles/harness/</code>):</p>
-<table>
-<thead>
-<tr>
-<th>Model</th>
-<th>What its profile adds as the SUFFIX</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>anthropic:claude-haiku-4-5</code> <em>(our default)</em></td>
-<td>parallel tool calls, investigate-before-answering, reflect on tool results</td>
-</tr>
-<tr>
-<td><code>anthropic:claude-sonnet-4-6</code></td>
-<td>parallel tool calls, grounded (non-speculative) answers, reflection</td>
-</tr>
-<tr>
-<td><code>anthropic:claude-opus-4-7</code></td>
-<td>universal Anthropic guidance plus Opus-4.7-specific steering</td>
-</tr>
-<tr>
-<td><code>openai:gpt-5.x-codex</code></td>
-<td>autonomous-engineer demeanor, bias to action, parallel tools</td>
-</tr>
-<tr>
-<td>anything with no registered profile (e.g. <code>gpt-4.1-mini</code>)</td>
-<td>nothing; no SUFFIX at all</td>
-</tr>
-</tbody>
-</table>
-<p>That's why, back in Lab 1, swapping the model changed the tail of the system<br />
-prompt: each model brings its own SUFFIX, or none. You normally never touch<br />
-these; the SDK tunes each model to behave well out of the box. (If you ever need<br />
-to, <code>register_harness_profile(...)</code> lets you add your own.)</p>
-<blockquote>
-<p>One nuance the trace makes clear: the SUFFIX is appended to the <strong>BASE prompt<br />
-text</strong>, not to the end of the whole message. It's the last thing in the<br />
-assembled <code>system_prompt</code> string; the middleware sections (<code>write_todos</code>,<br />
-filesystem, <code>task</code>) are then added as separate blocks <em>after</em> that.</p>
-</blockquote>
-</details>
-</div>
-<div class="lt-panel" id="p-lab2" role="tabpanel">
-<h2 id="lab-2-the-system-prompt">Lab 2: The System Prompt</h2>
-<p><strong>The discovery:</strong> <code>system_prompt</code> is free-form text; use it to set a persona, lay down constraints, or define the agent's domain. The SDK slots it in as the <strong>USER</strong> segment at the front of the assembled prompt, leaving the BASE scaffolding untouched.</p>
-<p>Open <code>python/m1/scratch_agent.py</code> and make two changes: add a <code>SYSTEM_PROMPT</code> variable, then pass it to <code>create_deep_agent</code>:</p>
-<div class="language-tabs-block" data-languages="{&quot;Python&quot;: [{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;SYSTEM_PROMPT = \&quot;You are a salty pirate captain...\&quot;  # \u2190 your text here\n\nfrom models import model\nfrom deepagents import create_deep_agent\nagent = create_deep_agent(model=model, system_prompt=SYSTEM_PROMPT)&quot;, &quot;highlights&quot;: [1, 2, 5], &quot;noHeader&quot;: true}]}"></div>
-<details>
-<summary>Persona ideas [click to expand]</summary>
-<p><br></p>
-<p>Pick one of these or write your own:</p>
-<pre><code class="language-python"># Pirate
-SYSTEM_PROMPT = (
-    &quot;You are a salty pirate captain with decades at sea. Talk in 'arr' and nautical slang. &quot;
-    &quot;Call the user 'matey' and frame your answers as if charting a course.&quot;
-)
-
-# Cowboy
-SYSTEM_PROMPT = (
-    &quot;You are a drawling cowboy from the Old West. Speak only in cowboy slang, partner. &quot;
-    &quot;Pepper every reply with 'howdy', 'reckon', and 'much obliged', and keep it easygoing.&quot;
-)
-
-# Shakespeare
-SYSTEM_PROMPT = (
-    &quot;You are Shakespeare, the Elizabethan playwright. Reply only in Early Modern English. &quot;
-    &quot;Use 'thee' and 'thou', and close with a short rhyming couplet when you can.&quot;
+<p>These are always present. The <code>tools</code> parameter on <code>create_deep_agent</code> is <strong>additive</strong>: whatever you pass is merged with the built-in suite, not substituted for it.</p>
+<pre><code class="language-python">agent = create_deep_agent(
+    model=model,
+    tools=[my_tool_a, my_tool_b],   # merged with the built-ins above
 )
 </code></pre>
-<p>Each one changes the agent's voice without touching anything else. That single<br />
-string is your USER segment.</p>
+<p>Step through the sequence to see how each part fits together:</p>
+<div class="sd-wrap" id="dg-tool-loop"></div>
+<script>
+buildDiagram({
+  id: 'dg-tool-loop',
+  participants: ['SDK', 'LLM', 'Tool Node', 'execute_sql'],
+  cx: [72, 237, 470, 660],
+  bw: 105, bh: 36,
+  tby: 20, bby: 480,
+  vw: 800, vh: 540,
+  steps: [
+    {
+      tag: 'Step 1 of 7 · SDK injects tool schemas',
+      caption: 'Before every LLM call, the SDK calls bind_tools() behind the scenes. Each tool name, description, and JSON schema are appended to the system message via middleware. The LLM now knows what tools exist and how to call them.'
+    },
+    {
+      tag: 'Step 2 of 7 · LLM outputs tool_calls',
+      caption: 'The LLM decides it needs data and outputs an AIMessage with a tool_calls list: the name of the tool and the arguments to pass. The LLM does not run the tool. It produces a structured request; something else executes it.'
+    },
+    {
+      tag: 'Step 3 of 7 · AIMessage passed to Tool Node',
+      caption: 'The AIMessage (carrying tool_calls) flows to the Tool Node, a built-in LangGraph node inside the deep agent. The Tool Node is responsible for all tool execution.'
+    },
+    {
+      tag: 'Step 4 of 7 · Tool Node executes the call',
+      caption: 'The Tool Node reads tool_calls, finds execute_sql by name, and calls it with the arguments the LLM supplied. If the LLM requested multiple tools with no dependencies between them, the Tool Node can run them in parallel.'
+    },
+    {
+      tag: 'Step 5 of 7 · Tool returns a result',
+      caption: 'execute_sql runs the query and returns a string. The Tool Node wraps it in a ToolMessage, linking the result back to the original request via a tool_call_id.'
+    },
+    {
+      tag: 'Step 6 of 7 · ToolMessage feeds back to LLM',
+      caption: 'The ToolMessage is appended to the conversation and the LLM is called again with the full updated history. The LLM now sees its original question, its tool_calls, and the results.'
+    },
+    {
+      tag: 'Step 7 of 7 · LLM answers or loops',
+      caption: 'With the tool result in context, the LLM generates its next output: a plain AIMessage with a text answer if it has enough information, or another tool_call to keep querying. This is the loop. Open the run in LangSmith to see the full sequence.'
+    }
+  ],
+  buildSteps: function(a) {
+    var L = [72, 237, 470, 660], hw = 52;
+    return [
+      solidArrow(L[0]+hw, L[1]-hw, 82, 'tool schemas', (L[0]+L[1])/2, a),
+      labelBox(L[1], 112, 160, ['AIMessage', '{ tool_calls: [...] }']),
+      solidArrow(L[1]+hw, L[2]-hw, 197, 'AIMessage', (L[1]+L[2])/2, a),
+      solidArrow(L[2]+hw, L[3]-hw, 252, 'execute_sql(query=…)', (L[2]+L[3])/2, a),
+      dashedArrow(L[3]-hw, L[2]+hw, 312, 'result string', (L[2]+L[3])/2, a),
+      solidArrow(L[2]-hw, L[1]+hw, 372, 'ToolMessage', (L[1]+L[2])/2, a),
+      labelBox(L[1], 425, 160, ['AIMessage', '(answer or loop)'])
+    ];
+  }
+});
+</script>
+<script>
+(function () {
+  var stage = document.getElementById('dg-tool-loop-stage');
+  if (!stage) return;
+  stage.style.opacity = '0.35';
+  stage.style.transition = 'opacity 0.3s';
+  function unfade() {
+    stage.style.opacity = '1';
+    stage.removeEventListener('click', unfade);
+    var nb = document.getElementById('dg-tool-loop-next');
+    if (nb) nb.removeEventListener('click', unfade);
+  }
+  stage.addEventListener('click', unfade);
+  var nb = document.getElementById('dg-tool-loop-next');
+  if (nb) nb.addEventListener('click', unfade);
+})();
+</script>
+<details style="margin:4px 0 16px;">
+<summary style="cursor:pointer;font-size:0.9em;color:#40668D;">Parallel tool calls</summary>
+<div style="padding:8px 0 4px;">
+<p>When tool calls have no dependency on each other, the Tool Node runs them simultaneously rather than one at a time. Some harness profiles explicitly instruct the model to do this.</p>
+<p><strong>Example:</strong> an agent with <code>search_web</code> and <code>search_docs</code> tools receives a question that needs both. Both fire in the same turn; the LLM sees both results together in the next call.</p>
+<p><strong>Try it in Lab 3:</strong> ask two unrelated questions in one message: <code>"Which genres have the most tracks, and which employee has handled the most invoices?"</code> Then watch the LangSmith trace to see whether the calls overlap.</p>
+</div>
 </details>
+<h3 id="defining-a-tool-with-tool">Defining a tool with <code>@tool</code></h3>
+<p>Tools are part of the LangChain library. The <code>@tool</code> decorator from <code>langchain_core.tools</code> is the standard way to define one: write a regular Python function and the decorator turns it into something the model can call. LangChain also ships ready-made tools for common tasks (for example, <code>TavilySearchResults</code> for web search), so you don't have to write everything from scratch.</p>
+<pre><code class="language-python">from langchain_core.tools import tool
+
+@tool
+def get_stock_price(ticker: str) -&gt; str:
+    &quot;&quot;&quot;Return the latest closing price for a stock ticker symbol.&quot;&quot;&quot;
+    ...  # your implementation
+</code></pre>
+<p><img src="images/m1.l5-tool-anatomy.svg" alt="Diagram showing the three parts of a @tool definition: the decorator (@tool) registers it as a LangChain tool, the function name and type annotations form the name and schema, and the docstring is the description the model reads to decide when to call it." style="width: 800px; max-width: 100%;" /></p>
+<p>The description is the most important of the three. Write it as a clear, specific sentence: it is the only signal the model has for deciding when to reach for this tool versus another.</p>
+<p>The return value should be a string (or anything JSON-serializable). It comes back to the model as the tool result and is visible in the conversation.</p>
+<details>
+<summary>Extension: Tools (Under The Hood) [click to expand]</summary>
+<p><br></p>
+<p><strong>Runtime information</strong></p>
+<p>Sometimes a tool needs data that should not come from the LLM: a database connection, the current user's context, or a config value. You can inject this at execution time using <code>InjectedToolArg</code> (from <code>langchain_core.tools</code>). The value is stripped from the schema the model sees, so the LLM never tries to fill it in; the tool node injects it directly when executing the call.</p>
+<p><strong>Return types</strong></p>
+<p>A tool can return a string, any JSON-serializable object, or a <code>Command</code> (from <code>langgraph.types</code>). Strings and objects become the tool message content fed back to the LLM. A <code>Command</code> is a LangGraph object that lets a tool do more than just return a value: it bundles a tool message result together with a state update that is applied directly to the graph before the next LLM call, bypassing the LLM entirely for that write.</p>
+<p><strong>Commands and state</strong></p>
+<p><code>Command</code> is how tools write back to state without going through the LLM. The built-in <code>write_todos</code> tool uses this pattern: each call updates the running to-do list in the agent's state. Updating state beyond the built-ins requires defining a custom <code>TypedDict</code> state schema and passing it to <code>create_deep_agent</code>; that pattern is covered in a later lesson.</p>
+</details>
+</div>
+<div class="lt-panel" id="p-lab3" role="tabpanel">
+<h2 id="lab-3-two-sql-tools-with-human-in-the-loop">Lab 3: Two SQL Tools with Human-in-the-Loop</h2>
+<h3 id="human-in-the-loop">Human-in-the-Loop</h3>
+<blockquote>
+<p><strong>Human-in-the-Loop (HITL)</strong> is a pattern where agent execution pauses at a critical step and waits for a human to approve, modify, or cancel before continuing. It is important because agents can take irreversible actions: writing to a database, sending a message, deleting a file. HITL gives you a checkpoint before those actions happen.</p>
+</blockquote>
+<div class="sd-wrap" id="dg-hitl"></div>
+<script>
+buildDiagram({
+  id: 'dg-hitl',
+  participants: [],
+  cx: [],
+  bw: 0, bh: 0,
+  tby: 0, bby: 0,
+  vw: 760, vh: 385,
+  staticSVG: [
+    '<rect x="20" y="170" width="116" height="40" rx="4" fill="#161F34" stroke="#2F4B68" stroke-width="1.5"/>',
+    '<text x="78" y="195" text-anchor="middle" fill="#E5F4FF" font-size="13" font-weight="500">Agent</text>',
+    '<polygon points="252,156 314,190 252,224 190,190" fill="#161F34" stroke="#2F4B68" stroke-width="1.5"/>',
+    '<text x="252" y="187" text-anchor="middle" fill="#E5F4FF" font-size="11.5">interrupt</text>',
+    '<text x="252" y="201" text-anchor="middle" fill="#E5F4FF" font-size="11.5">( )</text>',
+    '<polygon points="432,156 494,190 432,224 370,190" fill="#161F34" stroke="#2F4B68" stroke-width="1.5"/>',
+    '<text x="432" y="195" text-anchor="middle" fill="#E5F4FF" font-size="13" font-weight="500">Human</text>',
+    '<rect x="538" y="92" width="130" height="40" rx="4" fill="#161F34" stroke="#2F4B68" stroke-width="1.5"/>',
+    '<text x="603" y="117" text-anchor="middle" fill="#E5F4FF" font-size="13" font-weight="500">Execute</text>',
+    '<rect x="538" y="268" width="130" height="40" rx="4" fill="#161F34" stroke="#2F4B68" stroke-width="1.5"/>',
+    '<text x="603" y="293" text-anchor="middle" fill="#E5F4FF" font-size="13" font-weight="500">Cancel</text>'
+  ].join(''),
+  steps: [
+    {
+      tag: 'Step 1 of 4 · Agent calls write_sql',
+      caption: 'The agent decides to write to the database and calls write_sql with the query as an argument. The query has not executed yet.'
+    },
+    {
+      tag: 'Step 2 of 4 · interrupt() fires — graph pauses',
+      caption: 'Inside write_sql, interrupt() fires before db.run(). The graph suspends and saves state. The pending SQL surfaces to your script, which prints it and waits for your input.'
+    },
+    {
+      tag: 'Step 3 of 4 · Approve: Execute runs, result returns to Agent',
+      caption: 'You type "yes". Command(resume="yes") resumes the graph inside write_sql. db.run() executes the query and the result is returned to the agent as a tool message.'
+    },
+    {
+      tag: 'Step 4 of 4 · Reject: Cancel, Agent notified',
+      caption: 'If you type "no", write_sql returns "Write cancelled." immediately. db.run() is never called. The agent receives the cancellation as its tool result and continues.'
+    }
+  ],
+  buildSteps: function(a) {
+    return [
+      '<line class="al" x1="136" y1="190" x2="188" y2="190" stroke-width="1.5" marker-end="url(#' + a + ')"/>' +
+      '<text class="at" x="162" y="183" text-anchor="middle" font-size="11">calls write_sql</text>',
+
+      '<line class="al" x1="314" y1="190" x2="368" y2="190" stroke-width="1.5" marker-end="url(#' + a + ')"/>' +
+      '<text class="at" x="341" y="183" text-anchor="middle" font-size="11">pauses</text>',
+
+      '<line class="al" x1="494" y1="184" x2="537" y2="116" stroke-width="1.5" marker-end="url(#' + a + ')"/>' +
+      '<text class="at" x="530" y="143" text-anchor="end" font-size="11">approve</text>' +
+      '<path class="al" d="M 538,97 Q 300,28 136,173" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#' + a + ')" fill="none"/>' +
+      '<text class="at" x="310" y="50" text-anchor="middle" font-size="11">result returned</text>',
+
+      '<line class="al" x1="494" y1="196" x2="537" y2="264" stroke-width="1.5" marker-end="url(#' + a + ')"/>' +
+      '<text class="at" x="530" y="247" text-anchor="end" font-size="11">reject</text>' +
+      '<path class="al" d="M 538,305 Q 290,362 136,207" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#' + a + ')" fill="none"/>' +
+      '<text class="at" x="310" y="358" text-anchor="middle" font-size="11">write cancelled</text>'
+    ];
+  }
+});
+</script>
+<h3 id="building-the-tools">Building the Tools</h3>
+<p>Open <code>python/m1/scratch_agent.py</code>. You will build an agent with two tools: <code>read_sql</code> for SELECT queries and <code>write_sql</code> for write operations. <code>write_sql</code> uses Human-in-the-Loop: the agent proposes the SQL, execution pauses, and you approve or reject before anything is written to the database.</p>
+<p>The <a href="https://github.com/lerocha/chinook-database" target="_blank" rel="noopener noreferrer">Chinook</a> database is a standard SQLite music store sample with 11 tables covering artists, albums, tracks, customers, invoices, and employees. The file is already in the repo at <code>python/m1/chinook.db</code>.</p>
+<hr />
+<h3 id="setup">Setup</h3>
+<p>Confirm <code>langchain-community</code> is available (it ships with the workshop dependencies):</p>
+<pre><code class="language-bash">uv run python -c &quot;from langchain_community.utilities import SQLDatabase; print('ok')&quot;
+</code></pre>
+<hr />
+<h3 id="1-imports-and-database-connection">1. Imports and database connection</h3>
+<p>Replace the contents of <code>scratch_agent.py</code> with the following:</p>
+<pre><code class="language-python">import sys
+from pathlib import Path
+from langchain_community.utilities import SQLDatabase
+from langchain_core.tools import tool
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.types import interrupt, Command
+from deepagents import create_deep_agent
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from models import model
+
+DB_PATH = Path(__file__).parent / &quot;chinook.db&quot;
+db = SQLDatabase.from_uri(f&quot;sqlite:///{DB_PATH}&quot;)
+</code></pre>
+<p><code>MemorySaver</code> is a checkpointer that stores graph state in memory. It is required for HITL: without it, the graph cannot pause and resume mid-run.</p>
+<hr />
+<h3 id="2-system-prompt">2. System prompt</h3>
+<p>Two tools means the agent needs to know which to reach for:</p>
+<pre><code class="language-python">SYSTEM_PROMPT = &quot;&quot;&quot;You are a SQL analyst with access to the Chinook music store database.
+
+Rules:
+- Use read_sql for all SELECT queries.
+- Use write_sql for INSERT, UPDATE, DELETE, and ALTER operations.
+- Think step-by-step. Read first, then write.
+- If a tool returns an error, revise the SQL and try again.
+- Show your SQL in your final answer.
+&quot;&quot;&quot;
+</code></pre>
+<hr />
+<h3 id="3-define-read_sql-and-write_sql">3. Define <code>read_sql</code> and <code>write_sql</code></h3>
+<p><code>read_sql</code> executes and returns immediately. <code>write_sql</code> calls <code>interrupt()</code> before touching the database. When the graph hits <code>interrupt()</code>, execution pauses and the pending value surfaces to the caller. The script reads it, prompts you for approval, then resumes with your response via <code>Command(resume=...)</code>.</p>
+<pre><code class="language-python">@tool
+def read_sql(query: str) -&gt; str:
+    &quot;&quot;&quot;Run a read-only SELECT query against the Chinook music store database.&quot;&quot;&quot;
+    try:
+        return db.run(query)
+    except Exception as e:
+        return f&quot;Error: {e}&quot;
+
+@tool
+def write_sql(query: str) -&gt; str:
+    &quot;&quot;&quot;Execute a write operation (INSERT, UPDATE, DELETE, ALTER) against the Chinook database.
+    Requires human approval before executing.&quot;&quot;&quot;
+    approval = interrupt({&quot;question&quot;: f&quot;Approve this write?\n\n{query}&quot;})
+    if str(approval).strip().lower() not in (&quot;yes&quot;, &quot;y&quot;):
+        return &quot;Write cancelled.&quot;
+    try:
+        return db.run(query)
+    except Exception as e:
+        return f&quot;Error: {e}&quot;
+</code></pre>
+<hr />
+<h3 id="4-wire-it-up">4. Wire it up</h3>
+<p>Pass both tools and the checkpointer. The <code>while</code> loop handles the approval prompt and resumes the graph with your response:</p>
+<pre><code class="language-python">checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model=model,
+    tools=[read_sql, write_sql],
+    system_prompt=SYSTEM_PROMPT,
+    checkpointer=checkpointer,
+)
+
+config = {&quot;configurable&quot;: {&quot;thread_id&quot;: &quot;lab3&quot;}}
+
+result = agent.invoke(
+    {&quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What genres are in the database? Then add a new genre called 'Synthwave'.&quot;}]},
+    config=config,
+)
+
+while result.get(&quot;__interrupt__&quot;):
+    pending = result[&quot;__interrupt__&quot;][0].value
+    print(f&quot;\nApproval required:\n{pending['question']}&quot;)
+    approval = input(&quot;\nApprove? (yes/no): &quot;).strip()
+    result = agent.invoke(Command(resume=approval), config=config)
+
+print(result[&quot;messages&quot;][-1].content)
+</code></pre>
+<hr />
+<h3 id="run-it">Run it</h3>
 <pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents
 </code></pre>
 <pre><code class="language-bash">uv run ./python/m1/scratch_agent.py
 </code></pre>
-<p>If you used the pirate persona, the reply should come back with 'arr' and nautical slang. That's the USER segment taking effect.</p>
-<h3 id="check-the-trace-in-langsmith">Check the trace in LangSmith</h3>
-<p>Open the run in <strong>LangSmith</strong>, click the LLM call, and read the first <code>system</code><br />
-message. Your <code>system_prompt</code> shows up verbatim as the <strong>USER</strong> segment, and the<br />
-rest of the message is the same scaffolding you saw in Lab 1. Switch personas,<br />
-re-run, and you'll see only your line change while everything else stays put, proof<br />
-that this single string is all you touched to redirect the agent's behavior.</p>
+<p>The agent reads the genres first, then proposes an INSERT. The terminal pauses and prints the SQL. Type <code>yes</code> to approve or <code>no</code> to cancel, then note the result: the agent's final message will confirm whether the genre was added.</p>
+<div class="callout">
+<strong>What is happening</strong><br>
+The agent calls <code>read_sql</code> to inspect the genres table, then calls <code>write_sql</code> with an INSERT. At that point, the graph hits <code>interrupt()</code> and suspends: no write has happened yet. Your script surfaces the pending SQL, waits for input, and passes your response back via <code>Command(resume=...)</code>. The graph resumes inside <code>write_sql</code>, checks the response, and either commits the write or cancels. Open the run in <strong>LangSmith</strong> to see the pause and resume as distinct steps in the trace.
+</div>
+<h3 id="take-it-further-build-your-own-tools">Take it further: build your own tools</h3>
+<p>The same <code>@tool</code> pattern works for anything Python can do. Describe what you want to your coding agent and let it write the implementation, then drop it into <code>create_deep_agent(tools=[...])</code>.</p>
+<p>Three ideas to get started:</p>
+<ul>
+<li><strong>REST API</strong>: fetch live data from any JSON API: weather forecasts, GitHub issues, stock prices. One <code>@tool</code> that calls <code>requests.get(...)</code> and returns the result is all it takes.</li>
+<li><strong>File reader</strong>: give the agent access to local CSVs, JSON exports, or PDFs. A tool that reads and returns file contents lets it analyse data you already have on disk.</li>
+<li><strong>Action tool</strong>: tools don't have to be read-only. Post to Slack, create a calendar event, write a row to a spreadsheet. The agent can act, not just retrieve.</li>
+</ul>
+<details>
+<summary>Going further: SQLDatabaseToolkit [click to expand]</summary>
+<p><br></p>
+<p>For a production SQL agent, <code>langchain-community</code> also ships <code>SQLDatabaseToolkit</code>, which provides dedicated tools for schema discovery and querying (<code>sql_db_list_tables</code>, <code>sql_db_schema</code>, <code>sql_db_query</code>). The deepagents <a href="https://github.com/langchain-ai/deepagents/tree/main/examples/text-to-sql-agent" target="_blank" rel="noopener noreferrer">text-to-sql example</a> shows how to wire it in with Chinook.</p>
+</details>
 </div>
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />
 - <a href="https://docs.langchain.com/oss/python/deepagents/overview" target="_blank" rel="noopener noreferrer">Deep Agents overview</a><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/models" target="_blank" rel="noopener noreferrer">Models (Deep Agents)</a><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/customization#prompt-assembly" target="_blank" rel="noopener noreferrer">Customization &amp; prompt assembly (Deep Agents)</a><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/context-engineering" target="_blank" rel="noopener noreferrer">Context engineering (Deep Agents)</a><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/customization" target="_blank" rel="noopener noreferrer">Customization (Deep Agents)</a><br />
 - <a href="https://github.com/langchain-ai/deepagents" target="_blank" rel="noopener noreferrer">deepagents README (GitHub)</a><br />
-- <a href="https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents/deepagents/profiles/harness" target="_blank" rel="noopener noreferrer">Built-in harness profiles (GitHub)</a></p>
+- <a href="https://github.com/langchain-ai/deepagents/tree/main/examples/text-to-sql-agent" target="_blank" rel="noopener noreferrer">text-to-sql-agent example (GitHub)</a></p>
 <script>
 (function () {
   var tabs = document.querySelectorAll('.lt-tab');

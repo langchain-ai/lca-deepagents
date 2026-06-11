@@ -1,0 +1,55 @@
+<svg width="800" height="430" xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="800" height="430" fill="#030710" rx="8"/>
+
+  <text x="390" y="32" text-anchor="middle" font-size="15" font-weight="300" fill="#F2FAFF">Anatomy of a @tool</text>
+  <text x="390" y="52" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Three things the model reads when deciding whether and how to call a tool</text>
+
+  <!-- editor window -->
+  <rect x="36" y="65" width="458" height="248" rx="8" fill="#0D1322" stroke="#2F4B68" stroke-width="1.5"/>
+  <rect x="36" y="65" width="458" height="26" rx="8" fill="#161F34"/>
+  <rect x="36" y="83" width="458" height="8" fill="#161F34"/>
+  <circle cx="52" cy="78" r="4" fill="#441E33"/>
+  <circle cx="66" cy="78" r="4" fill="#634643"/>
+  <circle cx="80" cy="78" r="4" fill="#2E3900"/>
+  <text x="96" y="82" font-size="9" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">agent.py</text>
+
+  <!-- highlight rects -->
+  <rect x="40" y="148" width="450" height="22" rx="3" fill="#2E3900" stroke="#6E8900" stroke-width="1.5"/>
+  <rect x="40" y="188" width="450" height="22" rx="3" fill="#161F34" stroke="#7FC8FF" stroke-width="1.5"/>
+  <rect x="40" y="228" width="450" height="22" rx="3" fill="#161F34" stroke="#C78EAD" stroke-width="1.5"/>
+
+  <!-- code -->
+  <g font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" xml:space="preserve">
+    <text x="64" y="118" fill="#40668D">from langchain_core.tools import tool</text>
+    <text x="64" y="163" fill="#E3FF8F" font-weight="400">@tool</text>
+    <text x="64" y="203" fill="#7FC8FF" font-weight="400">def tool_name(param: type) -> str:</text>
+    <text x="64" y="243" fill="#EBD0F0" font-weight="400">    """Describe what this tool does."""</text>
+    <text x="64" y="278" fill="#40668D">    ...  # your implementation</text>
+  </g>
+
+  <!-- connector + box: decorator -->
+  <line x1="490" y1="159" x2="508" y2="151" stroke="#6E8900" stroke-width="1.5"/>
+  <rect x="508" y="130" width="272" height="42" rx="6" fill="#0D1322" stroke="#6E8900" stroke-width="1.5"/>
+  <text x="518" y="147" font-size="10" font-weight="400" fill="#E3FF8F">THE DECORATOR</text>
+  <text x="518" y="161" font-size="8.5" fill="#B2DEFF">registers the function as a LangChain tool</text>
+
+  <!-- connector + box: name & schema -->
+  <line x1="490" y1="199" x2="508" y2="205" stroke="#7FC8FF" stroke-width="1.5"/>
+  <rect x="508" y="174" width="272" height="62" rx="6" fill="#0D1322" stroke="#7FC8FF" stroke-width="1.5"/>
+  <text x="518" y="190" font-size="10" font-weight="400" fill="#7FC8FF">THE NAME &amp; SCHEMA</text>
+  <text x="518" y="205" font-size="8.5" fill="#5BADDF">name</text>
+  <text x="548" y="205" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="8.5" fill="#F2FAFF">get_stock_price</text>
+  <text x="518" y="220" font-size="8.5" fill="#5BADDF">schema</text>
+  <text x="548" y="220" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="8.5" fill="#F2FAFF">ticker: str</text>
+
+  <!-- connector + box: description -->
+  <line x1="490" y1="239" x2="508" y2="268" stroke="#C78EAD" stroke-width="1.5"/>
+  <rect x="508" y="238" width="272" height="64" rx="6" fill="#0D1322" stroke="#C78EAD" stroke-width="1.5"/>
+  <text x="518" y="255" font-size="10" font-weight="400" fill="#C78EAD">THE DESCRIPTION</text>
+  <text x="518" y="270" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="8.5" fill="#EBD0F0">"Return the latest closing price..."</text>
+  <text x="518" y="284" font-size="8.5" fill="#B2DEFF">the only signal for when to call the tool</text>
+
+  <!-- footer -->
+  <text x="390" y="358" text-anchor="middle" font-size="10" fill="#B2DEFF">The description is the most important: it is the only signal the model has for deciding when to reach for this tool.</text>
+  <text x="390" y="376" text-anchor="middle" font-size="9" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Write it as a clear, specific sentence describing what the tool does and when to use it.</text>
+</svg>

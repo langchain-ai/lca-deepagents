@@ -25,6 +25,7 @@ To swap providers:
   4. Set the provider's env vars in `.env` (see notes inline).
 """
 
+import os
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -36,11 +37,10 @@ from langchain.chat_models import init_chat_model
 # ---- Default Models -------------------------------------------------------
 # Workshop default: Anthropic claude-haiku-4-5, fast and cost-effective.
 # Requires ANTHROPIC_API_KEY in .env
-# model = init_chat_model("anthropic:claude-haiku-4-5")
-# sub_agent_model = init_chat_model("anthropic:claude-haiku-4-5")
+model = init_chat_model("anthropic:claude-haiku-4-5")
 
 # ---- Alternative models (comment out default above, uncomment one below) --
-model = init_chat_model("anthropic:claude-sonnet-4-6")
+# model = init_chat_model("anthropic:claude-sonnet-4-6")
 # model = init_chat_model("openai:gpt-4.1-mini")
 # model = init_chat_model("openai:gpt-4.1")
 
@@ -51,10 +51,7 @@ model = init_chat_model("anthropic:claude-sonnet-4-6")
 #          OPENAI_API_VERSION, AZURE_OPENAI_DEPLOYMENT_NAME in .env
 #
 # from langchain_openai import AzureChatOpenAI
-# model = AzureChatOpenAI(
-#     azure_deployment="gpt-4.1",
-#     api_version="2024-12-01-preview",
-# )
+# model = AzureChatOpenAI(azure_deployment="gpt-4.1", api_version="2024-12-01-preview")
 
 
 # ---- AWS Bedrock ----------------------------------------------------------
@@ -62,10 +59,7 @@ model = init_chat_model("anthropic:claude-sonnet-4-6")
 # Requires AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION_NAME in .env
 #
 # from langchain_aws import ChatBedrockConverse
-# model = ChatBedrockConverse(
-#     model_id="anthropic.claude-sonnet-4-6",
-#     region_name="us-east-1",
-# )
+# model = ChatBedrockConverse(model_id="anthropic.claude-sonnet-4-6", region_name="us-east-1")
 
 
 # ---- Google Gemini --------------------------------------------------------
@@ -82,23 +76,24 @@ model = init_chat_model("anthropic:claude-sonnet-4-6")
 # Requires GROQ_API_KEY in .env  (get one at console.groq.com)
 #
 # model = init_chat_model("groq:llama-3.3-70b-versatile")
-# model = init_chat_model("groq:mixtral-8x7b-32768")
-
 
 # Ollama: run models locally — no API key required
 # Install first:  uv add langchain-ollama  (and install Ollama: https://ollama.com)
 # Pull a model first, e.g.:  ollama pull llama3.2
 #
 # model = init_chat_model("ollama:llama3.2")
-# model = init_chat_model("ollama:qwen2.5:7b")
-
 
 # Kimi (Moonshot AI): OpenAI-compatible hosted API
 # No extra install needed (langchain-openai is already a default dep)
-# Requires MOONSHOT_API_KEY in .env  (get one at platform.moonshot.cn)
+# Requires KIMI_API_KEY in .env  (get one at platform.moonshot.cn)
 #
 # from langchain_openai import ChatOpenAI
-# model = ChatOpenAI(
-#     model="moonshot-v1-8k",
-#     base_url="https://api.moonshot.cn/v1",
-# )
+# model = ChatOpenAI(model="moonshot-v1-8k", base_url="https://api.moonshot.cn/v1", api_key=os.environ["KIMI_API_KEY"])
+
+# OpenRouter: hosted open-source models via OpenAI-compatible API
+# No extra install needed (langchain-openai is already a default dep)
+# Free models available — sign up at openrouter.ai and get an API key
+# Requires OPENROUTER_API_KEY in .env
+#
+# from langchain_openai import ChatOpenAI
+# model = ChatOpenAI(model="nvidia/nemotron-3-ultra-550b-a55b:free", base_url="https://openrouter.ai/api/v1", api_key=os.environ["OPENROUTER_API_KEY"])
