@@ -530,7 +530,7 @@
 <style>@import url('../shared/sd-components.css');</style>
 <script src="../shared/sd-components.js"></script>
 
-<h1 id="models-the-base-prompt">Models &amp; the Base Prompt</h1>
+<h1 id="models">Models</h1>
 <style>
 .lt-bar {
   display: flex;
@@ -591,13 +591,43 @@
 </ul>
 </div>
 </div>
-<p>Every lab gets its model from a single shared file, <strong><code>python/models.py</code></strong>. It<br />
-exports a <code>model</code> object built with <code>init_chat_model(...)</code>, and the lab scripts<br />
-simply do <code>from models import model</code>. To use a different model or provider, edit<br />
-<em>that one file</em>, commenting out the active line and uncommenting another:</p>
+<div style="margin:1.5rem 0;padding:1.25rem 1.5rem;border-radius:12px;border:1px solid #99d3ff;background-color:#e5f4ff;color:#1e4d7a;">
+<strong>What is a provider?</strong>
+<p style="margin:0.5rem 0 0;">A provider is a company or platform that hosts AI models and exposes them through an API (e.g., OpenAI, Anthropic, Google). Many providers have a dedicated <code>langchain-&lt;provider&gt;</code> package that implements one or more of LangChain's standard interfaces (chat models, embedding models, vector stores, and more), giving you a consistent API regardless of which provider is underneath. Install the package, pick a model name, and swap providers without changing your code.</p>
+<p style="margin:0.75rem 0 0;">LangChain supports 1,000+ integrations. See the full <a href="https://docs.langchain.com/oss/python/integrations/providers/overview" target="_blank" rel="noopener noreferrer">providers overview</a> for what's available.</p>
+</div>
+<h3 id="model-categories">Model Categories</h3>
+<table style="width:100%;border-collapse:collapse;font-size:0.88em;margin:1.25rem 0 1.75rem;">
+<thead>
+<tr style="background-color:#d0eaff;color:#1e4d7a;text-align:left;">
+<th style="padding:0.6rem 0.9rem;border:1px solid #99d3ff;font-weight:600;">Category</th>
+<th style="padding:0.6rem 0.9rem;border:1px solid #99d3ff;font-weight:600;">Best for</th>
+<th style="padding:0.6rem 0.9rem;border:1px solid #99d3ff;font-weight:600;">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background-color:#e5f4ff;color:#1e4d7a;">
+<td style="padding:0.6rem 0.9rem;border:1px solid #99d3ff;font-weight:600;">Proprietary &amp; Conversational</td>
+<td style="padding:0.6rem 0.9rem;border:1px solid #99d3ff;">Fluid conversation, instruction-following, and general-purpose tasks</td>
+<td style="padding:0.6rem 0.9rem;border:1px solid #99d3ff;color:#40668D;">Claude Haiku/Sonnet, GPT-4.1, Gemini 2.0 Flash</td>
+</tr>
+<tr style="background-color:#f0f8ff;color:#1e4d7a;">
+<td style="padding:0.6rem 0.9rem;border:1px solid #99d3ff;font-weight:600;">Advanced Reasoning</td>
+<td style="padding:0.6rem 0.9rem;border:1px solid #99d3ff;">Multi-step problem-solving, math, code, and logic-heavy tasks</td>
+<td style="padding:0.6rem 0.9rem;border:1px solid #99d3ff;color:#40668D;">Claude Opus 4, o3, Gemini 2.5 Pro</td>
+</tr>
+<tr style="background-color:#e5f4ff;color:#1e4d7a;">
+<td style="padding:0.6rem 0.9rem;border:1px solid #99d3ff;font-weight:600;">Open-Source &amp; Open-Weight</td>
+<td style="padding:0.6rem 0.9rem;border:1px solid #99d3ff;">Local or private deployment; lower cost and full control over the model</td>
+<td style="padding:0.6rem 0.9rem;border:1px solid #99d3ff;color:#40668D;">Llama 3.3, Mistral, Qwen</td>
+</tr>
+</tbody>
+</table>
+<p>Every lab gets its model from a single shared file, <strong><code>python/models.py</code></strong>. It exports a <code>model</code> object built with <code>init_chat_model(...)</code>, and the lab scripts simply do <code>from models import model</code>.</p>
+<p>To use a different model or provider, edit <code>models.py</code> (comment out the active line and uncomment the desired model):</p>
 <pre><code class="language-python"># python/models.py
 model = init_chat_model(&quot;anthropic:claude-haiku-4-5&quot;)   # workshop default, fast &amp; cheap
-# model = init_chat_model(&quot;anthropic:claude-sonnet-4-6&quot;)
+# model = init_chat_model(&quot;ollama:llama3.2&quot;)
 # model = init_chat_model(&quot;openai:gpt-4.1-mini&quot;)
 # model = init_chat_model(&quot;openai:gpt-4.1&quot;)
 </code></pre>
@@ -607,8 +637,18 @@ the notes at the top of <code>models.py</code>.</p>
 <p>Head to <strong>Lab 1</strong> to run this yourself and see how the output changes across models.</p>
 </div>
 <div class="lt-panel" id="p-lab1" role="tabpanel">
-<h2 id="lab-1-models-the-base-system-prompt">Lab 1: Models &amp; the Base System Prompt</h2>
-<p>Run your scratch agent (the file you created in the previous lesson) if you haven't already:</p>
+<h2 id="lab-1-models">Lab 1: Models</h2>
+<p>Start by reviewing <code>python/models.py</code> to see the available models, add your API keys to your <code>.env</code> file, then run your scratch agent from the previous lesson. The video below is a quick walkthrough:</p>
+<div class="video-container" style="max-width: 750px;">
+    <div class="video-wrapper">
+        <iframe
+            src="https://share.descript.com/embed/wrBAiwlKtL2"
+            frameborder="0"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    </div>
+</div>
 <pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents
 </code></pre>
 <pre><code class="language-bash">uv run ./python/m1/scratch_agent.py
@@ -618,9 +658,28 @@ Haiku and uncomment another line for the model you want to use) and run it<br />
 again, so you have two runs to compare.</p>
 <pre><code class="language-bash">uv run ./python/m1/scratch_agent.py
 </code></pre>
-<p>The SDK (Software Development Kit) wraps the same BASE instructions around every model, and middleware adds the same filesystem tools on top; the model itself still determines how it responds.</p>
+<p>This also works with open-source models; no code changes required, just a different model line in <code>models.py</code>.</p>
+<div style="margin:1.5rem 0;padding:1.25rem 1.5rem;border-radius:12px;border:1px solid #b3e0b3;background-color:#f0faf0;color:#1a4d1a;">
+<strong>Try an open-source model via OpenRouter</strong>
+<p style="margin:0.5rem 0 0;">OpenRouter gives you access to free hosted open-source models with no extra install. Add your <code>OPENROUTER_API_KEY</code> to <code>.env</code>, uncomment the OpenRouter lines in <code>models.py</code>, and run the lab again.</p>
+<p style="margin:0.5rem 0 0;">Model used in this course: <a href="https://openrouter.ai/nvidia/nemotron-3-ultra-550b-a55b:free" target="_blank" rel="noopener noreferrer">nvidia/nemotron-3-ultra-550b-a55b:free on OpenRouter</a></p>
+<p style="margin:0.75rem 0 0;font-size:0.9em;color:#3a5a3a;"><strong>Note:</strong> Free models on hosted platforms typically mean you are consenting to the provider using your prompts and completions as training data. Avoid sending sensitive or proprietary information through free-tier endpoints.</p>
+</div>
+
+<div class="video-container" style="max-width: 750px;">
+    <div class="video-wrapper">
+        <iframe
+            src="https://share.descript.com/embed/O1Vjox9ay96"
+            frameborder="0"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    </div>
+</div>
+
 <p>Here are two real responses to "What is an LLM?", one from each model:</p>
 <div style="display:flex;gap:20px;align-items:flex-start;margin:1.5rem 0;">
+
 <details style="flex:1;border:1px solid #e5e7eb;border-radius:8px;padding:0.75rem 1rem;">
 <summary style="cursor:pointer;font-weight:600;font-family:'Monaco','Courier New',monospace;font-size:0.875em;list-style:none;">▶ claude-haiku-4-5</summary>
 <div style="margin-top:1rem;">
@@ -637,58 +696,53 @@ again, so you have two runs to compare.</p>
 <p>LLMs don't truly "understand" in the human sense; they're sophisticated pattern-matching systems that are remarkably effective at tasks requiring language comprehension and generation.</p>
 </div>
 </details>
+
 <details style="flex:1;border:1px solid #e5e7eb;border-radius:8px;padding:0.75rem 1rem;">
-<summary style="cursor:pointer;font-weight:600;font-family:'Monaco','Courier New',monospace;font-size:0.875em;list-style:none;">▶ claude-sonnet-4-6</summary>
+<summary style="cursor:pointer;font-weight:600;font-family:'Monaco','Courier New',monospace;font-size:0.875em;list-style:none;">▶ nvidia/nemotron-3-ultra-550b-a55b</summary>
 <div style="margin-top:1rem;">
-<p>An <strong>LLM (Large Language Model)</strong> is a type of AI model trained on massive amounts of text data to understand and generate human language.</p>
+<p>An <strong>LLM (Large Language Model)</strong> is a type of artificial intelligence model trained on vast amounts of text data to understand and generate human-like language.</p>
 <p><strong>Key characteristics:</strong></p>
 <ul>
-<li><strong>Scale</strong>: Billions of parameters, trained on hundreds of billions of words</li>
-<li><strong>Architecture</strong>: Based on the Transformer architecture (attention mechanisms)</li>
-<li><strong>Training</strong>: Self-supervised learning, predicting the next token in a sequence</li>
-<li><strong>Capabilities</strong>: Text generation, summarization, translation, reasoning, code writing, Q&amp;A, and more</li>
+<li><strong>Scale</strong>: Billions to trillions of parameters (e.g., GPT-4, Claude, Llama)</li>
+<li><strong>Training</strong>: Self-supervised learning on diverse text corpora (books, websites, code, etc.)</li>
+<li><strong>Architecture</strong>: Typically based on the Transformer architecture with attention mechanisms</li>
+<li><strong>Capabilities</strong>: Text generation, summarization, translation, coding, reasoning, question answering</li>
 </ul>
-<p><strong>How they work (briefly):</strong></p>
-<ol>
-<li>Text is broken into <strong>tokens</strong> (words or subwords)</li>
-<li>The model learns statistical patterns across massive corpora</li>
-<li>At inference time, it predicts the most likely next token given context</li>
-<li>This repeats to generate coherent, contextually relevant output</li>
-</ol>
-<p><strong>Examples:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Model</th>
-<th>Creator</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>GPT-4</td>
-<td>OpenAI</td>
-</tr>
-<tr>
-<td>Claude</td>
-<td>Anthropic</td>
-</tr>
-<tr>
-<td>Gemini</td>
-<td>Google</td>
-</tr>
-<tr>
-<td>LLaMA</td>
-<td>Meta</td>
-</tr>
-<tr>
-<td>Mistral</td>
-<td>Mistral AI</td>
-</tr>
-</tbody>
-</table>
+<p><strong>How it works:</strong> LLMs predict the next token (word/character) in a sequence based on context. Through massive training, they learn patterns, facts, reasoning, and linguistic structures.</p>
+<p><strong>Limitations:</strong> They can hallucinate (generate false information), lack true understanding, have knowledge cutoffs, and can be biased by training data.</p>
 </div>
 </details>
+
 </div>
+
+<hr />
+<h3 id="ollama-run-a-model-locally">Ollama: run a model locally</h3>
+<p><strong>[NO API KEY NEEDED]</strong></p>
+<p>Ollama is a tool for downloading and running open-source models directly on your machine. No API key, no data sent to a third party: the model runs entirely on your hardware.</p>
+<div class="video-container" style="max-width: 750px;">
+    <div class="video-wrapper">
+        <iframe
+            src="https://share.descript.com/embed/5t0FLKmmD7h"
+            frameborder="0"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    </div>
+</div>
+
+<p><strong>Step 1: Install Ollama</strong> from <a href="https://ollama.com" target="_blank" rel="noopener noreferrer">ollama.com</a></p>
+<p><strong>Step 2: Pull a model:</strong></p>
+<pre><code class="language-bash">ollama pull llama3.2
+</code></pre>
+<p><strong>Step 3: Update <code>python/models.py</code>.</strong> Comment out the active line and uncomment the Ollama line:</p>
+<pre><code class="language-python"># model = init_chat_model(&quot;anthropic:claude-haiku-4-5&quot;)
+model = init_chat_model(&quot;ollama:llama3.2&quot;)
+</code></pre>
+<p><strong>Step 4: Run the lab as normal.</strong> No other code changes needed.</p>
+<p>The agent code and system prompt are identical. Only the model line in <code>models.py</code> is different.</p>
+<blockquote>
+<p><strong>Local only.</strong> Ollama also offers hosted cloud models at ollama.com, which do require an API key. These steps are for running a model locally on your own machine.</p>
+</blockquote>
 </div>
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />
@@ -697,7 +751,8 @@ again, so you have two runs to compare.</p>
 - <a href="https://docs.langchain.com/oss/python/deepagents/customization#prompt-assembly" target="_blank" rel="noopener noreferrer">Customization &amp; prompt assembly (Deep Agents)</a><br />
 - <a href="https://docs.langchain.com/oss/python/deepagents/context-engineering" target="_blank" rel="noopener noreferrer">Context engineering (Deep Agents)</a><br />
 - <a href="https://github.com/langchain-ai/deepagents" target="_blank" rel="noopener noreferrer">deepagents README (GitHub)</a><br />
-- <a href="https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents/deepagents/profiles/harness" target="_blank" rel="noopener noreferrer">Built-in harness profiles (GitHub)</a></p>
+- <a href="https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents/deepagents/profiles/harness" target="_blank" rel="noopener noreferrer">Built-in harness profiles (GitHub)</a><br />
+- <a href="https://docs.langchain.com/oss/python/integrations/providers/overview" target="_blank" rel="noopener noreferrer">Providers overview (LangChain)</a></p>
 <script>
 (function () {
   var tabs = document.querySelectorAll('.lt-tab');
