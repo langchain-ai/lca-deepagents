@@ -1,0 +1,119 @@
+<svg width="700" height="420" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2F4B68"/>
+    </marker>
+    <marker id="arr-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#006DDD"/>
+    </marker>
+    <marker id="arr-mid" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#40668D"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="700" height="420" fill="#F2FAFF" rx="8"/>
+
+  <!-- Title -->
+  <text x="350" y="28" text-anchor="middle" font-size="15" font-weight="700" fill="#030710">Filesystem Backends</text>
+  <text x="350" y="46" text-anchor="middle" font-size="10" fill="#40668D">Tools operate through a pluggable backend — swap storage without changing agent code</text>
+
+  <!-- ═══ FILESYSTEM TOOLS ═══ -->
+  <rect x="280" y="60" width="140" height="28" rx="4" fill="#CCE9FF" stroke="#006DDD" stroke-width="1.5"/>
+  <text x="350" y="78" text-anchor="middle" font-size="11" font-weight="600" fill="#030710">Filesystem Tools</text>
+
+  <!-- Arrow: Tools → Backend (y1=88 exact bottom, y2=120 exact top) -->
+  <line x1="350" y1="88" x2="350" y2="120" stroke="#2F4B68" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ═══ BACKEND ═══ -->
+  <rect x="306" y="120" width="88" height="28" rx="4" fill="#7FC8FF" stroke="#006DDD" stroke-width="2"/>
+  <text x="350" y="138" text-anchor="middle" font-size="11" font-weight="700" fill="#030710">Backend</text>
+
+  <!-- ═══ FAN-OUT BUS (stem from y=148 exact bottom of Backend) ═══ -->
+  <line x1="350" y1="148" x2="350" y2="168" stroke="#2F4B68" stroke-width="1.5"/>
+  <line x1="56"  y1="168" x2="644" y2="168" stroke="#2F4B68" stroke-width="1.5"/>
+  <!-- drops from bus y=168 to node top y=196 -->
+  <line x1="56"  y1="168" x2="56"  y2="196" stroke="#2F4B68" stroke-width="1" marker-end="url(#arr)"/>
+  <line x1="140" y1="168" x2="140" y2="196" stroke="#2F4B68" stroke-width="1" marker-end="url(#arr)"/>
+  <line x1="224" y1="168" x2="224" y2="196" stroke="#2F4B68" stroke-width="1" marker-end="url(#arr)"/>
+  <line x1="308" y1="168" x2="308" y2="196" stroke="#2F4B68" stroke-width="1" marker-end="url(#arr)"/>
+  <line x1="392" y1="168" x2="392" y2="196" stroke="#2F4B68" stroke-width="1" marker-end="url(#arr)"/>
+  <line x1="476" y1="168" x2="476" y2="196" stroke="#2F4B68" stroke-width="1" marker-end="url(#arr)"/>
+  <line x1="560" y1="168" x2="560" y2="196" stroke="#2F4B68" stroke-width="1" marker-end="url(#arr)"/>
+  <line x1="644" y1="168" x2="644" y2="196" stroke="#2F4B68" stroke-width="1" marker-end="url(#arr)"/>
+
+  <!-- ═══ 8 BACKEND NODES (y=196, h=26, bottom y=222) ═══ -->
+  <rect x="20"  y="196" width="72" height="26" rx="3" fill="#E5F4FF" stroke="#006DDD" stroke-width="1"/>
+  <text x="56"  y="213" text-anchor="middle" font-size="9" fill="#030710">State</text>
+
+  <rect x="104" y="196" width="72" height="26" rx="3" fill="#E5F4FF" stroke="#006DDD" stroke-width="1"/>
+  <text x="140" y="213" text-anchor="middle" font-size="9" fill="#030710">Filesystem</text>
+
+  <rect x="188" y="196" width="72" height="26" rx="3" fill="#E5F4FF" stroke="#006DDD" stroke-width="1"/>
+  <text x="224" y="213" text-anchor="middle" font-size="9" fill="#030710">Store</text>
+
+  <rect x="272" y="196" width="72" height="26" rx="3" fill="#E5F4FF" stroke="#006DDD" stroke-width="1"/>
+  <text x="308" y="213" text-anchor="middle" font-size="9" fill="#030710">Context Hub</text>
+
+  <rect x="356" y="196" width="72" height="26" rx="3" fill="#E5F4FF" stroke="#006DDD" stroke-width="1"/>
+  <text x="392" y="213" text-anchor="middle" font-size="9" fill="#030710">Sandbox</text>
+
+  <rect x="440" y="196" width="72" height="26" rx="3" fill="#E5F4FF" stroke="#006DDD" stroke-width="1"/>
+  <text x="476" y="213" text-anchor="middle" font-size="9" fill="#030710">Local Shell</text>
+
+  <rect x="524" y="196" width="72" height="26" rx="3" fill="#E5F4FF" stroke="#006DDD" stroke-width="1"/>
+  <text x="560" y="213" text-anchor="middle" font-size="9" fill="#030710">Composite</text>
+
+  <rect x="608" y="196" width="72" height="26" rx="3" fill="#E5F4FF" stroke="#006DDD" stroke-width="1"/>
+  <text x="644" y="213" text-anchor="middle" font-size="9" fill="#030710">Custom</text>
+
+  <!-- ═══ EXECUTE: Sandbox(392) + Local Shell(476) → shared execute node ═══ -->
+  <!-- vertical dashed lines from node bottoms (y=222) down to merge line (y=260) -->
+  <line x1="392" y1="222" x2="392" y2="260" stroke="#006DDD" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="476" y1="222" x2="476" y2="260" stroke="#006DDD" stroke-width="1" stroke-dasharray="3,2"/>
+  <!-- horizontal merge lines meeting at cx=434 -->
+  <line x1="392" y1="260" x2="434" y2="260" stroke="#006DDD" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="476" y1="260" x2="434" y2="260" stroke="#006DDD" stroke-width="1" stroke-dasharray="3,2"/>
+  <!-- arrow down to Execute top (y=277) -->
+  <line x1="434" y1="260" x2="434" y2="277" stroke="#006DDD" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+
+  <!-- Execute node: cx=434, y=277, w=88, h=26 -->
+  <rect x="390" y="277" width="88" height="26" rx="3" fill="#030710" stroke="#030710" stroke-width="1"/>
+  <text x="434" y="294" text-anchor="middle" font-size="9" font-weight="600" fill="#F2FAFF">+ execute tool</text>
+
+  <!-- ═══ COMPOSITE ROUTING ═══ -->
+  <!-- dashed arrow from Composite bottom (560,222) to diamond top (560,258) -->
+  <line x1="560" y1="222" x2="560" y2="258" stroke="#40668D" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arr-mid)"/>
+
+  <!-- Routes diamond: top=258, cx=560, cy=274, bottom=290 -->
+  <polygon points="560,258 578,274 560,290 542,274" fill="#CCE9FF" stroke="#40668D" stroke-width="1"/>
+  <text x="560" y="278" text-anchor="middle" font-size="8" fill="#030710">routes</text>
+
+  <!-- stem from diamond bottom to targets box -->
+  <line x1="560" y1="290" x2="560" y2="298" stroke="#40668D" stroke-width="1" stroke-dasharray="3,2"/>
+
+  <!-- Routing targets box -->
+  <rect x="490" y="298" width="140" height="32" rx="3" fill="#E5F4FF" stroke="#40668D" stroke-width="0.8" stroke-dasharray="4,2"/>
+  <text x="560" y="311" text-anchor="middle" font-size="8" fill="#40668D">State · Filesystem</text>
+  <text x="560" y="323" text-anchor="middle" font-size="8" fill="#40668D">Store · Context Hub</text>
+
+  <!-- ═══ LEGEND ═══ -->
+  <line x1="20" y1="350" x2="680" y2="350" stroke="#CCE9FF" stroke-width="1"/>
+
+  <rect x="30"  y="360" width="10" height="10" rx="1" fill="#CCE9FF" stroke="#006DDD" stroke-width="1"/>
+  <text x="46"  y="370" font-size="9" fill="#40668D">Filesystem surface</text>
+
+  <rect x="162" y="360" width="10" height="10" rx="1" fill="#7FC8FF" stroke="#006DDD" stroke-width="1.5"/>
+  <text x="178" y="370" font-size="9" fill="#40668D">Backend interface</text>
+
+  <rect x="282" y="360" width="10" height="10" rx="1" fill="#E5F4FF" stroke="#006DDD" stroke-width="1"/>
+  <text x="298" y="370" font-size="9" fill="#40668D">Implementations</text>
+
+  <rect x="406" y="360" width="10" height="10" rx="1" fill="#030710" stroke="#030710" stroke-width="1"/>
+  <text x="422" y="370" font-size="9" fill="#40668D">Adds execute capability</text>
+
+  <polygon points="558,365 566,371 558,377 550,371" fill="#CCE9FF" stroke="#40668D" stroke-width="1"/>
+  <text x="572" y="370" font-size="9" fill="#40668D">Routes to backends</text>
+
+</svg>
