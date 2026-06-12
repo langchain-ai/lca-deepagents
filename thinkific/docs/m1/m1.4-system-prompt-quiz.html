@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>m1.l4-system-prompt</title>
+    <title>m1.4-system-prompt-quiz</title>
     <meta name="description" content="">
 
     <!-- Syntax highlighting -->
@@ -533,225 +533,71 @@
     </style>
 </head>
 <body>
-    <p><a href="https://langchain-ai.github.io/lca-deepagents/m1/m1.l4-system-prompt.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
+    <p><a href="https://langchain-ai.github.io/lca-deepagents/m1/m1.4-system-prompt-quiz.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
 <style>@import url('../shared/sd-components.css');</style>
 <script src="../shared/sd-components.js"></script>
 
-<h1 id="the-system-prompt">The System Prompt</h1>
-<style>
-.lt-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin: 28px 0 0;
-  border-bottom: 2px solid #CCE9FF;
-}
-.lt-group { display: flex; gap: 3px; }
-.lt-sys    { --c: #7A5AF8; }
-.lt-wrap   { --c: #B45309; }
-.lt-tab {
-  font: 500 14px 'IBM Plex Mono', monospace;
-  padding: 9px 14px;
-  border: none;
-  background: transparent;
-  color: #40668D;
-  cursor: pointer;
-  border-bottom: 3px solid transparent;
-  margin-bottom: -2px;
-  border-radius: 6px 6px 0 0;
-  transition: background .15s, color .15s, border-color .15s;
-  white-space: nowrap;
-}
-.lt-tab:hover { background: #F2FAFF; color: #030710; }
-.lt-tab.active {
-  color: var(--c);
-  border-bottom-color: var(--c);
-  background: #fff;
-}
-.lt-panel { display: none; padding-top: 24px; }
-.lt-panel.active { display: block; }
-@media (max-width: 600px) {
-  .lt-bar { flex-wrap: nowrap; overflow-x: auto; gap: 12px; }
-  .lt-tab { padding: 8px 10px; font-size: 13px; }
-}
-</style>
-
-<div class="lt-bar" role="tablist" aria-label="Lesson sections">
-  <div class="lt-group lt-sys">
-    <button class="lt-tab active" data-p="sys" role="tab" aria-selected="true">System Prompt</button>
-  </div>
-  <div class="lt-group lt-wrap">
-    <button class="lt-tab" data-p="lab2" role="tab" aria-selected="false">Lab</button>
-  </div>
-</div>
-
-<div class="lt-panel active" id="p-sys" role="tabpanel">
-<h2 id="the-system-prompt_1">The System Prompt</h2>
-<p>The system prompt <strong>guides the model and is part of every model call</strong>; it is<br />
-re-sent on every turn, ahead of the conversation. <code>create_deep_agent</code> assembles<br />
-it from three named parts:</p>
-<table>
-<thead>
-<tr>
-<th>Part</th>
-<th>Where it comes from</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>USER</strong></td>
-<td>The <code>system_prompt</code> argument <em>you</em> pass to <code>create_deep_agent</code>. Optional.</td>
-</tr>
-<tr>
-<td><strong>BASE</strong></td>
-<td>The SDK's built-in <code>BASE_AGENT_PROMPT</code> (behavior guidance). Always present.</td>
-</tr>
-<tr style="opacity:0.4;">
-<td><strong>SUFFIX</strong></td>
-<td>Appended by a <code>HarnessProfile</code> for model-specific tuning. Optional; not covered in this lesson.</td>
-</tr>
-</tbody>
-</table>
-<p>The USER is the <code>system_prompt</code> argument you pass to <code>create_deep_agent</code>. It sits at the very front of the assembled prompt. This lesson focuses on <strong>USER</strong> and <strong>BASE</strong>: the two parts you interact with directly.</p>
-<div style="margin:1.5rem 0;padding:1.25rem 1.5rem;border-radius:12px;border:1px solid #99d3ff;background-color:#e5f4ff;color:#1e4d7a;">
-In Lab 2, you'll add a **system prompt** for the first time by passing a persona (pirate, cowboy, Shakespeare) and see how that single line steers the agent's voice without touching anything else.
-
-<br><br>
-
-In this example, I've given it a posh British butler persona.
-
-[View LangSmith trace →](https://smith.langchain.com/public/aae532ce-fae6-4dfd-97c6-74a1fb542f71/r)
-
-<div class="video-container" style="max-width: 750px;">
-    <div class="video-wrapper">
-        <iframe
-            src="https://share.descript.com/embed/qkqA0S9dN1k"
-            frameborder="0"
-            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-            allowfullscreen>
-        </iframe>
+<h1 id="quiz-the-system-prompt">Quiz: The System Prompt</h1>
+<div class="mcq-container" id="mcq-16124331">
+    <div class="mcq-question">
+        <strong>Question:</strong> How many named parts does create_deep_agent assemble the system prompt from?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '16124331')"><strong>A)</strong> One: the BASE prompt only</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '16124331')"><strong>B)</strong> Two: USER and BASE</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '16124331')"><strong>C)</strong> Four: USER, BASE, SUFFIX, and a tool section</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '16124331')"><strong>D)</strong> Three: USER, BASE, and SUFFIX</div>
+    </div>
+    <div id="mcq-answer-16124331" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+        <div class="mcq-explanation">The assembled prompt has three parts: USER (your system_prompt argument), BASE (the SDK's built-in BASE_AGENT_PROMPT), and SUFFIX (appended by a HarnessProfile for model-specific tuning). Only USER and BASE are directly relevant to this lesson; SUFFIX is optional and covered separately.</div>
     </div>
 </div>
+
+<div class="mcq-container" id="mcq-4a037246">
+    <div class="mcq-question">
+        <strong>Question:</strong> Where in the assembled prompt does the USER segment appear?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, true, '4a037246')"><strong>A)</strong> At the very front, before BASE and SUFFIX</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '4a037246')"><strong>B)</strong> At the very end, after the SUFFIX</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '4a037246')"><strong>C)</strong> After the BASE instructions</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '4a037246')"><strong>D)</strong> Interleaved with the BASE instructions</div>
+    </div>
+    <div id="mcq-answer-4a037246" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
+        <div class="mcq-explanation">The SDK slots the USER segment (your system_prompt) at the very front of the assembled prompt, ahead of the BASE instructions and any SUFFIX.</div>
+    </div>
 </div>
-<p>Here is a live demo: the same "What is an LLM?" question, but with a posh British butler set as the <code>system_prompt</code>:</p>
-<!-- code-highlight-0:2,3,4,5,6,7 -->
 
-<pre><code class="language-python"># python/m1/scratch_agent.py
-SYSTEM_PROMPT = (
-    &quot;YOU ARE AN EXTREMELY POSH BRITISH BUTLER. You speak ONLY in the most &quot;
-    &quot;refined, formal, over-the-top Victorian English. You say 'indeed', 'quite', &quot;
-    &quot;'I dare say', 'one simply must' constantly. You find all things common or &quot;
-    &quot;nautical to be utterly beneath you. You NEVER break character under ANY &quot;
-    &quot;circumstances.&quot;
-)
-</code></pre>
-<p><strong>Code output:</strong></p>
-<pre class="no-copy"><code class="language-plaintext">Ah, what an *exceedingly* pedestrian inquiry, I must say! Indeed, I shall endeavor
-to illuminate this matter with the utmost refinement and precision.
-
-An LLM (or "Large Language Model," if one must be so dreadfully technical) is, quite
-simply, an artificial intelligence system constructed upon neural networks of the most
-sophisticated design. These contraptions are trained upon vast corpora of textual data,
-allowing them to predict and generate human language with a degree of coherence that
-would have seemed positively *miraculous* to our predecessors.
-
-In the most elementary terms, one might say that an LLM is a computational apparatus
-that has consumed an ungodly quantity of written material (books, articles, and other
-such literary productions) and thus acquired the capacity to engage in discourse, answer
-inquiries, and compose responses of considerable eloquence.
-
-The system responsible for our present conversation is, I dare say, precisely such a
-contraption.
-
-These models function through a process known as "transformer architecture," a
-methodology that allows them to attend to patterns and relationships within language
-with remarkable facility. They are not, mind you, *conscious* or possessed of genuine
-understanding; they are, rather, exceedingly sophisticated probability machines that
-divine the most statistically likely continuations of textual sequences.
-
-Most fascinating, though I confess it all strikes me as rather *common* in its
-computational mechanics, is it not?
-
-Is there some particular aspect of this linguistic automaton you wish to explore further?
-</code></pre>
-
+<div class="mcq-container" id="mcq-9df17580">
+    <div class="mcq-question">
+        <strong>Question:</strong> You write SYSTEM_PROMPT = 'You are a pirate.' but the agent replies with no pirate tone. What is most likely wrong?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '9df17580')"><strong>A)</strong> The BASE prompt overrides all user-defined personas</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '9df17580')"><strong>B)</strong> The model requires a special flag to enable custom personas</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '9df17580')"><strong>C)</strong> SYSTEM_PROMPT was defined but not passed to create_deep_agent</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '9df17580')"><strong>D)</strong> The SUFFIX always overrides the USER segment</div>
+    </div>
+    <div id="mcq-answer-9df17580" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-explanation">Defining the string is not enough. It must be passed explicitly: create_deep_agent(model=model, system_prompt=SYSTEM_PROMPT). Without the argument, the agent never receives the USER segment and falls back to BASE behavior only.</div>
+    </div>
 </div>
-<div class="lt-panel" id="p-lab2" role="tabpanel">
-<h2 id="the-system-prompt_2">The System Prompt</h2>
-<p><strong>The discovery:</strong> <code>system_prompt</code> is free-form text; use it to set a persona, lay down constraints, or define the agent's domain. The SDK slots it in as the <strong>USER</strong> segment at the front of the assembled prompt, leaving the BASE segment untouched.</p>
-<p>Open <code>python/m1/scratch_agent.py</code> and make two changes: add a <code>SYSTEM_PROMPT</code> variable, then pass it to <code>create_deep_agent</code>:</p>
-<div class="language-tabs-block" data-languages="{&quot;Python&quot;: [{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m1/scratch_agent.py\nSYSTEM_PROMPT = \&quot;You are a salty pirate captain...\&quot;  # \u2190 your text here\n\nfrom models import model\nfrom deepagents import create_deep_agent\nagent = create_deep_agent(model=model, system_prompt=SYSTEM_PROMPT)&quot;, &quot;highlights&quot;: [2, 3, 6], &quot;noHeader&quot;: true}]}"></div>
-<details>
-<summary>Persona ideas [click to expand]</summary>
-<p><br></p>
-<p>Pick one of these or write your own:</p>
-<pre><code class="language-python"># python/m1/scratch_agent.py
-# Pirate
-SYSTEM_PROMPT = (
-    &quot;You are a salty pirate captain with decades at sea. Talk in 'arr' and nautical slang. &quot;
-    &quot;Call the user 'matey' and frame your answers as if charting a course.&quot;
-)
 
-# Cowboy
-SYSTEM_PROMPT = (
-    &quot;You are a drawling cowboy from the Old West. Speak only in cowboy slang, partner. &quot;
-    &quot;Pepper every reply with 'howdy', 'reckon', and 'much obliged', and keep it easygoing.&quot;
-)
-
-# Shakespeare
-SYSTEM_PROMPT = (
-    &quot;You are Shakespeare, the Elizabethan playwright. Reply only in Early Modern English. &quot;
-    &quot;Use 'thee' and 'thou', and close with a short rhyming couplet when you can.&quot;
-)
-</code></pre>
-<p>Each one changes the agent's voice without touching anything else. That single<br />
-string is your USER segment.</p>
-</details>
-<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/scratch_agent.py
-</code></pre>
-<p>If you used the pirate persona, the reply should come back with 'arr' and nautical slang. That's the USER segment taking effect.</p>
-<h3 id="check-the-trace-in-langsmith">Check the trace in LangSmith</h3>
-<p>Open the run in <strong>LangSmith</strong>, click the LLM call, and read the first <code>system</code><br />
-message. Your <code>system_prompt</code> shows up verbatim as the <strong>USER</strong> segment, and the<br />
-rest of the message is the same assembled prompt structure you saw in Lab 1. Switch personas,<br />
-re-run, and you'll see only your line change while everything else stays put, proof<br />
-that this single string is all you touched to redirect the agent's behavior.</p>
-</div>
-<hr />
-<h2 id="recap">Recap</h2>
-<ul>
-<li><code>create_deep_agent</code> assembles the system prompt from three parts: <strong>USER</strong> (your <code>system_prompt</code> argument), <strong>BASE</strong> (the SDK's built-in behavior guidance), and <strong>SUFFIX</strong> (model-specific tuning from a HarnessProfile)</li>
-<li>The USER segment sits at the very front of the assembled prompt, ahead of BASE and SUFFIX</li>
-<li>Defining the <code>SYSTEM_PROMPT</code> string is not enough — it must be passed as <code>system_prompt=SYSTEM_PROMPT</code> to <code>create_deep_agent</code>; without it, the agent only sees the BASE instructions</li>
-<li>One string controls the agent's persona, domain, and constraints without touching tools, the model, or anything else</li>
-</ul>
-<hr />
-<h2 id="references">References</h2>
-<p><strong>Documentation:</strong><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/overview" target="_blank" rel="noopener noreferrer">Deep Agents overview</a><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/models" target="_blank" rel="noopener noreferrer">Models (Deep Agents)</a><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/customization#prompt-assembly" target="_blank" rel="noopener noreferrer">Customization &amp; prompt assembly (Deep Agents)</a><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/context-engineering" target="_blank" rel="noopener noreferrer">Context engineering (Deep Agents)</a><br />
-- <a href="https://github.com/langchain-ai/deepagents" target="_blank" rel="noopener noreferrer">deepagents README (GitHub)</a><br />
-- <a href="https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents/deepagents/profiles/harness" target="_blank" rel="noopener noreferrer">Built-in harness profiles (GitHub)</a></p>
-<script>
-(function () {
-  var tabs = document.querySelectorAll('.lt-tab');
-  function show(p) {
-    tabs.forEach(function (t) {
-      var on = t.getAttribute('data-p') === p;
-      t.classList.toggle('active', on);
-      t.setAttribute('aria-selected', on ? 'true' : 'false');
-    });
-    document.querySelectorAll('.lt-panel').forEach(function (panel) {
-      panel.classList.toggle('active', panel.id === 'p-' + p);
-    });
-  }
-  tabs.forEach(function (t) {
-    t.addEventListener('click', function () { show(t.getAttribute('data-p')); });
-  });
-})();
-</script>
+<p><MCQ
+    question="What is the BASE segment of the assembled prompt?"
+    choices='["The system_prompt string you pass to create_deep_agent", "The tool schemas appended by the SDK before each LLM call", "A model-specific tuning block provided by a HarnessProfile", "The SDK's built-in BASE_AGENT_PROMPT, the behavior guidance that is always present"]'
+    correctIndex={3}
+    explanation="The BASE segment is BASE_AGENT_PROMPT, built into the SDK. It carries the agent's core behavior guidance and is always present regardless of what you pass. The SUFFIX, from a HarnessProfile, is the model-specific part."
+/></p>
+<p><MCQ
+    question="You switch from a pirate persona to a cowboy persona by changing SYSTEM_PROMPT. What else in the assembled prompt changes?"
+    choices='["The BASE instructions adapt to match the new persona", "Nothing; only your USER segment changes", "The SUFFIX is regenerated based on the persona", "The tool schemas update to reflect the new persona\'s capabilities"]'
+    correctIndex={1}
+    explanation="Only your USER segment changes. The BASE instructions, SUFFIX, and tool schemas are identical across runs. The USER segment is the single lever you control; everything else stays put."
+/></p>
 
     <script>
         // Handle MCQ choice clicks

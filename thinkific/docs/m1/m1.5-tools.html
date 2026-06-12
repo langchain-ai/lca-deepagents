@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>m1.l2-creating-a-deep-agent</title>
+    <title>m1.5-tools</title>
     <meta name="description" content="">
 
     <!-- Syntax highlighting -->
@@ -533,259 +533,527 @@
     </style>
 </head>
 <body>
-    <p><a href="https://langchain-ai.github.io/lca-deepagents/m1/m1.l2-creating-a-deep-agent.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
+    <p><a href="https://langchain-ai.github.io/lca-deepagents/m1/m1.5-tools.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
 <style>@import url('../shared/sd-components.css');</style>
 <script src="../shared/sd-components.js"></script>
 
-<h1 id="creating-a-deep-agent">Creating a Deep Agent</h1>
-<h2 id="using-a-coding-agent">Using a Coding Agent</h2>
-<p>Before we explore, let's get a bare agent running. Paste the prompt below into<br />
-your coding agent (Claude Code, Cursor, etc.) and let it build the file.</p>
-<pre><code class="language-text">In lca-deepagents/python/m1/scratch_agent.py, create a minimal deep agent:
-import the model from python/models.py, call create_deep_agent(model=model)
-with no other arguments, invoke it with &quot;What is an LLM?&quot; and print the last
-message's content.
-</code></pre>
-<div class="video-container" style="max-width: 750px;">
-    <div class="video-wrapper">
-        <iframe
-            src="https://share.descript.com/embed/k7KXh34BOdZ"
-            frameborder="0"
-            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-            allowfullscreen>
-        </iframe>
-    </div>
-</div>
+<h1 id="tools">Tools</h1>
+<style>
+.lt-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 28px 0 0;
+  border-bottom: 2px solid #CCE9FF;
+}
+.lt-group { display: flex; gap: 3px; }
+.lt-tools { --c: #0369A1; }
+.lt-wrap  { --c: #B45309; }
+.lt-tab {
+  font: 500 14px 'IBM Plex Mono', monospace;
+  padding: 9px 14px;
+  border: none;
+  background: transparent;
+  color: #40668D;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  border-radius: 6px 6px 0 0;
+  transition: background .15s, color .15s, border-color .15s;
+  white-space: nowrap;
+}
+.lt-tab:hover { background: #F2FAFF; color: #030710; }
+.lt-tab.active {
+  color: var(--c);
+  border-bottom-color: var(--c);
+  background: #fff;
+}
+.lt-panel { display: none; padding-top: 24px; }
+.lt-panel.active { display: block; }
+@media (max-width: 600px) {
+  .lt-bar { flex-wrap: nowrap; overflow-x: auto; gap: 12px; }
+  .lt-tab { padding: 8px 10px; font-size: 13px; }
+}
+</style>
 
-<details>
-<summary>No coding agent? Create the file manually [click to expand]</summary>
-<p><br></p>
-<p>Create <code>python/m1/scratch_agent.py</code>:</p>
-<!-- code-highlight-1:6,9,10,11 -->
-<pre><code class="language-python"># python/m1/scratch_agent.py
-import sys
-from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from models import model
-
-from deepagents import create_deep_agent
-
-agent = create_deep_agent(model=model)
-result = agent.invoke({&quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What is an LLM?&quot;}]})
-print(result[&quot;messages&quot;][-1].content)
-</code></pre>
-<p>Then run it:</p>
-<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/scratch_agent.py
-</code></pre>
-</details>
-<p>Once your coding agent has created the file, run it:</p>
-<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/scratch_agent.py
-</code></pre>
-<p><strong>Code output:</strong></p>
-<pre class="no-copy"><code class="language-plaintext">An LLM (Large Language Model) is a type of artificial intelligence system
-trained on vast amounts of text data to understand and generate human language.
-
-Key characteristics:
-- Scale: Contains billions to hundreds of billions of parameters
-- Training: Trained using deep learning on huge text corpora from the internet,
-  books, and other sources
-- Capability: Can perform a wide range of language tasks: answering questions,
-  summarizing, translating, writing, coding, reasoning, and more
-- Architecture: Built on transformer architecture, which uses attention
-  mechanisms to understand relationships between words across long passages
-- Generative: Produces text by predicting the next token one at a time,
-  based on context
-
-Examples: GPT-4, Claude, Gemini, LLaMA, Mistral
-</code></pre>
-
-<div class="callout">
-<strong>Troubleshooting</strong>
-<ul>
-<li><strong><code>ModuleNotFoundError: No module named 'dotenv'</code></strong> (or any package): you ran the script with <code>python3</code> directly. Use <code>uv run</code> instead; it activates the project's virtual environment where all dependencies live.</li>
-<li><strong><code>error: Failed to spawn</code></strong> / <strong><code>Project directory does not exist</code></strong>: you're in the wrong directory. Run the command from the <code>lca-deepagents</code> repo root.</li>
-</ul>
-</div>
-
-<div style="text-align:center;margin:2.5rem 0 1rem;">
-  <button id="celebrate-btn" onclick="launchCelebration()" style="
-    background: #111;
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    padding: 14px 36px;
-    font-size: 1.15rem;
-    font-weight: 700;
-    font-family: 'IBM Plex Mono', monospace;
-    cursor: pointer;
-    letter-spacing: 0.04em;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.25);
-    transition: transform 0.15s, box-shadow 0.15s;
-  "
-  onmouseover="this.style.transform='scale(1.07)';this.style.boxShadow='0 6px 28px rgba(0,0,0,0.4)'"
-  onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 18px rgba(0,0,0,0.25)'"
-  ><img src="images/langchain-symbol.png" style="height:1.1em;vertical-align:middle;margin-right:8px;filter:brightness(0) invert(1);opacity:0.9"> I ran my first deep agent!</button>
-</div>
-
-<canvas id="fireworks-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;display:none;"></canvas>
-
-<div id="celebration-msg" style="
-  display:none;
-  position:fixed;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  z-index:10000;
-  text-align:center;
-  pointer-events:none;
-">
-  <div style="
-    background:#CCE9FF;
-    border:2px solid #7FC8FF;
-    border-radius:20px;
-    padding:2rem 3rem;
-    color:#030710;
-    font-family:'IBM Plex Mono',monospace;
-    box-shadow:0 8px 48px rgba(0,0,0,0.15);
-  ">
-    <img src="images/langchain-symbol.png" style="width:56px;height:56px;margin-bottom:0.75rem;filter:brightness(0)">
-    <div style="font-size:1.5rem;font-weight:700;margin-bottom:0.4rem;">Your first deep agent is live!</div>
-    <div style="font-size:0.95rem;opacity:0.85;">Welcome to the world of agentic AI.</div>
+<div class="lt-bar" role="tablist" aria-label="Lesson sections">
+  <div class="lt-group lt-tools">
+    <button class="lt-tab active" data-p="tools" role="tab" aria-selected="true">Tools</button>
+  </div>
+  <div class="lt-group lt-wrap">
+    <button class="lt-tab" data-p="lab3" role="tab" aria-selected="false">Lab</button>
   </div>
 </div>
 
+<div class="lt-panel active" id="p-tools" role="tabpanel">
+<h2 id="tools-extending-the-agent">Tools: Extending the Agent</h2>
+<p>Tools are functions you give an agent so it can act: look things up, run queries, call APIs, write files. The agent decides when to call them and what to pass; you define what they do.</p>
+<p>Every deep agent ships with a built-in set of tools, loaded automatically by the SDK. You already saw these appear in the LangSmith trace in the previous lesson, as <code>write_todos</code> and <code>Filesystem Tools</code> sections inside the system message:</p>
+<table>
+<thead>
+<tr>
+<th>Tool(s)</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>write_todos</code></td>
+<td>Manage a running to-do list for multi-step planning</td>
+</tr>
+<tr>
+<td><code>ls</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code></td>
+<td>Read and write files in the agent's working directory</td>
+</tr>
+<tr>
+<td><code>glob</code>, <code>grep</code></td>
+<td>Search files by name pattern or content</td>
+</tr>
+<tr>
+<td><code>execute</code></td>
+<td>Run shell commands (requires a sandbox backend)</td>
+</tr>
+<tr>
+<td><code>task</code></td>
+<td>Delegate work to a sub-agent with an isolated context</td>
+</tr>
+</tbody>
+</table>
+<p>These are always present. The <code>tools</code> parameter on <code>create_deep_agent</code> is <strong>additive</strong>: whatever you pass is merged with the built-in suite, not substituted for it.</p>
+<pre><code class="language-python">agent = create_deep_agent(
+    model=model,
+    tools=[my_tool_a, my_tool_b],   # merged with the built-ins above
+)
+</code></pre>
+<p>Step through the sequence to see how each part fits together:</p>
+<div class="sd-wrap" id="dg-tool-loop"></div>
+<script>
+buildDiagram({
+  id: 'dg-tool-loop',
+  participants: ['SDK', 'LLM', 'Tools', 'execute_sql'],
+  cx: [72, 237, 470, 660],
+  bw: 105, bh: 36,
+  tby: 20, bby: 480,
+  vw: 800, vh: 540,
+  steps: [
+    {
+      tag: 'Step 1 of 7 · SDK injects tool schemas',
+      caption: 'Before every LLM call, the SDK calls bind_tools() behind the scenes. Each tool name, description, and JSON schema are appended to the system message via middleware. The LLM now knows what tools exist and how to call them.'
+    },
+    {
+      tag: 'Step 2 of 7 · LLM outputs tool_calls',
+      caption: 'The LLM decides it needs data and outputs an AIMessage with a tool_calls list: the name of the tool and the arguments to pass. The LLM does not run the tool. It produces a structured request; something else executes it.'
+    },
+    {
+      tag: 'Step 3 of 7 · AIMessage passed to Tool Node',
+      caption: 'The AIMessage (carrying tool_calls) flows to the Tool Node, a built-in LangGraph node inside the deep agent. The Tool Node is responsible for all tool execution.'
+    },
+    {
+      tag: 'Step 4 of 7 · Tool Node executes the call',
+      caption: 'The Tool Node reads tool_calls, finds execute_sql by name, and calls it with the arguments the LLM supplied. If the LLM requested multiple tools with no dependencies between them, the Tool Node can run them in parallel.'
+    },
+    {
+      tag: 'Step 5 of 7 · Tool returns a result',
+      caption: 'execute_sql runs the query and returns a string. The Tool Node wraps it in a ToolMessage, linking the result back to the original request via a tool_call_id.'
+    },
+    {
+      tag: 'Step 6 of 7 · ToolMessage feeds back to LLM',
+      caption: 'The ToolMessage is appended to the conversation and the LLM is called again with the full updated history. The LLM now sees its original question, its tool_calls, and the results.'
+    },
+    {
+      tag: 'Step 7 of 7 · LLM answers or loops',
+      caption: 'With the tool result in context, the LLM generates its next output: a plain AIMessage with a text answer if it has enough information, or another tool_call to keep querying. This is the loop. Open the run in LangSmith to see the full sequence.'
+    }
+  ],
+  buildSteps: function(a) {
+    var L = [72, 237, 470, 660], hw = 52;
+    return [
+      solidArrow(L[0]+hw, L[1]-hw, 82, 'tool schemas', (L[0]+L[1])/2, a),
+      labelBox(L[1], 112, 160, ['AIMessage', '{ tool_calls: [...] }']),
+      solidArrow(L[1]+hw, L[2]-hw, 197, 'AIMessage', (L[1]+L[2])/2, a),
+      solidArrow(L[2]+hw, L[3]-hw, 252, 'execute_sql(query=…)', (L[2]+L[3])/2, a),
+      dashedArrow(L[3]-hw, L[2]+hw, 312, 'result string', (L[2]+L[3])/2, a),
+      solidArrow(L[2]-hw, L[1]+hw, 372, 'ToolMessage', (L[1]+L[2])/2, a),
+      labelBox(L[1], 425, 160, ['AIMessage', '(answer or loop)'])
+    ];
+  }
+});
+</script>
 <script>
 (function () {
-  var canvas, ctx, particles = [], running = false, animId;
-
-  var COLORS = [
-    '#006DDD','#3399FF','#7FC8FF','#CCE9FF',
-    '#0E9F6E','#34D399','#99F6E4',
-    '#ffffff','#B8D4FF','#60B0FF'
-  ];
-
-  function Particle(x, y) {
-    var angle = Math.random() * Math.PI * 2;
-    var speed = 2 + Math.random() * 7;
-    this.x = x; this.y = y;
-    this.vx = Math.cos(angle) * speed;
-    this.vy = Math.sin(angle) * speed - 3;
-    this.alpha = 1;
-    this.decay = 0.012 + Math.random() * 0.018;
-    this.radius = 2 + Math.random() * 4;
-    this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
-    this.trail = [];
-    this.shape = Math.random() < 0.3 ? 'star' : 'circle';
+  var stage = document.getElementById('dg-tool-loop-stage');
+  if (!stage) return;
+  var svg = stage.querySelector('svg');
+  if (!svg) return;
+  var ns = 'http://www.w3.org/2000/svg';
+  var g = document.createElementNS(ns, 'g');
+  g.id = 'dg-tool-loop-hint';
+  g.setAttribute('style', 'pointer-events:none');
+  var r = document.createElementNS(ns, 'rect');
+  r.setAttribute('x','0'); r.setAttribute('y','0');
+  r.setAttribute('width','800'); r.setAttribute('height','540');
+  r.setAttribute('fill','rgba(3,7,16,0.65)');
+  g.appendChild(r);
+  var t1 = document.createElementNS(ns, 'text');
+  t1.setAttribute('x','400'); t1.setAttribute('y','263');
+  t1.setAttribute('text-anchor','middle'); t1.setAttribute('fill','#E5F4FF');
+  t1.setAttribute('font-size','18'); t1.setAttribute('font-weight','500');
+  t1.setAttribute('font-family','IBM Plex Mono, monospace');
+  t1.textContent = 'Click to step through the flow';
+  g.appendChild(t1);
+  var t2 = document.createElementNS(ns, 'text');
+  t2.setAttribute('x','400'); t2.setAttribute('y','287');
+  t2.setAttribute('text-anchor','middle'); t2.setAttribute('fill','#7FC8FF');
+  t2.setAttribute('font-size','13'); t2.setAttribute('font-family','IBM Plex Mono, monospace');
+  t2.textContent = 'or use the ← → buttons below';
+  g.appendChild(t2);
+  svg.appendChild(g);
+  function unfade() {
+    var hint = document.getElementById('dg-tool-loop-hint');
+    if (hint) hint.style.display = 'none';
+    stage.removeEventListener('click', unfade);
+    var nb = document.getElementById('dg-tool-loop-next');
+    if (nb) nb.removeEventListener('click', unfade);
   }
-
-  Particle.prototype.update = function () {
-    this.trail.push({x: this.x, y: this.y});
-    if (this.trail.length > 7) this.trail.shift();
-    this.vy += 0.12;
-    this.vx *= 0.99;
-    this.x += this.vx; this.y += this.vy;
-    this.alpha -= this.decay;
-  };
-
-  Particle.prototype.draw = function (ctx) {
-    ctx.save();
-    for (var i = 0; i < this.trail.length; i++) {
-      var t = this.trail[i];
-      var a = (i / this.trail.length) * this.alpha * 0.4;
-      ctx.globalAlpha = a;
-      ctx.fillStyle = this.color;
-      ctx.beginPath();
-      ctx.arc(t.x, t.y, this.radius * 0.5, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.globalAlpha = this.alpha;
-    ctx.fillStyle = this.color;
-    if (this.shape === 'star') {
-      drawStar(ctx, this.x, this.y, 5, this.radius * 1.4, this.radius * 0.6);
-    } else {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.restore();
-  };
-
-  function drawStar(ctx, cx, cy, spikes, outer, inner) {
-    var rot = (Math.PI / 2) * 3, step = Math.PI / spikes;
-    ctx.beginPath();
-    ctx.moveTo(cx, cy - outer);
-    for (var i = 0; i < spikes; i++) {
-      ctx.lineTo(cx + Math.cos(rot) * outer, cy + Math.sin(rot) * outer); rot += step;
-      ctx.lineTo(cx + Math.cos(rot) * inner, cy + Math.sin(rot) * inner); rot += step;
-    }
-    ctx.lineTo(cx, cy - outer);
-    ctx.closePath();
-    ctx.fill();
-  }
-
-  function burst(x, y, count) {
-    for (var i = 0; i < count; i++) particles.push(new Particle(x, y));
-  }
-
-  function randomBurst() {
-    var x = 0.1 * window.innerWidth + Math.random() * 0.8 * window.innerWidth;
-    var y = 0.1 * window.innerHeight + Math.random() * 0.55 * window.innerHeight;
-    burst(x, y, 60 + Math.floor(Math.random() * 50));
-  }
-
-  function loop() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles = particles.filter(function (p) { return p.alpha > 0; });
-    particles.forEach(function (p) { p.update(); p.draw(ctx); });
-    if (running || particles.length > 0) animId = requestAnimationFrame(loop);
-    else { canvas.style.display = 'none'; }
-  }
-
-  window.launchCelebration = function () {
-    if (!canvas) {
-      canvas = document.getElementById('fireworks-canvas');
-      ctx = canvas.getContext('2d');
-    }
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    canvas.style.display = 'block';
-
-    var msg = document.getElementById('celebration-msg');
-    msg.style.display = 'block';
-    msg.style.animation = 'none';
-    msg.style.opacity = '1';
-    setTimeout(function () {
-      msg.style.transition = 'opacity 1s';
-      msg.style.opacity = '0';
-      setTimeout(function () { msg.style.display = 'none'; }, 1000);
-    }, 3200);
-
-    var btn = document.getElementById('celebrate-btn');
-    btn.textContent = 'Again!';
-
-    particles = [];
-    running = true;
-
-    var shots = 0, maxShots = 22;
-    function fire() {
-      if (shots >= maxShots) { running = false; return; }
-      var count = Math.floor(Math.random() * 3) + 1;
-      for (var i = 0; i < count; i++) randomBurst();
-      shots += count;
-      setTimeout(fire, 120 + Math.random() * 280);
-    }
-
-    if (animId) cancelAnimationFrame(animId);
-    fire();
-    loop();
-  };
+  stage.addEventListener('click', unfade);
+  var nb = document.getElementById('dg-tool-loop-next');
+  if (nb) nb.addEventListener('click', unfade);
 })();
 </script>
+<details style="margin:4px 0 16px;">
+<summary style="cursor:pointer;font-size:0.9em;color:#40668D;">Parallel tool calls</summary>
+<div style="padding:8px 0 4px;">
+<p>When tool calls have no dependency on each other, the Tool Node runs them simultaneously rather than one at a time. Some harness profiles explicitly instruct the model to do this.</p>
+<p><strong>Example:</strong> an agent with <code>search_web</code> and <code>search_docs</code> tools receives a question that needs both. Both fire in the same turn; the LLM sees both results together in the next call.</p>
+<p><strong>Try it in Lab 3:</strong> ask two unrelated questions in one message: <code>"Which genres have the most tracks, and which employee has handled the most invoices?"</code> Then watch the LangSmith trace to see whether the calls overlap.</p>
+</div>
+</details>
+<h3 id="defining-a-tool-with-tool">Defining a tool with <code>@tool</code></h3>
+<p>Tools are part of the LangChain library. The <code>@tool</code> decorator from <code>langchain_core.tools</code> is the standard way to define one: write a regular Python function and the decorator turns it into something the model can call. LangChain also ships ready-made tools for common tasks (for example, <code>TavilySearchResults</code> for web search), so you don't have to write everything from scratch.</p>
+<pre><code class="language-python">from langchain_core.tools import tool
 
+@tool
+def get_stock_price(ticker: str) -&gt; str:
+    &quot;&quot;&quot;Return the latest closing price for a stock ticker symbol.&quot;&quot;&quot;
+    ...  # your implementation
+</code></pre>
+<p><img src="images/m1.5-tool-anatomy.svg" alt="Diagram showing the three parts of a @tool definition: the decorator (@tool) registers it as a LangChain tool, the function name and type annotations form the name and schema, and the docstring is the description the model reads to decide when to call it." style="width: 800px; max-width: 100%;" /></p>
+<p>The description is the most important of the three. Write it as a clear, specific sentence: it is the only signal the model has for deciding when to reach for this tool versus another.</p>
+<p>The return value should be a string (or anything JSON-serializable). It comes back to the model as the tool result and is visible in the conversation.</p>
+<h3 id="human-in-the-loop">Human-in-the-Loop</h3>
+<blockquote>
+<p><strong>Human-in-the-Loop (HITL)</strong> is a pattern where agent execution pauses at a critical step and waits for a human to approve, modify, or cancel before continuing. It is important because agents can take irreversible actions: writing to a database, sending a message, deleting a file. HITL gives you a checkpoint before those actions happen.</p>
+</blockquote>
+<div class="sd-wrap" id="dg-hitl"></div>
+</div>
+<div class="lt-panel" id="p-lab3" role="tabpanel">
+<h2 id="two-sql-tools-with-human-in-the-loop">Two SQL Tools with Human-in-the-Loop</h2>
+<script>
+(function() {
+  var id = 'dg-hitl';
+  var wrap = document.getElementById(id);
+  if (!wrap) return;
+  var arrId = 'arr-' + id, arrAId = 'arr-a-' + id;
+
+  var STATIC = [
+    '<rect x="22" y="224" width="136" height="52" rx="4" fill="#161F34" stroke="#2F4B68" stroke-width="1.5"/>',
+    '<text x="90" y="254" text-anchor="middle" fill="#E5F4FF" font-size="15" font-weight="500">Agent</text>',
+    '<polygon points="466,172 544,250 466,328 388,250" fill="#161F34" stroke="#2F4B68" stroke-width="1.5"/>',
+    '<text x="466" y="243" text-anchor="middle" fill="#E5F4FF" font-size="13">interrupt</text>',
+    '<text x="466" y="260" text-anchor="middle" fill="#E5F4FF" font-size="13">( )</text>',
+    '<polygon points="666,172 744,250 666,328 588,250" fill="#161F34" stroke="#2F4B68" stroke-width="1.5"/>',
+    '<text x="666" y="254" text-anchor="middle" fill="#E5F4FF" font-size="15" font-weight="500">Human</text>',
+    '<rect x="795" y="120" width="148" height="52" rx="4" fill="#161F34" stroke="#2F4B68" stroke-width="1.5"/>',
+    '<text x="869" y="150" text-anchor="middle" fill="#E5F4FF" font-size="15" font-weight="500">Execute</text>',
+    '<rect x="795" y="330" width="148" height="52" rx="4" fill="#161F34" stroke="#2F4B68" stroke-width="1.5"/>',
+    '<text x="869" y="360" text-anchor="middle" fill="#E5F4FF" font-size="15" font-weight="500">Cancel</text>'
+  ].join('');
+
+  var NAMES = ['s1','s2','app1','app2','rej1','rej2'];
+  var GROUPS = [
+    '<line class="al" x1="158" y1="250" x2="386" y2="250" stroke-width="1.5" marker-end="url(#' + arrId + ')"/><text class="at" x="272" y="241" text-anchor="middle" font-size="12">calls write_sql</text>',
+    '<line class="al" x1="546" y1="250" x2="586" y2="250" stroke-width="1.5" marker-end="url(#' + arrId + ')"/><text class="at" x="566" y="241" text-anchor="middle" font-size="12">pauses</text>',
+    '<line class="al" x1="744" y1="244" x2="793" y2="148" stroke-width="1.5" marker-end="url(#' + arrId + ')"/><text class="at" x="787" y="188" text-anchor="end" font-size="12">approve</text>',
+    '<path class="al" d="M 795,125 Q 470,28 158,238" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#' + arrId + ')" fill="none"/><text class="at" x="470" y="50" text-anchor="middle" font-size="12">result returned</text>',
+    '<line class="al" x1="744" y1="256" x2="793" y2="336" stroke-width="1.5" marker-end="url(#' + arrId + ')"/><text class="at" x="787" y="308" text-anchor="end" font-size="12">reject</text>',
+    '<path class="al" d="M 795,375 Q 470,468 158,262" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#' + arrId + ')" fill="none"/><text class="at" x="470" y="415" text-anchor="middle" font-size="12">write cancelled</text>'
+  ];
+
+  // Per-step visibility matrix: 'hidden' | 'past' | 'current'
+  // Groups: s1 (agent→interrupt), s2 (interrupt→human), app1 (human→execute), app2 (execute→agent), rej1 (human→cancel), rej2 (cancel→agent)
+  var VIS = [
+    ['current','hidden', 'hidden', 'hidden', 'hidden', 'hidden'],  // step 1
+    ['past',   'current','hidden', 'hidden', 'hidden', 'hidden'],  // step 2
+    ['past',   'past',   'current','hidden', 'hidden', 'hidden'],  // step 3: approve
+    ['past',   'past',   'past',   'current','hidden', 'hidden'],  // step 4: result returned
+    ['past',   'past',   'hidden', 'hidden', 'current','hidden'],  // step 5: reject (approve arrows hidden)
+    ['past',   'past',   'hidden', 'hidden', 'past',   'current'], // step 6: cancelled (approve arrows hidden)
+    ['past',   'past',   'past',   'past',   'past',   'past']    // step 7: all arrows
+  ];
+
+  var STEPS = [
+    { tag: 'Step 1 of 7 · Agent calls write_sql',
+      caption: 'The agent decides to write to the database and calls write_sql with the query as an argument. The query has not executed yet.' },
+    { tag: 'Step 2 of 7 · interrupt() fires, graph pauses',
+      caption: 'Inside write_sql, interrupt() fires before db.run(). The graph suspends and saves state. The pending SQL surfaces to your script, which prints it and waits for your input.' },
+    { tag: 'Step 3 of 7 · Human approves',
+      caption: 'You type "yes". Command(resume="yes") resumes the graph. The approve decision is passed back into write_sql.' },
+    { tag: 'Step 4 of 7 · Execute runs, result returned to Agent',
+      caption: 'db.run() executes the query. The result is returned to the agent as a tool message and the agent continues.' },
+    { tag: 'Step 5 of 7 · Human rejects',
+      caption: 'Alternatively, if you type "no", the reject decision is passed back. write_sql returns "Write cancelled." without calling db.run().' },
+    { tag: 'Step 6 of 7 · Write cancelled, Agent notified',
+      caption: 'The agent receives "Write cancelled." as its tool result. The database is untouched. The agent continues with the cancellation in context.' },
+    { tag: 'Step 7 of 7 · Full flow',
+      caption: 'The complete HITL flow: the approve path (Human to Execute to Agent) and the reject path (Human to Cancel to Agent) shown together.' }
+  ];
+
+  var n = STEPS.length;
+  var groupsHTML = NAMES.map(function(name, i) {
+    return '<g id="' + id + '-g-' + name + '" class="step step-hidden">' + GROUPS[i] + '</g>';
+  }).join('');
+
+  var hintHTML = '<g id="' + id + '-hint" style="pointer-events:none">' +
+    '<rect x="0" y="0" width="1060" height="500" fill="rgba(3,7,16,0.65)"/>' +
+    '<text x="530" y="244" text-anchor="middle" fill="#E5F4FF" font-size="18" font-weight="500" font-family="\'IBM Plex Mono\',monospace">Click to step through the flow</text>' +
+    '<text x="530" y="268" text-anchor="middle" fill="#7FC8FF" font-size="13" font-family="\'IBM Plex Mono\',monospace">or use the ← → buttons below</text>' +
+    '</g>';
+
+  wrap.innerHTML =
+    '<div class="sd-stage" id="' + id + '-stage" tabindex="0" style="background:#030710">' +
+    '<svg viewBox="0 0 1060 500" xmlns="http://www.w3.org/2000/svg" font-family="\'IBM Plex Mono\',\'Courier New\',monospace">' +
+    '<defs>' +
+    '<marker id="' + arrId + '" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#40668D"/></marker>' +
+    '<marker id="' + arrAId + '" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#7FC8FF"/></marker>' +
+    '</defs>' +
+    '<rect width="1060" height="500" fill="#030710"/>' +
+    STATIC + groupsHTML + hintHTML +
+    '</svg></div>' +
+    '<div class="sd-bar"><div class="sd-caption"><strong id="' + id + '-tag">Click &#8594; to begin</strong><span id="' + id + '-cap">Step through the flow one action at a time.</span></div>' +
+    '<div class="sd-controls"><button class="sd-btn" id="' + id + '-prev" disabled title="Previous">&#8592;</button>' +
+    '<button class="sd-btn" id="' + id + '-next" title="Next">&#8594;</button></div></div>' +
+    '<div class="sd-dots" id="' + id + '-dots">' +
+    STEPS.map(function(_, i) { return '<div class="sd-dot" data-i="' + i + '"></div>'; }).join('') +
+    '</div><div class="mobile-note">Best viewed on a wider screen</div>';
+
+  var tagEl = document.getElementById(id + '-tag');
+  var capEl = document.getElementById(id + '-cap');
+  var prevBtn = document.getElementById(id + '-prev');
+  var nextBtn = document.getElementById(id + '-next');
+  var dots = wrap.querySelectorAll('.sd-dot');
+  var stage = document.getElementById(id + '-stage');
+  var current = -1;
+
+  function applyVis(idx) {
+    var vis = idx === -1 ? ['past','past','past','past','past','past'] : VIS[idx];
+    NAMES.forEach(function(name, i) {
+      var el = document.getElementById(id + '-g-' + name);
+      var state = vis[i];
+      el.classList.remove('step-hidden','step-past','step-current');
+      el.classList.add('step-' + state);
+      var marker = state === 'current' ? arrAId : arrId;
+      el.querySelectorAll('[marker-end]').forEach(function(m) {
+        m.setAttribute('marker-end', 'url(#' + marker + ')');
+      });
+    });
+  }
+
+  function showAll() {
+    applyVis(-1); current = -1;
+    tagEl.textContent = 'Overview';
+    capEl.textContent = 'The complete HITL flow. Click → to walk through step by step.';
+    prevBtn.disabled = true; nextBtn.disabled = false;
+    dots.forEach(function(d) { d.classList.remove('active'); });
+    var hint = document.getElementById(id + '-hint');
+    if (hint) hint.style.display = '';
+  }
+
+  function goTo(i) {
+    if (i < 0 || i >= n) return;
+    applyVis(i); current = i;
+    tagEl.textContent = STEPS[i].tag;
+    capEl.textContent = STEPS[i].caption;
+    prevBtn.disabled = false; nextBtn.disabled = i === n - 1;
+    dots.forEach(function(d, j) { d.classList.toggle('active', j === i); });
+    var hint = document.getElementById(id + '-hint');
+    if (hint) hint.style.display = 'none';
+  }
+
+  function advance() { current === -1 ? goTo(0) : current < n - 1 ? goTo(current + 1) : null; }
+  function retreat() { current <= 0 ? showAll() : goTo(current - 1); }
+
+  showAll();
+  prevBtn.addEventListener('click', retreat);
+  nextBtn.addEventListener('click', advance);
+  dots.forEach(function(d, i) { d.addEventListener('click', function() { goTo(i); }); });
+  stage.addEventListener('click', advance);
+  stage.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); advance(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); retreat(); }
+  });
+  var tx = 0;
+  stage.addEventListener('touchstart', function(e) { tx = e.touches[0].clientX; }, { passive: true });
+  stage.addEventListener('touchend', function(e) {
+    var dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 40) dx < 0 ? advance() : retreat();
+  });
+})();
+</script>
+<p>Open <code>python/m1/scratch_agent.py</code>.</p>
+<ul>
+<li>Two tools: <code>read_sql</code> for SELECT queries and <code>write_sql</code> for write operations.</li>
+<li><code>write_sql</code> uses Human-in-the-Loop: the agent proposes the SQL, execution pauses, and you approve or reject before anything is written to the database.</li>
+</ul>
+<p>The <a href="https://github.com/lerocha/chinook-database" target="_blank" rel="noopener noreferrer">Chinook</a> database is a standard SQLite music store sample with 11 tables covering artists, albums, tracks, customers, invoices, and employees. The file is already in the repo at <code>python/m1/chinook.db</code>.</p>
+<hr />
+<h3 id="setup">Setup</h3>
+<p>Confirm <code>langchain-community</code> is available (it ships with the workshop dependencies):</p>
+<pre><code class="language-bash">uv run python -c &quot;from langchain_community.utilities import SQLDatabase; print('ok')&quot;
+</code></pre>
+<hr />
+<h3 id="1-imports-and-database-connection">1. Imports and database connection</h3>
+<p>Replace the contents of <code>scratch_agent.py</code> with the following:</p>
+<pre><code class="language-python">import sys
+from pathlib import Path
+from langchain_community.utilities import SQLDatabase
+from langchain_core.tools import tool
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.types import interrupt, Command
+from deepagents import create_deep_agent
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from models import model
+
+DB_PATH = Path(__file__).parent / &quot;chinook.db&quot;
+db = SQLDatabase.from_uri(f&quot;sqlite:///{DB_PATH}&quot;)
+</code></pre>
+<p>A checkpointer saves the agent's state at each step so execution can pause and later resume from exactly the same point. <code>MemorySaver</code> is the simplest checkpointer; it keeps that state in memory. It is required for HITL: without it, the graph has no way to pause mid-run and pick up again after a human decision.</p>
+<hr />
+<h3 id="2-system-prompt">2. System prompt</h3>
+<p>Two tools means the agent needs to know which to reach for:</p>
+<pre><code class="language-python">SYSTEM_PROMPT = &quot;&quot;&quot;You are a SQL analyst with access to the Chinook music store database.
+
+Rules:
+- Use read_sql for all SELECT queries.
+- Use write_sql for INSERT, UPDATE, DELETE, and ALTER operations.
+- Think step-by-step. Read first, then write.
+- If a tool returns an error, revise the SQL and try again.
+- Show your SQL in your final answer.
+&quot;&quot;&quot;
+</code></pre>
+<hr />
+<h3 id="3-define-read_sql-and-write_sql">3. Define <code>read_sql</code> and <code>write_sql</code></h3>
+<p><code>read_sql</code> executes and returns immediately. <code>write_sql</code> calls <code>interrupt()</code> before touching the database. When the graph hits <code>interrupt()</code>, execution pauses and the pending value surfaces to the caller. The script reads it, prompts you for approval, then resumes with your response via <code>Command(resume=...)</code>.</p>
+<pre><code class="language-python">@tool
+def read_sql(query: str) -&gt; str:
+    &quot;&quot;&quot;Run a read-only SELECT query against the Chinook music store database.&quot;&quot;&quot;
+    try:
+        return db.run(query)
+    except Exception as e:
+        return f&quot;Error: {e}&quot;
+
+@tool
+def write_sql(query: str) -&gt; str:
+    &quot;&quot;&quot;Execute a write operation (INSERT, UPDATE, DELETE, ALTER) against the Chinook database.
+    Requires human approval before executing.&quot;&quot;&quot;
+    approval = interrupt({&quot;question&quot;: f&quot;Approve this write?\n\n{query}&quot;})
+    if str(approval).strip().lower() not in (&quot;yes&quot;, &quot;y&quot;):
+        return &quot;Write cancelled.&quot;
+    try:
+        return db.run(query)
+    except Exception as e:
+        return f&quot;Error: {e}&quot;
+</code></pre>
+<hr />
+<h3 id="4-wire-it-up">4. Wire it up</h3>
+<p>Pass both tools and the checkpointer. The <code>while</code> loop handles the approval prompt and resumes the graph with your response:</p>
+<pre><code class="language-python">checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model=model,
+    tools=[read_sql, write_sql],
+    system_prompt=SYSTEM_PROMPT,
+    checkpointer=checkpointer,
+)
+
+config = {&quot;configurable&quot;: {&quot;thread_id&quot;: &quot;lab3&quot;}}
+
+result = agent.invoke(
+    {&quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What genres are in the database? Then add a new genre called 'Synthwave'.&quot;}]},
+    config=config,
+)
+
+while result.get(&quot;__interrupt__&quot;):
+    pending = result[&quot;__interrupt__&quot;][0].value
+    print(f&quot;\nApproval required:\n{pending['question']}&quot;)
+    approval = input(&quot;\nApprove? (yes/no): &quot;).strip()
+    result = agent.invoke(Command(resume=approval), config=config)
+
+print(result[&quot;messages&quot;][-1].content)
+</code></pre>
+<hr />
+<h3 id="run-it">Run it</h3>
+<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/scratch_agent.py
+</code></pre>
+<p><strong>Code output:</strong></p>
+<pre class="no-copy"><code class="language-plaintext">**Top 5 Best-Selling Artists by Total Revenue:**
+
+1. **Iron Maiden** - $138.60
+2. **U2** - $105.93
+3. **Metallica** - $90.09
+4. **Led Zeppelin** - $86.13
+5. **Lost** - $81.59
+
+The SQL query joins the Artist, Album, Track, and InvoiceLine tables to
+calculate total revenue (UnitPrice × Quantity) per artist, then ranks by
+descending total.
+</code></pre>
+<p>The agent reads the genres first, then proposes an INSERT. The terminal pauses and prints the SQL. Type <code>yes</code> to approve or <code>no</code> to cancel, then note the result: the agent's final message will confirm whether the genre was added.</p>
+<div class="callout">
+<strong>What is happening</strong><br>
+The agent calls <code>read_sql</code> to inspect the genres table, then calls <code>write_sql</code> with an INSERT. At that point, the graph hits <code>interrupt()</code> and suspends: no write has happened yet. Your script surfaces the pending SQL, waits for input, and passes your response back via <code>Command(resume=...)</code>. The graph resumes inside <code>write_sql</code>, checks the response, and either commits the write or cancels. Open the run in <strong>LangSmith</strong> to see the pause and resume as distinct steps in the trace.
+</div>
+<h3 id="take-it-further-build-your-own-tools">Take it further: build your own tools</h3>
+<p>The same <code>@tool</code> pattern works for anything Python can do. Describe what you want to your coding agent and let it write the implementation, then drop it into <code>create_deep_agent(tools=[...])</code>.</p>
+<p>Three ideas to get started:</p>
+<ul>
+<li><strong>REST API</strong>: fetch live data from any JSON API: weather forecasts, GitHub issues, stock prices. One <code>@tool</code> that calls <code>requests.get(...)</code> and returns the result is all it takes.</li>
+<li><strong>File reader</strong>: give the agent access to local CSVs, JSON exports, or PDFs. A tool that reads and returns file contents lets it analyse data you already have on disk.</li>
+<li><strong>Action tool</strong>: tools don't have to be read-only. Post to Slack, create a calendar event, write a row to a spreadsheet. The agent can act, not just retrieve.</li>
+</ul>
+</div>
+<hr />
+<h2 id="recap">Recap</h2>
+<ul>
+<li>The <code>tools=</code> parameter is additive; your tools merge with the built-in suite (<code>write_todos</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code>, <code>glob</code>, <code>grep</code>, <code>task</code>) ; nothing is replaced</li>
+<li>The <code>@tool</code> decorator turns a Python function into a callable tool; the docstring is the description the model reads to decide when to use it</li>
+<li>The LLM never executes tools directly — it outputs an <code>AIMessage</code> with a <code>tool_calls</code> list; the Tool Node reads that and runs the function</li>
+<li>Human-in-the-Loop uses <code>interrupt()</code> inside a tool to pause the graph before a risky action; <code>Command(resume=...)</code> restores execution after a human decision</li>
+<li>HITL requires a checkpointer (<code>MemorySaver</code> for development) so the graph can save state on pause and resume from exactly the same point</li>
+</ul>
+<hr />
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />
 - <a href="https://docs.langchain.com/oss/python/deepagents/overview" target="_blank" rel="noopener noreferrer">Deep Agents overview</a><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/models" target="_blank" rel="noopener noreferrer">Models (Deep Agents)</a><br />
-- <a href="https://github.com/langchain-ai/deepagents" target="_blank" rel="noopener noreferrer">deepagents README (GitHub)</a></p>
+- <a href="https://docs.langchain.com/oss/python/deepagents/customization" target="_blank" rel="noopener noreferrer">Customization (Deep Agents)</a><br />
+- <a href="https://github.com/langchain-ai/deepagents" target="_blank" rel="noopener noreferrer">deepagents README (GitHub)</a><br />
+- <a href="https://github.com/langchain-ai/deepagents/tree/main/examples/text-to-sql-agent" target="_blank" rel="noopener noreferrer">text-to-sql-agent example (GitHub)</a></p>
+<script>
+(function () {
+  var tabs = document.querySelectorAll('.lt-tab');
+  function show(p) {
+    tabs.forEach(function (t) {
+      var on = t.getAttribute('data-p') === p;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    document.querySelectorAll('.lt-panel').forEach(function (panel) {
+      panel.classList.toggle('active', panel.id === 'p-' + p);
+    });
+  }
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () { show(t.getAttribute('data-p')); });
+  });
+})();
+</script>
 
     <script>
         // Handle MCQ choice clicks

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>m1.l5-tools-quiz</title>
+    <title>m1.1-overview</title>
     <meta name="description" content="">
 
     <!-- Syntax highlighting -->
@@ -533,80 +533,76 @@
     </style>
 </head>
 <body>
-    <p><a href="https://langchain-ai.github.io/lca-deepagents/m1/m1.l5-tools-quiz.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
+    <p><a href="https://langchain-ai.github.io/lca-deepagents/m1/m1.1-overview.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
 <style>@import url('../shared/sd-components.css');</style>
 <script src="../shared/sd-components.js"></script>
 
-<h1 id="quiz-tools">Quiz: Tools</h1>
-<div class="mcq-container" id="mcq-e6c89cc3">
-    <div class="mcq-question">
-        <strong>Question:</strong> You pass tools=[my_tool] to create_deep_agent. What happens to the built-in tools like read_file and write_todos?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, true, 'e6c89cc3')"><strong>A)</strong> They are merged with my_tool — both are available</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'e6c89cc3')"><strong>B)</strong> They are replaced by my_tool</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'e6c89cc3')"><strong>C)</strong> They are disabled until re-added explicitly</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'e6c89cc3')"><strong>D)</strong> They move to a separate tool list the agent accesses on request</div>
-    </div>
-    <div id="mcq-answer-e6c89cc3" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
-        <div class="mcq-explanation">The tools parameter is additive. Whatever you pass is merged with the SDK's built-in tool suite. Passing your own tools never removes read_file, write_todos, or any other built-in.</div>
-    </div>
-</div>
+<h1 id="overview">Overview</h1>
+<details>
+<summary>Video Walk-through [click to expand]</summary>
+<p><br></p>
+<Video src="TODO" />
+</details>
+<details>
+<summary>What is a deep agent? (quick refresher) [click to expand]</summary>
+<p><br></p>
+<p>A <strong>deep agent</strong> is an AI agent that comes ready for real work. Like any agent,<br />
+it runs an LLM in a loop so the model can call tools and keep going until a task<br />
+is done; what makes it <em>deep</em> is the capabilities bundled in by default (a system<br />
+prompt, planning, a filesystem, and subagents), which is why it holds up on<br />
+long-horizon, multi-step jobs like research. Lesson 1 covers what a deep agent is<br />
+and when to reach for one in depth; the slideshow below is a 30-second recap.</p>
+<div class="sd-wrap" id="ss-whatis"></div>
+<script>
+buildSlideshow({
+  id: 'ss-whatis',
+  slides: [
+    {
+      src: 'images/m1.2-whatis-1.svg',
+      tag: 'Step 1 of 4 · LLM',
+      caption: `At the center is an LLM. On its own it just turns text into text: it predicts a response, but it can't take actions or use tools.`
+    },
+    {
+      src: 'images/m1.2-whatis-2.svg',
+      tag: 'Step 2 of 4 · Agent',
+      caption: `An agent wraps the LLM in a tool-calling loop. Now the model can call tools, read what comes back, and keep looping until the task is done.`
+    },
+    {
+      src: 'images/m1.2-whatis-3.svg',
+      tag: 'Step 3 of 4 · Deep agent',
+      caption: `A deep agent wraps that agent in a harness: the same loop, plus built-in capabilities (a system prompt, planning, a filesystem, subagents, context management) so it's reliable on real, multi-step work from day one.`
+    },
+    {
+      src: 'images/m1.2-whatis-4.svg',
+      tag: 'Step 4 of 4 · Filesystem',
+      caption: `One of those built-ins is a filesystem the agent can read from and write to (ls, write_file, and friends). It uses it as a scratchpad for notes and results on a long task. A later lesson covers it in depth; for now, just know it's there.`
+    },
+  ]
+});
+</script>
+</details>
+<p><strong>Where do the model and system prompt fit?</strong></p>
+<p>A deep agent is an LLM running in a loop, wrapped in built-in capabilities.</p>
+<p>The <strong>model</strong> is that LLM at the core, the part doing the reasoning.</p>
+<p>The <strong>system prompt</strong> is one of the built-ins the harness wraps around it: the<br />
+instructions the model sees on every call.</p>
+<p align="center">
+  <img src="images/m1.2-system-prompt-code.svg" alt="A faded create_deep_agent code snippet with two lines highlighted: model=model is labeled 'the model, the LLM engine' and system_prompt=... is labeled 'the system prompt, the text the model reads on every call (the USER part)'." width="700">
+</p>
 
-<div class="mcq-container" id="mcq-503492c1">
-    <div class="mcq-question">
-        <strong>Question:</strong> When an LLM decides it needs to call a tool, what does it actually produce?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '503492c1')"><strong>A)</strong> It calls the Python function directly</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '503492c1')"><strong>B)</strong> A ToolMessage with the result already included</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '503492c1')"><strong>C)</strong> A plain text description of what it would do</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '503492c1')"><strong>D)</strong> An AIMessage with a tool_calls list specifying the name and arguments</div>
-    </div>
-    <div id="mcq-answer-503492c1" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
-        <div class="mcq-explanation">The LLM never executes code. It outputs an AIMessage containing a tool_calls list with the tool name and arguments. The Tool Node inside the deep agent reads that list and performs the actual execution.</div>
-    </div>
-</div>
-
-<div class="mcq-container" id="mcq-c63d2624">
-    <div class="mcq-question">
-        <strong>Question:</strong> Which part of a @tool definition does the model read to decide when to reach for that tool?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'c63d2624')"><strong>A)</strong> The function name</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, 'c63d2624')"><strong>B)</strong> The docstring</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'c63d2624')"><strong>C)</strong> The type annotations on the parameters</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'c63d2624')"><strong>D)</strong> The return type annotation</div>
-    </div>
-    <div id="mcq-answer-c63d2624" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
-        <div class="mcq-explanation">The docstring is the description the model uses to decide when to call a tool versus another. It is the most important of the three parts. Write it as a clear, specific sentence describing when the tool should be used.</div>
-    </div>
-</div>
-
-<p><MCQ
-    question="Why does Human-in-the-Loop require a checkpointer?"
-    choices='["To save graph state so execution can pause and resume from the same point after a human decision", "To log tool call arguments to a file for audit purposes", "To validate that the human's approval matches the tool schema", "To prevent the LLM from calling the tool more than once"]'
-    correctIndex={0}
-    explanation="When interrupt() fires, the graph suspends and must save its current state so it can resume from exactly the same point once the human responds. A checkpointer handles that save-and-restore. Without one, the graph has no way to pause mid-run."
-/></p>
-<div class="mcq-container" id="mcq-997604bc">
-    <div class="mcq-question">
-        <strong>Question:</strong> In the SQL lab, write_sql calls interrupt() before db.run(). At that moment, has the database been modified?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '997604bc')"><strong>A)</strong> Yes — the write runs first, then waits for approval to commit</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '997604bc')"><strong>B)</strong> It depends on the checkpointer used</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '997604bc')"><strong>C)</strong> No — interrupt() fires before db.run(), so nothing has been written yet</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '997604bc')"><strong>D)</strong> Yes — a draft write is created and rolled back on rejection</div>
-    </div>
-    <div id="mcq-answer-997604bc" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
-        <div class="mcq-explanation">interrupt() fires before db.run(). The graph pauses and the pending SQL surfaces to your script. The database is untouched until you approve; only then does db.run() execute. If you reject, write_sql returns 'Write cancelled.' and db.run() is never called.</div>
-    </div>
-</div>
+<p>Those two are the pieces you control most directly, so they're where this module<br />
+lives. You'll swap the model and watch the assembled prompt structure stay put, then add<br />
+your own instructions to the front of the prompt and see exactly where they land.<br />
+By the end you'll be able to open a run in LangSmith and name every part of the<br />
+assembled system prompt.</p>
+<h2 id="references">References</h2>
+<p><strong>Documentation:</strong><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/overview" target="_blank" rel="noopener noreferrer">Deep Agents overview</a><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/models" target="_blank" rel="noopener noreferrer">Models (Deep Agents)</a><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/customization#prompt-assembly" target="_blank" rel="noopener noreferrer">Customization &amp; prompt assembly (Deep Agents)</a><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/context-engineering" target="_blank" rel="noopener noreferrer">Context engineering (Deep Agents)</a><br />
+- <a href="https://github.com/langchain-ai/deepagents" target="_blank" rel="noopener noreferrer">deepagents README (GitHub)</a><br />
+- <a href="https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents/deepagents/profiles/harness" target="_blank" rel="noopener noreferrer">Built-in harness profiles (GitHub)</a></p>
 
     <script>
         // Handle MCQ choice clicks
