@@ -623,6 +623,7 @@
 </tr>
 </tbody>
 </table>
+<p>The table above covers the main categories used in this course. For the full directory of 50+ supported providers (OpenAI, Anthropic, Google, Groq, Ollama, Mistral, and many more), see the <a href="https://docs.langchain.com/oss/python/integrations/chat" target="_blank" rel="noopener noreferrer">LangChain chat model integrations</a>.</p>
 <p>Every lab gets its model from a single shared file, <strong><code>python/models.py</code></strong>. It exports a <code>model</code> object built with <code>init_chat_model(...)</code>, and the lab scripts simply do <code>from models import model</code>.</p>
 <p>To use a different model or provider, edit <code>models.py</code> (comment out the active line and uncomment the desired model):</p>
 <pre><code class="language-python"># python/models.py
@@ -750,7 +751,8 @@ model = init_chat_model(&quot;ollama:llama3.2&quot;)
 - <a href="https://docs.langchain.com/oss/python/deepagents/context-engineering" target="_blank" rel="noopener noreferrer">Context engineering (Deep Agents)</a><br />
 - <a href="https://github.com/langchain-ai/deepagents" target="_blank" rel="noopener noreferrer">deepagents README (GitHub)</a><br />
 - <a href="https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents/deepagents/profiles/harness" target="_blank" rel="noopener noreferrer">Built-in harness profiles (GitHub)</a><br />
-- <a href="https://docs.langchain.com/oss/python/integrations/providers/overview" target="_blank" rel="noopener noreferrer">Providers overview (LangChain)</a></p>
+- <a href="https://docs.langchain.com/oss/python/integrations/providers/overview" target="_blank" rel="noopener noreferrer">Providers overview (LangChain)</a><br />
+- <a href="https://docs.langchain.com/oss/python/integrations/chat" target="_blank" rel="noopener noreferrer">Chat model integrations (LangChain)</a></p>
 <script>
 (function () {
   var tabs = document.querySelectorAll('.lt-tab');
