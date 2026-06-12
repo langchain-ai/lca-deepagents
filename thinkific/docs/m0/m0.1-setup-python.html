@@ -540,9 +540,9 @@
 <h2 id="setup">Setup</h2>
 <h3 id="prerequisites">Prerequisites</h3>
 <ul>
-<li>Python 3.11–3.13</li>
+<li>Python 3.11–3.14</li>
 <li><a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener noreferrer">uv</a> — <a href="#installing-uv">how to install</a></li>
-<li>Anthropic API key — <a href="https://console.anthropic.com/" target="_blank" rel="noopener noreferrer">get one</a></li>
+<li>LLM Model API key — choose your favorite provider. The course defaults to Anthropic (<a href="https://console.anthropic.com/" target="_blank" rel="noopener noreferrer">sign up for an Anthropic API key here</a>)</li>
 <li>LangSmith API key — <a href="#getting-started-with-langsmith">how to get one</a></li>
 </ul>
 <h3 id="installation">Installation</h3>
@@ -550,12 +550,30 @@
 <pre><code class="language-bash">git clone https://github.com/langchain-ai/lca-deepagents.git
 cd lca-deepagents/python
 </code></pre>
-<p>Copy <code>.env.example</code> and fill in your API keys:</p>
+<p>Make a copy of <code>.env.example</code>:</p>
 <pre><code class="language-bash">cp .env.example .env
 </code></pre>
+<p>Insert API keys directly into <code>.env</code> — LangSmith (required) and your model provider (required):</p>
+<pre><code class="language-bash"># LangSmith — tracing and observability
+LANGSMITH_API_KEY=lsv2_...
+LANGSMITH_TRACING=true
+LANGSMITH_PROJECT=lca-deepagents
+
+# Model provider API keys — set the one you're using
+ANTHROPIC_API_KEY=your-anthropic-api-key
+# OPENAI_API_KEY=your-openai-api-key
+# GOOGLE_API_KEY=your-google-api-key
+</code></pre>
+<p>This course uses <code>load_dotenv(override=True)</code> — <code>.env</code> values always win over OS environment variables.</p>
 <p>Install dependencies:</p>
 <pre><code class="language-bash">uv sync
 </code></pre>
+<h3 id="setup-verification">Setup Verification</h3>
+<p>After completing the steps above, run the following to verify your environment:</p>
+<pre><code class="language-bash">cd python
+uv run python env_utils.py
+</code></pre>
+<p>You should see masked values for each key in your <code>.env</code> file. If anything shows <code>&lt;not set&gt;</code>, see <a href="#setup-verification-issues">Setup Verification Issues</a>.</p>
 <h3 id="setup-your-coding-agent">Setup Your Coding Agent</h3>
 <p>Using a coding agent to build your agents is encouraged throughout this course. Three additions make it significantly more effective.</p>
 <h4 id="langchain-skills">LangChain Skills</h4>
@@ -571,6 +589,28 @@ cd lca-deepagents/python
 <p><a href="https://docs.langchain.com/langsmith/skills" target="_blank" rel="noopener noreferrer">Full setup instructions</a></p>
 <hr />
 <h2 id="setup-details">Setup Details</h2>
+<h3 id="setup-verification-issues">Setup Verification Issues</h3>
+<details>
+<summary>ImportError when running env_utils.py</summary>
+<p>If you see <code>ModuleNotFoundError: No module named 'dotenv'</code>, you're likely running Python outside the virtual environment.</p>
+<p><strong>Solution:</strong> Use <code>uv run python env_utils.py</code> (recommended), or activate the virtual environment first:<br />
+- macOS/Linux: <code>source .venv/bin/activate</code><br />
+- Windows: <code>.venv\Scripts\activate</code></p>
+</details>
+<details>
+<summary>A key shows &lt;not set&gt;</summary>
+<p>The key exists in <code>.env.example</code> but has no value in your <code>.env</code> file.</p>
+<p><strong>Solution:</strong> Open <code>python/.env</code> and fill in the missing value.</p>
+</details>
+<details>
+<summary>LangSmith tracing errors</summary>
+<p>If you see tracing errors at runtime, check that both <code>LANGSMITH_TRACING=true</code> and a valid <code>LANGSMITH_API_KEY</code> are set in your <code>.env</code> file. If you don't have a LangSmith account yet, set <code>LANGSMITH_TRACING=false</code> to disable tracing until you do.</p>
+</details>
+<details>
+<summary>Wrong Python version</summary>
+<p>The course requires Python 3.11–3.14.</p>
+<p><strong>Solution:</strong> If using <code>uv</code>, run <code>uv sync</code> — it will install the correct Python version automatically. If using pip, install Python 3.11–3.14 from <a href="https://www.python.org/downloads/" target="_blank" rel="noopener noreferrer">python.org</a>.</p>
+</details>
 <h3 id="getting-started-with-langsmith">Getting Started with LangSmith</h3>
 <ul>
 <li>Create a <a href="https://smith.langchain.com/" target="_blank" rel="noopener noreferrer">LangSmith</a> account</li>
