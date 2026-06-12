@@ -6,6 +6,7 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: #030710; overflow: hidden; }
+  .sd-caption { min-height: unset !important; }
   .slide { display: none; }
   .slide.active { display: block; }
   .slide svg { width: 100%; height: auto; display: block; }
@@ -28,24 +29,24 @@
           <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#FBB0A5" font-family="'IBM Plex Mono',monospace">[OLD WAY]</text>
           <text x="400" y="64" text-anchor="middle" font-size="19" font-weight="300" fill="#F2FAFF">The old way: one integration per service</text>
           <text x="400" y="86" text-anchor="middle" font-size="12" fill="#99D3FF" font-family="'IBM Plex Mono',monospace">every service needs custom code in your agent</text>
-          <rect x="60" y="144" width="140" height="120" rx="10" fill="#0D1322" stroke="#7FC8FF" stroke-width="2"/>
-          <text x="130" y="196" text-anchor="middle" font-size="14" font-weight="400" fill="#7FC8FF">Your</text>
-          <text x="130" y="214" text-anchor="middle" font-size="14" font-weight="400" fill="#7FC8FF">Agent</text>
-          <line x1="200" y1="164" x2="380" y2="162" stroke="#634643" stroke-width="1.4" marker-end="url(#s1ba)" stroke-dasharray="5,3"/>
-          <rect x="382" y="142" width="120" height="36" rx="6" fill="#161F34" stroke="#634643" stroke-width="1.2"/>
-          <text x="442" y="164" text-anchor="middle" font-size="10.5" fill="#FBB0A5">Gmail</text>
-          <text x="320" y="154" text-anchor="middle" font-size="9" fill="#634643">custom code</text>
-          <line x1="200" y1="204" x2="380" y2="204" stroke="#634643" stroke-width="1.4" marker-end="url(#s1ba)" stroke-dasharray="5,3"/>
-          <rect x="382" y="186" width="120" height="36" rx="6" fill="#161F34" stroke="#634643" stroke-width="1.2"/>
-          <text x="442" y="208" text-anchor="middle" font-size="10.5" fill="#FBB0A5">GitHub</text>
-          <text x="320" y="198" text-anchor="middle" font-size="9" fill="#634643">custom code</text>
-          <line x1="200" y1="244" x2="380" y2="246" stroke="#634643" stroke-width="1.4" marker-end="url(#s1ba)" stroke-dasharray="5,3"/>
-          <rect x="382" y="228" width="120" height="36" rx="6" fill="#161F34" stroke="#634643" stroke-width="1.2"/>
-          <text x="442" y="250" text-anchor="middle" font-size="10.5" fill="#FBB0A5">Slack</text>
-          <text x="320" y="238" text-anchor="middle" font-size="9" fill="#634643">custom code</text>
-          <rect x="536" y="162" width="204" height="56" rx="8" fill="#0D1322" stroke="#634643" stroke-width="1.2"/>
-          <text x="638" y="184" text-anchor="middle" font-size="11" fill="#FBB0A5">Each service: different SDK,</text>
-          <text x="638" y="200" text-anchor="middle" font-size="11" fill="#FBB0A5">different auth, different errors.</text>
+          <rect x="60" y="119" width="140" height="120" rx="10" fill="#0D1322" stroke="#7FC8FF" stroke-width="2"/>
+          <text x="130" y="171" text-anchor="middle" font-size="14" font-weight="400" fill="#7FC8FF">Your</text>
+          <text x="130" y="189" text-anchor="middle" font-size="14" font-weight="400" fill="#7FC8FF">Agent</text>
+          <line x1="200" y1="139" x2="380" y2="137" stroke="#634643" stroke-width="1.4" marker-end="url(#s1ba)" stroke-dasharray="5,3"/>
+          <rect x="382" y="117" width="120" height="36" rx="6" fill="#161F34" stroke="#634643" stroke-width="1.2"/>
+          <text x="442" y="139" text-anchor="middle" font-size="10.5" fill="#FBB0A5">Gmail</text>
+          <text x="320" y="129" text-anchor="middle" font-size="9" fill="#634643">custom code</text>
+          <line x1="200" y1="179" x2="380" y2="179" stroke="#634643" stroke-width="1.4" marker-end="url(#s1ba)" stroke-dasharray="5,3"/>
+          <rect x="382" y="161" width="120" height="36" rx="6" fill="#161F34" stroke="#634643" stroke-width="1.2"/>
+          <text x="442" y="183" text-anchor="middle" font-size="10.5" fill="#FBB0A5">GitHub</text>
+          <text x="320" y="173" text-anchor="middle" font-size="9" fill="#634643">custom code</text>
+          <line x1="200" y1="219" x2="380" y2="221" stroke="#634643" stroke-width="1.4" marker-end="url(#s1ba)" stroke-dasharray="5,3"/>
+          <rect x="382" y="203" width="120" height="36" rx="6" fill="#161F34" stroke="#634643" stroke-width="1.2"/>
+          <text x="442" y="225" text-anchor="middle" font-size="10.5" fill="#FBB0A5">Slack</text>
+          <text x="320" y="213" text-anchor="middle" font-size="9" fill="#634643">custom code</text>
+          <rect x="536" y="137" width="204" height="56" rx="8" fill="#0D1322" stroke="#634643" stroke-width="1.2"/>
+          <text x="638" y="159" text-anchor="middle" font-size="11" fill="#FBB0A5">Each service: different SDK,</text>
+          <text x="638" y="175" text-anchor="middle" font-size="11" fill="#FBB0A5">different auth, different errors.</text>
           <text x="400" y="330" text-anchor="middle" font-size="12.5" fill="#B2DEFF">Every new service means more bespoke integration code.</text>
           <text x="400" y="352" text-anchor="middle" font-size="12.5" fill="#B2DEFF">MCP replaces all of this with one standard interface.</text>
         </svg>
@@ -90,20 +91,20 @@
           <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#E3FF8F" font-family="'IBM Plex Mono',monospace">[NEW WAY]</text>
           <text x="400" y="64" text-anchor="middle" font-size="19" font-weight="300" fill="#F2FAFF">MCP: one standard interface</text>
           <text x="400" y="86" text-anchor="middle" font-size="12" fill="#99D3FF" font-family="'IBM Plex Mono',monospace">any MCP-aware client connects to any MCP server</text>
-          <rect x="56" y="144" width="160" height="120" rx="10" fill="#0D1322" stroke="#7FC8FF" stroke-width="2"/>
-          <text x="136" y="196" text-anchor="middle" font-size="14" font-weight="400" fill="#7FC8FF">Your Agent</text>
-          <text x="136" y="216" text-anchor="middle" font-size="11" fill="#B2DEFF">LangChain / deepagents</text>
-          <line x1="216" y1="204" x2="284" y2="204" stroke="#7FC8FF" stroke-width="2" marker-end="url(#s3fa)"/>
-          <rect x="286" y="134" width="228" height="140" rx="10" fill="#0D1322" stroke="#40668D" stroke-width="2"/>
-          <text x="400" y="182" text-anchor="middle" font-size="14" font-weight="400" fill="#B2DEFF">MCP Server</text>
-          <text x="400" y="204" text-anchor="middle" font-size="11" fill="#5BADDF">standard protocol</text>
-          <text x="400" y="222" text-anchor="middle" font-size="11" fill="#5BADDF">run by anyone, anywhere</text>
-          <text x="400" y="246" text-anchor="middle" font-size="10" fill="#40668D" font-family="'IBM Plex Mono',monospace">no custom code in your agent</text>
-          <line x1="514" y1="204" x2="582" y2="204" stroke="#7FC8FF" stroke-width="2" marker-end="url(#s3fa)"/>
-          <rect x="584" y="144" width="160" height="120" rx="10" fill="#0D1322" stroke="#6E8900" stroke-width="2"/>
-          <text x="664" y="190" text-anchor="middle" font-size="14" font-weight="400" fill="#E3FF8F">Service</text>
-          <text x="664" y="211" text-anchor="middle" font-size="11" fill="#B2DEFF">Gmail, GitHub,</text>
-          <text x="664" y="229" text-anchor="middle" font-size="11" fill="#B2DEFF">LangChain Docs…</text>
+          <rect x="56" y="119" width="160" height="120" rx="10" fill="#0D1322" stroke="#7FC8FF" stroke-width="2"/>
+          <text x="136" y="171" text-anchor="middle" font-size="14" font-weight="400" fill="#7FC8FF">Your Agent</text>
+          <text x="136" y="191" text-anchor="middle" font-size="11" fill="#B2DEFF">LangChain / deepagents</text>
+          <line x1="216" y1="179" x2="284" y2="179" stroke="#7FC8FF" stroke-width="2" marker-end="url(#s3fa)"/>
+          <rect x="286" y="109" width="228" height="140" rx="10" fill="#0D1322" stroke="#40668D" stroke-width="2"/>
+          <text x="400" y="157" text-anchor="middle" font-size="14" font-weight="400" fill="#B2DEFF">MCP Server</text>
+          <text x="400" y="179" text-anchor="middle" font-size="11" fill="#5BADDF">standard protocol</text>
+          <text x="400" y="197" text-anchor="middle" font-size="11" fill="#5BADDF">run by anyone, anywhere</text>
+          <text x="400" y="221" text-anchor="middle" font-size="10" fill="#40668D" font-family="'IBM Plex Mono',monospace">no custom code in your agent</text>
+          <line x1="514" y1="179" x2="582" y2="179" stroke="#7FC8FF" stroke-width="2" marker-end="url(#s3fa)"/>
+          <rect x="584" y="119" width="160" height="120" rx="10" fill="#0D1322" stroke="#6E8900" stroke-width="2"/>
+          <text x="664" y="165" text-anchor="middle" font-size="14" font-weight="400" fill="#E3FF8F">Service</text>
+          <text x="664" y="186" text-anchor="middle" font-size="11" fill="#B2DEFF">Gmail, GitHub,</text>
+          <text x="664" y="204" text-anchor="middle" font-size="11" fill="#B2DEFF">LangChain Docs…</text>
           <text x="400" y="328" text-anchor="middle" font-size="12.5" fill="#B2DEFF">The MCP server handles the service-specific details.</text>
           <text x="400" y="350" text-anchor="middle" font-size="12.5" fill="#B2DEFF">Your agent only speaks the MCP protocol.</text>
         </svg>
