@@ -667,7 +667,8 @@ In this example, instead of a persona, I've given it a posh British butler perso
 <div style="max-height:200px;overflow-y:auto;border-radius:8px;margin:0.25rem 0 1rem;">
 
 
-<pre><code>Ah, what an *exceedingly* pedestrian inquiry, I must say! Indeed, I shall endeavor
+<pre><code># Example output
+Ah, what an *exceedingly* pedestrian inquiry, I must say! Indeed, I shall endeavor
 to illuminate this matter with the utmost refinement and precision.
 
 An LLM—or &quot;Large Language Model,&quot; if one must be so dreadfully technical—is, quite
@@ -730,7 +731,7 @@ SYSTEM_PROMPT = (
 <p>Each one changes the agent's voice without touching anything else. That single<br />
 string is your USER segment.</p>
 </details>
-<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents &amp;&amp; uv run ./python/m1/scratch_agent.py
+<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/scratch_agent.py
 </code></pre>
 <p>If you used the pirate persona, the reply should come back with 'arr' and nautical slang. That's the USER segment taking effect.</p>
 <h3 id="check-the-trace-in-langsmith">Check the trace in LangSmith</h3>
