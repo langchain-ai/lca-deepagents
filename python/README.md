@@ -1,3 +1,5 @@
+You can find the course at [Deep Agents](<fill in Thinkific URL>).
+
 # lca-deepagents
 
 LangChain Academy Course on Deep Agents
