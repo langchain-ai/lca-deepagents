@@ -597,11 +597,7 @@ it from up to <strong>three parts</strong>:</p>
 </tr>
 <tr>
 <td><strong>BASE</strong></td>
-<td>The SDK's built-in <code>BASE_AGENT_PROMPT</code> (behavior guidance). Always present, unless a harness profile replaces it.</td>
-</tr>
-<tr>
-<td><strong>SUFFIX</strong></td>
-<td>Model-specific tuning from a <strong>harness profile</strong> (<code>system_prompt_suffix</code>). Optional.</td>
+<td>The SDK's built-in <code>BASE_AGENT_PROMPT</code> (behavior guidance). Always present.</td>
 </tr>
 </tbody>
 </table>
@@ -612,22 +608,17 @@ buildSlideshow({
   slides: [
     {
       src: 'images/m1.l2-assembly-1.svg',
-      tag: 'Step 1 of 4 · BASE',
+      tag: 'Step 1 of 3 · BASE',
       caption: `It starts with the SDK's BASE prompt: built-in behavior guidance (be concise, verify your work, ask before assuming). Every deep agent gets it, on every call, no matter the model.`
     },
     {
       src: 'images/m1.l2-assembly-2.svg',
-      tag: 'Step 2 of 4 · USER',
+      tag: 'Step 2 of 3 · USER',
       caption: `The USER segment is the system_prompt you provide. It's free-form text where you give the agent its character: a persona and tone, ground rules and constraints, or the domain and task to focus on.`
     },
     {
-      src: 'images/m1.l2-assembly-3.svg',
-      tag: 'Step 3 of 4 · SUFFIX',
-      caption: `A model's harness profile may add a SUFFIX at the end, for model-specific tuning. USER, then BASE, then SUFFIX is exactly what create_deep_agent assembles.`
-    },
-    {
       src: 'images/m1.l4-assembly-preview.svg',
-      tag: 'Step 4 of 4 · preview',
+      tag: 'Step 3 of 3 · preview',
       caption: `There's one more layer, middleware, that appends additional sections at request time.`
     },
   ]
@@ -700,58 +691,6 @@ In this example, instead of a persona, I've told it to only use all caps.
 </tbody>
 </table>
 
-<details>
-<summary>Extension: Harness Profiles (Under The Hood) [click to expand]</summary>
-<p><br></p>
-<p>A harness profile is model-specific configuration the framework injects automatically; that suffix you see at the bottom of the base system prompt text is how it patches known weaknesses for that particular model without you having to think about it. A profile can set a <code>system_prompt_suffix</code> (the SUFFIX, appended after BASE), replace BASE outright with a <code>base_system_prompt</code> (the CUSTOM variant), or drop optional middleware.</p>
-<details>
-<summary>🎥 LangSmith trace walkthrough [click to expand]</summary>
-<p><br></p>
-<Video src="TODO" />
-</details>
-<p>The SDK ships built-in profiles for several models (they live in<br />
-<code>deepagents/profiles/harness/</code>):</p>
-<table>
-<thead>
-<tr>
-<th>Model</th>
-<th>What its profile adds as the SUFFIX</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>anthropic:claude-haiku-4-5</code> <em>(our default)</em></td>
-<td>parallel tool calls, investigate-before-answering, reflect on tool results</td>
-</tr>
-<tr>
-<td><code>anthropic:claude-sonnet-4-6</code></td>
-<td>parallel tool calls, grounded (non-speculative) answers, reflection</td>
-</tr>
-<tr>
-<td><code>anthropic:claude-opus-4-7</code></td>
-<td>universal Anthropic guidance plus Opus-4.7-specific steering</td>
-</tr>
-<tr>
-<td><code>openai:gpt-5.x-codex</code></td>
-<td>autonomous-engineer demeanor, bias to action, parallel tools</td>
-</tr>
-<tr>
-<td>anything with no registered profile (e.g. <code>gpt-4.1-mini</code>)</td>
-<td>nothing; no SUFFIX at all</td>
-</tr>
-</tbody>
-</table>
-<p>That's why, back in Lab 1, swapping the model changed the tail of the system<br />
-prompt: each model brings its own SUFFIX, or none. You normally never touch<br />
-these; the SDK tunes each model to behave well out of the box. (If you ever need<br />
-to, <code>register_harness_profile(...)</code> lets you add your own.)</p>
-<blockquote>
-<p>One nuance the trace makes clear: the SUFFIX is appended to the <strong>BASE prompt<br />
-text</strong>, not to the end of the whole message. It's the last thing in the<br />
-assembled <code>system_prompt</code> string; the middleware sections (<code>write_todos</code>,<br />
-filesystem, <code>task</code>) are then added as separate blocks <em>after</em> that.</p>
-</blockquote>
-</details>
 </div>
 <div class="lt-panel" id="p-lab2" role="tabpanel">
 <h2 id="lab-2-the-system-prompt">Lab 2: The System Prompt</h2>
@@ -783,9 +722,7 @@ SYSTEM_PROMPT = (
 <p>Each one changes the agent's voice without touching anything else. That single<br />
 string is your USER segment.</p>
 </details>
-<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents
-</code></pre>
-<pre><code class="language-bash">uv run ./python/m1/scratch_agent.py
+<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents &amp;&amp; uv run ./python/m1/scratch_agent.py
 </code></pre>
 <p>If you used the pirate persona, the reply should come back with 'arr' and nautical slang. That's the USER segment taking effect.</p>
 <h3 id="check-the-trace-in-langsmith">Check the trace in LangSmith</h3>

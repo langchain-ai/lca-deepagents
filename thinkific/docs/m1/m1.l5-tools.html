@@ -984,10 +984,26 @@ print(result[&quot;messages&quot;][-1].content)
 </code></pre>
 <hr />
 <h3 id="run-it">Run it</h3>
-<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents
+<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents &amp;&amp; uv run ./python/m1/scratch_agent.py
 </code></pre>
-<pre><code class="language-bash">uv run ./python/m1/scratch_agent.py
+<div style="max-height:200px;overflow-y:auto;border-radius:8px;margin:0.5rem 0 1rem;">
+
+
+<pre><code>**Top 5 Best-Selling Artists by Total Revenue:**
+
+1. **Iron Maiden** - $138.60
+2. **U2** - $105.93
+3. **Metallica** - $90.09
+4. **Led Zeppelin** - $86.13
+5. **Lost** - $81.59
+
+The SQL query joins the Artist, Album, Track, and InvoiceLine tables to
+calculate total revenue (UnitPrice × Quantity) per artist, then ranks by
+descending total.
 </code></pre>
+
+
+</div>
 <p>The agent reads the genres first, then proposes an INSERT. The terminal pauses and prints the SQL. Type <code>yes</code> to approve or <code>no</code> to cancel, then note the result: the agent's final message will confirm whether the genre was added.</p>
 <div class="callout">
 <strong>What is happening</strong><br>
