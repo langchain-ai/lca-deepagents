@@ -8,7 +8,8 @@ from deepagents.backends.langsmith import LangSmithSandbox
 from langsmith.sandbox import SandboxClient
 
 client = SandboxClient()
-ls_sandbox = client.create_sandbox(name="lca-deepagents-lab", template_name="deepagents-deploy")
+ls_sandbox = client.create_sandbox(name="lca-deepagents-lab")
+print(f"Sandbox: {ls_sandbox.name}  (id: {ls_sandbox.id})")
 backend = LangSmithSandbox(sandbox=ls_sandbox)
 
 agent = create_deep_agent(

@@ -207,13 +207,6 @@
             padding-left: 5px;
         }
 
-        /* Code output blocks (non-copyable) */
-        pre.no-copy {
-            background: #0a0f1a;
-            border: 1px solid #1a2a3a;
-            opacity: 0.85;
-        }
-
         pre .copy-button-inline {
             position: absolute;
             top: 0.5rem;
@@ -629,12 +622,12 @@ graph TB
 <hr />
 <h2 id="single-backend">Single backend</h2>
 <p>Pass any backend directly to <code>create_deep_agent</code>. Here the agent stores all files in the LangGraph store, persisted across threads.</p>
-<div class="tabs-block" data-tabs="[{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m2/agent.py\nfrom models import model\nfrom deepagents import create_deep_agent\nfrom deepagents.backends import StoreBackend\nfrom langgraph.store.memory import InMemoryStore\n\nagent = create_deep_agent(\n    model=model,\n    backend=StoreBackend(\n        namespace=lambda rt: (rt.server_info.user.identity,),\n    ),\n    store=InMemoryStore(),  # swap for PostgresStore in production\n)&quot;, &quot;highlights&quot;: [10, 12]}]"></div>
+<div class="tabs-block" data-tabs="[{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m2/m2_2_agent.py\nfrom models import model\nfrom deepagents import create_deep_agent\nfrom deepagents.backends import StoreBackend\nfrom langgraph.store.memory import InMemoryStore\n\nagent = create_deep_agent(\n    model=model,\n    backend=StoreBackend(\n        namespace=lambda rt: (rt.server_info.user.identity,),\n    ),\n    store=InMemoryStore(),  # swap for PostgresStore in production\n)&quot;, &quot;highlights&quot;: [10, 12]}]"></div>
 <p><code>rt</code> is the LangGraph runtime passed to the backend at invocation time. <code>rt.server_info.user.identity</code> is the caller's user ID; using it as the namespace key keeps each user's files isolated in the store.</p>
 <hr />
 <h2 id="composite-backend">Composite backend</h2>
 <p><code>CompositeBackend</code> routes path prefixes to different backends. Everything not matched by a route falls through to the <code>default</code>.</p>
-<div class="tabs-block" data-tabs="[{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m2/agent.py\nfrom models import model\nfrom deepagents import create_deep_agent\nfrom deepagents.backends import CompositeBackend, StateBackend, StoreBackend\nfrom langgraph.store.memory import InMemoryStore\n\nagent = create_deep_agent(\n    model=model,\n    backend=CompositeBackend(\n        default=StateBackend(),\n        routes={\n            \&quot;/memories/\&quot;: StoreBackend(namespace=lambda rt: (rt.server_info.user.identity,)),\n            \&quot;/skills/\&quot;: StoreBackend(namespace=lambda rt: (rt.server_info.user.identity,)),\n        },\n    ),\n    store=InMemoryStore(),  # swap for PostgresStore in production\n)&quot;, &quot;highlights&quot;: [12, 13, 16]}]"></div>
+<div class="tabs-block" data-tabs="[{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m2/m2_2_agent.py\nfrom models import model\nfrom deepagents import create_deep_agent\nfrom deepagents.backends import CompositeBackend, StateBackend, StoreBackend\nfrom langgraph.store.memory import InMemoryStore\n\nagent = create_deep_agent(\n    model=model,\n    backend=CompositeBackend(\n        default=StateBackend(),\n        routes={\n            \&quot;/memories/\&quot;: StoreBackend(namespace=lambda rt: (rt.server_info.user.identity,)),\n            \&quot;/skills/\&quot;: StoreBackend(namespace=lambda rt: (rt.server_info.user.identity,)),\n        },\n    ),\n    store=InMemoryStore(),  # swap for PostgresStore in production\n)&quot;, &quot;highlights&quot;: [12, 13, 16]}]"></div>
 <ul>
 <li><code>/memories/</code> → durable store, persists across threads</li>
 <li><code>/skills/</code> → durable store, persists across threads</li>
@@ -674,7 +667,7 @@ graph TB
 </tr>
 </tbody>
 </table>
-<div class="tabs-block" data-tabs="[{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m2/agent.py\nfrom models import model\nfrom deepagents import create_deep_agent, FilesystemPermission\nfrom deepagents.backends import CompositeBackend, StateBackend, StoreBackend\nfrom langgraph.store.memory import InMemoryStore\n\nagent = create_deep_agent(\n    model=model,\n    backend=CompositeBackend(\n        default=StateBackend(),\n        routes={\n            \&quot;/memories/\&quot;: StoreBackend(namespace=lambda rt: (rt.server_info.user.identity,)),\n            \&quot;/skills/\&quot;: StoreBackend(namespace=lambda rt: (rt.server_info.user.identity,)),\n        },\n    ),\n    store=InMemoryStore(),\n    permissions=[\n        FilesystemPermission(\n            operations=[\&quot;write\&quot;],\n            paths=[\&quot;/skills/**\&quot;],\n            mode=\&quot;deny\&quot;,\n        ),\n    ],\n)&quot;, &quot;highlights&quot;: [17, 18, 19, 20, 21, 22, 23]}]"></div>
+<div class="tabs-block" data-tabs="[{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m2/m2_2_agent.py\nfrom models import model\nfrom deepagents import create_deep_agent, FilesystemPermission\nfrom deepagents.backends import CompositeBackend, StateBackend, StoreBackend\nfrom langgraph.store.memory import InMemoryStore\n\nagent = create_deep_agent(\n    model=model,\n    backend=CompositeBackend(\n        default=StateBackend(),\n        routes={\n            \&quot;/memories/\&quot;: StoreBackend(namespace=lambda rt: (rt.server_info.user.identity,)),\n            \&quot;/skills/\&quot;: StoreBackend(namespace=lambda rt: (rt.server_info.user.identity,)),\n        },\n    ),\n    store=InMemoryStore(),\n    permissions=[\n        FilesystemPermission(\n            operations=[\&quot;write\&quot;],\n            paths=[\&quot;/skills/**\&quot;],\n            mode=\&quot;deny\&quot;,\n        ),\n    ],\n)&quot;, &quot;highlights&quot;: [17, 18, 19, 20, 21, 22, 23]}]"></div>
 <p>The agent can read <code>/skills/</code> but not write to it; skills are managed by application code, not the agent. <code>/memories/</code> remains fully read/write.</p>
 <hr />
 <h2 id="recap">Recap</h2>
@@ -695,7 +688,7 @@ graph TB
 <h2 id="permissions_1">Permissions</h2>
 <p>The lab agent uses a <code>CompositeBackend</code> with <code>/memories/</code> and <code>/skills/</code> both routed to the store. A <code>FilesystemPermission</code> rule denies all writes to <code>/skills/**</code>.</p>
 <p>The agent is pre-seeded with a Chinook sales skill and asked to read it, then add a promotion note. You'll see it read successfully and get blocked on the write.</p>
-<pre><code class="language-python"># python/m2/agent.py
+<pre><code class="language-python"># python/m2/m2_2_agent.py
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -774,7 +767,7 @@ result = agent.invoke(
 print(result[&quot;messages&quot;][-1].content)
 </code></pre>
 <pre><code class="language-bash">cd python
-uv run ./m2/agent.py
+uv run ./m2/m2_2_agent.py
 </code></pre>
 <pre><code>The file is read-only; I don't have write permission to /skills/chinook-sales/SKILL.md.
 Here's the current content of the file for reference:
@@ -1324,7 +1317,7 @@ Unfortunately, the file is write-protected and I'm unable to modify it directly.
         // Add copy buttons to regular code blocks
         function addCopyButtonsToCodeBlocks() {
             // Find all pre blocks that aren't inside tabs-block containers
-            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre):not(.no-copy)');
+            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre)');
 
             preBlocks.forEach(pre => {
                 // Skip if already has a copy button
