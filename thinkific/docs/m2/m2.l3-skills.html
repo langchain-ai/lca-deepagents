@@ -584,7 +584,8 @@
 <h3 id="the-skillmd-file">The SKILL.md file</h3>
 <p>Each skill lives in its own named directory (<code>skills/qualify-lead/SKILL.md</code>, <code>skills/draft-pitch/SKILL.md</code>) and the directory name must match the <code>name</code> field in the frontmatter.</p>
 <p>The <code>SKILL.md</code> file has two parts: a YAML frontmatter block at the top, and the skill instructions below it.</p>
-<pre><code class="language-markdown">---
+<pre><code class="language-markdown">&lt;!-- python/m2/skills/qualify-lead/SKILL.md --&gt;
+---
 name: qualify-lead
 description: Use when the user wants to qualify a sales lead or prospect.
 ---
@@ -689,7 +690,8 @@ After gathering responses, classify the lead and summarise your findings:
 <hr />
 <h3 id="2-create-draft-pitchskillmd">2. Create <code>draft-pitch/SKILL.md</code></h3>
 <p>Create <code>python/m2/skills/draft-pitch/SKILL.md</code> with the following content:</p>
-<pre><code class="language-markdown">---
+<pre><code class="language-markdown">&lt;!-- python/m2/skills/draft-pitch/SKILL.md --&gt;
+---
 name: draft-pitch
 description: Use when the user wants to write a sales pitch or outreach message for a prospect.
 ---
@@ -713,7 +715,8 @@ Keep the final pitch under 150 words.
 <hr />
 <h3 id="3-create-sales_agentpy">3. Create <code>sales_agent.py</code></h3>
 <p>Create <code>python/m2/sales_agent.py</code>:</p>
-<pre><code class="language-python">import sys
+<pre><code class="language-python"># python/m2/sales_agent.py
+import sys
 from pathlib import Path
 from deepagents import create_deep_agent
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))

@@ -554,8 +554,9 @@ message's content.
 <summary>No coding agent? Create the file manually [click to expand]</summary>
 <p><br></p>
 <p>Create <code>python/m1/scratch_agent.py</code>:</p>
-<!-- code-highlight-1:5,8,9,10 -->
-<pre><code class="language-python">import sys
+<!-- code-highlight-1:6,9,10,11 -->
+<pre><code class="language-python"># python/m1/scratch_agent.py
+import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from models import model

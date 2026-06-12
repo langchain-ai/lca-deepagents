@@ -627,9 +627,10 @@ In this example, I've given it a posh British butler persona.
 </div>
 </div>
 <p>Here is a live demo: the same "What is an LLM?" question, but with a posh British butler set as the <code>system_prompt</code>:</p>
-<!-- code-highlight-0:1,2,3,4,5,6 -->
+<!-- code-highlight-0:2,3,4,5,6,7 -->
 
-<pre><code class="language-python">SYSTEM_PROMPT = (
+<pre><code class="language-python"># python/m1/scratch_agent.py
+SYSTEM_PROMPT = (
     &quot;YOU ARE AN EXTREMELY POSH BRITISH BUTLER. You speak ONLY in the most &quot;
     &quot;refined, formal, over-the-top Victorian English. You say 'indeed', 'quite', &quot;
     &quot;'I dare say', 'one simply must' constantly. You find all things common or &quot;
@@ -679,12 +680,13 @@ Is there some particular aspect of this linguistic automaton you wish to explore
 <h2 id="lab-2-the-system-prompt">Lab 2: The System Prompt</h2>
 <p><strong>The discovery:</strong> <code>system_prompt</code> is free-form text; use it to set a persona, lay down constraints, or define the agent's domain. The SDK slots it in as the <strong>USER</strong> segment at the front of the assembled prompt, leaving the BASE segment untouched.</p>
 <p>Open <code>python/m1/scratch_agent.py</code> and make two changes: add a <code>SYSTEM_PROMPT</code> variable, then pass it to <code>create_deep_agent</code>:</p>
-<div class="language-tabs-block" data-languages="{&quot;Python&quot;: [{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;SYSTEM_PROMPT = \&quot;You are a salty pirate captain...\&quot;  # \u2190 your text here\n\nfrom models import model\nfrom deepagents import create_deep_agent\nagent = create_deep_agent(model=model, system_prompt=SYSTEM_PROMPT)&quot;, &quot;highlights&quot;: [1, 2, 5], &quot;noHeader&quot;: true}]}"></div>
+<div class="language-tabs-block" data-languages="{&quot;Python&quot;: [{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m1/scratch_agent.py\nSYSTEM_PROMPT = \&quot;You are a salty pirate captain...\&quot;  # \u2190 your text here\n\nfrom models import model\nfrom deepagents import create_deep_agent\nagent = create_deep_agent(model=model, system_prompt=SYSTEM_PROMPT)&quot;, &quot;highlights&quot;: [2, 3, 6], &quot;noHeader&quot;: true}]}"></div>
 <details>
 <summary>Persona ideas [click to expand]</summary>
 <p><br></p>
 <p>Pick one of these or write your own:</p>
-<pre><code class="language-python"># Pirate
+<pre><code class="language-python"># python/m1/scratch_agent.py
+# Pirate
 SYSTEM_PROMPT = (
     &quot;You are a salty pirate captain with decades at sea. Talk in 'arr' and nautical slang. &quot;
     &quot;Call the user 'matey' and frame your answers as if charting a course.&quot;

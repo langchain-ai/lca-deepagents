@@ -613,7 +613,8 @@
 <p><code>LocalShellBackend</code> is the simplest option: no API key or extra setup required. Commands run as your user with no network or filesystem restrictions. Use it to explore what the agent does, not to run untrusted code.</p>
 <p><code>LangSmithSandbox</code> runs commands in an isolated environment managed by LangSmith. It requires a LangSmith API key and project configuration, and is the right choice once you move beyond local experimentation.</p>
 <h3 id="configuring-a-sandbox-backend">Configuring a sandbox backend</h3>
-<pre><code class="language-python">from deepagents.backends import LocalShellBackend
+<pre><code class="language-python"># python/m2/sandbox_agent.py
+from deepagents.backends import LocalShellBackend
 
 agent = create_deep_agent(
     model=model,
@@ -621,7 +622,8 @@ agent = create_deep_agent(
 )
 </code></pre>
 <p>Swapping in <code>LangSmithSandbox</code> requires no other code changes:</p>
-<pre><code class="language-python">from deepagents.backends import LangSmithSandbox
+<pre><code class="language-python"># python/m2/sandbox_agent.py
+from deepagents.backends import LangSmithSandbox
 
 agent = create_deep_agent(
     model=model,
@@ -637,7 +639,8 @@ agent = create_deep_agent(
 <hr />
 <h3 id="1-create-sandbox_agentpy">1. Create <code>sandbox_agent.py</code></h3>
 <p>Create <code>python/m2/sandbox_agent.py</code>:</p>
-<pre><code class="language-python">import sys
+<pre><code class="language-python"># python/m2/sandbox_agent.py
+import sys
 from pathlib import Path
 from deepagents.backends import LocalShellBackend
 from deepagents import create_deep_agent

@@ -588,7 +588,8 @@
 <p>deepagents discovers MCP servers from <code>.mcp.json</code> in your project root (or <code>~/.deepagents/.mcp.json</code> for user-level config). The project repo already includes a config pointing at the LangChain documentation server:</p>
 <iframe src="images/m1.l6-mcp-slides-config.html" style="width:100%;height:380px;border:none;border-radius:12px;display:block;margin:1.25rem 0 1.5rem;" title=".mcp.json configuration diagram"></iframe>
 <p>Load those tools in Python with <code>get_mcp_tools</code>:</p>
-<pre><code class="language-python">from deepagents_code.mcp_tools import get_mcp_tools
+<pre><code class="language-python"># python/m1/mcp_agent.py
+from deepagents_code.mcp_tools import get_mcp_tools
 
 tools, session_manager, server_infos = await get_mcp_tools(&quot;.mcp.json&quot;)
 </code></pre>
@@ -607,7 +608,8 @@ tools, session_manager, server_infos = await get_mcp_tools(&quot;.mcp.json&quot;
 <p>Some MCP servers require the user to authenticate before the agent can call their tools.</p>
 <iframe src="images/m1.l6-mcp-slides-auth.html" style="width:100%;height:460px;border:none;border-radius:12px;display:block;margin:1.25rem 0 1.5rem;" title="Authorization walkthrough; use arrow keys or Prev/Next to navigate"></iframe>
 <p>Add <code>"auth": "oauth"</code> to the server entry in <code>.mcp.json</code>:</p>
-<pre><code class="language-json">{
+<pre><code class="language-json">// .mcp.json
+{
   &quot;mcpServers&quot;: {
     &quot;gmail&quot;: {
       &quot;type&quot;: &quot;sse&quot;,
@@ -623,7 +625,8 @@ tools, session_manager, server_infos = await get_mcp_tools(&quot;.mcp.json&quot;
 <h3 id="human-in-the-loop-hitl">Human-in-the-Loop (HITL)</h3>
 <p>Even after authorization, you may want a human to confirm before the agent reads or writes data. Pass <code>interrupt_on</code> to <code>create_deep_agent</code> with a mapping of tool names to approval settings:</p>
 <iframe src="images/m1.l6-mcp-slides-hitl.html" style="width:100%;height:460px;border:none;border-radius:12px;display:block;margin:1.25rem 0 1.5rem;" title="HITL walkthrough; use arrow keys or Prev/Next to navigate"></iframe>
-<pre><code class="language-python">from deepagents import create_deep_agent
+<pre><code class="language-python"># python/m1/mcp_agent.py
+from deepagents import create_deep_agent
 from langgraph.checkpoint.memory import MemorySaver
 
 agent = create_deep_agent(
@@ -646,7 +649,8 @@ agent = create_deep_agent(
 <h2 id="lab-4-langchain-docs-no-auth">Lab 4: LangChain Docs (no auth)</h2>
 <p>The project repo includes <code>.mcp.json</code> at the root with the LangChain documentation server pre-configured. You do not need to edit any config for this lab.</p>
 <p>Create a new file <code>python/m1/mcp_agent.py</code>:</p>
-<pre><code class="language-python">import asyncio
+<pre><code class="language-python"># python/m1/mcp_agent.py
+import asyncio
 from models import model
 from deepagents import create_deep_agent
 from deepagents_code.mcp_tools import get_mcp_tools
@@ -683,7 +687,8 @@ asyncio.run(main())
 <p>This lab adds a Gmail MCP server to the agent and gates every email access behind a human approval step.</p>
 <h3 id="step-1-add-gmail-to-mcpjson">Step 1: Add Gmail to .mcp.json</h3>
 <p>Add the Gmail server entry to <code>.mcp.json</code> in the project root. Use <code>allowedTools</code> to restrict the agent to read-only email access:</p>
-<pre><code class="language-json">{
+<pre><code class="language-json">// .mcp.json
+{
   &quot;mcpServers&quot;: {
     &quot;docs-langchain&quot;: {
       &quot;type&quot;: &quot;http&quot;,
@@ -706,7 +711,8 @@ Verify the Gmail MCP server URL from Google's official documentation before runn
 <p>On the first run, deepagents will detect <code>auth: "oauth"</code> and open a browser window for you to authorize the Gmail scope. Tokens are saved to <code>~/.deepagents/.state/mcp-tokens/gmail.json</code> and reused on subsequent runs.</p>
 <h3 id="step-3-add-hitl-and-run">Step 3: Add HITL and run</h3>
 <p>Update <code>python/m1/mcp_agent.py</code> to add <code>interrupt_on</code> for the Gmail tools:</p>
-<pre><code class="language-python">import asyncio
+<pre><code class="language-python"># python/m1/mcp_agent.py
+import asyncio
 import uuid
 from models import model
 from deepagents import create_deep_agent

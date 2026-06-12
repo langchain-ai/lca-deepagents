@@ -613,7 +613,8 @@
 </tbody>
 </table>
 <p>These are always present. The <code>tools</code> parameter on <code>create_deep_agent</code> is <strong>additive</strong>: whatever you pass is merged with the built-in suite, not substituted for it.</p>
-<pre><code class="language-python">agent = create_deep_agent(
+<pre><code class="language-python"># python/m1/scratch_agent.py
+agent = create_deep_agent(
     model=model,
     tools=[my_tool_a, my_tool_b],   # merged with the built-ins above
 )
@@ -723,7 +724,8 @@ buildDiagram({
 </details>
 <h3 id="defining-a-tool-with-tool">Defining a tool with <code>@tool</code></h3>
 <p>Tools are part of the LangChain library. The <code>@tool</code> decorator from <code>langchain_core.tools</code> is the standard way to define one: write a regular Python function and the decorator turns it into something the model can call. LangChain also ships ready-made tools for common tasks (for example, <code>TavilySearchResults</code> for web search), so you don't have to write everything from scratch.</p>
-<pre><code class="language-python">from langchain_core.tools import tool
+<pre><code class="language-python"># python/m1/scratch_agent.py
+from langchain_core.tools import tool
 
 @tool
 def get_stock_price(ticker: str) -&gt; str:
@@ -905,7 +907,8 @@ def get_stock_price(ticker: str) -&gt; str:
 <hr />
 <h3 id="1-imports-and-database-connection">1. Imports and database connection</h3>
 <p>Replace the contents of <code>scratch_agent.py</code> with the following:</p>
-<pre><code class="language-python">import sys
+<pre><code class="language-python"># python/m1/scratch_agent.py
+import sys
 from pathlib import Path
 from langchain_community.utilities import SQLDatabase
 from langchain_core.tools import tool
@@ -922,7 +925,8 @@ db = SQLDatabase.from_uri(f&quot;sqlite:///{DB_PATH}&quot;)
 <hr />
 <h3 id="2-system-prompt">2. System prompt</h3>
 <p>Two tools means the agent needs to know which to reach for:</p>
-<pre><code class="language-python">SYSTEM_PROMPT = &quot;&quot;&quot;You are a SQL analyst with access to the Chinook music store database.
+<pre><code class="language-python"># python/m1/scratch_agent.py
+SYSTEM_PROMPT = &quot;&quot;&quot;You are a SQL analyst with access to the Chinook music store database.
 
 Rules:
 - Use read_sql for all SELECT queries.
@@ -935,7 +939,8 @@ Rules:
 <hr />
 <h3 id="3-define-read_sql-and-write_sql">3. Define <code>read_sql</code> and <code>write_sql</code></h3>
 <p><code>read_sql</code> executes and returns immediately. <code>write_sql</code> calls <code>interrupt()</code> before touching the database. When the graph hits <code>interrupt()</code>, execution pauses and the pending value surfaces to the caller. The script reads it, prompts you for approval, then resumes with your response via <code>Command(resume=...)</code>.</p>
-<pre><code class="language-python">@tool
+<pre><code class="language-python"># python/m1/scratch_agent.py
+@tool
 def read_sql(query: str) -&gt; str:
     &quot;&quot;&quot;Run a read-only SELECT query against the Chinook music store database.&quot;&quot;&quot;
     try:
@@ -958,7 +963,8 @@ def write_sql(query: str) -&gt; str:
 <hr />
 <h3 id="4-wire-it-up">4. Wire it up</h3>
 <p>Pass both tools and the checkpointer. The <code>while</code> loop handles the approval prompt and resumes the graph with your response:</p>
-<pre><code class="language-python">checkpointer = MemorySaver()
+<pre><code class="language-python"># python/m1/scratch_agent.py
+checkpointer = MemorySaver()
 
 agent = create_deep_agent(
     model=model,

@@ -605,7 +605,8 @@
 <p><code>StateBackend</code> is the default. The agent can use all its file tools, but nothing is written to disk. Switch to <code>FilesystemBackend</code> when you want the agent's work to persist, be inspectable, or be shared with other processes.</p>
 <h3 id="configuring-filesystembackend">Configuring FilesystemBackend</h3>
 <p>Pass it via the <code>backend</code> parameter in <code>create_deep_agent</code>:</p>
-<pre><code class="language-python">from deepagents.backends import FilesystemBackend
+<pre><code class="language-python"># python/m2/filesystem_agent.py
+from deepagents.backends import FilesystemBackend
 
 agent = create_deep_agent(
     model=model,
@@ -669,7 +670,8 @@ agent = create_deep_agent(
 <hr />
 <h3 id="1-create-filesystem_agentpy">1. Create <code>filesystem_agent.py</code></h3>
 <p>Create <code>python/m2/filesystem_agent.py</code>:</p>
-<pre><code class="language-python">import sys
+<pre><code class="language-python"># python/m2/filesystem_agent.py
+import sys
 from pathlib import Path
 from deepagents.backends import FilesystemBackend
 from deepagents import create_deep_agent
