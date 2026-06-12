@@ -20,77 +20,13 @@
 
     <div id="slides">
 
-      <!-- STEP 1: The old way — [OLD WAY] badge + full diagram -->
+      <!-- STEP 1: MCP overview -->
       <div class="slide active">
-        <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg" font-family="'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
-          <defs><marker id="s1ba" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L5,3 L0,6 Z" fill="#634643"/></marker></defs>
-          <rect width="800" height="380" fill="#030710"/>
-          <rect x="290" y="12" width="220" height="34" rx="8" fill="#160A06" stroke="#FBB0A5" stroke-width="1.5"/>
-          <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#FBB0A5" font-family="'IBM Plex Mono',monospace">[OLD WAY]</text>
-          <text x="400" y="64" text-anchor="middle" font-size="19" font-weight="300" fill="#F2FAFF">The old way: one integration per service</text>
-          <text x="400" y="86" text-anchor="middle" font-size="12" fill="#99D3FF" font-family="'IBM Plex Mono',monospace">every service needs custom code in your agent</text>
-          <rect x="60" y="119" width="140" height="120" rx="10" fill="#0D1322" stroke="#7FC8FF" stroke-width="2"/>
-          <text x="130" y="171" text-anchor="middle" font-size="14" font-weight="400" fill="#7FC8FF">Your</text>
-          <text x="130" y="189" text-anchor="middle" font-size="14" font-weight="400" fill="#7FC8FF">Agent</text>
-          <line x1="200" y1="139" x2="380" y2="137" stroke="#634643" stroke-width="1.4" marker-end="url(#s1ba)" stroke-dasharray="5,3"/>
-          <rect x="382" y="117" width="120" height="36" rx="6" fill="#161F34" stroke="#634643" stroke-width="1.2"/>
-          <text x="442" y="139" text-anchor="middle" font-size="10.5" fill="#FBB0A5">Gmail</text>
-          <text x="320" y="129" text-anchor="middle" font-size="9" fill="#634643">custom code</text>
-          <line x1="200" y1="179" x2="380" y2="179" stroke="#634643" stroke-width="1.4" marker-end="url(#s1ba)" stroke-dasharray="5,3"/>
-          <rect x="382" y="161" width="120" height="36" rx="6" fill="#161F34" stroke="#634643" stroke-width="1.2"/>
-          <text x="442" y="183" text-anchor="middle" font-size="10.5" fill="#FBB0A5">GitHub</text>
-          <text x="320" y="173" text-anchor="middle" font-size="9" fill="#634643">custom code</text>
-          <line x1="200" y1="219" x2="380" y2="221" stroke="#634643" stroke-width="1.4" marker-end="url(#s1ba)" stroke-dasharray="5,3"/>
-          <rect x="382" y="203" width="120" height="36" rx="6" fill="#161F34" stroke="#634643" stroke-width="1.2"/>
-          <text x="442" y="225" text-anchor="middle" font-size="10.5" fill="#FBB0A5">Slack</text>
-          <text x="320" y="213" text-anchor="middle" font-size="9" fill="#634643">custom code</text>
-          <rect x="536" y="137" width="204" height="56" rx="8" fill="#0D1322" stroke="#634643" stroke-width="1.2"/>
-          <text x="638" y="159" text-anchor="middle" font-size="11" fill="#FBB0A5">Each service: different SDK,</text>
-          <text x="638" y="175" text-anchor="middle" font-size="11" fill="#FBB0A5">different auth, different errors.</text>
-          <text x="400" y="330" text-anchor="middle" font-size="12.5" fill="#B2DEFF">Every new service means more bespoke integration code.</text>
-          <text x="400" y="352" text-anchor="middle" font-size="12.5" fill="#B2DEFF">MCP replaces all of this with one standard interface.</text>
-        </svg>
-      </div>
-
-      <!-- STEP 2: The old way — live -->
-      <div class="slide">
-        <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg" font-family="'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
-          <defs><marker id="s1a" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L5,3 L0,6 Z" fill="#634643"/></marker></defs>
-          <rect width="800" height="380" fill="#030710"/>
-          <text x="400" y="48" text-anchor="middle" font-size="21" font-weight="300" fill="#F2FAFF">The old way: one integration per service</text>
-          <text x="400" y="74" text-anchor="middle" font-size="12" fill="#99D3FF" font-family="'IBM Plex Mono',monospace">every service needs custom code in your agent</text>
-          <rect x="60" y="130" width="140" height="120" rx="10" fill="#0D1322" stroke="#7FC8FF" stroke-width="2"/>
-          <text x="130" y="182" text-anchor="middle" font-size="14" font-weight="400" fill="#7FC8FF">Your</text>
-          <text x="130" y="200" text-anchor="middle" font-size="14" font-weight="400" fill="#7FC8FF">Agent</text>
-          <line x1="200" y1="150" x2="380" y2="148" stroke="#634643" stroke-width="1.4" marker-end="url(#s1a)" stroke-dasharray="5,3"/>
-          <rect x="382" y="128" width="120" height="36" rx="6" fill="#161F34" stroke="#634643" stroke-width="1.2"/>
-          <text x="442" y="150" text-anchor="middle" font-size="10.5" fill="#FBB0A5">Gmail</text>
-          <text x="320" y="140" text-anchor="middle" font-size="9" fill="#634643">custom code</text>
-          <line x1="200" y1="190" x2="380" y2="190" stroke="#634643" stroke-width="1.4" marker-end="url(#s1a)" stroke-dasharray="5,3"/>
-          <rect x="382" y="172" width="120" height="36" rx="6" fill="#161F34" stroke="#634643" stroke-width="1.2"/>
-          <text x="442" y="194" text-anchor="middle" font-size="10.5" fill="#FBB0A5">GitHub</text>
-          <text x="320" y="184" text-anchor="middle" font-size="9" fill="#634643">custom code</text>
-          <line x1="200" y1="230" x2="380" y2="232" stroke="#634643" stroke-width="1.4" marker-end="url(#s1a)" stroke-dasharray="5,3"/>
-          <rect x="382" y="214" width="120" height="36" rx="6" fill="#161F34" stroke="#634643" stroke-width="1.2"/>
-          <text x="442" y="236" text-anchor="middle" font-size="10.5" fill="#FBB0A5">Slack</text>
-          <text x="320" y="224" text-anchor="middle" font-size="9" fill="#634643">custom code</text>
-          <rect x="536" y="148" width="204" height="56" rx="8" fill="#0D1322" stroke="#634643" stroke-width="1.2"/>
-          <text x="638" y="170" text-anchor="middle" font-size="11" fill="#FBB0A5">Each service: different SDK,</text>
-          <text x="638" y="186" text-anchor="middle" font-size="11" fill="#FBB0A5">different auth, different errors.</text>
-          <text x="400" y="316" text-anchor="middle" font-size="12.5" fill="#B2DEFF">Every new service means more bespoke integration code.</text>
-          <text x="400" y="338" text-anchor="middle" font-size="12.5" fill="#B2DEFF">MCP replaces all of this with one standard interface.</text>
-        </svg>
-      </div>
-
-      <!-- STEP 3: MCP overview — [NEW WAY] badge + full diagram -->
-      <div class="slide">
         <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg" font-family="'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
           <defs><marker id="s3fa" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L5,3 L0,6 Z" fill="#7FC8FF"/></marker></defs>
           <rect width="800" height="380" fill="#030710"/>
-          <rect x="290" y="12" width="220" height="34" rx="8" fill="#0D1A00" stroke="#E3FF8F" stroke-width="1.5"/>
-          <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#E3FF8F" font-family="'IBM Plex Mono',monospace">[NEW WAY]</text>
-          <text x="400" y="64" text-anchor="middle" font-size="19" font-weight="300" fill="#F2FAFF">MCP: one standard interface</text>
-          <text x="400" y="86" text-anchor="middle" font-size="12" fill="#99D3FF" font-family="'IBM Plex Mono',monospace">any MCP-aware client connects to any MCP server</text>
+          <text x="400" y="48" text-anchor="middle" font-size="21" font-weight="300" fill="#F2FAFF">MCP: one standard interface</text>
+          <text x="400" y="74" text-anchor="middle" font-size="12" fill="#99D3FF" font-family="'IBM Plex Mono',monospace">any MCP-aware client connects to any MCP server</text>
           <rect x="56" y="119" width="160" height="120" rx="10" fill="#0D1322" stroke="#7FC8FF" stroke-width="2"/>
           <text x="136" y="171" text-anchor="middle" font-size="14" font-weight="400" fill="#7FC8FF">Your Agent</text>
           <text x="136" y="191" text-anchor="middle" font-size="11" fill="#B2DEFF">LangChain / deepagents</text>
@@ -215,11 +151,7 @@
 <script>
 (function () {
   var STEPS = [
-    { tag: '[OLD WAY]',
-      cap: 'Each new service required bespoke integration code in your agent: a different SDK, different auth handling, different error patterns.' },
-    { tag: 'The old way: one integration per service',
-      cap: 'Gmail, GitHub, Slack; every tool call went directly from your agent to the service with no standardization. Each new service was another integration to write and maintain.' },
-    { tag: '[NEW WAY]',
+    { tag: 'MCP: one standard interface',
       cap: 'MCP replaces the one-integration-per-service pattern with a single standard protocol. Any MCP-aware client connects to any MCP server, regardless of the underlying service.' },
     { tag: 'MCP: one standard interface',
       cap: 'The MCP server handles service-specific details. Your agent only speaks MCP. Adding a new service means pointing at a new server; no changes to agent code.' },

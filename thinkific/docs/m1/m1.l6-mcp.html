@@ -594,7 +594,8 @@ from deepagents_code.mcp_tools import get_mcp_tools
 tools, session_manager, server_infos = await get_mcp_tools(&quot;.mcp.json&quot;)
 </code></pre>
 <p>Pass <code>tools</code> to <code>create_deep_agent</code> as you would any other tool list. When you are done, call <code>await session_manager.cleanup()</code> to close the connections.</p>
-<h3 id="transport">Transport</h3>
+<details>
+<summary><strong>Transport details</strong></summary>
 <p>The transport is the underlying mechanism used to communicate with an MCP server. It is abstracted away from your agent code; the agent never sees or interacts with it directly.</p>
 <p>There are three transport types:</p>
 <ul>
@@ -604,6 +605,7 @@ tools, session_manager, server_infos = await get_mcp_tools(&quot;.mcp.json&quot;
 </ul>
 <iframe src="images/m1.l6-mcp-slides-2.html" style="width:100%;height:460px;border:none;border-radius:12px;display:block;margin:1.25rem 0 1.5rem;" title="Transport types walkthrough; use arrow keys or Prev/Next to navigate"></iframe>
 <p>In <code>.mcp.json</code>, set <code>"type"</code> to <code>"http"</code> or <code>"sse"</code> for remote servers, or use <code>"command"</code> and <code>"args"</code> for stdio servers. deepagents normalizes the transport at load time; your Python code does not change.</p>
+</details>
 <h3 id="authorization">Authorization</h3>
 <p>Some MCP servers require the user to authenticate before the agent can call their tools.</p>
 <iframe src="images/m1.l6-mcp-slides-auth.html" style="width:100%;height:460px;border:none;border-radius:12px;display:block;margin:1.25rem 0 1.5rem;" title="Authorization walkthrough; use arrow keys or Prev/Next to navigate"></iframe>

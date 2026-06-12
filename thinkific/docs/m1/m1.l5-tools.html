@@ -613,8 +613,7 @@
 </tbody>
 </table>
 <p>These are always present. The <code>tools</code> parameter on <code>create_deep_agent</code> is <strong>additive</strong>: whatever you pass is merged with the built-in suite, not substituted for it.</p>
-<pre><code class="language-python"># python/m1/scratch_agent.py
-agent = create_deep_agent(
+<pre><code class="language-python">agent = create_deep_agent(
     model=model,
     tools=[my_tool_a, my_tool_b],   # merged with the built-ins above
 )
@@ -624,7 +623,7 @@ agent = create_deep_agent(
 <script>
 buildDiagram({
   id: 'dg-tool-loop',
-  participants: ['SDK', 'LLM', 'Tool Node', 'execute_sql'],
+  participants: ['SDK', 'LLM', 'Tools', 'execute_sql'],
   cx: [72, 237, 470, 660],
   bw: 105, bh: 36,
   tby: 20, bby: 480,
@@ -724,8 +723,7 @@ buildDiagram({
 </details>
 <h3 id="defining-a-tool-with-tool">Defining a tool with <code>@tool</code></h3>
 <p>Tools are part of the LangChain library. The <code>@tool</code> decorator from <code>langchain_core.tools</code> is the standard way to define one: write a regular Python function and the decorator turns it into something the model can call. LangChain also ships ready-made tools for common tasks (for example, <code>TavilySearchResults</code> for web search), so you don't have to write everything from scratch.</p>
-<pre><code class="language-python"># python/m1/scratch_agent.py
-from langchain_core.tools import tool
+<pre><code class="language-python">from langchain_core.tools import tool
 
 @tool
 def get_stock_price(ticker: str) -&gt; str:
@@ -907,8 +905,7 @@ def get_stock_price(ticker: str) -&gt; str:
 <hr />
 <h3 id="1-imports-and-database-connection">1. Imports and database connection</h3>
 <p>Replace the contents of <code>scratch_agent.py</code> with the following:</p>
-<pre><code class="language-python"># python/m1/scratch_agent.py
-import sys
+<pre><code class="language-python">import sys
 from pathlib import Path
 from langchain_community.utilities import SQLDatabase
 from langchain_core.tools import tool
@@ -925,8 +922,7 @@ db = SQLDatabase.from_uri(f&quot;sqlite:///{DB_PATH}&quot;)
 <hr />
 <h3 id="2-system-prompt">2. System prompt</h3>
 <p>Two tools means the agent needs to know which to reach for:</p>
-<pre><code class="language-python"># python/m1/scratch_agent.py
-SYSTEM_PROMPT = &quot;&quot;&quot;You are a SQL analyst with access to the Chinook music store database.
+<pre><code class="language-python">SYSTEM_PROMPT = &quot;&quot;&quot;You are a SQL analyst with access to the Chinook music store database.
 
 Rules:
 - Use read_sql for all SELECT queries.
@@ -939,8 +935,7 @@ Rules:
 <hr />
 <h3 id="3-define-read_sql-and-write_sql">3. Define <code>read_sql</code> and <code>write_sql</code></h3>
 <p><code>read_sql</code> executes and returns immediately. <code>write_sql</code> calls <code>interrupt()</code> before touching the database. When the graph hits <code>interrupt()</code>, execution pauses and the pending value surfaces to the caller. The script reads it, prompts you for approval, then resumes with your response via <code>Command(resume=...)</code>.</p>
-<pre><code class="language-python"># python/m1/scratch_agent.py
-@tool
+<pre><code class="language-python">@tool
 def read_sql(query: str) -&gt; str:
     &quot;&quot;&quot;Run a read-only SELECT query against the Chinook music store database.&quot;&quot;&quot;
     try:
@@ -963,8 +958,7 @@ def write_sql(query: str) -&gt; str:
 <hr />
 <h3 id="4-wire-it-up">4. Wire it up</h3>
 <p>Pass both tools and the checkpointer. The <code>while</code> loop handles the approval prompt and resumes the graph with your response:</p>
-<pre><code class="language-python"># python/m1/scratch_agent.py
-checkpointer = MemorySaver()
+<pre><code class="language-python">checkpointer = MemorySaver()
 
 agent = create_deep_agent(
     model=model,
@@ -992,10 +986,8 @@ print(result[&quot;messages&quot;][-1].content)
 <h3 id="run-it">Run it</h3>
 <pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/scratch_agent.py
 </code></pre>
-<div style="max-height:200px;overflow-y:auto;border-radius:8px;margin:0.5rem 0 1rem;">
-
-
-<pre><code># Example output
+<!-- code-highlight-8:1 -->
+<pre><code class="language-text"># Code Output
 **Top 5 Best-Selling Artists by Total Revenue:**
 
 1. **Iron Maiden** - $138.60
@@ -1008,9 +1000,6 @@ The SQL query joins the Artist, Album, Track, and InvoiceLine tables to
 calculate total revenue (UnitPrice × Quantity) per artist, then ranks by
 descending total.
 </code></pre>
-
-
-</div>
 <p>The agent reads the genres first, then proposes an INSERT. The terminal pauses and prints the SQL. Type <code>yes</code> to approve or <code>no</code> to cancel, then note the result: the agent's final message will confirm whether the genre was added.</p>
 <div class="callout">
 <strong>What is happening</strong><br>
