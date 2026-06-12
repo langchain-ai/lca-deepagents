@@ -5,8 +5,8 @@
       "url": "https://docs.langchain.com/mcp"
     },
     "gmail": {
-      "type": "sse",
-      "url": "https://gmail.googleapis.com/v1/mcp",
+      "type": "http",
+      "url": "https://gmailmcp.googleapis.com/mcp/v1",
       "auth": "oauth",
       "allowedTools": ["list_emails", "read_email"]
     }
