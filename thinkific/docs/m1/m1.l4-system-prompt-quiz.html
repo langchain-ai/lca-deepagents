@@ -207,6 +207,13 @@
             padding-left: 5px;
         }
 
+        /* Code output blocks (non-copyable) */
+        pre.no-copy {
+            background: #0a0f1a;
+            border: 1px solid #1a2a3a;
+            opacity: 0.85;
+        }
+
         pre .copy-button-inline {
             position: absolute;
             top: 0.5rem;
@@ -538,11 +545,11 @@
     <div class="mcq-choices">
         <div class="mcq-choice" onclick="handleMcqClick(this, false, '16124331')"><strong>A)</strong> One — the BASE prompt only</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '16124331')"><strong>B)</strong> Two — USER and BASE</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '16124331')"><strong>C)</strong> Three — USER, BASE, and SUFFIX</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '16124331')"><strong>D)</strong> Four — USER, BASE, SUFFIX, and a tool section</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '16124331')"><strong>C)</strong> Four — USER, BASE, SUFFIX, and a tool section</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '16124331')"><strong>D)</strong> Three — USER, BASE, and SUFFIX</div>
     </div>
     <div id="mcq-answer-16124331" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
         <div class="mcq-explanation">The assembled prompt has three parts: USER (your system_prompt argument), BASE (the SDK's built-in BASE_AGENT_PROMPT), and SUFFIX (appended by a HarnessProfile for model-specific tuning). Only USER and BASE are directly relevant to this lesson; SUFFIX is optional and covered separately.</div>
     </div>
 </div>
@@ -552,13 +559,13 @@
         <strong>Question:</strong> Where in the assembled prompt does the USER segment appear?
     </div>
     <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '4a037246')"><strong>A)</strong> After the BASE instructions</div>
+        <div class="mcq-choice" onclick="handleMcqClick(this, true, '4a037246')"><strong>A)</strong> At the very front, before BASE and SUFFIX</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '4a037246')"><strong>B)</strong> At the very end, after the SUFFIX</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '4a037246')"><strong>C)</strong> At the very front, before BASE and SUFFIX</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '4a037246')"><strong>C)</strong> After the BASE instructions</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '4a037246')"><strong>D)</strong> Interleaved with the BASE instructions</div>
     </div>
     <div id="mcq-answer-4a037246" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
         <div class="mcq-explanation">The SDK slots the USER segment — your system_prompt — at the very front of the assembled prompt, ahead of the BASE instructions and any SUFFIX.</div>
     </div>
 </div>
@@ -569,26 +576,26 @@
     </div>
     <div class="mcq-choices">
         <div class="mcq-choice" onclick="handleMcqClick(this, false, '9df17580')"><strong>A)</strong> The BASE prompt overrides all user-defined personas</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '9df17580')"><strong>B)</strong> SYSTEM_PROMPT was defined but not passed to create_deep_agent</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '9df17580')"><strong>C)</strong> The model requires a special flag to enable custom personas</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '9df17580')"><strong>B)</strong> The model requires a special flag to enable custom personas</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '9df17580')"><strong>C)</strong> SYSTEM_PROMPT was defined but not passed to create_deep_agent</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '9df17580')"><strong>D)</strong> The SUFFIX always overrides the USER segment</div>
     </div>
     <div id="mcq-answer-9df17580" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
         <div class="mcq-explanation">Defining the string is not enough. It must be passed explicitly: create_deep_agent(model=model, system_prompt=SYSTEM_PROMPT). Without the argument, the agent never receives the USER segment and falls back to BASE behavior only.</div>
     </div>
 </div>
 
 <p><MCQ
     question="What is the BASE segment of the assembled prompt?"
-    choices='["The system_prompt string you pass to create_deep_agent", "The SDK's built-in BASE_AGENT_PROMPT — behavior guidance always present", "The tool schemas appended by the SDK before each LLM call", "A model-specific tuning block provided by a HarnessProfile"]'
-    correctIndex={1}
+    choices='["The system_prompt string you pass to create_deep_agent", "The tool schemas appended by the SDK before each LLM call", "A model-specific tuning block provided by a HarnessProfile", "The SDK's built-in BASE_AGENT_PROMPT — behavior guidance always present"]'
+    correctIndex={3}
     explanation="The BASE segment is BASE_AGENT_PROMPT, built into the SDK. It carries the agent's core behavior guidance and is always present regardless of what you pass. The SUFFIX — from a HarnessProfile — is the model-specific part."
 /></p>
 <p><MCQ
     question="You switch from a pirate persona to a cowboy persona by changing SYSTEM_PROMPT. What else in the assembled prompt changes?"
-    choices='["Nothing — only your USER segment changes", "The BASE instructions adapt to match the new persona", "The SUFFIX is regenerated based on the persona", "The tool schemas update to reflect the new persona's capabilities"]'
-    correctIndex={0}
+    choices='["The BASE instructions adapt to match the new persona", "Nothing — only your USER segment changes", "The SUFFIX is regenerated based on the persona", "The tool schemas update to reflect the new persona's capabilities"]'
+    correctIndex={1}
     explanation="Only your USER segment changes. The BASE instructions, SUFFIX, and tool schemas are identical across runs. The USER segment is the single lever you control; everything else stays put."
 /></p>
 
@@ -1098,7 +1105,7 @@
         // Add copy buttons to regular code blocks
         function addCopyButtonsToCodeBlocks() {
             // Find all pre blocks that aren't inside tabs-block containers
-            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre)');
+            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre):not(.no-copy)');
 
             preBlocks.forEach(pre => {
                 // Skip if already has a copy button

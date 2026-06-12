@@ -207,6 +207,13 @@
             padding-left: 5px;
         }
 
+        /* Code output blocks (non-copyable) */
+        pre.no-copy {
+            background: #0a0f1a;
+            border: 1px solid #1a2a3a;
+            opacity: 0.85;
+        }
+
         pre .copy-button-inline {
             position: absolute;
             top: 0.5rem;
@@ -1279,7 +1286,7 @@ The description is the only text the agent reads before deciding whether to acti
         // Add copy buttons to regular code blocks
         function addCopyButtonsToCodeBlocks() {
             // Find all pre blocks that aren't inside tabs-block containers
-            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre)');
+            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre):not(.no-copy)');
 
             preBlocks.forEach(pre => {
                 // Skip if already has a copy button

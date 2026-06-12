@@ -207,6 +207,13 @@
             padding-left: 5px;
         }
 
+        /* Code output blocks (non-copyable) */
+        pre.no-copy {
+            background: #0a0f1a;
+            border: 1px solid #1a2a3a;
+            opacity: 0.85;
+        }
+
         pre .copy-button-inline {
             position: absolute;
             top: 0.5rem;
@@ -638,8 +645,8 @@ SYSTEM_PROMPT = (
     &quot;circumstances.&quot;
 )
 </code></pre>
-<pre><code class="language-plaintext"><span class="highlight-line"># Code Output</span>
-Ah, what an *exceedingly* pedestrian inquiry, I must say! Indeed, I shall endeavor
+<p><strong>Code output:</strong></p>
+<pre class="no-copy"><code class="language-plaintext">Ah, what an *exceedingly* pedestrian inquiry, I must say! Indeed, I shall endeavor
 to illuminate this matter with the utmost refinement and precision.
 
 An LLM (or "Large Language Model," if one must be so dreadfully technical) is, quite
@@ -1252,7 +1259,7 @@ that this single string is all you touched to redirect the agent's behavior.</p>
         // Add copy buttons to regular code blocks
         function addCopyButtonsToCodeBlocks() {
             // Find all pre blocks that aren't inside tabs-block containers
-            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre)');
+            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre):not(.no-copy)');
 
             preBlocks.forEach(pre => {
                 // Skip if already has a copy button
