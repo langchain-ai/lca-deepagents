@@ -581,7 +581,7 @@
 </div>
 
 <div class="lt-panel active" id="p-fs" role="tabpanel">
-<p>The filesystem backends control <strong>where files are stored</strong>. Each backend implements the same interface — <code>ls</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code>, <code>glob</code>, <code>grep</code> — so the agent code stays the same regardless of which one you choose.</p>
+<p>The filesystem backends control <strong>where files are stored</strong>. Each backend implements the same interface (<code>ls</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code>, <code>glob</code>, <code>grep</code>), so the agent code stays the same regardless of which one you choose.</p>
 <hr />
 <h2 id="storage-backends">Storage backends</h2>
 <div class="mermaid">
@@ -613,17 +613,17 @@ graph TB
 </div>
 <hr />
 <h2 id="the-backends">The backends</h2>
-<p><strong>State</strong> — the default. Files live in LangGraph state, also referred to as "checkpoint or short-term memory". It is scoped to the current thread. Persists as long as the thread persists.</p>
-<p><strong>Filesystem</strong> — reads and writes files on the local disk. Scoped to a <code>root_dir</code> you specify. </p>
-<p><strong>Store</strong> — backed by the store. In production, this is a PostgreSQL database; locally, it can be an in-memory database or a local database. Files persist across threads. </p>
-<p><strong>Context Hub</strong> — files are injected directly into the model's context window, without an explicit read call. Useful for reference material, the agent should always have in view. Learn more about the LangSmith Context Hub <a href="https://docs.langchain.com/langsmith/context-hub" target="_blank" rel="noopener noreferrer">here</a>.</p>
-<p><strong>Composite</strong> — routes different path prefixes to different backends. Lets you mix different backends in a single agent (e.g. <code>/memories/</code> → Store, <code>/skills/</code> → Store, everything else → State).</p>
-<p><strong>Custom</strong> — implement the backend interface yourself to plug in any storage system.</p>
+<p><strong>State</strong>: the default. Files live in LangGraph state, also referred to as "checkpoint or short-term memory". It is scoped to the current thread. Persists as long as the thread persists.</p>
+<p><strong>Filesystem</strong>: reads and writes files on the local disk. Scoped to a <code>root_dir</code> you specify. </p>
+<p><strong>Store</strong>: backed by the store. In production, this is a PostgreSQL database; locally, it can be an in-memory database or a local database. Files persist across threads. </p>
+<p><strong>Context Hub</strong>: files are injected directly into the model's context window, without an explicit read call. Useful for reference material, the agent should always have in view. Learn more about the LangSmith Context Hub <a href="https://docs.langchain.com/langsmith/context-hub" target="_blank" rel="noopener noreferrer">here</a>.</p>
+<p><strong>Composite</strong>: routes different path prefixes to different backends. Lets you mix different backends in a single agent (e.g. <code>/memories/</code> → Store, <code>/skills/</code> → Store, everything else → State).</p>
+<p><strong>Custom</strong>: implement the backend interface yourself to plug in any storage system.</p>
 <hr />
 <h2 id="single-backend">Single backend</h2>
-<p>Pass any backend directly to <code>create_deep_agent</code>. Here the agent stores all files in the LangGraph store — persisted across threads.</p>
+<p>Pass any backend directly to <code>create_deep_agent</code>. Here the agent stores all files in the LangGraph store, persisted across threads.</p>
 <div class="tabs-block" data-tabs="[{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# example\nfrom models import model\nfrom deepagents import create_deep_agent\nfrom deepagents.backends import StoreBackend\nfrom langgraph.store.memory import InMemoryStore\n\nagent = create_deep_agent(\n    model=model,\n    backend=StoreBackend(\n        namespace=lambda rt: (rt.server_info.user.identity,),\n    ),\n    store=InMemoryStore(),  # swap for PostgresStore in production\n)&quot;, &quot;highlights&quot;: [10, 12]}]"></div>
-<p><code>rt</code> is the LangGraph runtime passed to the backend at invocation time. <code>rt.server_info.user.identity</code> is the caller's user ID — using it as the namespace key keeps each user's files isolated in the store.</p>
+<p><code>rt</code> is the LangGraph runtime passed to the backend at invocation time. <code>rt.server_info.user.identity</code> is the caller's user ID; using it as the namespace key keeps each user's files isolated in the store.</p>
 <hr />
 <h2 id="composite-backend">Composite backend</h2>
 <p><code>CompositeBackend</code> routes path prefixes to different backends. Everything not matched by a route falls through to the <code>default</code>.</p>
@@ -635,7 +635,7 @@ graph TB
 </ul>
 <hr />
 <h2 id="permissions">Permissions</h2>
-<p>Pass a list of <code>FilesystemPermission</code> rules to <code>create_deep_agent</code> to control which paths the agent can read or write. Rules are evaluated in order — the first match wins. If nothing matches, the operation is allowed.</p>
+<p>Pass a list of <code>FilesystemPermission</code> rules to <code>create_deep_agent</code> to control which paths the agent can read or write. Rules are evaluated in order; the first match wins. If nothing matches, the operation is allowed.</p>
 <p>Each rule has three fields:</p>
 <table>
 <thead>
@@ -650,13 +650,13 @@ graph TB
 <tr>
 <td><code>operations</code></td>
 <td><code>"read"</code>, <code>"write"</code></td>
-<td>—</td>
+<td>-</td>
 <td><code>"read"</code> covers <code>ls</code>, <code>read_file</code>, <code>glob</code>, <code>grep</code>. <code>"write"</code> covers <code>write_file</code>, <code>edit_file</code>.</td>
 </tr>
 <tr>
 <td><code>paths</code></td>
 <td>glob patterns</td>
-<td>—</td>
+<td>-</td>
 <td>e.g. <code>["/memories/**"]</code>. Supports <code>**</code> and <code>{a,b}</code> alternation.</td>
 </tr>
 <tr>
@@ -668,17 +668,17 @@ graph TB
 </tbody>
 </table>
 <div class="tabs-block" data-tabs="[{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m2/agent.py\nfrom models import model\nfrom deepagents import create_deep_agent, FilesystemPermission\nfrom deepagents.backends import CompositeBackend, StateBackend, StoreBackend\nfrom langgraph.store.memory import InMemoryStore\n\nagent = create_deep_agent(\n    model=model,\n    backend=CompositeBackend(\n        default=StateBackend(),\n        routes={\n            \&quot;/memories/\&quot;: StoreBackend(namespace=lambda rt: (rt.server_info.user.identity,)),\n            \&quot;/skills/\&quot;: StoreBackend(namespace=lambda rt: (rt.server_info.user.identity,)),\n        },\n    ),\n    store=InMemoryStore(),\n    permissions=[\n        FilesystemPermission(\n            operations=[\&quot;write\&quot;],\n            paths=[\&quot;/skills/**\&quot;],\n            mode=\&quot;deny\&quot;,\n        ),\n    ],\n)&quot;, &quot;highlights&quot;: [17, 18, 19, 20, 21, 22, 23]}]"></div>
-<p>The agent can read <code>/skills/</code> but not write to it — skills are managed by application code, not the agent. <code>/memories/</code> remains fully read/write.</p>
+<p>The agent can read <code>/skills/</code> but not write to it; skills are managed by application code, not the agent. <code>/memories/</code> remains fully read/write.</p>
 <hr />
 <h2 id="recap">Recap</h2>
 <ul>
-<li>All backends expose the same tool surface — the agent never knows which one it's talking to</li>
+<li>All backends expose the same tool surface; the agent never knows which one it's talking to</li>
 <li><strong>State</strong> is the default: fast and zero-config, but thread-scoped</li>
 <li><strong>Store</strong> is the right choice when files need to survive across sessions</li>
 <li><strong>Composite</strong> lets you combine backends by path prefix</li>
 </ul>
 <h2 id="next">Next</h2>
-<p>The next lesson covers the execution backends — Sandbox and Local Shell — which add a shell <code>execute</code> tool on top of the filesystem surface.</p>
+<p>The next lesson covers the execution backends (Sandbox and Local Shell), which add a shell <code>execute</code> tool on top of the filesystem surface.</p>
 <hr />
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />
@@ -707,7 +707,7 @@ store.put(
     create_file_data(&quot;&quot;&quot;\
 ---
 name: chinook-sales
-description: Act as a Chinook sales rep — answer questions about customers, invoices, and the music catalog.
+description: Act as a Chinook sales rep; answer questions about customers, invoices, and the music catalog.
 ---
 
 You are a sales representative for Chinook Digital Music Store.
@@ -719,14 +719,14 @@ You are a sales representative for Chinook Digital Music Store.
 - Summarize invoice history for a customer
 
 **Chinook schema (key tables):**
-- `Customer` — CustomerId, FirstName, LastName, Email, SupportRepId
-- `Employee` — EmployeeId, Title (e.g. &quot;Sales Support Agent&quot;)
-- `Invoice` — InvoiceId, CustomerId, InvoiceDate, Total
-- `InvoiceLine` — InvoiceId, TrackId, UnitPrice, Quantity
-- `Track` — TrackId, Name, AlbumId, GenreId, UnitPrice
-- `Album` — AlbumId, Title, ArtistId
-- `Artist` — ArtistId, Name
-- `Genre` — GenreId, Name
+- `Customer`: CustomerId, FirstName, LastName, Email, SupportRepId
+- `Employee`: EmployeeId, Title (e.g. &quot;Sales Support Agent&quot;)
+- `Invoice`: InvoiceId, CustomerId, InvoiceDate, Total
+- `InvoiceLine`: InvoiceId, TrackId, UnitPrice, Quantity
+- `Track`: TrackId, Name, AlbumId, GenreId, UnitPrice
+- `Album`: AlbumId, Title, ArtistId
+- `Artist`: ArtistId, Name
+- `Genre`: GenreId, Name
 &quot;&quot;&quot;),
 )
 
@@ -769,12 +769,12 @@ print(result[&quot;messages&quot;][-1].content)
 <pre><code class="language-bash">cd python
 uv run ./m2/agent.py
 </code></pre>
-<pre><code>The file is read-only — I don't have write permission to /skills/chinook-sales/SKILL.md.
+<pre><code>The file is read-only; I don't have write permission to /skills/chinook-sales/SKILL.md.
 Here's the current content of the file for reference:
 
 ---
 name: chinook-sales
-description: Act as a Chinook sales rep — answer questions about customers, invoices, and the music catalog.
+description: Act as a Chinook sales rep; answer questions about customers, invoices, and the music catalog.
 ---
 
 You are a sales representative for Chinook Digital Music Store.
@@ -790,7 +790,7 @@ Unfortunately, the file is write-protected and I'm unable to modify it directly.
 <p><strong>What to look for:</strong><br />
 - The agent reads <code>/skills/chinook-sales/SKILL.md</code> without issue<br />
 - When it tries to write, it reports the file is read-only<br />
-- <code>/memories/</code> is unaffected — the agent can still read and write there</p>
+- <code>/memories/</code> is unaffected; the agent can still read and write there</p>
 </div>
 <script>
 (function () {

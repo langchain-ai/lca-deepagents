@@ -655,7 +655,7 @@ async def main():
     tools, session_manager, server_infos = await get_mcp_tools(&quot;.mcp.json&quot;)
 
     for info in server_infos:
-        print(f&quot;{info.name}: {info.status} — {len(info.tools)} tool(s)&quot;)
+        print(f&quot;{info.name}: {info.status} - {len(info.tools)} tool(s)&quot;)
 
     agent = create_deep_agent(model=model, tools=tools)
 
