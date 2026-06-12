@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>m1.l1-overview</title>
+    <title>m2.l2-sandboxes</title>
     <meta name="description" content="">
 
     <!-- Syntax highlighting -->
@@ -526,76 +526,187 @@
     </style>
 </head>
 <body>
-    <p><a href="https://langchain-ai.github.io/lca-deepagents/m1/m1.l1-overview.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
+    <p><a href="https://langchain-ai.github.io/lca-deepagents/m2/m2.l2-sandboxes.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
 <style>@import url('../shared/sd-components.css');</style>
 <script src="../shared/sd-components.js"></script>
 
-<h1 id="overview">Overview</h1>
-<details>
-<summary>Video Walk-through [click to expand]</summary>
-<p><br></p>
-<Video src="TODO" />
-</details>
-<details>
-<summary>What is a deep agent? (quick refresher) [click to expand]</summary>
-<p><br></p>
-<p>A <strong>deep agent</strong> is an AI agent that comes ready for real work. Like any agent,<br />
-it runs an LLM in a loop so the model can call tools and keep going until a task<br />
-is done; what makes it <em>deep</em> is the capabilities bundled in by default (a system<br />
-prompt, planning, a filesystem, and subagents), which is why it holds up on<br />
-long-horizon, multi-step jobs like research. Lesson 1 covers what a deep agent is<br />
-and when to reach for one in depth; the slideshow below is a 30-second recap.</p>
-<div class="sd-wrap" id="ss-whatis"></div>
-<script>
-buildSlideshow({
-  id: 'ss-whatis',
-  slides: [
-    {
-      src: 'images/m1.l2-whatis-1.svg',
-      tag: 'Step 1 of 4 · LLM',
-      caption: `At the center is an LLM. On its own it just turns text into text: it predicts a response, but it can't take actions or use tools.`
-    },
-    {
-      src: 'images/m1.l2-whatis-2.svg',
-      tag: 'Step 2 of 4 · Agent',
-      caption: `An agent wraps the LLM in a tool-calling loop. Now the model can call tools, read what comes back, and keep looping until the task is done.`
-    },
-    {
-      src: 'images/m1.l2-whatis-3.svg',
-      tag: 'Step 3 of 4 · Deep agent',
-      caption: `A deep agent wraps that agent in a harness: the same loop, plus built-in capabilities (a system prompt, planning, a filesystem, subagents, context management) so it's reliable on real, multi-step work from day one.`
-    },
-    {
-      src: 'images/m1.l2-whatis-4.svg',
-      tag: 'Step 4 of 4 · Filesystem',
-      caption: `One of those built-ins is a filesystem the agent can read from and write to (ls, write_file, and friends). It uses it as a scratchpad for notes and results on a long task. A later lesson covers it in depth; for now, just know it's there.`
-    },
-  ]
-});
-</script>
-</details>
-<p><strong>Where do the model and system prompt fit?</strong></p>
-<p>A deep agent is an LLM running in a loop, wrapped in built-in capabilities.</p>
-<p>The <strong>model</strong> is that LLM at the core, the part doing the reasoning.</p>
-<p>The <strong>system prompt</strong> is one of the built-ins the harness wraps around it: the<br />
-instructions the model sees on every call.</p>
-<p align="center">
-  <img src="images/m1.l2-system-prompt-code.svg" alt="A faded create_deep_agent code snippet with two lines highlighted: model=model is labeled 'the model, the LLM engine' and system_prompt=... is labeled 'the system prompt, the text the model reads on every call (the USER part)'." width="700">
-</p>
+<h1 id="sandboxes">Sandboxes</h1>
+<style>
+.lt-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 28px 0 0;
+  border-bottom: 2px solid #CCE9FF;
+}
+.lt-group { display: flex; gap: 3px; }
+.lt-sb   { --c: #7C3AED; }
+.lt-wrap { --c: #B45309; }
+.lt-tab {
+  font: 500 14px 'IBM Plex Mono', monospace;
+  padding: 9px 14px;
+  border: none;
+  background: transparent;
+  color: #40668D;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  border-radius: 6px 6px 0 0;
+  transition: background .15s, color .15s, border-color .15s;
+  white-space: nowrap;
+}
+.lt-tab:hover { background: #F2FAFF; color: #030710; }
+.lt-tab.active {
+  color: var(--c);
+  border-bottom-color: var(--c);
+  background: #fff;
+}
+.lt-panel { display: none; padding-top: 24px; }
+.lt-panel.active { display: block; }
+@media (max-width: 600px) {
+  .lt-bar { flex-wrap: nowrap; overflow-x: auto; gap: 12px; }
+  .lt-tab { padding: 8px 10px; font-size: 13px; }
+}
+</style>
 
-<p>Those two are the pieces you control most directly, so they're where this module<br />
-lives. You'll swap the model and watch the assembled prompt structure stay put, then add<br />
-your own instructions to the front of the prompt and see exactly where they land.<br />
-By the end you'll be able to open a run in LangSmith and name every part of the<br />
-assembled system prompt.</p>
+<div class="lt-bar" role="tablist" aria-label="Lesson sections">
+  <div class="lt-group lt-sb">
+    <button class="lt-tab active" data-p="sb" role="tab" aria-selected="true">Sandboxes</button>
+  </div>
+  <div class="lt-group lt-wrap">
+    <button class="lt-tab" data-p="lab6" role="tab" aria-selected="false">Lab 6</button>
+  </div>
+</div>
+
+<div class="lt-panel active" id="p-sb" role="tabpanel">
+<h2 id="sandboxes_1">Sandboxes</h2>
+<p><code>FilesystemBackend</code> gives the agent file tools: read, write, edit, search. A sandbox backend adds one more: <code>execute</code>, which runs shell commands. The distinction matters because executing arbitrary code is a different category of action from reading and writing files.</p>
+<h3 id="the-execute-tool">The <code>execute</code> tool</h3>
+<p>When the agent has a sandbox backend, it gains access to <code>execute(command, timeout)</code>. The agent can use this to run scripts it has written, invoke CLI tools, compile code, or chain shell commands. The output is returned as a tool result and fed back into the next LLM call.</p>
+<p>A typical pattern: the agent writes a script with <code>write_file</code>, then runs it with <code>execute</code>, reads the output, and revises if needed. You can see this sequence in LangSmith as a chain of tool calls.</p>
+<h3 id="why-isolation-matters">Why isolation matters</h3>
+<p>Without isolation, <code>execute</code> runs directly on your machine with your permissions. That is acceptable for local development but not for production agents or any situation where the agent might run untrusted or generated code. A sandbox limits what the process can access: filesystem scope, network access, resource limits, and process lifetime.</p>
+<h3 id="available-backends">Available backends</h3>
+<p>The SDK ships two concrete sandbox implementations:</p>
+<table>
+<thead>
+<tr>
+<th>Backend</th>
+<th>Where commands run</th>
+<th>Use case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LocalShellBackend</code></td>
+<td>Your local machine, unrestricted</td>
+<td>Local development and testing</td>
+</tr>
+<tr>
+<td><code>LangSmithSandbox</code></td>
+<td>Isolated LangSmith-managed environment</td>
+<td>Production or shared deployments</td>
+</tr>
+</tbody>
+</table>
+<p>Both extend <code>FilesystemBackend</code>, so they include all the file tools from the previous lesson in addition to <code>execute</code>.</p>
+<p><code>LocalShellBackend</code> is the simplest option: no API key or extra setup required. Commands run as your user with no network or filesystem restrictions. Use it to explore what the agent does, not to run untrusted code.</p>
+<p><code>LangSmithSandbox</code> runs commands in an isolated environment managed by LangSmith. It requires a LangSmith API key and project configuration, and is the right choice once you move beyond local experimentation.</p>
+<h3 id="configuring-a-sandbox-backend">Configuring a sandbox backend</h3>
+<pre><code class="language-python">from deepagents.backends import LocalShellBackend
+
+agent = create_deep_agent(
+    model=model,
+    backend=LocalShellBackend(root_dir=&quot;workspace/&quot;),
+)
+</code></pre>
+<p>Swapping in <code>LangSmithSandbox</code> requires no other code changes:</p>
+<pre><code class="language-python">from deepagents.backends import LangSmithSandbox
+
+agent = create_deep_agent(
+    model=model,
+    backend=LangSmithSandbox(root_dir=&quot;workspace/&quot;),
+)
+</code></pre>
+<p>The agent sees the same tools either way. The backend determines only where execution happens.</p>
+</div>
+<div class="lt-panel" id="p-lab6" role="tabpanel">
+<h2 id="lab-6-sandbox-agent">Lab 6: Sandbox Agent</h2>
+<p>You will build an agent that writes a Python script to disk, executes it, and reports the output. This demonstrates the write-then-execute pattern and shows the full tool sequence in LangSmith.</p>
+<p>This lab uses <code>LocalShellBackend</code>: commands run directly on your machine. Do not ask the agent to run untrusted or destructive commands.</p>
+<hr />
+<h3 id="1-create-sandbox_agentpy">1. Create <code>sandbox_agent.py</code></h3>
+<p>Create <code>python/m2/sandbox_agent.py</code>:</p>
+<pre><code class="language-python">import sys
+from pathlib import Path
+from deepagents.backends import LocalShellBackend
+from deepagents import create_deep_agent
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from models import model
+
+WORKSPACE = Path(__file__).parent / &quot;workspace&quot;
+WORKSPACE.mkdir(exist_ok=True)
+
+agent = create_deep_agent(
+    model=model,
+    backend=LocalShellBackend(root_dir=str(WORKSPACE)),
+    system_prompt=(
+        &quot;You are a coding assistant. When asked to run code, write the script to a file &quot;
+        &quot;first, then execute it. Show the output in your final answer.&quot;
+    ),
+)
+
+result = agent.invoke({&quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Write a Python script that prints the first 15 Fibonacci numbers, save it to fib.py, and run it.&quot;}]})
+print(result[&quot;messages&quot;][-1].content)
+</code></pre>
+<p>Before running, try a different task:</p>
+<ul>
+<li><code>"Write a Python script that counts word frequencies in a short paragraph of your choice, save it to wordcount.py, and run it."</code></li>
+<li><code>"Write a Python script that generates a multiplication table for numbers 1 to 5, save it to times-table.py, and run it."</code></li>
+</ul>
+<hr />
+<h3 id="run-it">Run it</h3>
+<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents
+</code></pre>
+<pre><code class="language-bash">uv run ./python/m2/sandbox_agent.py
+</code></pre>
+<hr />
+<h3 id="what-to-check">What to check</h3>
+<p>Open <code>python/m2/workspace/</code> and confirm the script file was created. Then open <strong>LangSmith</strong> and look at the tool call sequence:</p>
+<ol>
+<li><code>write_file</code>: the agent writes the script</li>
+<li><code>execute</code>: the agent runs it</li>
+<li>The tool result carries the stdout output back to the LLM</li>
+<li>The LLM includes the output in its final answer</li>
+</ol>
+<p>If the script had an error, you will see the agent call <code>edit_file</code> to fix it and <code>execute</code> again. This self-correction loop is one of the key behaviours a sandbox enables.</p>
+<div class="callout">
+<strong>LocalShellBackend vs LangSmithSandbox</strong><br>
+To use <code>LangSmithSandbox</code> instead, replace the import and the <code>backend=</code> argument. Make sure <code>LANGSMITH_API_KEY</code> is set in your <code>.env</code>. No other code changes are needed; the agent sees the same tools either way.
+</div>
+</div>
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />
 - <a href="https://docs.langchain.com/oss/python/deepagents/overview" target="_blank" rel="noopener noreferrer">Deep Agents overview</a><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/models" target="_blank" rel="noopener noreferrer">Models (Deep Agents)</a><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/customization#prompt-assembly" target="_blank" rel="noopener noreferrer">Customization &amp; prompt assembly (Deep Agents)</a><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/context-engineering" target="_blank" rel="noopener noreferrer">Context engineering (Deep Agents)</a><br />
-- <a href="https://github.com/langchain-ai/deepagents" target="_blank" rel="noopener noreferrer">deepagents README (GitHub)</a><br />
-- <a href="https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents/deepagents/profiles/harness" target="_blank" rel="noopener noreferrer">Built-in harness profiles (GitHub)</a></p>
+- <a href="https://github.com/langchain-ai/deepagents" target="_blank" rel="noopener noreferrer">deepagents README (GitHub)</a></p>
+<script>
+(function () {
+  var tabs = document.querySelectorAll('.lt-tab');
+  function show(p) {
+    tabs.forEach(function (t) {
+      var on = t.getAttribute('data-p') === p;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    document.querySelectorAll('.lt-panel').forEach(function (panel) {
+      panel.classList.toggle('active', panel.id === 'p-' + p);
+    });
+  }
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () { show(t.getAttribute('data-p')); });
+  });
+})();
+</script>
 
     <script>
         // Handle MCQ choice clicks

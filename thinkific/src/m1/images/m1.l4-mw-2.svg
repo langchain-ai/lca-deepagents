@@ -1,29 +1,29 @@
-<svg width="740" height="430" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-  <rect width="740" height="430" fill="#F2FAFF" rx="8"/>
-  <text x="370" y="34" text-anchor="middle" font-size="15" font-weight="700" fill="#1E3A5F">One middleware up close: FilesystemMiddleware</text>
-  <text x="370" y="54" text-anchor="middle" font-size="11" fill="#6A8EB0">On its wrap_model_call hook it appends real text to your system message</text>
+<svg width="740" height="430" xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="740" height="430" fill="#030710" rx="8"/>
+  <text x="370" y="34" text-anchor="middle" font-size="15" font-weight="300" fill="#F2FAFF">One middleware up close: FilesystemMiddleware</text>
+  <text x="370" y="54" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">On its wrap_model_call hook it appends real text to your system message</text>
 
-  <!-- what you wrote: USER system_prompt -->
-  <rect x="64" y="72" width="612" height="74" rx="6" fill="#DCEBFF" stroke="#3A74D4" stroke-width="1.4"/>
-  <text x="80" y="91" font-size="8.5" font-weight="700" fill="#3A74D4" letter-spacing="0.5">YOUR system_prompt: the USER segment</text>
-  <text x="80" y="114" font-size="11.5" fill="#1A3A7A" font-family="'IBM Plex Mono', monospace">"You are a research assistant. Research the question using the files</text>
-  <text x="80" y="133" font-size="11.5" fill="#1A3A7A" font-family="'IBM Plex Mono', monospace"> in the workspace, then write a short summary of what you find."</text>
+  <!-- USER system_prompt block -->
+  <rect x="64" y="72" width="612" height="74" rx="6" fill="#161F34" stroke="#7FC8FF" stroke-width="1.4"/>
+  <text x="80" y="91" font-size="8.5" font-weight="400" fill="#7FC8FF" letter-spacing="0.5" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">YOUR system_prompt: the USER segment</text>
+  <text x="80" y="114" font-size="11.5" fill="#F2FAFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">"You are a research assistant. Research the question using the files</text>
+  <text x="80" y="133" font-size="11.5" fill="#F2FAFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"> in the workspace, then write a short summary of what you find."</text>
 
-  <text x="370" y="164" text-anchor="middle" font-size="10" font-weight="700" fill="#B5703A">↓   FilesystemMiddleware appends this to the same message, on every call   ↓</text>
+  <text x="370" y="164" text-anchor="middle" font-size="10" font-weight="400" fill="#E3FF8F">↓   FilesystemMiddleware appends this to the same message, on every call   ↓</text>
 
-  <!-- appended verbatim by the middleware -->
-  <rect x="64" y="176" width="612" height="226" rx="6" fill="#FFF4E8" stroke="#D4834A" stroke-width="2"/>
-  <text x="80" y="196" font-size="8.5" font-weight="700" fill="#B5703A" letter-spacing="0.5">+ APPENDED TO THE SYSTEM MESSAGE: verbatim from FilesystemMiddleware</text>
+  <!-- appended by middleware block -->
+  <rect x="64" y="176" width="612" height="226" rx="6" fill="#0D1322" stroke="#6E8900" stroke-width="2"/>
+  <text x="80" y="196" font-size="8.5" font-weight="400" fill="#E3FF8F" letter-spacing="0.5" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">+ APPENDED TO THE SYSTEM MESSAGE: verbatim from FilesystemMiddleware</text>
 
-  <text x="82" y="221" font-size="9.5" fill="#5A3A1A" font-family="'IBM Plex Mono', monospace">## Filesystem Tools  `ls`, `read_file`, `write_file`, `edit_file`, `glob`, `grep`</text>
-  <text x="82" y="245" font-size="9.5" fill="#5A3A1A" font-family="'IBM Plex Mono', monospace">You have access to a filesystem which you can interact with using these</text>
-  <text x="82" y="261" font-size="9.5" fill="#5A3A1A" font-family="'IBM Plex Mono', monospace">tools. All file paths must start with a /. … use pagination (offset/limit)</text>
-  <text x="82" y="277" font-size="9.5" fill="#5A3A1A" font-family="'IBM Plex Mono', monospace">when reading large files.</text>
-  <text x="82" y="301" font-size="9.5" fill="#5A3A1A" font-family="'IBM Plex Mono', monospace">- ls: list files in a directory</text>
-  <text x="82" y="317" font-size="9.5" fill="#5A3A1A" font-family="'IBM Plex Mono', monospace">- read_file: read a file from the filesystem</text>
-  <text x="82" y="333" font-size="9.5" fill="#5A3A1A" font-family="'IBM Plex Mono', monospace">- write_file: write to a file</text>
+  <text x="82" y="221" font-size="9.5" fill="#B2DEFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">## Filesystem Tools  `ls`, `read_file`, `write_file`, `edit_file`, `glob`, `grep`</text>
+  <text x="82" y="245" font-size="9.5" fill="#B2DEFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">You have access to a filesystem which you can interact with using these</text>
+  <text x="82" y="261" font-size="9.5" fill="#B2DEFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">tools. All file paths must start with a /. … use pagination (offset/limit)</text>
+  <text x="82" y="277" font-size="9.5" fill="#B2DEFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">when reading large files.</text>
+  <text x="82" y="301" font-size="9.5" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">- ls: list files in a directory</text>
+  <text x="82" y="317" font-size="9.5" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">- read_file: read a file from the filesystem</text>
+  <text x="82" y="333" font-size="9.5" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">- write_file: write to a file</text>
 
-  <line x1="80" y1="350" x2="660" y2="350" stroke="#EBD2B6" stroke-width="1"/>
-  <text x="80" y="372" font-size="9.5" fill="#7A3A10">…and ls · read_file · write_file · edit_file · glob · grep are registered as tools;</text>
-  <text x="80" y="388" font-size="9.5" fill="#7A3A10">none of which you passed to create_deep_agent.</text>
+  <line x1="80" y1="350" x2="660" y2="350" stroke="#2F4B68" stroke-width="1"/>
+  <text x="80" y="372" font-size="9.5" fill="#E3FF8F" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">…and ls · read_file · write_file · edit_file · glob · grep are registered as tools;</text>
+  <text x="80" y="388" font-size="9.5" fill="#E3FF8F" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">none of which you passed to create_deep_agent.</text>
 </svg>

@@ -534,7 +534,7 @@
 <h2 id="recap">Recap</h2>
 <ul>
 <li>A Deep Agent = a <strong>model</strong> + a <strong>system prompt</strong> the SDK assembles every call.</li>
-<li><strong>Swapping models</strong> is a one-line change in <code>models.py</code>; the scaffolding around<br />
+<li><strong>Swapping models</strong> is a one-line change in <code>models.py</code>; the assembled prompt structure around<br />
   the model is identical no matter the provider.</li>
 <li><code>create_deep_agent</code> assembles three parts, <strong>USER → (BASE or CUSTOM) →<br />
   SUFFIX</strong>; then <strong>mandatory middleware append</strong> the <code>write_todos</code>, filesystem,<br />

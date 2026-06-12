@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #030710; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; overflow: hidden; }
+  .slide { display: none; }
+  .slide.active { display: block; }
+  .slide svg { width: 100%; height: auto; display: block; }
+  .controls { display: flex; align-items: center; justify-content: space-between; padding: 13px 28px; background: #0D1322; border-top: 1px solid #161F34; }
+  .btn { font: 500 12px 'IBM Plex Mono', monospace; padding: 7px 18px; border: 1px solid #40668D; background: transparent; color: #7FC8FF; border-radius: 6px; cursor: pointer; transition: background .15s; }
+  .btn:hover { background: #161F34; }
+  .btn:disabled { opacity: 0.25; cursor: default; pointer-events: none; }
+  .dots { display: flex; gap: 10px; align-items: center; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #2F4B68; cursor: pointer; transition: background .2s, transform .2s; }
+  .dot.active { background: #7FC8FF; transform: scale(1.25); }
+  .slide-label { font: 400 11px 'IBM Plex Mono', monospace; color: #40668D; min-width: 40px; text-align: right; }
+</style>
+</head>
+<body>
+<div id="slides">
+
+  <!-- SLIDE 1: How to enable HITL -->
+  <div class="slide active">
+    <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg" font-family="'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+      <rect width="800" height="380" fill="#030710"/>
+      <text x="400" y="48" text-anchor="middle" font-size="21" font-weight="300" fill="#F2FAFF">How to enable HITL</text>
+      <text x="400" y="74" text-anchor="middle" font-size="12" fill="#99D3FF" font-family="'IBM Plex Mono',monospace">pass interrupt_on to create_deep_agent with a dict of tool names</text>
+
+      <!-- Code block -->
+      <rect x="110" y="96" width="580" height="196" rx="8" fill="#0D1322" stroke="#2F4B68" stroke-width="1.5"/>
+      <rect x="110" y="96" width="580" height="28" rx="8" fill="#161F34"/>
+      <rect x="110" y="112" width="580" height="12" fill="#161F34"/>
+      <circle cx="128" cy="110" r="5" fill="#441E33"/>
+      <circle cx="145" cy="110" r="5" fill="#634643"/>
+      <circle cx="162" cy="110" r="5" fill="#2E3900"/>
+
+      <g font-family="'IBM Plex Mono',monospace" font-size="13">
+        <text x="136" y="148" fill="#B2DEFF">agent = create_deep_agent(</text>
+        <text x="136" y="170" fill="#B2DEFF">    model=model, tools=tools,</text>
+        <!-- interrupt_on highlight -->
+        <rect x="124" y="178" width="554" height="44" rx="3" fill="#1A2E1A" stroke="#6E8900" stroke-width="1"/>
+        <text x="136" y="196" fill="#B2DEFF">    interrupt_on={<tspan fill="#E3FF8F">"list_emails"</tspan>: <tspan fill="#C78EAD">True</tspan>, <tspan fill="#E3FF8F">"read_email"</tspan>: <tspan fill="#C78EAD">True</tspan>},</text>
+        <text x="136" y="218" fill="#B2DEFF">    checkpointer=<tspan fill="#E3FF8F">MemorySaver()</tspan>,</text>
+        <text x="136" y="240" fill="#B2DEFF">)</text>
+      </g>
+
+      <!-- Annotations -->
+      <rect x="560" y="178" width="148" height="30" rx="5" fill="#0D1322" stroke="#6E8900" stroke-width="1.2"/>
+      <text x="634" y="198" text-anchor="middle" font-size="10" fill="#E3FF8F">pauses before each call</text>
+
+      <rect x="560" y="216" width="148" height="30" rx="5" fill="#0D1322" stroke="#C78EAD" stroke-width="1.2"/>
+      <text x="634" y="236" text-anchor="middle" font-size="10" fill="#EBD0F0">required to pause/resume</text>
+
+      <text x="400" y="334" text-anchor="middle" font-size="12" fill="#40668D">True pauses before every call to that tool. Use InterruptOnConfig for finer control</text>
+      <text x="400" y="354" text-anchor="middle" font-size="12" fill="#40668D">(e.g. only pause when specific conditions are met).</text>
+    </svg>
+  </div>
+
+  <!-- SLIDE 2: HITL flow step by step -->
+  <div class="slide">
+    <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg" font-family="'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+      <defs><marker id="a5fwd" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L5,3 L0,6 Z" fill="#6E8900"/></marker></defs>
+      <rect width="800" height="380" fill="#030710"/>
+      <text x="400" y="48" text-anchor="middle" font-size="21" font-weight="300" fill="#F2FAFF">The HITL flow</text>
+      <text x="400" y="74" text-anchor="middle" font-size="12" fill="#99D3FF" font-family="'IBM Plex Mono',monospace">agent pauses; human decides; agent resumes</text>
+
+      <rect x="30" y="106" width="138" height="148" rx="8" fill="#0D1322" stroke="#40668D" stroke-width="1.5"/>
+      <text x="99" y="130" text-anchor="middle" font-size="9.5" fill="#40668D" font-family="'IBM Plex Mono',monospace">STEP 1</text>
+      <text x="99" y="156" text-anchor="middle" font-size="12" fill="#B2DEFF">agent decides</text>
+      <text x="99" y="174" text-anchor="middle" font-size="12" fill="#B2DEFF">to call</text>
+      <text x="99" y="194" text-anchor="middle" font-size="11" fill="#CCE9FF" font-family="'IBM Plex Mono',monospace">read_email</text>
+      <text x="99" y="222" text-anchor="middle" font-size="10" fill="#40668D">interrupt_on</text>
+      <text x="99" y="238" text-anchor="middle" font-size="10" fill="#40668D">is active</text>
+      <line x1="168" y1="180" x2="198" y2="180" stroke="#6E8900" stroke-width="1.4" marker-end="url(#a5fwd)"/>
+
+      <rect x="200" y="106" width="138" height="148" rx="8" fill="#0D1322" stroke="#C78EAD" stroke-width="1.5"/>
+      <text x="269" y="130" text-anchor="middle" font-size="9.5" fill="#C78EAD" font-family="'IBM Plex Mono',monospace">STEP 2</text>
+      <text x="269" y="156" text-anchor="middle" font-size="12" fill="#EBD0F0">graph pauses</text>
+      <text x="269" y="176" text-anchor="middle" font-size="12" fill="#EBD0F0">tool call is</text>
+      <text x="269" y="196" text-anchor="middle" font-size="12" fill="#EBD0F0">held pending</text>
+      <text x="269" y="222" text-anchor="middle" font-size="10" fill="#40668D">state is saved</text>
+      <text x="269" y="238" text-anchor="middle" font-size="10" fill="#40668D">to checkpointer</text>
+      <line x1="338" y1="180" x2="368" y2="180" stroke="#6E8900" stroke-width="1.4" marker-end="url(#a5fwd)"/>
+
+      <rect x="370" y="106" width="138" height="148" rx="8" fill="#0D1322" stroke="#7FC8FF" stroke-width="1.5"/>
+      <text x="439" y="130" text-anchor="middle" font-size="9.5" fill="#7FC8FF" font-family="'IBM Plex Mono',monospace">STEP 3</text>
+      <text x="439" y="156" text-anchor="middle" font-size="12" fill="#F2FAFF">you see the</text>
+      <text x="439" y="176" text-anchor="middle" font-size="12" fill="#F2FAFF">pending call</text>
+      <text x="439" y="196" text-anchor="middle" font-size="11" fill="#B2DEFF">name + inputs</text>
+      <text x="439" y="222" text-anchor="middle" font-size="10" fill="#40668D">approve / edit</text>
+      <text x="439" y="238" text-anchor="middle" font-size="10" fill="#40668D">reject / respond</text>
+      <line x1="508" y1="180" x2="538" y2="180" stroke="#6E8900" stroke-width="1.4" marker-end="url(#a5fwd)"/>
+
+      <rect x="540" y="106" width="230" height="148" rx="8" fill="#0D1322" stroke="#6E8900" stroke-width="1.5"/>
+      <text x="655" y="130" text-anchor="middle" font-size="9.5" fill="#6E8900" font-family="'IBM Plex Mono',monospace">STEP 4</text>
+      <text x="655" y="154" text-anchor="middle" font-size="12" fill="#E3FF8F">agent resumes</text>
+      <text x="655" y="174" text-anchor="middle" font-size="11" fill="#B2DEFF">if approved: tool runs,</text>
+      <text x="655" y="192" text-anchor="middle" font-size="11" fill="#B2DEFF">result added to history</text>
+      <text x="655" y="212" text-anchor="middle" font-size="11" fill="#B2DEFF">if rejected: tool skipped,</text>
+      <text x="655" y="230" text-anchor="middle" font-size="11" fill="#B2DEFF">model gets rejection note</text>
+      <text x="655" y="248" text-anchor="middle" font-size="9.5" fill="#40668D" font-family="'IBM Plex Mono',monospace">Command(resume=...)</text>
+
+      <text x="400" y="310" text-anchor="middle" font-size="12.5" fill="#B2DEFF">From the model's point of view, a rejected tool call looks like</text>
+      <text x="400" y="330" text-anchor="middle" font-size="12.5" fill="#B2DEFF">any other tool message; it just does not contain a result.</text>
+      <text x="400" y="362" text-anchor="middle" font-size="11" fill="#40668D">The agent can then decide to try a different approach or ask the user for clarification.</text>
+    </svg>
+  </div>
+
+</div>
+<div class="controls">
+  <button class="btn" id="prev" disabled>← Prev</button>
+  <div class="dots" id="dots"></div>
+  <span class="slide-label" id="label">1 / 2</span>
+  <button class="btn" id="next">Next →</button>
+</div>
+<script>
+(function(){
+  var slides=document.querySelectorAll('.slide'),cur=0;
+  var dotsEl=document.getElementById('dots'),label=document.getElementById('label');
+  var prev=document.getElementById('prev'),next=document.getElementById('next');
+  slides.forEach(function(_,i){var d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.addEventListener('click',function(){goTo(i);});dotsEl.appendChild(d);});
+  function goTo(n){slides[cur].classList.remove('active');dotsEl.children[cur].classList.remove('active');cur=n;slides[cur].classList.add('active');dotsEl.children[cur].classList.add('active');label.textContent=(cur+1)+' / '+slides.length;prev.disabled=cur===0;next.disabled=cur===slides.length-1;}
+  prev.addEventListener('click',function(){if(cur>0)goTo(cur-1);});
+  next.addEventListener('click',function(){if(cur<slides.length-1)goTo(cur+1);});
+  document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'&&cur<slides.length-1)goTo(cur+1);if(e.key==='ArrowLeft'&&cur>0)goTo(cur-1);});
+})();
+</script>
+</body>
+</html>

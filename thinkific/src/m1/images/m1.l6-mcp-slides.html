@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #030710;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    overflow: hidden;
+  }
+  .slideshow { width: 100%; background: #030710; }
+  .slide { display: none; }
+  .slide.active { display: block; }
+  .slide svg { width: 100%; height: auto; display: block; }
+  .controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 28px;
+    background: #0D1322;
+    border-top: 1px solid #161F34;
+  }
+  .btn {
+    font: 500 12px 'IBM Plex Mono', monospace;
+    padding: 7px 18px;
+    border: 1px solid #40668D;
+    background: transparent;
+    color: #7FC8FF;
+    border-radius: 6px;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: background .15s;
+  }
+  .btn:hover { background: #161F34; }
+  .btn:disabled { opacity: 0.25; cursor: default; pointer-events: none; }
+  .dots { display: flex; gap: 10px; align-items: center; }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #2F4B68; cursor: pointer;
+    transition: background .2s, transform .2s;
+  }
+  .dot.active { background: #7FC8FF; transform: scale(1.25); }
+  .slide-label {
+    font: 400 11px 'IBM Plex Mono', monospace;
+    color: #40668D;
+    min-width: 60px;
+    text-align: right;
+  }
+</style>
+</head>
+<body>
+<div class="slideshow">
+  <div id="slides">
+
+    <!-- ═══════════════════════════════════════════════════════ SLIDE 1 -->
+    <div class="slide active">
+      <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg"
+           font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+        <defs>
+          <marker id="a1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#7FC8FF"/>
+          </marker>
+        </defs>
+        <rect width="800" height="380" fill="#030710"/>
+
+        <text x="400" y="52" text-anchor="middle" font-size="22" font-weight="300" fill="#F2FAFF">Model Context Protocol</text>
+        <text x="400" y="80" text-anchor="middle" font-size="13" fill="#99D3FF"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">
+          a standard interface between agents and the outside world
+        </text>
+
+        <!-- Agent -->
+        <rect x="60" y="120" width="180" height="120" rx="10" fill="#0D1322" stroke="#7FC8FF" stroke-width="2"/>
+        <text x="150" y="168" text-anchor="middle" font-size="15" font-weight="400" fill="#7FC8FF">Your Agent</text>
+        <text x="150" y="192" text-anchor="middle" font-size="11" fill="#B2DEFF">LangChain</text>
+        <text x="150" y="211" text-anchor="middle" font-size="11" fill="#B2DEFF">deepagents</text>
+
+        <!-- Arrow 1 -->
+        <line x1="240" y1="180" x2="296" y2="180" stroke="#7FC8FF" stroke-width="2" marker-end="url(#a1)"/>
+
+        <!-- MCP Server -->
+        <rect x="300" y="110" width="200" height="140" rx="10" fill="#0D1322" stroke="#40668D" stroke-width="2"/>
+        <text x="400" y="162" text-anchor="middle" font-size="15" font-weight="400" fill="#B2DEFF">MCP Server</text>
+        <text x="400" y="185" text-anchor="middle" font-size="11" fill="#5BADDF">exposes tools</text>
+        <text x="400" y="203" text-anchor="middle" font-size="11" fill="#5BADDF">over a standard protocol</text>
+        <text x="400" y="228" text-anchor="middle" font-size="10"
+              font-family="'IBM Plex Mono', ui-monospace, monospace" fill="#40668D">
+          run by anyone, anywhere
+        </text>
+
+        <!-- Arrow 2 -->
+        <line x1="500" y1="180" x2="556" y2="180" stroke="#7FC8FF" stroke-width="2" marker-end="url(#a1)"/>
+
+        <!-- Service -->
+        <rect x="560" y="120" width="180" height="120" rx="10" fill="#0D1322" stroke="#6E8900" stroke-width="2"/>
+        <text x="650" y="165" text-anchor="middle" font-size="15" font-weight="400" fill="#E3FF8F">Service</text>
+        <text x="650" y="188" text-anchor="middle" font-size="11" fill="#B2DEFF">Gmail, GitHub,</text>
+        <text x="650" y="207" text-anchor="middle" font-size="11" fill="#B2DEFF">LangChain Docs…</text>
+
+        <text x="400" y="300" text-anchor="middle" font-size="12" fill="#B2DEFF">
+          MCP standardizes how any app exposes tools and context to an LLM.
+        </text>
+        <text x="400" y="322" text-anchor="middle" font-size="12" fill="#B2DEFF">
+          Your agent does not need custom integration code for each service.
+        </text>
+      </svg>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ SLIDE 2 -->
+    <div class="slide">
+      <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg"
+           font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+        <rect width="800" height="380" fill="#030710"/>
+
+        <text x="400" y="52" text-anchor="middle" font-size="22" font-weight="300" fill="#F2FAFF">Declaring servers in .mcp.json</text>
+        <text x="400" y="80" text-anchor="middle" font-size="13" fill="#99D3FF"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">
+          deepagents auto-discovers this file at the project root
+        </text>
+
+        <!-- Code editor -->
+        <rect x="100" y="100" width="440" height="230" rx="8" fill="#0D1322" stroke="#2F4B68" stroke-width="1.5"/>
+        <rect x="100" y="100" width="440" height="28" rx="8" fill="#161F34"/>
+        <rect x="100" y="116" width="440" height="12" fill="#161F34"/>
+        <circle cx="118" cy="114" r="5" fill="#441E33"/>
+        <circle cx="135" cy="114" r="5" fill="#634643"/>
+        <circle cx="152" cy="114" r="5" fill="#2E3900"/>
+        <text x="170" y="118" font-size="10" fill="#40668D"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">.mcp.json</text>
+
+        <g font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="12.5">
+          <text x="124" y="154" fill="#7FC8FF">{"mcpServers": {</text>
+          <text x="124" y="176" fill="#40668D">  "docs-langchain": {</text>
+          <text x="124" y="196" fill="#B2DEFF">    "type": </text>
+          <text x="219" y="196" fill="#E3FF8F">"http"</text>
+          <text x="252" y="196" fill="#B2DEFF">,</text>
+          <text x="124" y="216" fill="#B2DEFF">    "url":  </text>
+          <text x="218" y="216" fill="#E3FF8F">"https://docs.langchain.com/mcp"</text>
+          <text x="124" y="236" fill="#40668D">  },</text>
+          <text x="124" y="256" fill="#C78EAD">  "gmail": {</text>
+          <text x="124" y="276" fill="#B2DEFF">    "type": </text>
+          <text x="219" y="276" fill="#E3FF8F">"sse"</text>
+          <text x="249" y="276" fill="#B2DEFF">,  "auth": </text>
+          <text x="323" y="276" fill="#E3FF8F">"oauth"</text>
+          <text x="124" y="296" fill="#C78EAD">  }</text>
+          <text x="124" y="316" fill="#7FC8FF">}}</text>
+        </g>
+
+        <!-- Annotations -->
+        <rect x="564" y="162" width="120" height="36" rx="6" fill="#0D1322" stroke="#40668D" stroke-width="1.2"/>
+        <line x1="540" y1="185" x2="562" y2="180" stroke="#40668D" stroke-width="1.2"/>
+        <text x="574" y="177" font-size="10" fill="#B2DEFF">HTTP server,</text>
+        <text x="574" y="191" font-size="10" fill="#B2DEFF">no auth needed</text>
+
+        <rect x="564" y="262" width="120" height="36" rx="6" fill="#0D1322" stroke="#C78EAD" stroke-width="1.2"/>
+        <line x1="540" y1="276" x2="562" y2="277" stroke="#C78EAD" stroke-width="1.2"/>
+        <text x="574" y="276" font-size="10" fill="#EBD0F0">SSE server,</text>
+        <text x="574" y="290" font-size="10" fill="#EBD0F0">OAuth required</text>
+      </svg>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ SLIDE 3 -->
+    <div class="slide">
+      <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg"
+           font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+        <defs>
+          <marker id="a3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#40668D"/>
+          </marker>
+        </defs>
+        <rect width="800" height="380" fill="#030710"/>
+
+        <text x="400" y="52" text-anchor="middle" font-size="22" font-weight="300" fill="#F2FAFF">Transport: how the agent reaches the server</text>
+        <text x="400" y="80" text-anchor="middle" font-size="13" fill="#99D3FF"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">
+          set in .mcp.json; your Python code never changes
+        </text>
+
+        <!-- Row headers -->
+        <text x="78" y="130" font-size="11" fill="#40668D"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">Agent</text>
+        <text x="380" y="130" text-anchor="middle" font-size="11" fill="#40668D"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">Transport</text>
+        <text x="660" y="130" text-anchor="middle" font-size="11" fill="#40668D"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">Server</text>
+
+        <!-- stdio row -->
+        <rect x="40" y="142" width="90" height="38" rx="6" fill="#0D1322" stroke="#40668D" stroke-width="1"/>
+        <text x="85" y="165" text-anchor="middle" font-size="11" fill="#B2DEFF">agent</text>
+        <line x1="130" y1="161" x2="238" y2="161" stroke="#40668D" stroke-width="1.3" marker-end="url(#a3)" stroke-dasharray="5,4"/>
+        <rect x="240" y="142" width="272" height="38" rx="6" fill="#161F34" stroke="#2F4B68" stroke-width="1.2"/>
+        <text x="376" y="158" text-anchor="middle" font-size="11" font-weight="600" fill="#F2FAFF"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">stdio</text>
+        <text x="376" y="173" text-anchor="middle" font-size="10" fill="#5BADDF">server runs as a local subprocess</text>
+        <line x1="512" y1="161" x2="600" y2="161" stroke="#40668D" stroke-width="1.3" marker-end="url(#a3)" stroke-dasharray="5,4"/>
+        <rect x="602" y="142" width="110" height="38" rx="6" fill="#0D1322" stroke="#2F4B68" stroke-width="1"/>
+        <text x="657" y="165" text-anchor="middle" font-size="10" fill="#B2DEFF">local process</text>
+
+        <!-- HTTP row -->
+        <rect x="40" y="206" width="90" height="38" rx="6" fill="#0D1322" stroke="#40668D" stroke-width="1"/>
+        <text x="85" y="229" text-anchor="middle" font-size="11" fill="#B2DEFF">agent</text>
+        <line x1="130" y1="225" x2="238" y2="225" stroke="#7FC8FF" stroke-width="1.3" marker-end="url(#a3)"/>
+        <rect x="240" y="206" width="272" height="38" rx="6" fill="#161F34" stroke="#40668D" stroke-width="1.2"/>
+        <text x="376" y="222" text-anchor="middle" font-size="11" font-weight="600" fill="#F2FAFF"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">HTTP</text>
+        <text x="376" y="237" text-anchor="middle" font-size="10" fill="#5BADDF">request → response, connection closes</text>
+        <line x1="512" y1="225" x2="600" y2="225" stroke="#7FC8FF" stroke-width="1.3" marker-end="url(#a3)"/>
+        <rect x="602" y="206" width="110" height="38" rx="6" fill="#0D1322" stroke="#40668D" stroke-width="1"/>
+        <text x="657" y="229" text-anchor="middle" font-size="10" fill="#B2DEFF">remote server</text>
+
+        <!-- SSE row -->
+        <rect x="40" y="270" width="90" height="38" rx="6" fill="#0D1322" stroke="#40668D" stroke-width="1"/>
+        <text x="85" y="293" text-anchor="middle" font-size="11" fill="#B2DEFF">agent</text>
+        <line x1="130" y1="289" x2="238" y2="289" stroke="#E3FF8F" stroke-width="1.3" marker-end="url(#a3)"/>
+        <rect x="240" y="270" width="272" height="38" rx="6" fill="#161F34" stroke="#6E8900" stroke-width="1.5"/>
+        <text x="376" y="286" text-anchor="middle" font-size="11" font-weight="600" fill="#E3FF8F"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">SSE</text>
+        <text x="376" y="301" text-anchor="middle" font-size="10" fill="#5BADDF">persistent connection, server streams events</text>
+        <line x1="512" y1="289" x2="600" y2="289" stroke="#E3FF8F" stroke-width="1.3" marker-end="url(#a3)"/>
+        <rect x="602" y="270" width="110" height="38" rx="6" fill="#0D1322" stroke="#6E8900" stroke-width="1"/>
+        <text x="657" y="293" text-anchor="middle" font-size="10" fill="#B2DEFF">remote server</text>
+
+        <text x="400" y="348" text-anchor="middle" font-size="11.5" fill="#B2DEFF">
+          Stdio runs locally with no networking. HTTP and SSE connect to remote servers.
+        </text>
+        <text x="400" y="366" text-anchor="middle" font-size="11.5" fill="#B2DEFF">
+          SSE is the newest transport and keeps the connection open for streaming results.
+        </text>
+      </svg>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ SLIDE 4 -->
+    <div class="slide">
+      <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg"
+           font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+        <defs>
+          <marker id="a4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#7FC8FF"/>
+          </marker>
+        </defs>
+        <rect width="800" height="380" fill="#030710"/>
+
+        <text x="400" y="52" text-anchor="middle" font-size="22" font-weight="300" fill="#F2FAFF">MCP tools look identical to local tools</text>
+        <text x="400" y="80" text-anchor="middle" font-size="13" fill="#99D3FF"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">
+          langchain-mcp-adapters wraps each MCP tool as a LangChain BaseTool
+        </text>
+
+        <!-- MCP Server side -->
+        <rect x="40" y="105" width="210" height="190" rx="10" fill="#0D1322" stroke="#40668D" stroke-width="1.5"/>
+        <text x="145" y="132" text-anchor="middle" font-size="13" font-weight="400" fill="#B2DEFF">MCP Server</text>
+        <text x="145" y="152" text-anchor="middle" font-size="10" fill="#40668D"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">exposes tools via protocol</text>
+        <rect x="60" y="165" width="170" height="30" rx="5" fill="#161F34" stroke="#40668D" stroke-width="1"/>
+        <text x="145" y="184" text-anchor="middle" font-size="11" fill="#CCE9FF"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">list_emails</text>
+        <rect x="60" y="203" width="170" height="30" rx="5" fill="#161F34" stroke="#40668D" stroke-width="1"/>
+        <text x="145" y="222" text-anchor="middle" font-size="11" fill="#CCE9FF"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">read_email</text>
+        <rect x="60" y="241" width="170" height="30" rx="5" fill="#161F34" stroke="#40668D" stroke-width="1"/>
+        <text x="145" y="260" text-anchor="middle" font-size="11" fill="#CCE9FF"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">search_emails</text>
+
+        <!-- Adapter -->
+        <rect x="290" y="155" width="160" height="90" rx="8" fill="#161F34" stroke="#2F4B68" stroke-width="1.2"/>
+        <text x="370" y="188" text-anchor="middle" font-size="10" fill="#99D3FF"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">langchain-mcp-</text>
+        <text x="370" y="203" text-anchor="middle" font-size="10" fill="#99D3FF"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">adapters</text>
+        <text x="370" y="224" text-anchor="middle" font-size="10" fill="#40668D">wraps as BaseTool</text>
+        <line x1="250" y1="200" x2="288" y2="200" stroke="#7FC8FF" stroke-width="1.5" marker-end="url(#a4)"/>
+        <line x1="450" y1="200" x2="488" y2="200" stroke="#7FC8FF" stroke-width="1.5" marker-end="url(#a4)"/>
+
+        <!-- Agent side -->
+        <rect x="490" y="105" width="270" height="190" rx="10" fill="#0D1322" stroke="#7FC8FF" stroke-width="1.5"/>
+        <text x="625" y="132" text-anchor="middle" font-size="13" font-weight="400" fill="#7FC8FF">Agent sees these tools</text>
+        <text x="625" y="152" text-anchor="middle" font-size="10" fill="#40668D"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">all are BaseTool; source is invisible</text>
+        <rect x="508" y="165" width="234" height="30" rx="5" fill="#161F34" stroke="#6E8900" stroke-width="1.2"/>
+        <text x="625" y="181" text-anchor="middle" font-size="10.5" fill="#E3FF8F"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">web_search</text>
+        <text x="710" y="181" font-size="9" fill="#6E8900">local</text>
+        <rect x="508" y="203" width="234" height="30" rx="5" fill="#161F34" stroke="#40668D" stroke-width="1.2"/>
+        <text x="625" y="219" text-anchor="middle" font-size="10.5" fill="#CCE9FF"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">list_emails</text>
+        <text x="710" y="219" font-size="9" fill="#40668D">MCP</text>
+        <rect x="508" y="241" width="234" height="30" rx="5" fill="#161F34" stroke="#40668D" stroke-width="1.2"/>
+        <text x="625" y="257" text-anchor="middle" font-size="10.5" fill="#CCE9FF"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">read_email</text>
+        <text x="710" y="257" font-size="9" fill="#40668D">MCP</text>
+
+        <text x="400" y="338" text-anchor="middle" font-size="11.5" fill="#B2DEFF">
+          Tool results are added to the message history as ToolMessages.
+        </text>
+        <text x="400" y="358" text-anchor="middle" font-size="11.5" fill="#B2DEFF">
+          The model cannot tell whether a tool came from MCP or was defined locally.
+        </text>
+      </svg>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ SLIDE 5 -->
+    <div class="slide">
+      <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg"
+           font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+        <defs>
+          <marker id="a5" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#7FC8FF"/>
+          </marker>
+          <marker id="a5p" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#C78EAD"/>
+          </marker>
+        </defs>
+        <rect width="800" height="380" fill="#030710"/>
+
+        <text x="400" y="52" text-anchor="middle" font-size="22" font-weight="300" fill="#F2FAFF">Auth and human approval</text>
+        <text x="400" y="80" text-anchor="middle" font-size="13" fill="#99D3FF"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">
+          some servers require login; you can gate tool calls behind a human yes/no
+        </text>
+
+        <!-- LEFT: OAuth -->
+        <rect x="40" y="105" width="330" height="210" rx="10" fill="#0D1322" stroke="#C78EAD" stroke-width="1.5"/>
+        <text x="205" y="132" text-anchor="middle" font-size="13" font-weight="400" fill="#C78EAD">OAuth authorization</text>
+
+        <rect x="60" y="148" width="290" height="32" rx="5" fill="#161F34" stroke="#2F4B68" stroke-width="1"/>
+        <text x="90" y="162" font-size="10" fill="#40668D"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">in .mcp.json:</text>
+        <text x="185" y="162" font-size="10" fill="#E3FF8F"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">"auth": "oauth"</text>
+        <text x="90" y="174" font-size="10" fill="#EBD0F0"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">+ "allowedTools": [...]</text>
+
+        <line x1="205" y1="180" x2="205" y2="196" stroke="#C78EAD" stroke-width="1.3" marker-end="url(#a5p)"/>
+        <rect x="60" y="198" width="290" height="28" rx="5" fill="#161F34" stroke="#C78EAD" stroke-width="1"/>
+        <text x="205" y="216" text-anchor="middle" font-size="10.5" fill="#EBD0F0">browser opens for login on first run</text>
+
+        <line x1="205" y1="226" x2="205" y2="242" stroke="#C78EAD" stroke-width="1.3" marker-end="url(#a5p)"/>
+        <rect x="60" y="244" width="290" height="28" rx="5" fill="#161F34" stroke="#C78EAD" stroke-width="1"/>
+        <text x="205" y="262" text-anchor="middle" font-size="10.5" fill="#EBD0F0">token saved to ~/.deepagents/.state/</text>
+
+        <line x1="205" y1="272" x2="205" y2="288" stroke="#C78EAD" stroke-width="1.3" marker-end="url(#a5p)"/>
+        <rect x="60" y="290" width="290" height="14" rx="5" fill="#161F34" stroke="#2F4B68" stroke-width="1"/>
+        <text x="205" y="301" text-anchor="middle" font-size="9.5" fill="#5BADDF">reused on subsequent runs</text>
+
+        <!-- RIGHT: HITL -->
+        <rect x="430" y="105" width="330" height="210" rx="10" fill="#0D1322" stroke="#6E8900" stroke-width="1.5"/>
+        <text x="595" y="132" text-anchor="middle" font-size="13" font-weight="400" fill="#E3FF8F">Human-in-the-loop</text>
+
+        <rect x="450" y="148" width="290" height="32" rx="5" fill="#161F34" stroke="#2F4B68" stroke-width="1"/>
+        <text x="470" y="162" font-size="10" fill="#40668D"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">interrupt_on=&#123;</text>
+        <text x="470" y="174" font-size="10" fill="#E3FF8F"
+              font-family="'IBM Plex Mono', ui-monospace, monospace">  "list_emails": True</text>
+
+        <line x1="595" y1="180" x2="595" y2="196" stroke="#6E8900" stroke-width="1.3" marker-end="url(#a5)"/>
+        <rect x="450" y="198" width="290" height="28" rx="5" fill="#161F34" stroke="#6E8900" stroke-width="1"/>
+        <text x="595" y="216" text-anchor="middle" font-size="10.5" fill="#E3FF8F">agent pauses before calling tool</text>
+
+        <line x1="595" y1="226" x2="595" y2="242" stroke="#6E8900" stroke-width="1.3" marker-end="url(#a5)"/>
+        <rect x="450" y="244" width="290" height="28" rx="5" fill="#161F34" stroke="#6E8900" stroke-width="1"/>
+        <text x="595" y="262" text-anchor="middle" font-size="10.5" fill="#E3FF8F">human sees call + inputs, decides</text>
+
+        <line x1="595" y1="272" x2="595" y2="288" stroke="#6E8900" stroke-width="1.3" marker-end="url(#a5)"/>
+        <rect x="450" y="290" width="290" height="14" rx="5" fill="#161F34" stroke="#2F4B68" stroke-width="1"/>
+        <text x="595" y="301" text-anchor="middle" font-size="9.5" fill="#5BADDF">approve / edit / reject / respond</text>
+      </svg>
+    </div>
+
+  </div><!-- /slides -->
+
+  <div class="controls">
+    <button class="btn" id="prev" disabled>← Prev</button>
+    <div class="dots" id="dots"></div>
+    <span class="slide-label" id="label">1 / 5</span>
+    <button class="btn" id="next">Next →</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var slides = document.querySelectorAll('.slide');
+  var dotsEl = document.getElementById('dots');
+  var label  = document.getElementById('label');
+  var prev   = document.getElementById('prev');
+  var next   = document.getElementById('next');
+  var cur    = 0;
+
+  slides.forEach(function (_, i) {
+    var d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', function () { goTo(i); });
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(n) {
+    slides[cur].classList.remove('active');
+    dotsEl.children[cur].classList.remove('active');
+    cur = n;
+    slides[cur].classList.add('active');
+    dotsEl.children[cur].classList.add('active');
+    label.textContent = (cur + 1) + ' / ' + slides.length;
+    prev.disabled = cur === 0;
+    next.disabled = cur === slides.length - 1;
+  }
+
+  prev.addEventListener('click', function () { if (cur > 0) goTo(cur - 1); });
+  next.addEventListener('click', function () { if (cur < slides.length - 1) goTo(cur + 1); });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' && cur < slides.length - 1) goTo(cur + 1);
+    if (e.key === 'ArrowLeft'  && cur > 0)                 goTo(cur - 1);
+  });
+})();
+</script>
+</body>
+</html>

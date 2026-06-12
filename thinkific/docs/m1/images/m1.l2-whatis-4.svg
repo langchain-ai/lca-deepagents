@@ -1,29 +1,29 @@
-<svg width="740" height="430" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-  <rect width="740" height="430" fill="#F2FAFF" rx="8"/>
-  <text x="370" y="32" text-anchor="middle" font-size="15" font-weight="700" fill="#1E3A5F">What is a Deep Agent?</text>
-  <text x="370" y="51" text-anchor="middle" font-size="11" fill="#6A8EB0">A peek at one built-in: the filesystem</text>
+<svg width="740" height="430" xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="740" height="430" fill="#030710" rx="8"/>
+  <text x="370" y="34" text-anchor="middle" font-size="15" font-weight="300" fill="#F2FAFF">What is a Deep Agent?</text>
+  <text x="370" y="53" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">A peek at one built-in: the filesystem</text>
 
   <!-- filesystem panel -->
-  <rect x="200" y="88" width="340" height="262" rx="8" fill="#FFFDF9" stroke="#D4834A" stroke-width="2"/>
-  <text x="370" y="113" text-anchor="middle" font-size="13" font-weight="700" fill="#7A3A10">Filesystem</text>
-  <text x="370" y="130" text-anchor="middle" font-size="9" fill="#B5703A">a built-in the agent reads and writes</text>
-  <line x1="224" y1="142" x2="516" y2="142" stroke="#EBD3BC" stroke-width="1"/>
+  <rect x="200" y="88" width="340" height="262" rx="8" fill="#0D1322" stroke="#6E8900" stroke-width="2"/>
+  <text x="370" y="113" text-anchor="middle" font-size="13" font-weight="400" fill="#E3FF8F">Filesystem</text>
+  <text x="370" y="130" text-anchor="middle" font-size="9" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">a built-in the agent reads and writes</text>
+  <line x1="224" y1="142" x2="516" y2="142" stroke="#2F4B68" stroke-width="1"/>
 
   <!-- mock file rows -->
-  <rect x="244" y="156" width="12" height="15" rx="2" fill="#FFE8CC" stroke="#D4834A" stroke-width="1"/>
-  <text x="266" y="168" font-size="10" fill="#5A4A3A">/research.md</text>
-  <rect x="244" y="180" width="12" height="15" rx="2" fill="#FFE8CC" stroke="#D4834A" stroke-width="1"/>
-  <text x="266" y="192" font-size="10" fill="#5A4A3A">/outline.md</text>
-  <rect x="244" y="204" width="12" height="15" rx="2" fill="#FFE8CC" stroke="#D4834A" stroke-width="1"/>
-  <text x="266" y="216" font-size="10" fill="#5A4A3A">/summary.md</text>
+  <rect x="244" y="156" width="12" height="15" rx="2" fill="#161F34" stroke="#40668D" stroke-width="1"/>
+  <text x="266" y="168" font-size="10" fill="#B2DEFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">/research.md</text>
+  <rect x="244" y="180" width="12" height="15" rx="2" fill="#161F34" stroke="#40668D" stroke-width="1"/>
+  <text x="266" y="192" font-size="10" fill="#B2DEFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">/outline.md</text>
+  <rect x="244" y="204" width="12" height="15" rx="2" fill="#161F34" stroke="#40668D" stroke-width="1"/>
+  <text x="266" y="216" font-size="10" fill="#B2DEFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">/summary.md</text>
 
-  <line x1="224" y1="230" x2="516" y2="230" stroke="#EBD3BC" stroke-width="1"/>
-  <text x="370" y="250" text-anchor="middle" font-size="8.5" letter-spacing="0.5" fill="#9A7A5A">THE AGENT'S FILE TOOLS</text>
-  <text x="370" y="267" text-anchor="middle" font-size="9" fill="#7A3A10">ls · read_file · write_file · edit_file · glob · grep</text>
+  <line x1="224" y1="230" x2="516" y2="230" stroke="#2F4B68" stroke-width="1"/>
+  <text x="370" y="250" text-anchor="middle" font-size="8.5" letter-spacing="0.5" fill="#5BADDF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">THE AGENT'S FILE TOOLS</text>
+  <text x="370" y="267" text-anchor="middle" font-size="9" fill="#E3FF8F" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">ls · read_file · write_file · edit_file · glob · grep</text>
 
   <!-- covered-later pill -->
-  <rect x="283" y="286" width="174" height="24" rx="12" fill="#EAF6FF" stroke="#2A7AB0" stroke-width="1"/>
-  <text x="370" y="302" text-anchor="middle" font-size="9" fill="#15557F">Covered in a later lesson</text>
+  <rect x="283" y="286" width="174" height="24" rx="12" fill="#161F34" stroke="#2F4B68" stroke-width="1"/>
+  <text x="370" y="302" text-anchor="middle" font-size="9" fill="#7FC8FF">Covered in a later lesson</text>
 
-  <text x="370" y="332" text-anchor="middle" font-size="8.5" font-style="italic" fill="#9AB0C8">Its own scratchpad (a StateBackend by default), not your real disk.</text>
+  <text x="370" y="332" text-anchor="middle" font-size="8.5" fill="#40668D">Its own scratchpad (a StateBackend by default), not your real disk.</text>
 </svg>

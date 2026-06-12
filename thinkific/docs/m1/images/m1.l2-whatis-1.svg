@@ -1,10 +1,10 @@
-<svg width="740" height="430" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-  <rect width="740" height="430" fill="#F2FAFF" rx="8"/>
-  <text x="370" y="32" text-anchor="middle" font-size="15" font-weight="700" fill="#1E3A5F">What is a Deep Agent?</text>
-  <text x="370" y="51" text-anchor="middle" font-size="11" fill="#6A8EB0">An LLM, wrapped in a loop, wrapped in a harness</text>
+<svg width="740" height="430" xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="740" height="430" fill="#030710" rx="8"/>
+  <text x="370" y="34" text-anchor="middle" font-size="15" font-weight="300" fill="#F2FAFF">What is a Deep Agent?</text>
+  <text x="370" y="53" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">An LLM, wrapped in a loop, wrapped in a harness</text>
 
   <!-- LLM (center) -->
-  <rect x="300" y="168" width="140" height="66" rx="6" fill="#CCE5FF" stroke="#3A74D4" stroke-width="2"/>
-  <text x="370" y="205" text-anchor="middle" font-size="16" font-weight="700" fill="#1A3A7A">LLM</text>
-  <text x="370" y="223" text-anchor="middle" font-size="9" fill="#3A74D4">text in → text out</text>
+  <rect x="300" y="168" width="140" height="66" rx="6" fill="#161F34" stroke="#7FC8FF" stroke-width="2"/>
+  <text x="370" y="205" text-anchor="middle" font-size="16" font-weight="400" fill="#F2FAFF">LLM</text>
+  <text x="370" y="223" text-anchor="middle" font-size="9" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">text in → text out</text>
 </svg>

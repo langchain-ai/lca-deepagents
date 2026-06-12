@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>m1.l4-middleware-reference</title>
+    <title>m2.l1-filesystem</title>
     <meta name="description" content="">
 
     <!-- Syntax highlighting -->
@@ -526,84 +526,214 @@
     </style>
 </head>
 <body>
-    <h1 id="middleware-reference-saved-from-m1l4-not-currently-used-in-course">Middleware Reference (saved from m1.l4; not currently used in course)</h1>
-<h2 id="what-is-middleware">What is middleware?</h2>
-<blockquote>
-<p><strong>What is middleware?</strong> Middleware are pluggable components that hook into the<br />
-agent loop at defined points. A middleware can run logic <code>before_model</code> and<br />
-<code>after_model</code> (and <code>before_agent</code> / <code>after_agent</code>), wrap each model call to<br />
-rewrite the outgoing request, intercept tool calls, register extra tools, and<br />
-read or extend the agent's state; some, like human-in-the-loop, can even pause<br />
-(interrupt) the run to wait for input. You never call middleware directly,<br />
-<code>create_deep_agent</code> installs the required ones for you.</p>
-</blockquote>
-<h2 id="middleware-slideshow-sd-wrap">Middleware slideshow (sd-wrap)</h2>
-<pre><code class="language-html">&lt;div class=&quot;sd-wrap&quot; id=&quot;ss-middleware&quot;&gt;&lt;/div&gt;
+    <p><a href="https://langchain-ai.github.io/lca-deepagents/m2/m2.l1-filesystem.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
+<style>@import url('../shared/sd-components.css');</style>
+<script src="../shared/sd-components.js"></script>
 
-&lt;script&gt;
-buildSlideshow({
-  id: 'ss-middleware',
-  slides: [
-    {
-      src: 'images/m1.l4-mw-1.svg',
-      tag: 'Step 1 of 4 · Hook points',
-      caption: `Middleware are functions the SDK runs at fixed points in the agent loop: before and after each model call, around tool calls, and once at the start and end of the run. You don't wire them up; create_deep_agent installs the required ones for you.`
-    },
-    {
-      src: 'images/m1.l4-mw-2.svg',
-      tag: 'Step 2 of 4 · A concrete one',
-      caption: `Take one concrete example: FilesystemMiddleware. On its wrap_model_call hook it edits every model request in two ways: it appends a &quot;Filesystem Tools&quot; section to the system message, and it registers the file tools (ls, read_file, write_file, edit_file, glob, grep).`
-    },
-    {
-      src: 'images/m1.l4-mw-3.svg',
-      tag: 'Step 3 of 4 · What the model sees',
-      caption: `So the request that reaches the model now carries the filesystem instructions and the file tools, even though you never passed them yourself. The model effectively knows it can read and write files, and which tools to call.`
-    },
-    {
-      src: 'images/m1.l4-mw-4.svg',
-      tag: 'Step 4 of 4 · Effect on the answer',
-      caption: `That changes the final answer. Asked to summarize notes.txt, a bare model can only say it has no file access; with FilesystemMiddleware it calls read_file, reads the file, and returns a real summary. Middleware quietly shapes what the agent can do, and therefore what it replies.`
-    },
-  ]
-});
-&lt;/script&gt;
+<h1 id="filesystem">Filesystem</h1>
+<style>
+.lt-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 28px 0 0;
+  border-bottom: 2px solid #CCE9FF;
+}
+.lt-group { display: flex; gap: 3px; }
+.lt-fs   { --c: #0891B2; }
+.lt-wrap { --c: #B45309; }
+.lt-tab {
+  font: 500 14px 'IBM Plex Mono', monospace;
+  padding: 9px 14px;
+  border: none;
+  background: transparent;
+  color: #40668D;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  border-radius: 6px 6px 0 0;
+  transition: background .15s, color .15s, border-color .15s;
+  white-space: nowrap;
+}
+.lt-tab:hover { background: #F2FAFF; color: #030710; }
+.lt-tab.active {
+  color: var(--c);
+  border-bottom-color: var(--c);
+  background: #fff;
+}
+.lt-panel { display: none; padding-top: 24px; }
+.lt-panel.active { display: block; }
+@media (max-width: 600px) {
+  .lt-bar { flex-wrap: nowrap; overflow-x: auto; gap: 12px; }
+  .lt-tab { padding: 8px 10px; font-size: 13px; }
+}
+</style>
+
+<div class="lt-bar" role="tablist" aria-label="Lesson sections">
+  <div class="lt-group lt-fs">
+    <button class="lt-tab active" data-p="fs" role="tab" aria-selected="true">Filesystem</button>
+  </div>
+  <div class="lt-group lt-wrap">
+    <button class="lt-tab" data-p="lab5" role="tab" aria-selected="false">Lab 5</button>
+  </div>
+</div>
+
+<div class="lt-panel active" id="p-fs" role="tabpanel">
+<h2 id="the-agents-filesystem">The Agent's Filesystem</h2>
+<p>Every deep agent has a backend: a storage layer that determines where files live when the agent reads and writes them. Two backends matter here:</p>
+<table>
+<thead>
+<tr>
+<th>Backend</th>
+<th>Where files live</th>
+<th>Persists to disk?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>StateBackend</code></td>
+<td>In-memory</td>
+<td>No; gone when the run ends</td>
+</tr>
+<tr>
+<td><code>FilesystemBackend</code></td>
+<td>A directory on your machine</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<p><code>StateBackend</code> is the default. The agent can use all its file tools, but nothing is written to disk. Switch to <code>FilesystemBackend</code> when you want the agent's work to persist, be inspectable, or be shared with other processes.</p>
+<h3 id="configuring-filesystembackend">Configuring FilesystemBackend</h3>
+<p>Pass it via the <code>backend</code> parameter in <code>create_deep_agent</code>:</p>
+<pre><code class="language-python">from deepagents.backends import FilesystemBackend
+
+agent = create_deep_agent(
+    model=model,
+    backend=FilesystemBackend(root_dir=&quot;workspace/&quot;),
+)
 </code></pre>
-<h2 id="middleware-in-prompt-assembly">Middleware in prompt assembly</h2>
-<p>On top of those three assembled parts, <strong>mandatory middleware append more<br />
-sections to the same <code>system</code> message at request time</strong>:</p>
+<p><code>root_dir</code> sets the working directory for all file operations. Relative paths the agent uses are resolved under this directory. Set <code>virtual_mode=True</code> to prevent the agent from escaping the root via <code>..</code> or absolute paths.</p>
+<h3 id="the-file-tools">The file tools</h3>
+<p>These tools are always present, regardless of backend. The backend determines only where they read and write:</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ls</code></td>
+<td>List directory contents</td>
+</tr>
+<tr>
+<td><code>read_file</code></td>
+<td>Read a file, with optional line offset and limit</td>
+</tr>
+<tr>
+<td><code>write_file</code></td>
+<td>Create a new file (fails if it already exists)</td>
+</tr>
+<tr>
+<td><code>edit_file</code></td>
+<td>Replace a string inside an existing file</td>
+</tr>
+<tr>
+<td><code>glob</code></td>
+<td>Find files by name pattern, including <code>**</code> for recursion</td>
+</tr>
+<tr>
+<td><code>grep</code></td>
+<td>Search file contents for a literal string</td>
+</tr>
+</tbody>
+</table>
+<p>The agent decides which tools to call and in what order. A typical write-then-read sequence: <code>write_file</code> to create a draft, <code>read_file</code> to check it, <code>edit_file</code> to revise a section.</p>
+<h3 id="system-directories">System directories</h3>
+<p>Two directories in the workspace are managed automatically by the SDK:</p>
 <ul>
-<li>the filesystem tool instructions,</li>
-<li>a <code>write_todos</code> section, and</li>
-<li>the <code>task</code> (subagent) section.</li>
+<li><code>/conversation_history/</code>: when the context window fills up, older messages are compressed and archived here</li>
+<li><code>/large_tool_results/</code>: when a single tool result is too large to fit inline, it is evicted here and replaced with a file reference</li>
 </ul>
-<p>So what you read in <strong>LangSmith</strong> is BASE + SUFFIX <em>plus</em> those middleware<br />
-additions, all in one <code>system</code> message. The required deep-agent middleware do<br />
-this through a <code>wrap_model_call</code> hook, which also registers their tools.</p>
-<h2 id="prompt-assembly-section">Prompt Assembly section</h2>
-<p><code>create_deep_agent</code> joins its three parts in a <strong>fixed order</strong>, separated by<br />
-blank lines (this is the top half of the assembly slideshow earlier in the lesson):</p>
-<pre><code class="language-text">USER   →   (BASE or CUSTOM)   →   SUFFIX
- ↑                ↑                  ↑
-your       SDK base, or a        harness-profile
-prompt   profile's replacement       tuning
+<p>You do not need to manage these. They are covered in detail in Module 3.</p>
+</div>
+<div class="lt-panel" id="p-lab5" role="tabpanel">
+<h2 id="lab-5-filesystem-agent">Lab 5: Filesystem Agent</h2>
+<p>You will build an agent backed by a real on-disk workspace and watch it use the file tools to plan and write a structured document. After the run, the files will be on disk and you can open them directly.</p>
+<hr />
+<h3 id="setup">Setup</h3>
+<p>Create the workspace directory the agent will write into:</p>
+<pre><code class="language-bash">mkdir -p ~/Documents/Github/lca-deepagents/python/m2/workspace
 </code></pre>
-<p>Then the <strong>mandatory middleware append their own sections</strong> onto that same<br />
-<code>system</code> message at request time, <em>after</em> the SUFFIX:</p>
-<pre><code class="language-text">... SUFFIX   →   write_todos   →   filesystem   →   task
-                 (todo mw)        (filesystem mw)   (subagent mw)
+<hr />
+<h3 id="1-create-filesystem_agentpy">1. Create <code>filesystem_agent.py</code></h3>
+<p>Create <code>python/m2/filesystem_agent.py</code>:</p>
+<pre><code class="language-python">import sys
+from pathlib import Path
+from deepagents.backends import FilesystemBackend
+from deepagents import create_deep_agent
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from models import model
+
+WORKSPACE = Path(__file__).parent / &quot;workspace&quot;
+WORKSPACE.mkdir(exist_ok=True)
+
+agent = create_deep_agent(
+    model=model,
+    backend=FilesystemBackend(root_dir=str(WORKSPACE), virtual_mode=True),
+    system_prompt=(
+        &quot;You are a planning assistant. When given a project, create a structured plan &quot;
+        &quot;and save it to a markdown file. Use clear headings and a task checklist.&quot;
+    ),
+)
+
+result = agent.invoke({&quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Plan a 4-week onboarding programme for a new sales hire. Save it to onboarding-plan.md&quot;}]})
+print(result[&quot;messages&quot;][-1].content)
 </code></pre>
-<p>The takeaway isn't the exact ordering. Models don't reliably weight earlier text<br />
-over later, so don't over-think where each piece sits. What matters is that all<br />
-three parts (USER, BASE, SUFFIX) land in one assembled <code>system_prompt</code>, and the<br />
-middleware sections (<code>write_todos</code>, filesystem, <code>task</code>) are then appended<br />
-separately by the SDK. Write clear instructions; let the SDK handle the layout.</p>
-<p>This part is conceptual; there's no separate lab for it. To see it for real,<br />
-open any run in <strong>LangSmith</strong> and read the single assembled <code>system</code> message top<br />
-to bottom. Because the workshop default is <code>claude-haiku-4-5</code>, its harness<br />
-profile <strong>does</strong> define a SUFFIX, so you'll actually see one: a block of<br />
-<code>&lt;use_parallel_tool_calls&gt;</code>, <code>&lt;investigate_before_answering&gt;</code>, and<br />
-<code>&lt;tool_result_reflection&gt;</code> tags, sitting after the BASE behavior guidance.<br />
-(A model with no registered profile shows no SUFFIX.)</p>
+<p>Before running, try swapping in a different task:</p>
+<ul>
+<li><code>"Plan a product launch for a new mobile app. Save it to launch-plan.md"</code></li>
+<li><code>"Create a weekly meal prep plan for a vegetarian. Save it to meal-plan.md"</code></li>
+<li><code>"Outline a 30-day fitness programme for a beginner. Save it to fitness-plan.md"</code></li>
+</ul>
+<hr />
+<h3 id="run-it">Run it</h3>
+<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents
+</code></pre>
+<pre><code class="language-bash">uv run ./python/m2/filesystem_agent.py
+</code></pre>
+<hr />
+<h3 id="what-to-check">What to check</h3>
+<p>Open <code>python/m2/workspace/</code> in your file explorer or editor. The plan file the agent created should be there. If you used the default prompt, look for <code>onboarding-plan.md</code>.</p>
+<p>In <strong>LangSmith</strong>, open the run and look for the <code>write_file</code> call in the tool sequence. You will see the exact content the agent wrote, the path it chose, and any <code>read_file</code> or <code>edit_file</code> calls it made to revise the output.</p>
+<div class="callout">
+<strong>StateBackend vs FilesystemBackend</strong><br>
+Remove the <code>backend=</code> argument from <code>create_deep_agent</code> and run again. The agent will still use file tools and complete the task, but nothing will appear on disk. That is <code>StateBackend</code>: the same interface, in-memory only. Swapping the backend is the only change needed to make the agent's work persistent.
+</div>
+</div>
+<h2 id="references">References</h2>
+<p><strong>Documentation:</strong><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/overview" target="_blank" rel="noopener noreferrer">Deep Agents overview</a><br />
+- <a href="https://github.com/langchain-ai/deepagents" target="_blank" rel="noopener noreferrer">deepagents README (GitHub)</a></p>
+<script>
+(function () {
+  var tabs = document.querySelectorAll('.lt-tab');
+  function show(p) {
+    tabs.forEach(function (t) {
+      var on = t.getAttribute('data-p') === p;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    document.querySelectorAll('.lt-panel').forEach(function (panel) {
+      panel.classList.toggle('active', panel.id === 'p-' + p);
+    });
+  }
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () { show(t.getAttribute('data-p')); });
+  });
+})();
+</script>
 
     <script>
         // Handle MCQ choice clicks

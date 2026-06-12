@@ -633,26 +633,50 @@ buildSlideshow({
   ]
 });
 </script>
-<p>The diagram above shows the abstract structure. Here's what the assembled prompt actually looks like in a LangSmith trace:</p>
+<p>The diagram above shows the abstract structure. Here is what the assembled prompt looks like in the LangSmith trace UI (the diagram below is a schematic of the actual UI, not a screenshot):</p>
 <p><img src="images/m1.l3-scaffolding.svg" alt="LangSmith-style view of what the model receives: a system message assembled by the SDK (Core Behavior, Professional Objectivity, Doing Tasks, and more) followed by the user's question. The system section is identical for every model; only the engine reading it changes." style="width: 740px; max-width: 100%;" /></p>
 <h3 id="what-is-the-user">What is the USER?</h3>
 <p>The USER is the <code>system_prompt</code> argument you pass to <code>create_deep_agent</code>. It sits at the very front of the assembled prompt. It's optional: if you pass nothing, the agent still runs fine on the BASE alone.</p>
 <blockquote>
-<p><strong>Not to be confused with the "user" label in the LangSmith diagram above.</strong> That label is the message role for the human's chat turn. The USER segment here is part of the <em>system</em> message; it's your instructions to the agent, not the question you asked it.</p>
+<p><strong>Not to be confused with the "user" label in the assembled prompt structure diagram above.</strong> That label is the message role for the human's chat turn. The USER segment here is part of the <em>system</em> message; it's your instructions to the agent, not the question you asked it.</p>
 </blockquote>
-<p>In Lab 2, you'll experiment with different personas (pirate, cowboy, Shakespeare) to see how a single line of text steers the agent's voice without touching anything else.</p>
+<div style="margin:1.5rem 0;padding:1.25rem 1.5rem;border-radius:12px;border:1px solid #99d3ff;background-color:#e5f4ff;color:#1e4d7a;">
+In Lab 2, you'll add a **system prompt** for the first time by passing a persona (pirate, cowboy, Shakespeare) and see how that single line steers the agent's voice without touching anything else.  
+In this example, instead of a persona, I've told it to only use all caps.
+
+
+<div class="video-container" style="max-width: 750px;">
+    <div class="video-wrapper">
+        <iframe
+            src="https://share.descript.com/embed/qkqA0S9dN1k"
+            frameborder="0"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    </div>
+</div>
+</div>
 <h3 id="what-is-the-base">What is the BASE?</h3>
-<p>The BASE is the "batteries included" part: built-in behavior guidance the SDK injects on every call, regardless of what you pass.</p>
-<details>
-<summary>🎥 LangSmith trace walkthrough [click to expand]</summary>
-<p><br></p>
-<Video src="TODO" />
-</details>
-<p>Open any run in <strong>LangSmith</strong>, click the LLM call, and look at the <code>system</code> message. The <code>user</code> turn at the bottom is the question you sent. Everything in the <code>system</code> message above it is the assembled prompt. A few sections you'll see:</p>
+<p>The BASE is the "batteries included" part: built-in behavior guidance the SDK injects on every call, regardless of what you pass, <strong>including a <code>system_prompt</code></strong>.</p>
+<p>Open any run in <strong>LangSmith</strong>, click the LLM call, and look at the <code>system</code> message. A few sections you'll see:</p>
 <ul>
 <li><strong>Core Behavior</strong>: how the agent should respond: be concise, don't over-explain, ask only the minimum followup if underspecified.</li>
+<li><strong>Professional Objectivity</strong>: prioritize accuracy over confirming what the user already believes.</li>
+<li><strong>Doing Tasks</strong>: understand first, then act; keep working until the task is complete.</li>
+<li><strong>Clarifying Requests</strong>: when a request is ambiguous, ask the minimum necessary before proceeding.</li>
 </ul>
-<p>You'll also see <strong>write_todos</strong> and <strong>Filesystem Tools</strong> sections in the same system message. Those are appended by middleware, not BASE.</p>
+<p>The video below shows what happens when you <strong>don't add a system prompt</strong>: the agent runs on BASE alone.</p>
+<div class="video-container" style="max-width: 750px;">
+    <div class="video-wrapper">
+        <iframe
+            src="https://share.descript.com/embed/8DbdLlBOueI"
+            frameborder="0"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    </div>
+</div>
+
 <p>These are the two ways to set the system prompt your agent ships with:</p>
 <table>
 <thead>
@@ -672,6 +696,7 @@ buildSlideshow({
 </tr>
 </tbody>
 </table>
+
 <details>
 <summary>Extension: Harness Profiles (Under The Hood) [click to expand]</summary>
 <p><br></p>
@@ -727,7 +752,7 @@ filesystem, <code>task</code>) are then added as separate blocks <em>after</em> 
 </div>
 <div class="lt-panel" id="p-lab2" role="tabpanel">
 <h2 id="lab-2-the-system-prompt">Lab 2: The System Prompt</h2>
-<p><strong>The discovery:</strong> <code>system_prompt</code> is free-form text; use it to set a persona, lay down constraints, or define the agent's domain. The SDK slots it in as the <strong>USER</strong> segment at the front of the assembled prompt, leaving the BASE scaffolding untouched.</p>
+<p><strong>The discovery:</strong> <code>system_prompt</code> is free-form text; use it to set a persona, lay down constraints, or define the agent's domain. The SDK slots it in as the <strong>USER</strong> segment at the front of the assembled prompt, leaving the BASE segment untouched.</p>
 <p>Open <code>python/m1/scratch_agent.py</code> and make two changes: add a <code>SYSTEM_PROMPT</code> variable, then pass it to <code>create_deep_agent</code>:</p>
 <div class="language-tabs-block" data-languages="{&quot;Python&quot;: [{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;SYSTEM_PROMPT = \&quot;You are a salty pirate captain...\&quot;  # \u2190 your text here\n\nfrom models import model\nfrom deepagents import create_deep_agent\nagent = create_deep_agent(model=model, system_prompt=SYSTEM_PROMPT)&quot;, &quot;highlights&quot;: [1, 2, 5], &quot;noHeader&quot;: true}]}"></div>
 <details>
@@ -763,7 +788,7 @@ string is your USER segment.</p>
 <h3 id="check-the-trace-in-langsmith">Check the trace in LangSmith</h3>
 <p>Open the run in <strong>LangSmith</strong>, click the LLM call, and read the first <code>system</code><br />
 message. Your <code>system_prompt</code> shows up verbatim as the <strong>USER</strong> segment, and the<br />
-rest of the message is the same scaffolding you saw in Lab 1. Switch personas,<br />
+rest of the message is the same assembled prompt structure you saw in Lab 1. Switch personas,<br />
 re-run, and you'll see only your line change while everything else stays put, proof<br />
 that this single string is all you touched to redirect the agent's behavior.</p>
 </div>

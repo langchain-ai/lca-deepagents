@@ -1,0 +1,63 @@
+<svg width="800" height="360" xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="mcp-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#7FC8FF"/></marker>
+    <marker id="mcp-arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#40668D"/></marker>
+  </defs>
+
+  <rect width="800" height="360" fill="#030710" rx="8"/>
+  <text x="400" y="34" text-anchor="middle" font-size="15" font-weight="300" fill="#F2FAFF">How MCP fits into the agent</text>
+  <text x="400" y="54" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">MCP abstracts the transport so your agent code never changes</text>
+
+  <!-- Agent box -->
+  <rect x="36" y="80" width="164" height="180" rx="8" fill="#0D1322" stroke="#7FC8FF" stroke-width="1.5"/>
+  <text x="118" y="104" text-anchor="middle" font-size="12" font-weight="400" fill="#7FC8FF">Your Agent</text>
+  <rect x="54" y="116" width="128" height="36" rx="5" fill="#161F34" stroke="#40668D" stroke-width="1"/>
+  <text x="118" y="138" text-anchor="middle" font-size="9.5" fill="#F2FAFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">create_deep_agent(</text>
+  <text x="118" y="152" text-anchor="middle" font-size="9.5" fill="#F2FAFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">  tools=mcp_tools</text>
+  <text x="118" y="176" text-anchor="middle" font-size="9" fill="#B2DEFF">tools look identical to</text>
+  <text x="118" y="191" text-anchor="middle" font-size="9" fill="#B2DEFF">locally-defined tools</text>
+  <text x="118" y="210" text-anchor="middle" font-size="8.5" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">langchain-mcp-adapters</text>
+  <text x="118" y="224" text-anchor="middle" font-size="8.5" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">wraps MCP → BaseTool</text>
+
+  <!-- Arrow agent → transport -->
+  <line x1="200" y1="170" x2="258" y2="170" stroke="#7FC8FF" stroke-width="1.5" marker-end="url(#mcp-arr)"/>
+
+  <!-- Transport label box -->
+  <rect x="260" y="110" width="136" height="120" rx="6" fill="#0D1322" stroke="#2F4B68" stroke-width="1.2"/>
+  <text x="328" y="132" text-anchor="middle" font-size="9" fill="#40668D" letter-spacing="0.8" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">TRANSPORT</text>
+  <line x1="276" y1="140" x2="380" y2="140" stroke="#2F4B68" stroke-width="1"/>
+  <rect x="274" y="150" width="108" height="22" rx="4" fill="#161F34" stroke="#2F4B68" stroke-width="1"/>
+  <text x="328" y="165" text-anchor="middle" font-size="9" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">stdio</text>
+  <rect x="274" y="178" width="108" height="22" rx="4" fill="#161F34" stroke="#2F4B68" stroke-width="1"/>
+  <text x="328" y="193" text-anchor="middle" font-size="9" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">HTTP</text>
+  <rect x="274" y="206" width="108" height="22" rx="4" fill="#161F34" stroke="#2F4B68" stroke-width="1"/>
+  <text x="328" y="221" text-anchor="middle" font-size="9" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">SSE</text>
+
+  <!-- Arrow transport → server -->
+  <line x1="396" y1="170" x2="454" y2="170" stroke="#7FC8FF" stroke-width="1.5" marker-end="url(#mcp-arr)"/>
+
+  <!-- MCP Server box -->
+  <rect x="456" y="80" width="152" height="180" rx="8" fill="#0D1322" stroke="#40668D" stroke-width="1.5"/>
+  <text x="532" y="104" text-anchor="middle" font-size="12" font-weight="400" fill="#B2DEFF">MCP Server</text>
+  <rect x="470" y="116" width="124" height="30" rx="4" fill="#161F34" stroke="#40668D" stroke-width="1"/>
+  <text x="532" y="135" text-anchor="middle" font-size="8.5" fill="#5BADDF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">exposes tools</text>
+  <rect x="470" y="152" width="124" height="30" rx="4" fill="#161F34" stroke="#40668D" stroke-width="1"/>
+  <text x="532" y="171" text-anchor="middle" font-size="8.5" fill="#5BADDF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">exposes resources</text>
+  <text x="532" y="208" text-anchor="middle" font-size="8.5" fill="#B2DEFF">may require</text>
+  <text x="532" y="222" text-anchor="middle" font-size="8.5" fill="#C78EAD">OAuth authorization</text>
+
+  <!-- Arrow server → service -->
+  <line x1="608" y1="170" x2="650" y2="170" stroke="#40668D" stroke-width="1.5" marker-end="url(#mcp-arr2)"/>
+
+  <!-- Service chips -->
+  <rect x="652" y="108" width="112" height="28" rx="14" fill="#161F34" stroke="#40668D" stroke-width="1"/>
+  <text x="708" y="126" text-anchor="middle" font-size="10" fill="#B2DEFF">LangChain Docs</text>
+  <rect x="652" y="145" width="112" height="28" rx="14" fill="#161F34" stroke="#6E8900" stroke-width="1"/>
+  <text x="708" y="163" text-anchor="middle" font-size="10" fill="#E3FF8F">Gmail</text>
+  <rect x="652" y="182" width="112" height="28" rx="14" fill="#161F34" stroke="#2F4B68" stroke-width="1"/>
+  <text x="708" y="200" text-anchor="middle" font-size="10" fill="#CCE9FF">GitHub, Slack…</text>
+
+  <!-- footer -->
+  <text x="400" y="296" text-anchor="middle" font-size="9.5" fill="#B2DEFF">The agent calls MCP tools the same way it calls any tool. The result is added to the message history.</text>
+  <text x="400" y="314" text-anchor="middle" font-size="9" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">From the model's perspective, MCP tools are indistinguishable from locally-defined tools.</text>
+</svg>

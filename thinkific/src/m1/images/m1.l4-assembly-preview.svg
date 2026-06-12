@@ -1,53 +1,52 @@
-<svg width="740" height="430" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-  <rect width="740" height="430" fill="#F2FAFF" rx="8"/>
-  <text x="370" y="32" text-anchor="middle" font-size="15" font-weight="700" fill="#1E3A5F">System Prompt Assembly</text>
-  <text x="370" y="51" text-anchor="middle" font-size="11" fill="#6A8EB0">One system message, pieced together step by step</text>
+<svg width="740" height="430" xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="740" height="430" fill="#030710" rx="8"/>
+  <text x="370" y="34" text-anchor="middle" font-size="15" font-weight="300" fill="#F2FAFF">System Prompt Assembly</text>
+  <text x="370" y="53" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">One system message, pieced together step by step</text>
 
-  <rect x="58" y="66" width="344" height="344" rx="6" fill="white" stroke="#1E3A5F" stroke-width="2"/>
-  <text x="230" y="84" text-anchor="middle" font-size="9" fill="#9AB0C8" letter-spacing="0.8">SYSTEM MESSAGE  →  MODEL</text>
+  <rect x="58" y="66" width="344" height="344" rx="6" fill="#0D1322" stroke="#2F4B68" stroke-width="2"/>
+  <text x="230" y="84" text-anchor="middle" font-size="9" fill="#40668D" letter-spacing="0.8" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">SYSTEM MESSAGE  →  MODEL</text>
 
   <!-- USER / BASE / SUFFIX at full opacity -->
-  <rect x="72" y="92" width="300" height="42" rx="4" fill="#CCE5FF" stroke="#3A74D4" stroke-width="1"/>
-  <text x="222" y="111" text-anchor="middle" font-size="11" font-weight="700" fill="#1A3A7A">USER: your system_prompt</text>
-  <text x="222" y="126" text-anchor="middle" font-size="9" fill="#3A74D4">optional · sits first in the assembled prompt</text>
+  <rect x="72" y="92" width="300" height="42" rx="4" fill="#161F34" stroke="#7FC8FF" stroke-width="1"/>
+  <text x="222" y="111" text-anchor="middle" font-size="11" font-weight="400" fill="#7FC8FF">USER: your system_prompt</text>
+  <text x="222" y="126" text-anchor="middle" font-size="9" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">optional · sits first in the assembled prompt</text>
 
-  <rect x="72" y="140" width="300" height="46" rx="4" fill="#E3EAF2" stroke="#1E3A5F" stroke-width="1"/>
-  <text x="222" y="159" text-anchor="middle" font-size="11" font-weight="700" fill="#1E3A5F">BASE: SDK behavior prompt</text>
-  <text x="222" y="174" text-anchor="middle" font-size="8.5" fill="#5A7A9F">always present · a harness profile may replace it (CUSTOM)</text>
+  <rect x="72" y="140" width="300" height="46" rx="4" fill="#161F34" stroke="#40668D" stroke-width="1"/>
+  <text x="222" y="159" text-anchor="middle" font-size="11" font-weight="400" fill="#B2DEFF">BASE: SDK behavior prompt</text>
+  <text x="222" y="174" text-anchor="middle" font-size="8.5" fill="#5BADDF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">always present · a harness profile may replace it (CUSTOM)</text>
 
-  <rect x="72" y="192" width="300" height="44" rx="4" fill="#E6D8F5" stroke="#7A4FB0" stroke-width="1"/>
-  <text x="222" y="211" text-anchor="middle" font-size="11" font-weight="700" fill="#4A2A7A">SUFFIX: harness profile</text>
-  <text x="222" y="226" text-anchor="middle" font-size="9" fill="#7A4FB0">optional · model-specific tuning</text>
+  <rect x="72" y="192" width="300" height="44" rx="4" fill="#161F34" stroke="#C78EAD" stroke-width="1"/>
+  <text x="222" y="211" text-anchor="middle" font-size="11" font-weight="400" fill="#C78EAD">SUFFIX: harness profile</text>
+  <text x="222" y="226" text-anchor="middle" font-size="9" fill="#EBD0F0" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">optional · model-specific tuning</text>
 
   <!-- Middleware section: very faded -->
   <g opacity="0.2">
-    <line x1="72" y1="252" x2="372" y2="252" stroke="#6A6A8A" stroke-width="1.5" stroke-dasharray="5,3"/>
-    <text x="222" y="248" text-anchor="middle" font-size="8.5" fill="#6A6A8A">▼  appended by mandatory middleware · every request  ▼</text>
+    <line x1="72" y1="252" x2="372" y2="252" stroke="#2F4B68" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="222" y="248" text-anchor="middle" font-size="8.5" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">▼  appended by mandatory middleware · every request  ▼</text>
 
-    <rect x="72" y="260" width="300" height="38" rx="4" fill="#FFE8CC" stroke="#D4834A" stroke-width="2"/>
-    <text x="222" y="283" text-anchor="middle" font-size="10" fill="#7A3A10"><tspan font-weight="700">write_todos</tspan>  ·  TodoListMiddleware</text>
+    <rect x="72" y="260" width="300" height="38" rx="4" fill="#161F34" stroke="#6E8900" stroke-width="2"/>
+    <text x="222" y="283" text-anchor="middle" font-size="10" fill="#E3FF8F"><tspan font-weight="400">write_todos</tspan>  ·  TodoListMiddleware</text>
 
-    <rect x="72" y="302" width="300" height="38" rx="4" fill="#FFE8CC" stroke="#D4834A" stroke-width="2"/>
-    <text x="222" y="320" text-anchor="middle" font-size="10" fill="#7A3A10"><tspan font-weight="700">Filesystem tools</tspan>  ·  FilesystemMiddleware</text>
-    <text x="222" y="333" text-anchor="middle" font-size="8" fill="#B5703A">ls · read_file · write_file · edit_file · glob · grep</text>
+    <rect x="72" y="302" width="300" height="38" rx="4" fill="#161F34" stroke="#6E8900" stroke-width="2"/>
+    <text x="222" y="320" text-anchor="middle" font-size="10" fill="#E3FF8F"><tspan font-weight="400">Filesystem tools</tspan>  ·  FilesystemMiddleware</text>
+    <text x="222" y="333" text-anchor="middle" font-size="8" fill="#B2DEFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">ls · read_file · write_file · edit_file · glob · grep</text>
 
-    <rect x="72" y="344" width="300" height="38" rx="4" fill="#FFE8CC" stroke="#D4834A" stroke-width="2"/>
-    <text x="222" y="367" text-anchor="middle" font-size="10" fill="#7A3A10"><tspan font-weight="700">task</tspan> (subagents)  ·  SubAgentMiddleware</text>
+    <rect x="72" y="344" width="300" height="38" rx="4" fill="#161F34" stroke="#6E8900" stroke-width="2"/>
+    <text x="222" y="367" text-anchor="middle" font-size="10" fill="#E3FF8F"><tspan font-weight="400">task</tspan> (subagents)  ·  SubAgentMiddleware</text>
   </g>
 
   <!-- create_deep_agent bracket: full opacity -->
-  <path d="M 410 92 L 416 92 L 416 236 L 410 236" fill="none" stroke="#1E3A5F" stroke-width="1.5"/>
-  <line x1="416" y1="164" x2="424" y2="164" stroke="#1E3A5F" stroke-width="1.5"/>
-  <text x="430" y="156" font-size="10" font-weight="700" fill="#1E3A5F">create_deep_agent</text>
-  <text x="430" y="170" font-size="9" fill="#5A7A9F">assembles these three</text>
+  <path d="M 410 92 L 416 92 L 416 236 L 410 236" fill="none" stroke="#40668D" stroke-width="1.5"/>
+  <line x1="416" y1="164" x2="424" y2="164" stroke="#40668D" stroke-width="1.5"/>
+  <text x="430" y="156" font-size="10" font-weight="400" fill="#F2FAFF">create_deep_agent</text>
+  <text x="430" y="170" font-size="9" fill="#B2DEFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">assembles these three</text>
 
   <!-- Middleware bracket: faded -->
   <g opacity="0.2">
-    <path d="M 410 260 L 416 260 L 416 382 L 410 382" fill="none" stroke="#D4834A" stroke-width="1.5"/>
-    <line x1="416" y1="321" x2="424" y2="321" stroke="#D4834A" stroke-width="1.5"/>
+    <path d="M 410 260 L 416 260 L 416 382 L 410 382" fill="none" stroke="#6E8900" stroke-width="1.5"/>
+    <line x1="416" y1="321" x2="424" y2="321" stroke="#6E8900" stroke-width="1.5"/>
   </g>
 
-  <!-- Middleware label to the side, outside the faded group -->
-  <text x="430" y="314" font-size="10" font-weight="700" fill="#B5703A">+ middleware</text>
-  <text x="430" y="329" font-size="9" fill="#9AB0C8">covered in a later lesson</text>
+  <!-- Middleware label: visible outside faded group -->
+  <text x="430" y="314" font-size="10" font-weight="400" fill="#40668D">+ middleware</text>
 </svg>

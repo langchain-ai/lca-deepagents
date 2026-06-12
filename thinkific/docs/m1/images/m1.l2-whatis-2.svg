@@ -1,28 +1,28 @@
-<svg width="740" height="430" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-  <rect width="740" height="430" fill="#F2FAFF" rx="8"/>
-  <text x="370" y="32" text-anchor="middle" font-size="15" font-weight="700" fill="#1E3A5F">What is a Deep Agent?</text>
-  <text x="370" y="51" text-anchor="middle" font-size="11" fill="#6A8EB0">An LLM, wrapped in a loop, wrapped in a harness</text>
+<svg width="740" height="430" xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="740" height="430" fill="#030710" rx="8"/>
+  <text x="370" y="34" text-anchor="middle" font-size="15" font-weight="300" fill="#F2FAFF">What is a Deep Agent?</text>
+  <text x="370" y="53" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">An LLM, wrapped in a loop, wrapped in a harness</text>
 
-  <!-- AGENT box (new this step) -->
-  <rect x="170" y="120" width="400" height="200" rx="8" fill="white" stroke="#1E3A5F" stroke-width="2"/>
-  <text x="190" y="141" font-size="11" font-weight="700" fill="#1E3A5F">AGENT  ·  tool-calling loop</text>
+  <!-- AGENT box -->
+  <rect x="170" y="120" width="400" height="200" rx="8" fill="#0D1322" stroke="#40668D" stroke-width="2"/>
+  <text x="190" y="141" font-size="11" font-weight="400" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">AGENT  ·  tool-calling loop</text>
 
   <!-- LLM (center) -->
-  <rect x="300" y="168" width="140" height="66" rx="6" fill="#CCE5FF" stroke="#3A74D4" stroke-width="1"/>
-  <text x="370" y="205" text-anchor="middle" font-size="16" font-weight="700" fill="#1A3A7A">LLM</text>
-  <text x="370" y="223" text-anchor="middle" font-size="9" fill="#3A74D4">text in → text out</text>
+  <rect x="300" y="168" width="140" height="66" rx="6" fill="#161F34" stroke="#7FC8FF" stroke-width="2"/>
+  <text x="370" y="205" text-anchor="middle" font-size="16" font-weight="400" fill="#F2FAFF">LLM</text>
+  <text x="370" y="223" text-anchor="middle" font-size="9" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">text in → text out</text>
 
-  <!-- loop arrows between LLM and Tools -->
-  <line x1="345" y1="236" x2="345" y2="265" stroke="#5A7A9F" stroke-width="1.5"/>
-  <polygon points="341,260 345,268 349,260" fill="#5A7A9F"/>
-  <text x="333" y="255" text-anchor="end" font-size="8" fill="#5A7A9F">call</text>
-  <line x1="395" y1="266" x2="395" y2="237" stroke="#5A7A9F" stroke-width="1.5"/>
-  <polygon points="391,244 395,236 399,244" fill="#5A7A9F"/>
-  <text x="407" y="255" text-anchor="start" font-size="8" fill="#5A7A9F">result</text>
+  <!-- loop arrows -->
+  <line x1="345" y1="236" x2="345" y2="262" stroke="#40668D" stroke-width="1.5"/>
+  <polygon points="341,258 345,266 349,258" fill="#7FC8FF"/>
+  <text x="333" y="254" text-anchor="end" font-size="8" fill="#B2DEFF">call</text>
+  <line x1="395" y1="266" x2="395" y2="238" stroke="#40668D" stroke-width="1.5"/>
+  <polygon points="391,245 395,237 399,245" fill="#7FC8FF"/>
+  <text x="407" y="254" text-anchor="start" font-size="8" fill="#B2DEFF">result</text>
 
   <!-- Tools chip -->
-  <rect x="250" y="268" width="240" height="26" rx="13" fill="#FFE8CC" stroke="#D4834A" stroke-width="1"/>
-  <text x="370" y="285" text-anchor="middle" font-size="9.5" fill="#7A3A10">Tools: search, code, APIs, …</text>
+  <rect x="255" y="270" width="230" height="26" rx="13" fill="#161F34" stroke="#40668D" stroke-width="1"/>
+  <text x="370" y="287" text-anchor="middle" font-size="9.5" fill="#B2DEFF">Tools: search, code, APIs, …</text>
 
-  <text x="370" y="311" text-anchor="middle" font-size="8.5" font-style="italic" fill="#6A8EB0">↻ loops until the task is done</text>
+  <text x="370" y="313" text-anchor="middle" font-size="8.5" fill="#5BADDF">↻ loops until the task is done</text>
 </svg>
