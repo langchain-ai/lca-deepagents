@@ -207,6 +207,13 @@
             padding-left: 5px;
         }
 
+        /* Code output blocks (non-copyable) */
+        pre.no-copy {
+            background: #0a0f1a;
+            border: 1px solid #1a2a3a;
+            opacity: 0.85;
+        }
+
         pre .copy-button-inline {
             position: absolute;
             top: 0.5rem;
@@ -582,7 +589,7 @@
 <div class="lt-panel active" id="p-mcp" role="tabpanel">
 <h2 id="mcp-connecting-agents-to-external-services">MCP: Connecting Agents to External Services</h2>
 <p>Model Context Protocol (MCP) is an open protocol that standardizes how applications provide tools and context to LLMs. Instead of each integration requiring custom code in your agent, MCP servers expose a consistent interface that any MCP-aware client can connect to.</p>
-<iframe src="images/m1.l6-mcp-slides-1.html" style="width:100%;height:540px;border:none;border-radius:12px;display:block;margin:1.25rem 0 1.5rem;" title="MCP architecture walkthrough; use arrow keys or Prev/Next to navigate"></iframe>
+<iframe src="images/m1.l6-mcp-slides-1.html" style="width:100%;height:480px;border:none;border-radius:12px;display:block;margin:1.25rem 0 1.5rem;" title="MCP architecture walkthrough; use arrow keys or Prev/Next to navigate"></iframe>
 <p>LangChain agents connect to MCP servers using the <code>langchain-mcp-adapters</code> library. The adapters wrap each MCP tool as a standard LangChain <code>BaseTool</code>, so the agent sees it identically to any locally-defined tool. The tool result is added to the message history and the model decides what to do next, exactly as it would with a regular tool call.</p>
 <h3 id="configuration">Configuration</h3>
 <p>deepagents discovers MCP servers from <code>.mcp.json</code> in your project root (or <code>~/.deepagents/.mcp.json</code> for user-level config). The project repo already includes a config pointing at the LangChain documentation server:</p>
@@ -1311,7 +1318,7 @@ asyncio.run(main())
         // Add copy buttons to regular code blocks
         function addCopyButtonsToCodeBlocks() {
             // Find all pre blocks that aren't inside tabs-block containers
-            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre)');
+            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre):not(.no-copy)');
 
             preBlocks.forEach(pre => {
                 // Skip if already has a copy button
