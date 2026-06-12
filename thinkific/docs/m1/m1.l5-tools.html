@@ -986,8 +986,7 @@ print(result[&quot;messages&quot;][-1].content)
 <h3 id="run-it">Run it</h3>
 <pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/scratch_agent.py
 </code></pre>
-<!-- code-highlight-8:1 -->
-<pre><code class="language-text"># Code Output
+<pre><code class="language-plaintext"><span class="highlight-line"># Code Output</span>
 **Top 5 Best-Selling Artists by Total Revenue:**
 
 1. **Iron Maiden** - $138.60
@@ -1014,6 +1013,15 @@ The agent calls <code>read_sql</code> to inspect the genres table, then calls <c
 <li><strong>Action tool</strong>: tools don't have to be read-only. Post to Slack, create a calendar event, write a row to a spreadsheet. The agent can act, not just retrieve.</li>
 </ul>
 </div>
+<h2 id="recap">Recap</h2>
+<ul>
+<li>The <code>tools=</code> parameter is additive; your tools merge with the built-in suite (<code>write_todos</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code>, <code>glob</code>, <code>grep</code>, <code>task</code>) — nothing is replaced</li>
+<li>The <code>@tool</code> decorator turns a Python function into a callable tool; the docstring is the description the model reads to decide when to use it</li>
+<li>The LLM never executes tools directly — it outputs an <code>AIMessage</code> with a <code>tool_calls</code> list; the Tool Node reads that and runs the function</li>
+<li>Human-in-the-Loop uses <code>interrupt()</code> inside a tool to pause the graph before a risky action; <code>Command(resume=...)</code> restores execution after a human decision</li>
+<li>HITL requires a checkpointer (<code>MemorySaver</code> for development) so the graph can save state on pause and resume from exactly the same point</li>
+</ul>
+<hr />
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />
 - <a href="https://docs.langchain.com/oss/python/deepagents/overview" target="_blank" rel="noopener noreferrer">Deep Agents overview</a><br />

@@ -743,6 +743,14 @@ model = init_chat_model(&quot;ollama:llama3.2&quot;)
 <p><strong>Local only.</strong> Ollama also offers hosted cloud models at ollama.com, which do require an API key. These steps are for running a model locally on your own machine.</p>
 </blockquote>
 </div>
+<h2 id="recap">Recap</h2>
+<ul>
+<li><code>init_chat_model("provider:model")</code> targets any LangChain-supported backend with a single string; swap the prefix to switch providers, swap the suffix to switch models</li>
+<li>All labs share one model object from <code>python/models.py</code>; changing that one line is the only code change needed to run a different model</li>
+<li>Three categories in this course: Proprietary &amp; Conversational, Advanced Reasoning, and Open-Source/Open-Weight; 50+ providers are supported in total</li>
+<li>Swapping the model changes nothing else in the agent — the system prompt, tools, and behavior instructions stay identical</li>
+</ul>
+<hr />
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />
 - <a href="https://docs.langchain.com/oss/python/deepagents/overview" target="_blank" rel="noopener noreferrer">Deep Agents overview</a><br />
