@@ -551,9 +551,10 @@ with no other arguments, invoke it with &quot;What is an LLM?&quot; and print th
 message's content.
 </code></pre>
 <details>
-<summary>Don't have a coding agent? Copy the code directly [click to expand]</summary>
+<summary>No coding agent? Create the file manually [click to expand]</summary>
 <p><br></p>
-<p>Create <code>python/m1/scratch_agent.py</code> with the following:</p>
+<p>Create <code>python/m1/scratch_agent.py</code>:</p>
+<!-- code-highlight-1:5,8,9,10 -->
 <pre><code class="language-python">import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -565,11 +566,15 @@ agent = create_deep_agent(model=model)
 result = agent.invoke({&quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What is an LLM?&quot;}]})
 print(result[&quot;messages&quot;][-1].content)
 </code></pre>
+<p>Then run it:</p>
+<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents &amp;&amp; uv run ./python/m1/scratch_agent.py
+</code></pre>
 </details>
 <p>Once your coding agent has created the file, run it:</p>
 <pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents &amp;&amp; uv run ./python/m1/scratch_agent.py
 </code></pre>
-<div style="max-height:200px;overflow-y:auto;border-radius:8px;margin:0.5rem 0 1rem;">
+<p><strong>Example output:</strong></p>
+<div style="max-height:200px;overflow-y:auto;border-radius:8px;margin:0.25rem 0 1rem;">
 
 
 <pre><code>An LLM (Large Language Model) is a type of artificial intelligence system
@@ -600,9 +605,6 @@ Examples: GPT-4, Claude, Gemini, LLaMA, Mistral
 </ul>
 </div>
 
-<p>Notice what you <em>didn't</em> pass: no tools, no system prompt, no filesystem. Yet<br />
-the agent still answers, still knows how to behave, and still has file tools.<br />
-Where did all of that come from? That's what the next lessons uncover.</p>
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />
 - <a href="https://docs.langchain.com/oss/python/deepagents/overview" target="_blank" rel="noopener noreferrer">Deep Agents overview</a><br />
