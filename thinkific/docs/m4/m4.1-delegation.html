@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>m4.1-delegation</title>
+    <meta name="description" content="">
+
+    <!-- Syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+
+    <!-- React -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom-client.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        /* LCA Blue hljs theme */
+        .hljs {
+            background: #030710;
+            color: #e5f4ff;
+        }
+        .hljs-keyword,
+        .hljs-selector-tag,
+        .hljs-built_in,
+        .hljs-name {
+            color: #7fc8ff;
+        }
+        .hljs-string,
+        .hljs-attr,
+        .hljs-symbol,
+        .hljs-bullet,
+        .hljs-addition {
+            color: #f6ffdb;
+        }
+        .hljs-title,
+        .hljs-section,
+        .hljs-title.function_ {
+            color: #b2deff;
+        }
+        .hljs-variable,
+        .hljs-template-variable,
+        .hljs-params {
+            color: #cce9ff;
+        }
+        .hljs-comment,
+        .hljs-quote,
+        .hljs-deletion {
+            color: #4a6a8a;
+            font-style: italic;
+        }
+        .hljs-number,
+        .hljs-literal,
+        .hljs-type,
+        .hljs-class .hljs-title {
+            color: #fbb0a5;
+        }
+        .hljs-meta,
+        .hljs-meta .hljs-keyword {
+            color: #4a6a8a;
+        }
+        .hljs-emphasis {
+            font-style: italic;
+        }
+        .hljs-strong {
+            font-weight: bold;
+        }
+        .hljs-link {
+            text-decoration: underline;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #ffffff;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #030710;
+            border-bottom: 10px solid #7fc8ff;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #2a2a2a;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #3a3a3a;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        code {
+            background: #f3f4f6;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.875em;
+            color: #374151;
+        }
+
+        pre {
+            background: #030710;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 600px;
+            margin-bottom: 1rem;
+            border: 1px solid #0d1b2a;
+            position: relative;
+        }
+
+        /* RunCode Styles */
+        .run-code {
+            display: block;
+            padding: 0;
+            margin: -0.5rem 0 1.5rem 0;
+            text-align: right;
+        }
+
+
+
+        .run-code summary {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            cursor: pointer;
+            font-weight: 400;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #7fc8ff;
+            list-style: none;
+            background: #030710;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .run-code summary:hover {
+            background: #0d1b2a;
+            color: #b2deff;
+        }
+
+        .run-code summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .run-code summary img {
+            opacity: 0.7;
+            filter: invert(1) brightness(0.8);
+        }
+
+        .run-code-content {
+            text-align: left;
+        }
+
+        .run-code-content pre {
+            margin: 0.5rem 0 0 0;
+        }
+
+        pre code {
+            background: transparent;
+            padding: 0;
+            color: #e5f4ff;
+        }
+
+        /* Line highlighting */
+        .highlight-line {
+            background-color: rgba(29, 59, 89, 0.55) !important;
+            border-left: 3px solid #7fc8ff;
+            margin-left: -8px;
+            padding-left: 5px;
+        }
+
+        pre .copy-button-inline {
+            position: absolute;
+            top: 0.5rem;
+            right: 1rem;
+            padding: 0;
+            border: none;
+            background: transparent url('symbols/copy.png') center/18px no-repeat;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            width: 28px;
+            height: 28px;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
+        }
+
+        pre .copy-button-inline:hover {
+            opacity: 1;
+            filter: invert(1) brightness(1);
+        }
+
+        pre .copy-button-inline.copied {
+            background-image: none;
+            color: #7fc8ff;
+            font-size: 1.1rem;
+            opacity: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        blockquote {
+            border-left: 4px solid #0066cc;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: #555;
+            font-style: italic;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #f4f4f4;
+            font-weight: 600;
+        }
+
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* MCQ Styles */
+        .mcq-container {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid #e5e7eb;
+            background-color: #f9fafb;
+        }
+
+        .mcq-question {
+            font-size: 1.05rem;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+
+        .mcq-choices {
+            margin: 1rem 0;
+            padding-left: 0;
+        }
+
+        .mcq-choice {
+            padding: 0.75rem 1rem;
+            margin: 0.5rem 0;
+            color: #374151;
+            background-color: #ffffff;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mcq-choice:hover {
+            border-color: #d1d5db;
+            background-color: #f9fafb;
+        }
+
+        .mcq-choice.correct {
+            background-color: #dcfce7;
+            border-color: #86efac;
+            color: #166534;
+        }
+
+        .mcq-choice.incorrect {
+            background-color: #fee2e2;
+            border-color: #fca5a5;
+            color: #991b1b;
+        }
+
+        .mcq-answer {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: #f3f4f6;
+            border: 1px solid #d1d5db;
+        }
+
+        .mcq-answer-header {
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        .mcq-explanation {
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        /* Tip Styles */
+        .tip {
+            margin: 1.5rem 0;
+            padding: 1.25rem 1.5rem 1.25rem 3.5rem;
+            border-radius: 12px;
+            border: 1px solid #99d3ff;
+            background-color: #e5f4ff;
+            color: #1e4d7a;
+            position: relative;
+        }
+
+        .tip::before {
+            content: "";
+            display: block;
+            position: absolute;
+            left: 1rem;
+            top: 1.35rem;
+            width: 28px;
+            height: 28px;
+            background-image: url('symbols/tip.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            filter: invert(25%) sepia(60%) saturate(600%) hue-rotate(190deg) brightness(90%) contrast(95%);
+        }
+
+        .tip strong {
+            color: #1e4d7a;
+        }
+
+        .tip code {
+            background-color: #cce9ff;
+            color: #1e4d7a;
+        }
+
+        .tip a {
+            color: #1e4d7a;
+            text-decoration: underline;
+        }
+
+        .tip a:hover {
+            color: #1e4d7a;
+        }
+
+        /* Tabs Code Block Styles */
+        .code-block-container {
+            margin: 1rem 0;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #0d1b2a;
+            background: #030710;
+        }
+
+        .code-block-container:first-child {
+            margin-top: 0;
+        }
+
+        .code-block-header {
+            background: #030710;
+            padding: 0.5rem 0.75rem 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: none;
+        }
+
+        .language-tabs {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .language-tab {
+            padding: 0.375rem 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: #4a6a8a;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .language-tab:hover {
+            color: #e5f4ff;
+        }
+
+        .language-tab.active {
+            color: #e5f4ff;
+            border-bottom-color: #7fc8ff;
+        }
+
+        .copy-button {
+            padding: 0;
+            border: none;
+            background: transparent url('symbols/copy.png') center/20px no-repeat;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
+        }
+
+        .copy-button:hover {
+            opacity: 1;
+            filter: invert(1) brightness(1);
+        }
+
+        .copy-button.copied {
+            background-image: none;
+            color: #7fc8ff;
+            font-size: 1.25rem;
+        }
+
+        .code-block-content {
+            background: #030710;
+            margin: 0;
+            padding: 0;
+        }
+
+        .code-block-content pre {
+            margin: 0;
+            background: transparent;
+            padding: 0.5rem 1rem !important;
+            border: none;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .code-block-content code {
+            background: transparent;
+            color: #e5f4ff;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            display: block;
+            padding: 0 !important;
+        }
+
+        .code-block-content code.hljs {
+            padding: 0 !important;
+        }
+
+        /* Video Styles */
+        .video-container {
+            margin: 1.5rem auto;
+            width: 100%;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <p><a href="https://langchain-ai.github.io/lca-deepagents/m4/m4.1-delegation.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
+<style>@import url('../shared/sd-components.css');</style>
+<script src="../shared/sd-components.js"></script>
+
+<h1 id="delegation">Delegation</h1>
+<details>
+<summary>🎥 Video Walk-through [click to expand]</summary>
+<p><br></p>
+<Video src="TODO" />
+</details>
+<p>The Deep Agents harness has two capabilities that let it complete long-running tasks: <strong>planning</strong> and <strong>subagents</strong>.</p>
+<p align="center">
+  <img src="images/m4.1-two-capabilities.svg" alt="A two-panel drawing. Left: a to-do list with checkboxes — two checked, one in progress, one pending — labeled Planning. Right: a small robot supervisor connected to three robot subagents, labeled Subagents." width="620">
+</p>
+
+<ul>
+<li><strong>Planning</strong> — LLMs have long been able to lay out complex, multi-step plans; the hard part is sticking to them. Deep Agents adds a to-do list that tracks tasks over time.</li>
+<li><strong>Subagents</strong> — like people, agents can break a big task into smaller, more manageable chunks and hand each one to a subagent.</li>
+</ul>
+<p>This lesson covers the idea behind both, and the next lesson is a hands-on lab where you build a subagent team. Before we look at how people tackle a big project, let's start with planning and the to-do list.</p>
+<hr />
+<h2 id="planning-the-to-do-list">Planning: the to-do list</h2>
+<p>A capable model can draft a solid plan for a multi-step job. The hard part is follow-through: as the conversation grows and the agent juggles tool calls and intermediate results, it tends to drift — losing track of what's already done and what's still left.</p>
+<p>Deep Agents addresses this with a built-in <strong><code>write_todos</code></strong> tool. The agent writes its plan out as a structured to-do list and updates each item's status as it works:</p>
+<ul>
+<li><strong><code>pending</code></strong> — not started yet</li>
+<li><strong><code>in_progress</code></strong> — being worked on now</li>
+<li><strong><code>completed</code></strong> — done</li>
+</ul>
+<p>The list is saved in the agent's state, so it persists from one turn to the next. On a long task the agent always has an explicit, up-to-date plan to check against instead of trying to hold the whole thing in its head — the agent's version of writing the steps on a whiteboard and ticking them off as it goes.</p>
+<hr />
+<h2 id="how-people-tackle-a-big-project">How people tackle a big project</h2>
+<p>When a project is too big for one person, we bring in a team.</p>
+<div style="text-align: center;">
+<svg viewBox="0 0 740 394" width="640" role="img" aria-label="A supervisor figure at the top connected by lines to four worker figures below, each labeled with a different skill: Research, Writing, Data, Design. Hover a figure to see its role." xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="740" height="394" fill="#030710" rx="8"/>
+  <text x="370" y="34" text-anchor="middle" font-size="15" font-weight="300" fill="#F2FAFF">How people tackle a big project</text>
+  <text x="370" y="53" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">A supervisor splits the work; specialists run in parallel</text>
+  <line x1="370" y1="170" x2="120" y2="246" stroke="#40668D" stroke-width="1.5"/>
+  <line x1="370" y1="170" x2="287" y2="246" stroke="#40668D" stroke-width="1.5"/>
+  <line x1="370" y1="170" x2="453" y2="246" stroke="#40668D" stroke-width="1.5"/>
+  <line x1="370" y1="170" x2="620" y2="246" stroke="#40668D" stroke-width="1.5"/>
+  <g style="cursor:pointer">
+    <title>Splits the project into tasks and combines the results</title>
+    <circle cx="370" cy="98" r="24" fill="#7FC8FF"/>
+    <path d="M 332,170 C 332,134 348,126 370,126 C 392,126 408,134 408,170 Z" fill="#7FC8FF"/>
+    <text x="370" y="192" text-anchor="middle" font-size="11" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Supervisor</text>
+  </g>
+  <g style="cursor:pointer">
+    <title>Finds the sources, facts, and background</title>
+    <circle cx="120" cy="268" r="20" fill="#40668D"/>
+    <path d="M 88,332 C 88,300 102,293 120,293 C 138,293 152,300 152,332 Z" fill="#40668D"/>
+    <text x="120" y="356" text-anchor="middle" font-size="10" fill="#B2DEFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Research</text>
+  </g>
+  <g style="cursor:pointer">
+    <title>Drafts and edits the copy</title>
+    <circle cx="287" cy="268" r="20" fill="#40668D"/>
+    <path d="M 255,332 C 255,300 269,293 287,293 C 305,293 319,300 319,332 Z" fill="#40668D"/>
+    <text x="287" y="356" text-anchor="middle" font-size="10" fill="#B2DEFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Writing</text>
+  </g>
+  <g style="cursor:pointer">
+    <title>Pulls the numbers and runs the analysis</title>
+    <circle cx="453" cy="268" r="20" fill="#40668D"/>
+    <path d="M 421,332 C 421,300 435,293 453,293 C 471,293 485,300 485,332 Z" fill="#40668D"/>
+    <text x="453" y="356" text-anchor="middle" font-size="10" fill="#B2DEFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Data</text>
+  </g>
+  <g style="cursor:pointer">
+    <title>Handles the layout and visuals</title>
+    <circle cx="620" cy="268" r="20" fill="#40668D"/>
+    <path d="M 588,332 C 588,300 602,293 620,293 C 638,293 652,300 652,332 Z" fill="#40668D"/>
+    <text x="620" y="356" text-anchor="middle" font-size="10" fill="#B2DEFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Design</text>
+  </g>
+  <text x="370" y="380" text-anchor="middle" font-size="9" fill="#5BADDF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Hover over a teammate to see their role</text>
+</svg>
+</div>
+
+<p>A few things make this work:</p>
+<ul>
+<li><strong>A supervisor splits the work and pulls it back together.</strong> They break the project into subtasks, hand each one out, and combine what comes back.</li>
+<li><strong>Each person brings their own expertise.</strong> A researcher, a writer, and a designer each see the problem differently and carry their own tools.</li>
+<li><strong>People work in parallel.</strong> Three people working at once finish in roughly a third of the time.</li>
+<li><strong>Each person focuses on their piece, not the whole project.</strong> The writer doesn't need to hold the entire plan in their head — just their assignment.</li>
+</ul>
+<hr />
+<h2 id="subagents-give-an-agent-the-same-capability">Subagents give an agent the same capability</h2>
+<p>A <strong>subagent</strong> is an agent the main agent can call to do a focused task and report back. The same four properties carry straight over.</p>
+<p align="center">
+  <img src="images/m4.1-agents-fanout.svg" alt="A main agent robot at the top connected to four subagent robots below, each labeled with its own prompt, tools, model, and context." width="660">
+</p>
+
+<ul>
+<li><strong>The main agent splits work and aggregates results.</strong> Say the job is <em>"write a newsletter summarizing this week's news on a topic."</em> The main agent can hand each sub-topic to a different subagent. Each one searches, summarizes what it finds, and passes back only the summary — which the main agent stitches into the final newsletter.</li>
+<li><strong>Each subagent is a full agent in its own right.</strong> It can have its own system prompt, its own skills, its own tools, and it can even run on a different model than the main agent.</li>
+<li><strong>Subagents run in parallel.</strong> In Deep Agents, a subagent is invoked like a tool, so the main agent can fire off as many as it needs at the same time.</li>
+<li><strong>Each subagent focuses on its own task — and its own context.</strong> This is the part that makes subagents a context-engineering tool, and it's worth slowing down on.</li>
+</ul>
+<blockquote>
+<p><strong>Subagent-as-tool.</strong> Deep Agents exposes subagents through a built-in <code>task</code> tool. To the main agent, delegating looks just like calling any other tool: it calls <code>task</code> with an assignment and gets a result back — picking which subagent to use from each one's description, the same way it decides to call any other tool.</p>
+</blockquote>
+<hr />
+<h2 id="context-isolation">Context isolation</h2>
+<p align="center">
+  <img src="images/m4.1-context-isolation.svg" alt="On the left, a main agent with a long message history; one task message flows out to a subagent on the right, which has its own small fresh context and its own tools, and one result message flows back." width="700">
+</p>
+
+<p>This is what makes subagents a context-engineering tool. A subagent does its work without cluttering the main agent's context:</p>
+<ul>
+<li>A subagent receives <strong>one message</strong> from the main agent describing its task. Importantly, it does <strong>not</strong> inherit the main agent's message history.</li>
+<li>It runs autonomously until the task is done, then returns <strong>one message</strong> back — its final result. Subagents are stateless: they can't carry on a back-and-forth with the main agent.</li>
+<li>A subagent defines <strong>its own tool set</strong>. Consider a database expert with dozens of specialized tools. Putting those behind a subagent keeps every one of those tool descriptions <em>out</em> of the main agent's context. All the main agent has to know is "this needs database expertise" — it hands off the task and gets back an answer.</li>
+</ul>
+<p>The payoff: a large, messy subtask gets compressed into a single clean result — as long as the subagent is told to return a concise summary. The main agent's context stays focused on coordination, even as the work piles up behind the scenes.</p>
+<hr />
+<h2 id="synchronous-vs-asynchronous">Synchronous vs. asynchronous</h2>
+<p>Subagents can run in two modes. The choice comes down to one question: <strong>does the main agent need the result before it can keep going?</strong></p>
+<p align="center">
+  <img src="images/m4.1-sync-async.svg" alt="Side-by-side timelines. Left, synchronous: the main agent is blocked and waiting while three subagents run, resuming only when the slowest finishes. Right, asynchronous: the main agent launches a background job, stays responsive, checks status, and collects the result later." width="700">
+</p>
+
+<ul>
+<li><strong>Synchronous</strong> subagents complete their task within the step. The main agent blocks — the step isn't finished until the longest-running subagent returns. It's the simplest model, but the conversation pauses while the work happens.</li>
+<li><strong>Asynchronous</strong> subagents run in the background. The main agent launches the job, stays responsive, and checks on it later, collecting the result once it's ready. It's more responsive but has more moving parts.</li>
+</ul>
+<p>We'll work with synchronous subagents in the next lesson and come back to asynchronous ones later.</p>
+<hr />
+<h2 id="when-to-reach-for-a-subagent">When to reach for a subagent</h2>
+<div class="tip"><p><strong>Use a subagent when:</strong><br />
+- A multi-step task would otherwise clutter the main agent's context<br />
+- The work needs a specialized domain — custom instructions or its own tools<br />
+- A subtask is better served by a different model<br />
+- You want the main agent to stay focused on high-level coordination</p>
+<p><strong>Skip the subagent when:</strong><br />
+- The task is simple and single-step — the overhead isn't worth it<br />
+- You need to keep the intermediate context, not just the final result</p></div>
+
+<hr />
+<h2 id="recap">Recap</h2>
+<p>In this lesson you learned what delegation is and why it matters:</p>
+<ul>
+<li><strong>Delegation lets the main agent split a big job into pieces, run them in parallel, and stay focused on coordination</strong> — the same way a supervisor works with a team.</li>
+<li>It has <strong>two parts</strong>: the <strong><code>write_todos</code></strong> planning tool for tracking multi-step work, and <strong>subagents</strong> for executing isolated subtasks.</li>
+<li>A subagent is <strong>a full agent in its own right</strong> — always its own prompt and isolated context, and optionally its own tools and model — invoked through the built-in <strong><code>task</code></strong> tool.</li>
+<li>Subagents are a <strong>context-engineering</strong> tool: at the hand-off boundary, a subagent gets <strong>one task in</strong> and returns <strong>one final result back</strong> (internally it may take many steps), keeping its work and its tool descriptions out of the main agent's context.</li>
+<li>Subagents run <strong>synchronously</strong> (the main agent blocks until they finish) or <strong>asynchronously</strong> (they run in the background while the main agent stays responsive).</li>
+</ul>
+<h2 id="check-your-understanding">Check your understanding</h2>
+<div class="mcq-container" id="mcq-4133520e">
+    <div class="mcq-question">
+        <strong>Question:</strong> What is the job of the Deep Agents planning tool (write_todos)?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, true, '4133520e')"><strong>A)</strong> It keeps a structured to-do list and tracks each task’s status (pending → in progress → completed) as the agent works</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '4133520e')"><strong>B)</strong> It runs the tasks in parallel across several models</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '4133520e')"><strong>C)</strong> It deletes old messages once the context window is full</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '4133520e')"><strong>D)</strong> It writes the final answer to a file</div>
+    </div>
+    <div id="mcq-answer-4133520e" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
+        <div class="mcq-explanation">The planning tool maintains a structured to-do list, persisted in the agent’s state, so the agent has an explicit plan to track against on a long, multi-step job.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-316d52c9">
+    <div class="mcq-question">
+        <strong>Question:</strong> How does a main agent hand work to a subagent in Deep Agents?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '316d52c9')"><strong>A)</strong> By editing the subagent’s source code at runtime</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '316d52c9')"><strong>B)</strong> By forwarding its entire message history to the subagent</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '316d52c9')"><strong>C)</strong> Subagents cannot be invoked; they run automatically every turn</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '316d52c9')"><strong>D)</strong> Through a built-in task tool — it calls the subagent like any other tool, and can fire off several at once</div>
+    </div>
+    <div id="mcq-answer-316d52c9" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+        <div class="mcq-explanation">Subagents use the subagent-as-tool model: the main agent calls the built-in task tool with an assignment. Because it is just a tool call, the main agent can invoke several subagents in parallel.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-3fdd2589">
+    <div class="mcq-question">
+        <strong>Question:</strong> When the main agent delegates to a subagent, what does the subagent receive and return at the hand-off boundary?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '3fdd2589')"><strong>A)</strong> The main agent’s full message history; it returns the updated history</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '3fdd2589')"><strong>B)</strong> It shares the main agent’s context directly, so nothing is passed</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '3fdd2589')"><strong>C)</strong> One task in; it returns one final result back</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '3fdd2589')"><strong>D)</strong> A task in; it returns its entire internal context</div>
+    </div>
+    <div id="mcq-answer-3fdd2589" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-explanation">A subagent runs in an isolated context. It receives one task — not the main agent’s history — and returns one final result. Internally it may take many steps, but only the result crosses the boundary, keeping the subagent’s work and tools out of the main agent’s context.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-8900a6ca">
+    <div class="mcq-question">
+        <strong>Question:</strong> What is the difference between a synchronous and an asynchronous subagent?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '8900a6ca')"><strong>A)</strong> Synchronous ones run in the background; asynchronous ones block the main agent</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '8900a6ca')"><strong>B)</strong> A synchronous subagent blocks the main agent until it finishes; an asynchronous one runs in the background while the main agent stays responsive</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '8900a6ca')"><strong>C)</strong> Synchronous subagents can use tools; asynchronous ones cannot</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '8900a6ca')"><strong>D)</strong> There is no difference; the terms are interchangeable</div>
+    </div>
+    <div id="mcq-answer-8900a6ca" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+        <div class="mcq-explanation">A synchronous subagent blocks the main agent until it returns. An asynchronous subagent runs as a background job so the main agent stays responsive and collects the result later.</div>
+    </div>
+</div>
+
+<h2 id="next">Next</h2>
+<p>In the next lesson you'll build a subagent team in a hands-on lab: a main agent that fans out parallel searches to subagents and synthesizes their results into a weekly newsletter.</p>
+<hr />
+<h2 id="references">References</h2>
+<p><strong>Documentation:</strong><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/harness#delegation" target="_blank" rel="noopener noreferrer">Delegation (Deep Agents harness)</a><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/subagents" target="_blank" rel="noopener noreferrer">Subagents (Deep Agents)</a><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/async-subagents" target="_blank" rel="noopener noreferrer">Async subagents (Deep Agents)</a><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/context-engineering" target="_blank" rel="noopener noreferrer">Context engineering (Deep Agents)</a></p>
+
+    <script>
+        // Handle MCQ choice clicks
+        function handleMcqClick(choiceElement, isCorrect, mcqId) {
+            // Get all choices in this MCQ
+            const container = document.getElementById('mcq-' + mcqId);
+            const choices = container.querySelectorAll('.mcq-choice');
+
+            // Clear all previous selections (remove correct/incorrect classes)
+            choices.forEach(choice => {
+                choice.classList.remove('correct', 'incorrect');
+            });
+
+            // Color the clicked choice
+            if (isCorrect) {
+                choiceElement.classList.add('correct');
+            } else {
+                choiceElement.classList.add('incorrect');
+            }
+
+            // Show the explanation
+            const answerDiv = document.getElementById('mcq-answer-' + mcqId);
+            answerDiv.style.display = 'block';
+        }
+
+        // Initialize syntax highlighting and line highlights
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Run syntax highlighting first
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+
+            // Apply line highlighting after syntax highlighting
+            applyLineHighlights();
+        });
+
+        function applyLineHighlights() {
+            // Find all code blocks and check for adjacent highlight comments
+            document.querySelectorAll('pre code').forEach((codeBlock) => {
+                const pre = codeBlock.parentElement;
+
+                // Check for a comment node right before or after the pre element
+                let commentNode = null;
+
+                // Check previous sibling
+                let sibling = pre.previousSibling;
+                while (sibling) {
+                    if (sibling.nodeType === Node.COMMENT_NODE) {
+                        commentNode = sibling;
+                        break;
+                    }
+                    // Skip whitespace text nodes
+                    if (sibling.nodeType === Node.TEXT_NODE && sibling.textContent.trim() === '') {
+                        sibling = sibling.previousSibling;
+                        continue;
+                    }
+                    break;
+                }
+
+                // Check next sibling if not found before
+                if (!commentNode) {
+                    sibling = pre.nextSibling;
+                    while (sibling) {
+                        if (sibling.nodeType === Node.COMMENT_NODE) {
+                            commentNode = sibling;
+                            break;
+                        }
+                        // Skip whitespace text nodes
+                        if (sibling.nodeType === Node.TEXT_NODE && sibling.textContent.trim() === '') {
+                            sibling = sibling.nextSibling;
+                            continue;
+                        }
+                        break;
+                    }
+                }
+
+                // Parse the comment if found
+                if (commentNode) {
+                    const match = commentNode.textContent.match(/code-highlight-\d+:(.*)/);
+                    if (match) {
+                        const lines = match[1].split(',').map(n => parseInt(n.trim()));
+
+                        // Split the code content by line
+                        let codeLines = codeBlock.innerHTML.split('\n');
+
+                        // Remove trailing empty line if present
+                        if (codeLines[codeLines.length - 1] === '') {
+                            codeLines.pop();
+                        }
+
+                        // Wrap highlighted lines
+                        const wrappedLines = codeLines.map((line, i) => {
+                            if (lines.includes(i + 1)) {
+                                return `<span class="highlight-line">${line}</span>`;
+                            }
+                            return line;
+                        });
+
+                        codeBlock.innerHTML = wrappedLines.join('\n');
+
+                        // Remove the comment node and any whitespace between it and the pre element
+                        const commentParent = commentNode.parentNode;
+                        let nextNode = commentNode.nextSibling;
+                        commentNode.remove();
+
+                        // Remove any whitespace text nodes between where the comment was and the pre
+                        while (nextNode && nextNode !== pre && nextNode.nodeType === Node.TEXT_NODE && nextNode.textContent.trim() === '') {
+                            const toRemove = nextNode;
+                            nextNode = nextNode.nextSibling;
+                            toRemove.remove();
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        function TabsCodeBlock({ tabs, blockId }) {
+            const [activeIndex, setActiveIndex] = useState(0);
+            const [copied, setCopied] = useState(false);
+
+            const activeTab = tabs[activeIndex];
+            const activeCode = activeTab.code;
+            const activeLanguage = activeTab.language;
+
+            const copyToClipboard = async () => {
+                try {
+                    // Try modern Clipboard API first
+                    await navigator.clipboard.writeText(activeCode);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                } catch (err) {
+                    // Fallback for iframes: use document.execCommand
+                    try {
+                        const textarea = document.createElement('textarea');
+                        textarea.value = activeCode;
+                        textarea.style.position = 'fixed';
+                        textarea.style.opacity = '0';
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        const successful = document.execCommand('copy');
+                        document.body.removeChild(textarea);
+
+                        if (successful) {
+                            setCopied(true);
+                            setTimeout(() => setCopied(false), 2000);
+                        } else {
+                            console.error('Copy command failed');
+                        }
+                    } catch (fallbackErr) {
+                        console.error('Fallback copy failed:', fallbackErr);
+                    }
+                }
+            };
+
+            useEffect(() => {
+                // Apply syntax highlighting when code changes
+                const container = document.getElementById(`code-${blockId}`);
+                const codeEl = container?.querySelector('code');
+                if (codeEl && window.hljs) {
+                    // Remove existing highlight classes
+                    codeEl.removeAttribute('data-highlighted');
+                    codeEl.className = `language-${activeLanguage}`;
+                    // Reapply highlighting
+                    hljs.highlightElement(codeEl);
+
+                    // Apply line highlighting if highlights are present
+                    const highlights = activeTab.highlights;
+                    if (highlights && highlights.length > 0) {
+                        // Split the code content by line
+                        let codeLines = codeEl.innerHTML.split('\n');
+
+                        // Remove trailing empty line if present
+                        if (codeLines[codeLines.length - 1] === '') {
+                            codeLines.pop();
+                        }
+
+                        // Wrap highlighted lines
+                        const wrappedLines = codeLines.map((line, i) => {
+                            if (highlights.includes(i + 1)) {
+                                return `<span class="highlight-line">${line}</span>`;
+                            }
+                            return line;
+                        });
+
+                        codeEl.innerHTML = wrappedLines.join('\n');
+                    }
+                }
+            }, [activeCode, activeLanguage, blockId, activeTab.highlights]);
+
+            return (
+                <div className="code-block-container">
+                    <div className="code-block-header">
+                        <div className="language-tabs">
+                            {tabs.map((tab, index) => (
+                                <button
+                                    key={index}
+                                    className={`language-tab ${activeIndex === index ? 'active' : ''}`}
+                                    onClick={() => setActiveIndex(index)}
+                                >
+                                    {tab.title}
+                                </button>
+                            ))}
+                        </div>
+                        <button
+                            className={`copy-button ${copied ? 'copied' : ''}`}
+                            onClick={copyToClipboard}
+                            title={copied ? 'Copied!' : 'Copy code'}
+                            aria-label={copied ? 'Copied!' : 'Copy code'}
+                        >
+                            {copied ? '✓' : ''}
+                        </button>
+                    </div>
+                    <div className="code-block-content" id={`code-${blockId}`}>
+                        <pre><code className={`language-${activeLanguage}`}>{activeCode}</code></pre>
+                    </div>
+                </div>
+            );
+        }
+
+        // Global language state (shared across all blocks)
+        const globalLanguageState = {
+            current: 'Python',
+            listeners: new Set()
+        };
+
+        function useGlobalLanguage() {
+            const [language, setLanguage] = useState(globalLanguageState.current);
+
+            useEffect(() => {
+                const listener = (newLang) => setLanguage(newLang);
+                globalLanguageState.listeners.add(listener);
+                return () => globalLanguageState.listeners.delete(listener);
+            }, []);
+
+            const updateLanguage = (newLang) => {
+                globalLanguageState.current = newLang;
+                globalLanguageState.listeners.forEach(listener => listener(newLang));
+            };
+
+            return [language, updateLanguage];
+        }
+
+        function LanguageTabsCodeBlock({ languages, blockId }) {
+            const [globalLanguage] = useGlobalLanguage();
+            const [activeIndex, setActiveIndex] = useState(0);
+            const [copied, setCopied] = useState(false);
+
+            // Get tabs for the currently selected global language
+            const tabs = languages[globalLanguage] || Object.values(languages)[0] || [];
+            const activeTab = tabs[activeIndex] || {};
+            const activeCode = activeTab.code || '';
+            const activeLanguage = activeTab.language || 'text';
+
+            // Reset active index when global language changes
+            useEffect(() => {
+                setActiveIndex(0);
+            }, [globalLanguage]);
+
+            const copyToClipboard = async () => {
+                try {
+                    await navigator.clipboard.writeText(activeCode);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                } catch (err) {
+                    try {
+                        const textarea = document.createElement('textarea');
+                        textarea.value = activeCode;
+                        textarea.style.position = 'fixed';
+                        textarea.style.opacity = '0';
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        const successful = document.execCommand('copy');
+                        document.body.removeChild(textarea);
+
+                        if (successful) {
+                            setCopied(true);
+                            setTimeout(() => setCopied(false), 2000);
+                        }
+                    } catch (fallbackErr) {
+                        console.error('Copy failed:', fallbackErr);
+                    }
+                }
+            };
+
+            useEffect(() => {
+                const el = document.getElementById(`code-${blockId}`);
+                // Check if el is already a code element or if we need to find one inside
+                const codeEl = el?.tagName === 'CODE' ? el : el?.querySelector('code');
+                if (codeEl && window.hljs) {
+                    codeEl.removeAttribute('data-highlighted');
+                    codeEl.className = `language-${activeLanguage}`;
+                    hljs.highlightElement(codeEl);
+
+                    // Apply line highlighting if highlights are present
+                    const highlights = activeTab.highlights;
+                    if (highlights && highlights.length > 0) {
+                        // Split the code content by line
+                        let codeLines = codeEl.innerHTML.split('\n');
+
+                        // Remove trailing empty line if present
+                        if (codeLines[codeLines.length - 1] === '') {
+                            codeLines.pop();
+                        }
+
+                        // Wrap highlighted lines
+                        const wrappedLines = codeLines.map((line, i) => {
+                            if (highlights.includes(i + 1)) {
+                                return `<span class="highlight-line">${line}</span>`;
+                            }
+                            return line;
+                        });
+
+                        codeEl.innerHTML = wrappedLines.join('\n');
+                    }
+                }
+            }, [activeCode, activeLanguage, blockId, activeTab.highlights]);
+
+            if (tabs.length === 0) {
+                return <div>No code available for this language</div>;
+            }
+
+            // If tab has noHeader flag, render without header (like a regular code block)
+            if (tabs[0]?.noHeader) {
+                return (
+                    <div style={{ position: 'relative' }}>
+                        <pre style={{
+                            background: '#f9fafb',
+                            padding: '0',
+                            borderRadius: '12px',
+                            overflow: 'auto',
+                            marginBottom: '1rem',
+                            border: '1px solid #e5e7eb',
+                            position: 'relative'
+                        }}>
+                            <button
+                                className="copy-button-inline"
+                                onClick={copyToClipboard}
+                                title={copied ? 'Copied!' : 'Copy code'}
+                                aria-label={copied ? 'Copied!' : 'Copy code'}
+                                style={{
+                                    position: 'absolute',
+                                    top: '0.5rem',
+                                    right: '1rem',
+                                    padding: '0',
+                                    border: 'none',
+                                    background: copied ? 'none' : 'transparent url("symbols/copy.png") center/18px no-repeat',
+                                    cursor: 'pointer',
+                                    borderRadius: '4px',
+                                    width: '28px',
+                                    height: '28px',
+                                    opacity: copied ? 1 : 0.6,
+                                    color: copied ? '#7fc8ff' : 'transparent',
+                                    fontSize: copied ? '1.1rem' : '0',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}
+                            >
+                                {copied ? '✓' : ''}
+                            </button>
+                            <code
+                                id={`code-${blockId}`}
+                                className={`language-${activeLanguage}`}
+                                style={{
+                                    display: 'block',
+                                    padding: '1rem'
+                                }}
+                            >
+                                {activeCode}
+                            </code>
+                        </pre>
+                    </div>
+                );
+            }
+
+            // Multiple tabs - show header with tab switcher
+            return (
+                <div className="code-block-container">
+                    <div className="code-block-header">
+                        <div className="language-tabs">
+                            {tabs.map((tab, index) => (
+                                <button
+                                    key={index}
+                                    className={`language-tab ${activeIndex === index ? 'active' : ''}`}
+                                    onClick={() => setActiveIndex(index)}
+                                >
+                                    {tab.title}
+                                </button>
+                            ))}
+                        </div>
+                        <button
+                            className={`copy-button ${copied ? 'copied' : ''}`}
+                            onClick={copyToClipboard}
+                            title={copied ? 'Copied!' : 'Copy code'}
+                            aria-label={copied ? 'Copied!' : 'Copy code'}
+                        >
+                            {copied ? '✓' : ''}
+                        </button>
+                    </div>
+                    <div className="code-block-content" id={`code-${blockId}`}>
+                        <pre><code className={`language-${activeLanguage}`}>{activeCode}</code></pre>
+                    </div>
+                </div>
+            );
+        }
+
+        function LanguageSelector({ availableLanguages }) {
+            const [currentLanguage, setCurrentLanguage] = useGlobalLanguage();
+            const [isVisible, setIsVisible] = useState(true);
+            const lastScrollY = useRef(0);
+
+            useEffect(() => {
+                const handleScroll = () => {
+                    const currentScrollY = window.scrollY;
+
+                    // Show when scrolling up or at the top
+                    if (currentScrollY < lastScrollY.current || currentScrollY < 10) {
+                        setIsVisible(true);
+                    }
+                    // Hide when scrolling down (and not near the top)
+                    else if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+                        setIsVisible(false);
+                    }
+
+                    lastScrollY.current = currentScrollY;
+                };
+
+                window.addEventListener('scroll', handleScroll, { passive: true });
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            return (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    zIndex: 100,
+                    background: '#ffffff',
+                    borderBottom: '2px solid #e5e7eb',
+                    padding: '1rem 0',
+                    transform: isVisible ? 'translateY(0)' : 'translateY(-100%)',
+                    transition: 'transform 0.3s ease-in-out'
+                }}>
+                    <div style={{
+                        display: 'flex',
+                        gap: '0.5rem',
+                        justifyContent: 'center'
+                    }}>
+                        {availableLanguages.map(lang => (
+                            <button
+                                key={lang}
+                                onClick={() => setCurrentLanguage(lang)}
+                                style={{
+                                    padding: '0.5rem 1.5rem',
+                                    border: 'none',
+                                    background: currentLanguage === lang ? '#d1d5db' : '#fafafa',
+                                    color: currentLanguage === lang ? '#1f2937' : '#6b7280',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    fontWeight: '600',
+                                    fontSize: '0.9375rem',
+                                    transition: 'all 0.2s'
+                                }}
+                            >
+                                {lang}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+        // Mount all tabs blocks
+        function mountTabsBlocks() {
+            const blocks = document.querySelectorAll('.tabs-block');
+
+            blocks.forEach((container, index) => {
+                const tabsJson = container.getAttribute('data-tabs');
+
+                try {
+                    const tabs = JSON.parse(tabsJson);
+                    const blockId = `tabs-${index}`;
+
+                    const createRoot = ReactDOM.createRoot || ReactDOMClient?.createRoot;
+                    if (createRoot) {
+                        const root = createRoot(container);
+                        root.render(
+                            <TabsCodeBlock
+                                tabs={tabs}
+                                blockId={blockId}
+                            />
+                        );
+                    }
+                } catch (error) {
+                    console.error('Error mounting tabs block:', error);
+                }
+            });
+        }
+
+        // Add copy buttons to regular code blocks
+        function addCopyButtonsToCodeBlocks() {
+            // Find all pre blocks that aren't inside tabs-block containers
+            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre)');
+
+            preBlocks.forEach(pre => {
+                // Skip if already has a copy button
+                if (pre.querySelector('.copy-button-inline')) return;
+
+                const code = pre.querySelector('code');
+                if (!code) return;
+
+                // Create copy button
+                const button = document.createElement('button');
+                button.className = 'copy-button-inline';
+                button.setAttribute('aria-label', 'Copy code');
+                button.setAttribute('title', 'Copy code');
+
+                button.addEventListener('click', async () => {
+                    const text = code.textContent;
+
+                    try {
+                        // Try modern Clipboard API
+                        await navigator.clipboard.writeText(text);
+                        button.classList.add('copied');
+                        button.textContent = '✓';
+                        setTimeout(() => {
+                            button.classList.remove('copied');
+                            button.textContent = '';
+                        }, 2000);
+                    } catch (err) {
+                        // Fallback for iframes
+                        try {
+                            const textarea = document.createElement('textarea');
+                            textarea.value = text;
+                            textarea.style.position = 'fixed';
+                            textarea.style.opacity = '0';
+                            document.body.appendChild(textarea);
+                            textarea.select();
+                            const successful = document.execCommand('copy');
+                            document.body.removeChild(textarea);
+
+                            if (successful) {
+                                button.classList.add('copied');
+                                button.textContent = '✓';
+                                setTimeout(() => {
+                                    button.classList.remove('copied');
+                                    button.textContent = '';
+                                }, 2000);
+                            }
+                        } catch (fallbackErr) {
+                            console.error('Copy failed:', fallbackErr);
+                        }
+                    }
+                });
+
+                pre.appendChild(button);
+            });
+        }
+
+        // Mount language tabs blocks with global language selector
+        function mountLanguageTabsBlocks() {
+            const blocks = document.querySelectorAll('.language-tabs-block');
+
+            if (blocks.length === 0) {
+                return; // No language-aware blocks on this page
+            }
+
+            // Collect all available languages from all blocks
+            const allLanguages = new Set();
+
+            blocks.forEach((container) => {
+                const languagesJson = container.getAttribute('data-languages');
+                try {
+                    const languages = JSON.parse(languagesJson);
+                    Object.keys(languages).forEach(lang => allLanguages.add(lang));
+                } catch (error) {
+                    console.error('Error parsing language tabs block:', error);
+                }
+            });
+
+            if (allLanguages.size === 0) return;
+
+            const availableLanguages = Array.from(allLanguages);
+
+            // Set initial global language
+            globalLanguageState.current = availableLanguages[0];
+
+            // Mount the language selector at the top of the body
+            const selectorContainer = document.createElement('div');
+            document.body.insertBefore(selectorContainer, document.body.firstChild);
+
+            // Add spacer to prevent content from hiding under fixed header
+            const spacer = document.createElement('div');
+            spacer.style.height = '80px'; // Approximate height of selector
+            document.body.insertBefore(spacer, document.body.firstChild.nextSibling);
+
+            const createRoot = ReactDOM.createRoot || ReactDOMClient?.createRoot;
+            if (createRoot) {
+                const selectorRoot = createRoot(selectorContainer);
+                selectorRoot.render(
+                    <LanguageSelector availableLanguages={availableLanguages} />
+                );
+
+                // Mount each code block in its original location
+                blocks.forEach((container, index) => {
+                    const languagesJson = container.getAttribute('data-languages');
+                    try {
+                        const languages = JSON.parse(languagesJson);
+                        const blockId = `lang-tabs-${index}`;
+
+                        const blockRoot = createRoot(container);
+                        blockRoot.render(
+                            <LanguageTabsCodeBlock
+                                languages={languages}
+                                blockId={blockId}
+                            />
+                        );
+                    } catch (error) {
+                        console.error('Error mounting language tabs block:', error);
+                    }
+                });
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                mountLanguageTabsBlocks();
+                mountTabsBlocks();
+                addCopyButtonsToCodeBlocks();
+            });
+        } else {
+            mountLanguageTabsBlocks();
+            mountTabsBlocks();
+            addCopyButtonsToCodeBlocks();
+        }
+    </script>
+</body>
+</html>

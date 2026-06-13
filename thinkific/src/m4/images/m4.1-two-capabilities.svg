@@ -1,0 +1,76 @@
+<svg width="740" height="276" viewBox="0 0 740 276" xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="740" height="276" fill="#030710" rx="8"/>
+
+  <!-- divider -->
+  <line x1="370" y1="44" x2="370" y2="226" stroke="#1E3A5F" stroke-width="1"/>
+
+  <!-- ============ LEFT: PLANNING — to-do list ============ -->
+  <rect x="80" y="46" width="210" height="172" rx="10" fill="#0D1322" stroke="#2F4B68" stroke-width="2"/>
+  <text x="96" y="70" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">To-do list</text>
+  <line x1="96" y1="80" x2="274" y2="80" stroke="#2F4B68" stroke-width="1"/>
+
+  <!-- row 1: completed -->
+  <rect x="96" y="96" width="15" height="15" rx="3" fill="#7FC8FF"/>
+  <polyline points="99,103 103,108 109,99" fill="none" stroke="#030710" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="122" y="99" width="148" height="8" rx="4" fill="#2F4B68"/>
+
+  <!-- row 2: completed -->
+  <rect x="96" y="123" width="15" height="15" rx="3" fill="#7FC8FF"/>
+  <polyline points="99,130 103,135 109,126" fill="none" stroke="#030710" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="122" y="126" width="126" height="8" rx="4" fill="#2F4B68"/>
+
+  <!-- row 3: in progress -->
+  <rect x="96" y="150" width="15" height="15" rx="3" fill="none" stroke="#7FC8FF" stroke-width="2"/>
+  <rect x="100" y="154" width="7" height="7" rx="2" fill="#7FC8FF"/>
+  <rect x="122" y="153" width="148" height="8" rx="4" fill="#7FC8FF"/>
+
+  <!-- row 4: pending -->
+  <rect x="96" y="177" width="15" height="15" rx="3" fill="none" stroke="#40668D" stroke-width="1.5"/>
+  <rect x="122" y="180" width="116" height="8" rx="4" fill="#161F34"/>
+
+  <text x="185" y="252" text-anchor="middle" font-size="12" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Planning</text>
+
+  <!-- ============ RIGHT: SUBAGENTS — mini robot fan-out ============ -->
+  <!-- fan-out lines -->
+  <line x1="560" y1="124" x2="480" y2="150" stroke="#40668D" stroke-width="1.5"/>
+  <line x1="560" y1="124" x2="560" y2="150" stroke="#40668D" stroke-width="1.5"/>
+  <line x1="560" y1="124" x2="640" y2="150" stroke="#40668D" stroke-width="1.5"/>
+
+  <!-- main agent robot -->
+  <line x1="560" y1="58" x2="560" y2="66" stroke="#7FC8FF" stroke-width="2"/>
+  <circle cx="560" cy="55" r="3" fill="#7FC8FF"/>
+  <rect x="538" y="66" width="44" height="36" rx="10" fill="#0D1322" stroke="#7FC8FF" stroke-width="2"/>
+  <circle cx="551" cy="84" r="4" fill="#7FC8FF"/>
+  <circle cx="569" cy="84" r="4" fill="#7FC8FF"/>
+  <rect x="549" y="92" width="22" height="5" rx="2" fill="#7FC8FF"/>
+  <text x="560" y="118" text-anchor="middle" font-size="9" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">main agent</text>
+
+  <!-- subagent robots -->
+  <g>
+    <line x1="480" y1="143" x2="480" y2="150" stroke="#99D3FF" stroke-width="1.2"/>
+    <circle cx="480" cy="140" r="2.5" fill="#99D3FF"/>
+    <rect x="463" y="150" width="34" height="28" rx="8" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+    <circle cx="473" cy="163" r="3" fill="#99D3FF"/>
+    <circle cx="487" cy="163" r="3" fill="#99D3FF"/>
+    <rect x="472" y="170" width="16" height="4" rx="2" fill="#99D3FF"/>
+  </g>
+  <g>
+    <line x1="560" y1="143" x2="560" y2="150" stroke="#99D3FF" stroke-width="1.2"/>
+    <circle cx="560" cy="140" r="2.5" fill="#99D3FF"/>
+    <rect x="543" y="150" width="34" height="28" rx="8" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+    <circle cx="553" cy="163" r="3" fill="#99D3FF"/>
+    <circle cx="567" cy="163" r="3" fill="#99D3FF"/>
+    <rect x="552" y="170" width="16" height="4" rx="2" fill="#99D3FF"/>
+  </g>
+  <g>
+    <line x1="640" y1="143" x2="640" y2="150" stroke="#99D3FF" stroke-width="1.2"/>
+    <circle cx="640" cy="140" r="2.5" fill="#99D3FF"/>
+    <rect x="623" y="150" width="34" height="28" rx="8" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+    <circle cx="633" cy="163" r="3" fill="#99D3FF"/>
+    <circle cx="647" cy="163" r="3" fill="#99D3FF"/>
+    <rect x="632" y="170" width="16" height="4" rx="2" fill="#99D3FF"/>
+  </g>
+  <text x="560" y="196" text-anchor="middle" font-size="8.5" fill="#B2DEFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">subagents</text>
+
+  <text x="560" y="252" text-anchor="middle" font-size="12" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Subagents</text>
+</svg>
