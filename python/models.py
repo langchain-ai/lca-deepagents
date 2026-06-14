@@ -39,10 +39,17 @@ from langchain.chat_models import init_chat_model
 # Requires ANTHROPIC_API_KEY in .env
 model = init_chat_model("anthropic:claude-haiku-4-5")
 
+# A more capable model for steps that need stronger reasoning — e.g. a
+# supervisor/editor agent that coordinates and synthesizes the work of cheaper
+# subagents. If you switch providers below, switch this to the matching
+# stronger model so everything still comes from one provider.
+strong_model = init_chat_model("anthropic:claude-sonnet-4-6")
+
 # ---- Alternative models (comment out default above, uncomment one below) --
 # model = init_chat_model("anthropic:claude-sonnet-4-6")
 # model = init_chat_model("openai:gpt-4.1-mini")
 # model = init_chat_model("openai:gpt-4.1")
+# strong_model = init_chat_model("openai:gpt-4.1")
 
 
 # ---- Azure OpenAI ---------------------------------------------------------

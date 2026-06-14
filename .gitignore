@@ -62,4 +62,5 @@ htmlcov/
 
 # Generated outputs
 python/m2/genre_revenue.png
+python/m4/output/
 python/temp/

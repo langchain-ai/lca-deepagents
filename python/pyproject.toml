@@ -19,6 +19,9 @@ dependencies = [
     "deepagents-code",
     "langchain-quickjs",
     "langchain-mcp-adapters",
+    "tavily-python",
+    "markdown",
+    "nh3",
 ]
 
 [tool.ruff]
