@@ -64,3 +64,13 @@ htmlcov/
 python/m2/genre_revenue.png
 python/m4/output/
 python/temp/
+
+# Module 5 — runtime/generated artifacts
+python/m5/.mcp.generated.json
+python/m5/mcp/mail_store.json
+python/m5/outputs/
+python/m5/research/
+python/m5/.langgraph_api/
+
+# Working docs (not checked in)
+python/m5/spec.md
