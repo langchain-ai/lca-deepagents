@@ -763,20 +763,20 @@ def get_stock_price(ticker: str) -&gt; str:
     '<text x="466" y="262" text-anchor="middle" fill="#E5F4FF" font-size="15">( )</text>',
     '<polygon points="666,172 744,250 666,328 588,250" fill="#161F34" stroke="#2F4B68" stroke-width="1.5"/>',
     '<text x="666" y="254" text-anchor="middle" fill="#E5F4FF" font-size="16" font-weight="500">Human</text>',
-    '<rect x="795" y="120" width="148" height="52" rx="4" fill="#161F34" stroke="#2F4B68" stroke-width="1.5"/>',
-    '<text x="869" y="150" text-anchor="middle" fill="#E5F4FF" font-size="16" font-weight="500">Execute</text>',
-    '<rect x="795" y="330" width="148" height="52" rx="4" fill="#161F34" stroke="#2F4B68" stroke-width="1.5"/>',
-    '<text x="869" y="360" text-anchor="middle" fill="#E5F4FF" font-size="16" font-weight="500">Cancel</text>'
+    '<rect x="875" y="120" width="148" height="52" rx="4" fill="#161F34" stroke="#2F4B68" stroke-width="1.5"/>',
+    '<text x="949" y="150" text-anchor="middle" fill="#E5F4FF" font-size="16" font-weight="500">Execute</text>',
+    '<rect x="875" y="330" width="148" height="52" rx="4" fill="#161F34" stroke="#2F4B68" stroke-width="1.5"/>',
+    '<text x="949" y="360" text-anchor="middle" fill="#E5F4FF" font-size="16" font-weight="500">Cancel</text>'
   ].join('');
 
   var NAMES = ['s1','s2','app1','app2','rej1','rej2'];
   var GROUPS = [
     '<line class="al" x1="158" y1="250" x2="386" y2="250" stroke-width="1.5" marker-end="url(#' + arrId + ')"/><text class="at" x="272" y="239" text-anchor="middle" font-size="14">calls write_sql</text>',
     '<line class="al" x1="546" y1="250" x2="586" y2="250" stroke-width="1.5" marker-end="url(#' + arrId + ')"/><text class="at" x="566" y="239" text-anchor="middle" font-size="14">pauses</text>',
-    '<line class="al" x1="744" y1="244" x2="793" y2="148" stroke-width="1.5" marker-end="url(#' + arrId + ')"/><text class="at" x="785" y="186" text-anchor="end" font-size="14">approve</text>',
-    '<path class="al" d="M 795,125 Q 470,28 158,238" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#' + arrId + ')" fill="none"/><text class="at" x="470" y="52" text-anchor="middle" font-size="14">result returned</text>',
-    '<line class="al" x1="744" y1="256" x2="793" y2="336" stroke-width="1.5" marker-end="url(#' + arrId + ')"/><text class="at" x="785" y="310" text-anchor="end" font-size="14">reject</text>',
-    '<path class="al" d="M 795,375 Q 470,468 158,262" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#' + arrId + ')" fill="none"/><text class="at" x="470" y="415" text-anchor="middle" font-size="14">write cancelled</text>'
+    '<line class="al" x1="744" y1="244" x2="873" y2="148" stroke-width="1.5" marker-end="url(#' + arrId + ')"/><text class="at" x="865" y="186" text-anchor="end" font-size="14">approve</text>',
+    '<path class="al" d="M 875,125 Q 470,28 158,238" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#' + arrId + ')" fill="none"/><text class="at" x="470" y="52" text-anchor="middle" font-size="14">result returned</text>',
+    '<line class="al" x1="744" y1="256" x2="873" y2="336" stroke-width="1.5" marker-end="url(#' + arrId + ')"/><text class="at" x="865" y="310" text-anchor="end" font-size="14">reject</text>',
+    '<path class="al" d="M 875,375 Q 470,468 158,262" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#' + arrId + ')" fill="none"/><text class="at" x="470" y="415" text-anchor="middle" font-size="14">write cancelled</text>'
   ];
 
   // Per-step visibility matrix: 'hidden' | 'past' | 'current'
