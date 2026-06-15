@@ -583,10 +583,14 @@ graph TB
 <ul>
 <li>The filesystem <strong>surface</strong> (the tools) is fixed: <code>ls</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code>, <code>glob</code>, <code>grep</code></li>
 <li>The <strong>backend</strong> is swappable; it controls where files are actually stored</li>
-<li>Sandbox and Local Shell backends add an <code>execute</code> tool for running shell commands, enabling REPL-style code execution</li>
+<li>Sandbox and Local Shell backends add an <code>execute</code> tool for running shell commands</li>
 <li>Composite backend routes different paths to different backends</li>
 </ul>
-<div class="tip"><p><strong>REPL-style execution:</strong> the agent writes code, calls <code>execute</code> to run it, reads the output, and decides what to do next, all in a tight loop.</p></div>
+<div class="tip"><p><strong>REPL-style execution:</strong> the agent writes code, calls <code>execute</code> to run it, reads the output, and decides what to do next, all in a tight loop.</p>
+<div class="mermaid">
+graph LR
+    A[write code] --> B[execute] --> C[read output] --> A
+</div></div>
 
 <h2 id="next">Next</h2>
 <p>The next lesson covers each backend in detail, starting with the default StateBackend.</p>
