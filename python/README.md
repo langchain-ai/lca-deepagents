@@ -10,6 +10,7 @@ You can find the course at [Deep Agents](<fill in Thinkific URL>).
 - [uv](https://docs.astral.sh/uv/) — [how to install](#installing-uv)
 - LLM Model API key — choose your favorite provider. The course defaults to Anthropic ([sign up for an Anthropic API key here](https://console.anthropic.com/))
 - LangSmith API key — [how to get one](#getting-started-with-langsmith)
+- Tavily API key (optional, for the Module 4 & 5 web-search labs) — [get a free key](https://app.tavily.com)
 
 ### Installation
 
@@ -42,9 +43,10 @@ ANTHROPIC_API_KEY=your-anthropic-api-key
 # OPENAI_API_KEY=your-openai-api-key
 # GOOGLE_API_KEY=your-google-api-key
 
-# Tavily web search — only needed for the Module 4 subagent lab (m4.2).
+# Tavily web search — for the research labs (Module 4 and the Module 5
+# newsletter). Leave blank to run those labs without web search.
 # Get a free key at https://app.tavily.com
-# TAVILY_API_KEY=tvly-your-tavily-api-key
+TAVILY_API_KEY=
 ```
 
 This course uses `load_dotenv(override=True)` — `.env` values always win over OS environment variables.
