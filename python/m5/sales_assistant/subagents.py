@@ -25,9 +25,9 @@ from __future__ import annotations
 
 from deepagents import FilesystemPermission, MemoryMiddleware
 from deepagents.backends.protocol import BackendProtocol
+from tools.sql import add_customer, introspect_schema, query_chinook
 
 from models import model, strong_model
-from tools.sql import add_customer, introspect_schema, query_chinook
 
 # Allow all three agent-inbox decisions on the gated write.
 _APPROVE_EDIT_REJECT = {"allowed_decisions": ["approve", "edit", "reject"]}

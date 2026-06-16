@@ -19,9 +19,8 @@ serves over stdio and is launched as a subprocess by the MCP client.
 
 from __future__ import annotations
 
-from mcp.server.fastmcp import FastMCP
-
 from mail_store import load_store, next_id, save_store
+from mcp.server.fastmcp import FastMCP
 
 mcp = FastMCP("mock-gmail")
 

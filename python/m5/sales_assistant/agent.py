@@ -24,15 +24,14 @@ from pathlib import Path
 # also calls load_dotenv, so env vars (API keys, GMAIL_BACKEND) are loaded.
 # parents[2] = python/ (this file is python/m5/sales_assistant/agent.py).
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from models import strong_model  # noqa: E402
-
 from deepagents import create_deep_agent  # noqa: E402
 from deepagents.backends import FilesystemBackend  # noqa: E402
-from langchain_quickjs import CodeInterpreterMiddleware  # noqa: E402
-
 from gmail_mcp import load_gmail_tools  # noqa: E402
+from langchain_quickjs import CodeInterpreterMiddleware  # noqa: E402
 from subagents import build_subagents  # noqa: E402
 from tools.html import markdown_to_html  # noqa: E402
+
+from models import strong_model  # noqa: E402
 
 logger = logging.getLogger("chinook-sales-assistant")
 
