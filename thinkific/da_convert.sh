@@ -106,6 +106,22 @@ else:
     print("  (no shared/ directory found)")
 
 print()
+print("Copying symbols...")
+symbols_src = Path('$PIPELINE_DIR') / 'symbols'
+if symbols_src.exists():
+    copied = []
+    for subdir in sorted(docs_dir.iterdir()):
+        if subdir.is_dir() and any(subdir.glob('*.html')):
+            shutil.copytree(str(symbols_src), str(subdir / 'symbols'), dirs_exist_ok=True)
+            copied.append(subdir.name)
+    if any(docs_dir.glob('*.html')):
+        shutil.copytree(str(symbols_src), str(docs_dir / 'symbols'), dirs_exist_ok=True)
+        copied.append('(root)')
+    print(f"  ✓ Copied symbols/ → {', '.join(copied)}" if copied else "  (no HTML subdirs found)")
+else:
+    print("  (symbols directory not found in pipeline)")
+
+print()
 print("Done! To view the output:")
 print("  python -m http.server 8080 --directory '$SCRIPT_DIR/docs'")
 print("  Then open http://localhost:8080 in your browser")

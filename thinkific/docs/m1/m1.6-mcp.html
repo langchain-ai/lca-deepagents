@@ -136,6 +136,7 @@
         pre {
             background: #030710;
             padding: 0.5rem 1rem;
+            padding-top: 2.85rem;
             border-radius: 12px;
             overflow-x: auto;
             overflow-y: auto;
@@ -212,27 +213,31 @@
             background: #0a0f1a;
             border: 1px solid #1a2a3a;
             opacity: 0.85;
+            padding-top: 0.75rem;
         }
 
         pre .copy-button-inline {
             position: absolute;
             top: 0.5rem;
-            right: 1rem;
+            right: 0.5rem;
             padding: 0;
             border: none;
-            background: transparent url('symbols/copy.png') center/18px no-repeat;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
+            background-position: center;
+            background-size: 16px;
+            background-repeat: no-repeat;
+            background-color: rgba(127, 200, 255, 0.14);
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: all 0.2s;
             width: 28px;
             height: 28px;
-            opacity: 0.7;
-            filter: invert(1) brightness(1);
+            opacity: 0.85;
         }
 
         pre .copy-button-inline:hover {
             opacity: 1;
-            filter: invert(1) brightness(1);
+            background-color: rgba(127, 200, 255, 0.30);
         }
 
         pre .copy-button-inline.copied {
@@ -441,22 +446,25 @@
         .copy-button {
             padding: 0;
             border: none;
-            background: transparent url('symbols/copy.png') center/20px no-repeat;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
+            background-position: center;
+            background-size: 16px;
+            background-repeat: no-repeat;
+            background-color: rgba(127, 200, 255, 0.14);
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 32px;
             height: 32px;
-            opacity: 0.7;
-            filter: invert(1) brightness(1);
+            opacity: 0.85;
         }
 
         .copy-button:hover {
             opacity: 1;
-            filter: invert(1) brightness(1);
+            background-color: rgba(127, 200, 255, 0.30);
         }
 
         .copy-button.copied {
@@ -594,7 +602,7 @@
 <p>deepagents discovers MCP servers from <code>.mcp.json</code> in your project root (or <code>~/.deepagents/.mcp.json</code> for user-level config). The project repo already includes a config pointing at the LangChain documentation server:</p>
 <iframe src="images/m1.6-mcp-slides-config.html" style="width:100%;height:380px;border:none;border-radius:12px;display:block;margin:1.25rem 0 1.5rem;" title=".mcp.json configuration diagram"></iframe>
 <p>Load those tools in Python with <code>get_mcp_tools</code>:</p>
-<pre><code class="language-python"># python/m1/mcp_agent.py
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m1/m1.6_scratch_agent_mcp.py
 from deepagents_code.mcp_tools import get_mcp_tools
 
 tools, session_manager, server_infos = await get_mcp_tools(&quot;.mcp.json&quot;)
@@ -616,7 +624,7 @@ tools, session_manager, server_infos = await get_mcp_tools(&quot;.mcp.json&quot;
 <p>Some MCP servers require the user to authenticate before the agent can call their tools.</p>
 <iframe src="images/m1.6-mcp-slides-auth.html" style="width:100%;height:460px;border:none;border-radius:12px;display:block;margin:1.25rem 0 1.5rem;" title="Authorization walkthrough; use arrow keys or Prev/Next to navigate"></iframe>
 <p>Add <code>"auth": "oauth"</code> to the server entry in <code>.mcp.json</code>:</p>
-<pre><code class="language-json">// .mcp.json
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-json">// .mcp.json
 {
   &quot;mcpServers&quot;: {
     &quot;gmail&quot;: {
@@ -633,7 +641,7 @@ tools, session_manager, server_infos = await get_mcp_tools(&quot;.mcp.json&quot;
 <h3 id="human-in-the-loop-hitl">Human-in-the-Loop (HITL)</h3>
 <p>Even after authorization, you may want a human to confirm before the agent reads or writes data. Pass <code>interrupt_on</code> to <code>create_deep_agent</code> with a mapping of tool names to approval settings:</p>
 <iframe src="images/m1.6-mcp-slides-hitl.html" style="width:100%;height:460px;border:none;border-radius:12px;display:block;margin:1.25rem 0 1.5rem;" title="HITL walkthrough; use arrow keys or Prev/Next to navigate"></iframe>
-<pre><code class="language-python"># python/m1/mcp_agent.py
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m1/m1.6_scratch_agent_mcp.py
 from deepagents import create_deep_agent
 from langgraph.checkpoint.memory import MemorySaver
 
@@ -654,31 +662,16 @@ agent = create_deep_agent(
 </div>
 </div>
 <div class="lt-panel" id="p-lab" role="tabpanel">
-<h2 id="langchain-docs-with-hitl">LangChain Docs with HITL</h2>
-<p>This lab connects an agent to the LangChain documentation server and adds a human-in-the-loop gate before any search call. No authentication setup is needed; the docs server is publicly accessible.</p>
-<div style="margin:1rem 0;padding:1rem 1.25rem;border-radius:10px;border:1px solid #99d3ff;background-color:#e5f4ff;color:#1e4d7a;font-size:0.9em;">
-<strong>Dependencies already included</strong><br>
-This lab uses two packages: <code>deepagents-code</code> (the MCP loader) and <code>langchain-mcp-adapters</code> (the LangChain adapter layer). Both are already listed in <code>python/pyproject.toml</code>, so the <code>uv sync</code> you ran during setup covered them.
-</div>
-<h3 id="step-1-review-the-config">Step 1: Review the config</h3>
-<p>The <code>.mcp.json</code> at the repo root already has the documentation server configured:</p>
-<pre><code class="language-json">// .mcp.json
-{
-  &quot;mcpServers&quot;: {
-    &quot;docs-langchain&quot;: {
-      &quot;type&quot;: &quot;http&quot;,
-      &quot;url&quot;: &quot;https://docs.langchain.com/mcp&quot;
-    }
-  }
-}
-</code></pre>
-<p><code>"type": "http"</code> means each tool call is a stateless HTTPS request. No persistent connection is maintained between calls.</p>
-<h3 id="step-2-load-tools-and-run">Step 2: Load tools and run</h3>
-<p>Create <code>python/m1/mcp_agent.py</code>:</p>
-<!-- code-highlight-4:9,14,19 -->
-<pre><code class="language-python"># python/m1/mcp_agent.py
+<h2 id="connecting-to-a-docs-server">Connecting to a Docs Server</h2>
+<p>This lab connects an agent to the LangChain documentation server, an HTTP MCP server maintained by LangChain, not you. When the docs update, the tools update. You write nothing; you maintain nothing.</p>
+<h3 id="step-1-load-and-inspect">Step 1: Load and inspect</h3>
+<p>Open <code>python/m1/m1.6_scratch_agent_mcp.py</code>, already in the repo and connects to the LangChain docs server. Here's a walkthrough of what it does.</p>
+<p>The first thing <code>main()</code> does is load the MCP tools and print each tool's name and description so you can see what the server is offering:</p>
+<!-- code-highlight-3:12,13,14,15,16,17,18,19,20,21,25,26,27,28,29,30,31 -->
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m1/m1.6_scratch_agent_mcp.py
 import sys
 import asyncio
+import json
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
@@ -686,98 +679,109 @@ from models import model
 from deepagents import create_deep_agent
 from deepagents_code.mcp_tools import get_mcp_tools
 
-MCP_CONFIG = Path(__file__).resolve().parents[2] / &quot;.mcp.json&quot;
+MCP_CONFIG = Path(__file__).resolve().parent / &quot;.mcp.json&quot;
+
+MCP_CONFIG.write_text(json.dumps({
+    &quot;mcpServers&quot;: {
+        &quot;docs-langchain&quot;: {
+            &quot;type&quot;: &quot;http&quot;,
+            &quot;url&quot;: &quot;https://docs.langchain.com/mcp&quot;
+        }
+    }
+}, indent=2))
+
 
 async def main():
     tools, session_manager, server_infos = await get_mcp_tools(str(MCP_CONFIG))
 
     for info in server_infos:
-        print(f&quot;{info.name}: {info.status} - {len(info.tools)} tool(s)&quot;)
+        print(f&quot;\n{info.name} ({info.transport}): {len(info.tools)} tool(s)&quot;)
+        for t in info.tools:
+            print(f&quot;  {t.name}&quot;)
+            print(f&quot;  {t.description[:90]}&quot;)
+
+
+asyncio.run(main())
+</code></pre>
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/m1.6_scratch_agent_mcp.py
+</code></pre>
+<p><strong>Example output:</strong></p>
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code>docs-langchain (http): 2 tool(s)
+  docs-langchain_search_docs_by_lang_chain
+  Search across the Docs by LangChain knowledge base to find relevant...
+  docs-langchain_query_docs_filesystem_docs_by_lang_chain
+  Run a read-only shell-like query against a virtualized, in-memory...
+</code></pre>
+<p>Two tools, no code written. Each name carries the <code>docs-langchain_</code> server prefix; deepagents uses that prefix to keep tools from different servers distinct and to let <code>interrupt_on</code> and <code>allowedTools</code> target tools precisely.</p>
+<h3 id="step-2-ask-a-question">Step 2: Ask a question</h3>
+<p>The agent is already wired up in <code>main()</code>; after printing the tools, it invokes the agent and prints the response:</p>
+<!-- code-highlight-5:33,34,35,36,37,38,39,40,41 -->
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m1/m1.6_scratch_agent_mcp.py
+import sys
+import asyncio
+import json
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from models import model
+from deepagents import create_deep_agent
+from deepagents_code.mcp_tools import get_mcp_tools
+
+MCP_CONFIG = Path(__file__).resolve().parent / &quot;.mcp.json&quot;
+
+MCP_CONFIG.write_text(json.dumps({
+    &quot;mcpServers&quot;: {
+        &quot;docs-langchain&quot;: {
+            &quot;type&quot;: &quot;http&quot;,
+            &quot;url&quot;: &quot;https://docs.langchain.com/mcp&quot;
+        }
+    }
+}, indent=2))
+
+
+async def main():
+    tools, session_manager, server_infos = await get_mcp_tools(str(MCP_CONFIG))
+
+    for info in server_infos:
+        print(f&quot;\n{info.name} ({info.transport}): {len(info.tools)} tool(s)&quot;)
+        for t in info.tools:
+            print(f&quot;  {t.name}&quot;)
+            print(f&quot;  {t.description[:90]}&quot;)
 
     agent = create_deep_agent(model=model, tools=tools)
 
     result = await agent.ainvoke({
-        &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What is the LangGraph interrupt API?&quot;}]
+        &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;How does LangGraph's interrupt API work, and what role does a checkpointer play?&quot;}]
     })
     print(result[&quot;messages&quot;][-1].content)
 
     if session_manager:
         await session_manager.cleanup()
 
+
 asyncio.run(main())
 </code></pre>
-<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/mcp_agent.py
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/m1.6_scratch_agent_mcp.py
 </code></pre>
-<p>Open LangSmith and find the run. The MCP tool call appears as a regular tool message in the trace, indistinguishable from any locally-defined tool.</p>
+<p>Open LangSmith. The agent calls <code>docs-langchain_search_docs_by_lang_chain</code> one or more times, reads the results, and synthesizes an answer. The trace looks identical to a locally-defined tool; the agent cannot tell the difference.</p>
+<h3 id="step-3-restrict-with-allowedtools">Step 3: Restrict with <code>allowedTools</code></h3>
+<p><code>allowedTools</code> is already set in <code>m1.6_scratch_agent_mcp.py</code>, restricting the server to the search tool only. Here's that config:</p>
+<!-- code-highlight-7:6 -->
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python">MCP_CONFIG.write_text(json.dumps({
+    &quot;mcpServers&quot;: {
+        &quot;docs-langchain&quot;: {
+            &quot;type&quot;: &quot;http&quot;,
+            &quot;url&quot;: &quot;https://docs.langchain.com/mcp&quot;,
+            &quot;allowedTools&quot;: [&quot;search_docs_by_lang_chain&quot;]
+        }
+    }
+}, indent=2))
+</code></pre>
+<p>Run it and the startup output shows 1 tool instead of 2. The agent still answers the same question; it simply cannot reach the filesystem tool.</p>
 <div style="margin:1.5rem 0;padding:1.25rem 1.5rem;border-radius:12px;border:1px solid #99d3ff;background-color:#e5f4ff;color:#1e4d7a;">
-<strong>The server_infos check</strong>
-<p style="margin:0.5rem 0 0;">Printing <code>server_infos</code> at startup tells you which servers loaded successfully and how many tools each one exposed. If a server has <code>status="error"</code>, its tools will not be available and the agent will not try to call them.</p>
+<strong>allowedTools vs. disabledTools</strong>
+<p style="margin:0.5rem 0 0;"><code>allowedTools</code> is an allowlist; only the named tools are kept; anything new the server adds in the future stays invisible. <code>disabledTools</code> is a denylist; only the named tools are removed; anything new the server adds is visible by default. Use <code>allowedTools</code> when you want a strict, stable subset; use <code>disabledTools</code> when you want most of the server's tools and just need to block a few.</p>
 </div>
-<h3 id="step-3-add-hitl">Step 3: Add HITL</h3>
-<p>Update <code>python/m1/mcp_agent.py</code> to pause before any search call:</p>
-<!-- code-highlight-6:4,11,12,23,26,27,30,34,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51 -->
-<pre><code class="language-python"># python/m1/mcp_agent.py
-import sys
-import asyncio
-import uuid
-from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-
-from models import model
-from deepagents import create_deep_agent
-from deepagents_code.mcp_tools import get_mcp_tools
-from langgraph.checkpoint.memory import MemorySaver
-from langgraph.types import Command
-
-MCP_CONFIG = Path(__file__).resolve().parents[2] / &quot;.mcp.json&quot;
-
-
-async def main():
-    tools, session_manager, server_infos = await get_mcp_tools(str(MCP_CONFIG))
-
-    for info in server_infos:
-        print(f&quot;{info.name}: {info.status} - {len(info.tools)} tool(s)&quot;)
-
-    agent = create_deep_agent(
-        model=model,
-        tools=tools,
-        interrupt_on={&quot;search&quot;: True},
-        checkpointer=MemorySaver(),
-    )
-
-    config = {&quot;configurable&quot;: {&quot;thread_id&quot;: str(uuid.uuid4())}}
-
-    await agent.ainvoke(
-        {&quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What is the LangGraph interrupt API?&quot;}]},
-        config=config,
-    )
-
-    state = agent.get_state(config)
-    if state.interrupts:
-        interrupt = state.interrupts[0].value
-        for req in interrupt[&quot;action_requests&quot;]:
-            print(f&quot;\nPending tool call: {req['name']}&quot;)
-            print(f&quot;  Input: {req.get('args', {})}&quot;)
-        decision = input(&quot;\nApprove? (y/n): &quot;)
-        if decision.strip().lower() == &quot;y&quot;:
-            result = await agent.ainvoke(
-                Command(resume={&quot;decisions&quot;: [{&quot;type&quot;: &quot;approve&quot;} for _ in interrupt[&quot;action_requests&quot;]]}),
-                config=config,
-            )
-            print(result[&quot;messages&quot;][-1].content)
-        else:
-            print(&quot;Rejected.&quot;)
-
-    if session_manager:
-        await session_manager.cleanup()
-
-
-asyncio.run(main())
-</code></pre>
-<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/mcp_agent.py
-</code></pre>
-<p>The agent pauses before calling the search tool. You will see the pending call printed in the terminal. Type <code>y</code> to approve and the agent fetches the docs and answers. Type <code>n</code> and it stops without making the call.</p>
-<p>Check LangSmith to see the full trace: the interrupt, the resume decision, and the final tool result all appear in the message history.</p>
 </div>
 <hr />
 <h2 id="recap">Recap</h2>
@@ -929,6 +933,47 @@ asyncio.run(main())
                 }
             });
         }
+    </script>
+
+    <script>
+    // Attach copy handlers to static .copy-button-inline buttons injected at build time.
+    // This runs synchronously so it fires before Babel compiles the text/babel script.
+    (function () {
+        function attachCopyHandler(button) {
+            if (button.dataset.copySetup) return;
+            button.dataset.copySetup = '1';
+            var pre = button.closest('pre');
+            var code = pre && pre.querySelector('code');
+            if (!code) return;
+            function showDone() {
+                button.textContent = '✓';
+                button.classList.add('copied');
+                setTimeout(function () {
+                    button.textContent = '';
+                    button.classList.remove('copied');
+                }, 2000);
+            }
+            function fallback(text) {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(ta);
+                showDone();
+            }
+            button.addEventListener('click', function () {
+                var text = code.textContent;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(showDone, function () { fallback(text); });
+                } else {
+                    fallback(text);
+                }
+            });
+        }
+        document.querySelectorAll('pre:not(.no-copy) .copy-button-inline').forEach(attachCopyHandler);
+    })();
     </script>
 
     <script type="text/babel">
@@ -1163,7 +1208,11 @@ asyncio.run(main())
                                     right: '1rem',
                                     padding: '0',
                                     border: 'none',
-                                    background: copied ? 'none' : 'transparent url("symbols/copy.png") center/18px no-repeat',
+                                    backgroundImage: copied ? 'none' : 'url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23cfe8ff%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Crect x=%279%27 y=%279%27 width=%2713%27 height=%2713%27 rx=%272%27/%3E%3Cpath d=%27M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1%27/%3E%3C/svg%3E")',
+                                    backgroundColor: copied ? 'transparent' : 'rgba(127, 200, 255, 0.14)',
+                                    backgroundPosition: 'center',
+                                    backgroundSize: '16px',
+                                    backgroundRepeat: 'no-repeat',
                                     cursor: 'pointer',
                                     borderRadius: '4px',
                                     width: '28px',
@@ -1324,17 +1373,21 @@ asyncio.run(main())
             const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre):not(.no-copy)');
 
             preBlocks.forEach(pre => {
-                // Skip if already has a copy button
-                if (pre.querySelector('.copy-button-inline')) return;
-
                 const code = pre.querySelector('code');
                 if (!code) return;
 
-                // Create copy button
-                const button = document.createElement('button');
-                button.className = 'copy-button-inline';
-                button.setAttribute('aria-label', 'Copy code');
-                button.setAttribute('title', 'Copy code');
+                // Use existing static button (injected at convert time) or create one
+                let button = pre.querySelector('.copy-button-inline');
+                if (!button) {
+                    button = document.createElement('button');
+                    button.className = 'copy-button-inline';
+                    button.setAttribute('aria-label', 'Copy code');
+                    button.setAttribute('title', 'Copy code');
+                    pre.appendChild(button);
+                } else if (button.dataset.copySetup) {
+                    return;
+                }
+                button.dataset.copySetup = '1';
 
                 button.addEventListener('click', async () => {
                     const text = code.textContent;
@@ -1373,8 +1426,6 @@ asyncio.run(main())
                         }
                     }
                 });
-
-                pre.appendChild(button);
             });
         }
 

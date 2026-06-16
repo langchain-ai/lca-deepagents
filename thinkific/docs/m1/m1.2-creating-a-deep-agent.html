@@ -136,6 +136,7 @@
         pre {
             background: #030710;
             padding: 0.5rem 1rem;
+            padding-top: 2.85rem;
             border-radius: 12px;
             overflow-x: auto;
             overflow-y: auto;
@@ -212,27 +213,31 @@
             background: #0a0f1a;
             border: 1px solid #1a2a3a;
             opacity: 0.85;
+            padding-top: 0.75rem;
         }
 
         pre .copy-button-inline {
             position: absolute;
             top: 0.5rem;
-            right: 1rem;
+            right: 0.5rem;
             padding: 0;
             border: none;
-            background: transparent url('symbols/copy.png') center/18px no-repeat;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
+            background-position: center;
+            background-size: 16px;
+            background-repeat: no-repeat;
+            background-color: rgba(127, 200, 255, 0.14);
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: all 0.2s;
             width: 28px;
             height: 28px;
-            opacity: 0.7;
-            filter: invert(1) brightness(1);
+            opacity: 0.85;
         }
 
         pre .copy-button-inline:hover {
             opacity: 1;
-            filter: invert(1) brightness(1);
+            background-color: rgba(127, 200, 255, 0.30);
         }
 
         pre .copy-button-inline.copied {
@@ -441,22 +446,25 @@
         .copy-button {
             padding: 0;
             border: none;
-            background: transparent url('symbols/copy.png') center/20px no-repeat;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
+            background-position: center;
+            background-size: 16px;
+            background-repeat: no-repeat;
+            background-color: rgba(127, 200, 255, 0.14);
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 32px;
             height: 32px;
-            opacity: 0.7;
-            filter: invert(1) brightness(1);
+            opacity: 0.85;
         }
 
         .copy-button:hover {
             opacity: 1;
-            filter: invert(1) brightness(1);
+            background-color: rgba(127, 200, 255, 0.30);
         }
 
         .copy-button.copied {
@@ -538,37 +546,15 @@
 <script src="../shared/sd-components.js"></script>
 
 <h1 id="creating-a-deep-agent">Creating a Deep Agent</h1>
-<h2 id="using-a-coding-agent">Using a Coding Agent</h2>
-<p>Before we explore, let's get a bare agent running. Paste the prompt below into<br />
-your coding agent (Claude Code, Cursor, etc.) and let it build the file.</p>
-<pre><code class="language-text">In lca-deepagents/python/m1/scratch_agent.py, create a minimal deep agent:
+<h2 id="your-first-deep-agent">Your First Deep Agent</h2>
+<p><code>python/m1/m1.2_scratch_agent.py</code> is already in the repo; you can run it directly. To get a feel for using a coding agent, you can also try building it yourself by pasting this prompt into Claude Code, Cursor, or similar:</p>
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-text">In lca-deepagents/python/m1/, create a minimal deep agent:
 import the model from python/models.py, call create_deep_agent(model=model)
 with no other arguments, invoke it with &quot;What is an LLM?&quot; and print the last
 message's content.
 </code></pre>
-<details>
-<summary>No coding agent? Create the file manually [click to expand]</summary>
-<p><br></p>
-<p>Create <code>python/m1/scratch_agent.py</code>:</p>
-<!-- code-highlight-1:6,9,10,11 -->
-<pre><code class="language-python"># python/m1/scratch_agent.py
-import sys
-from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from models import model
-
-from deepagents import create_deep_agent
-
-agent = create_deep_agent(model=model)
-result = agent.invoke({&quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What is an LLM?&quot;}]})
-print(result[&quot;messages&quot;][-1].content)
-</code></pre>
 <p>Then run it:</p>
-<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/scratch_agent.py
-</code></pre>
-</details>
-<p>Once your coding agent has created the file, run it:</p>
-<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/scratch_agent.py
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/m1.2_scratch_agent.py
 </code></pre>
 <p><strong>Code output:</strong></p>
 <pre class="no-copy"><code class="language-plaintext">An LLM (Large Language Model) is a type of artificial intelligence system
@@ -893,6 +879,47 @@ Examples: GPT-4, Claude, Gemini, LLaMA, Mistral
         }
     </script>
 
+    <script>
+    // Attach copy handlers to static .copy-button-inline buttons injected at build time.
+    // This runs synchronously so it fires before Babel compiles the text/babel script.
+    (function () {
+        function attachCopyHandler(button) {
+            if (button.dataset.copySetup) return;
+            button.dataset.copySetup = '1';
+            var pre = button.closest('pre');
+            var code = pre && pre.querySelector('code');
+            if (!code) return;
+            function showDone() {
+                button.textContent = '✓';
+                button.classList.add('copied');
+                setTimeout(function () {
+                    button.textContent = '';
+                    button.classList.remove('copied');
+                }, 2000);
+            }
+            function fallback(text) {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(ta);
+                showDone();
+            }
+            button.addEventListener('click', function () {
+                var text = code.textContent;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(showDone, function () { fallback(text); });
+                } else {
+                    fallback(text);
+                }
+            });
+        }
+        document.querySelectorAll('pre:not(.no-copy) .copy-button-inline').forEach(attachCopyHandler);
+    })();
+    </script>
+
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
@@ -1125,7 +1152,11 @@ Examples: GPT-4, Claude, Gemini, LLaMA, Mistral
                                     right: '1rem',
                                     padding: '0',
                                     border: 'none',
-                                    background: copied ? 'none' : 'transparent url("symbols/copy.png") center/18px no-repeat',
+                                    backgroundImage: copied ? 'none' : 'url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23cfe8ff%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Crect x=%279%27 y=%279%27 width=%2713%27 height=%2713%27 rx=%272%27/%3E%3Cpath d=%27M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1%27/%3E%3C/svg%3E")',
+                                    backgroundColor: copied ? 'transparent' : 'rgba(127, 200, 255, 0.14)',
+                                    backgroundPosition: 'center',
+                                    backgroundSize: '16px',
+                                    backgroundRepeat: 'no-repeat',
                                     cursor: 'pointer',
                                     borderRadius: '4px',
                                     width: '28px',
@@ -1286,17 +1317,21 @@ Examples: GPT-4, Claude, Gemini, LLaMA, Mistral
             const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre):not(.no-copy)');
 
             preBlocks.forEach(pre => {
-                // Skip if already has a copy button
-                if (pre.querySelector('.copy-button-inline')) return;
-
                 const code = pre.querySelector('code');
                 if (!code) return;
 
-                // Create copy button
-                const button = document.createElement('button');
-                button.className = 'copy-button-inline';
-                button.setAttribute('aria-label', 'Copy code');
-                button.setAttribute('title', 'Copy code');
+                // Use existing static button (injected at convert time) or create one
+                let button = pre.querySelector('.copy-button-inline');
+                if (!button) {
+                    button = document.createElement('button');
+                    button.className = 'copy-button-inline';
+                    button.setAttribute('aria-label', 'Copy code');
+                    button.setAttribute('title', 'Copy code');
+                    pre.appendChild(button);
+                } else if (button.dataset.copySetup) {
+                    return;
+                }
+                button.dataset.copySetup = '1';
 
                 button.addEventListener('click', async () => {
                     const text = code.textContent;
@@ -1335,8 +1370,6 @@ Examples: GPT-4, Claude, Gemini, LLaMA, Mistral
                         }
                     }
                 });
-
-                pre.appendChild(button);
             });
         }
 

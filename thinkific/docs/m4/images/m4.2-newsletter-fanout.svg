@@ -1,0 +1,97 @@
+<svg width="740" height="432" xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="740" height="432" fill="#030710" rx="8"/>
+  <text x="370" y="34" text-anchor="middle" font-size="15" font-weight="300" fill="#F2FAFF">Building a subagent team</text>
+  <text x="370" y="53" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">The editor delegates one genre to each researcher — in parallel</text>
+
+  <!-- fan-out lines -->
+  <line x1="370" y1="182" x2="120" y2="250" stroke="#40668D" stroke-width="1.5"/>
+  <line x1="370" y1="182" x2="287" y2="250" stroke="#40668D" stroke-width="1.5"/>
+  <line x1="370" y1="182" x2="453" y2="250" stroke="#40668D" stroke-width="1.5"/>
+  <line x1="370" y1="182" x2="620" y2="250" stroke="#40668D" stroke-width="1.5"/>
+
+  <!-- central exchange: one task down, one segment back -->
+  <line x1="363" y1="196" x2="363" y2="238" stroke="#7FC8FF" stroke-width="1.6"/>
+  <polygon points="359,232 363,240 367,232" fill="#7FC8FF"/>
+  <text x="356" y="220" text-anchor="end" font-size="8.5" fill="#7FC8FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">task</text>
+  <line x1="378" y1="238" x2="378" y2="196" stroke="#99D3FF" stroke-width="1.6" stroke-dasharray="4 3"/>
+  <polygon points="374,204 378,196 382,204" fill="#99D3FF"/>
+  <text x="385" y="220" text-anchor="start" font-size="8.5" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">segment</text>
+
+  <!-- MAIN AGENT robot (editor) -->
+  <g>
+    <line x1="370" y1="72" x2="370" y2="84" stroke="#7FC8FF" stroke-width="2"/>
+    <circle cx="370" cy="69" r="3.5" fill="#7FC8FF"/>
+    <rect x="338" y="84" width="64" height="52" rx="13" fill="#0D1322" stroke="#7FC8FF" stroke-width="2"/>
+    <circle cx="356" cy="106" r="5" fill="#7FC8FF"/>
+    <circle cx="384" cy="106" r="5" fill="#7FC8FF"/>
+    <rect x="354" y="120" width="32" height="7" rx="3.5" fill="#7FC8FF"/>
+    <text x="370" y="156" text-anchor="middle" font-size="11" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">main agent · editor</text>
+    <text x="370" y="170" text-anchor="middle" font-size="9" fill="#5BADDF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Sonnet 4.6</text>
+  </g>
+
+  <!-- output deliverable: newsletter.html assembled by the editor -->
+  <line x1="402" y1="104" x2="464" y2="104" stroke="#7FC8FF" stroke-width="1.4"/>
+  <polygon points="458,100 466,104 458,108" fill="#7FC8FF"/>
+  <path d="M470,82 h26 l10,10 v34 h-36 z" fill="#0D1322" stroke="#7FC8FF" stroke-width="1.4"/>
+  <path d="M496,82 v10 h10 z" fill="#161F34" stroke="#7FC8FF" stroke-width="1.4"/>
+  <line x1="477" y1="104" x2="499" y2="104" stroke="#5BADDF" stroke-width="1"/>
+  <line x1="477" y1="112" x2="499" y2="112" stroke="#5BADDF" stroke-width="1"/>
+  <text x="488" y="140" text-anchor="middle" font-size="8.5" fill="#B2DEFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">newsletter.html</text>
+
+  <!-- SUBAGENT robots -->
+  <g>
+    <line x1="120" y1="240" x2="120" y2="250" stroke="#99D3FF" stroke-width="1.5"/>
+    <circle cx="120" cy="237" r="3" fill="#99D3FF"/>
+    <rect x="94" y="250" width="52" height="44" rx="11" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+    <circle cx="108" cy="269" r="4" fill="#99D3FF"/>
+    <circle cx="132" cy="269" r="4" fill="#99D3FF"/>
+    <rect x="106" y="281" width="28" height="6" rx="3" fill="#99D3FF"/>
+
+    <line x1="287" y1="240" x2="287" y2="250" stroke="#99D3FF" stroke-width="1.5"/>
+    <circle cx="287" cy="237" r="3" fill="#99D3FF"/>
+    <rect x="261" y="250" width="52" height="44" rx="11" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+    <circle cx="275" cy="269" r="4" fill="#99D3FF"/>
+    <circle cx="299" cy="269" r="4" fill="#99D3FF"/>
+    <rect x="273" y="281" width="28" height="6" rx="3" fill="#99D3FF"/>
+
+    <line x1="453" y1="240" x2="453" y2="250" stroke="#99D3FF" stroke-width="1.5"/>
+    <circle cx="453" cy="237" r="3" fill="#99D3FF"/>
+    <rect x="427" y="250" width="52" height="44" rx="11" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+    <circle cx="441" cy="269" r="4" fill="#99D3FF"/>
+    <circle cx="465" cy="269" r="4" fill="#99D3FF"/>
+    <rect x="439" y="281" width="28" height="6" rx="3" fill="#99D3FF"/>
+
+    <line x1="620" y1="240" x2="620" y2="250" stroke="#99D3FF" stroke-width="1.5"/>
+    <circle cx="620" cy="237" r="3" fill="#99D3FF"/>
+    <rect x="594" y="250" width="52" height="44" rx="11" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+    <circle cx="608" cy="269" r="4" fill="#99D3FF"/>
+    <circle cx="632" cy="269" r="4" fill="#99D3FF"/>
+    <rect x="606" y="281" width="28" height="6" rx="3" fill="#99D3FF"/>
+  </g>
+
+  <!-- genre labels (the task each researcher is handed) -->
+  <g font-size="10" text-anchor="middle" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+    <text x="120" y="313">Rock</text>
+    <text x="287" y="313">Latin</text>
+    <text x="453" y="313">Metal</text>
+    <text x="620" y="313">Alternative &amp; Punk</text>
+  </g>
+
+  <!-- private research files under each subagent -->
+  <g>
+    <path d="M111,330 h13 l5,5 v18 h-23 z" fill="#0D1322" stroke="#40668D" stroke-width="1.2"/>
+    <line x1="115" y1="340" x2="124" y2="340" stroke="#5BADDF" stroke-width="0.9"/>
+    <line x1="115" y1="345" x2="124" y2="345" stroke="#5BADDF" stroke-width="0.9"/>
+    <path d="M278,330 h13 l5,5 v18 h-23 z" fill="#0D1322" stroke="#40668D" stroke-width="1.2"/>
+    <line x1="282" y1="340" x2="291" y2="340" stroke="#5BADDF" stroke-width="0.9"/>
+    <line x1="282" y1="345" x2="291" y2="345" stroke="#5BADDF" stroke-width="0.9"/>
+    <path d="M444,330 h13 l5,5 v18 h-23 z" fill="#0D1322" stroke="#40668D" stroke-width="1.2"/>
+    <line x1="448" y1="340" x2="457" y2="340" stroke="#5BADDF" stroke-width="0.9"/>
+    <line x1="448" y1="345" x2="457" y2="345" stroke="#5BADDF" stroke-width="0.9"/>
+    <path d="M611,330 h13 l5,5 v18 h-23 z" fill="#0D1322" stroke="#40668D" stroke-width="1.2"/>
+    <line x1="615" y1="340" x2="624" y2="340" stroke="#5BADDF" stroke-width="0.9"/>
+    <line x1="615" y1="345" x2="624" y2="345" stroke="#5BADDF" stroke-width="0.9"/>
+  </g>
+  <text x="370" y="386" text-anchor="middle" font-size="9" fill="#5BADDF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Each researcher (Haiku 4.5) keeps its raw search results in a private /research/&lt;genre&gt;/ folder</text>
+  <text x="370" y="404" text-anchor="middle" font-size="9" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">…and returns just one polished segment; the editor stitches the four into newsletter.html</text>
+</svg>

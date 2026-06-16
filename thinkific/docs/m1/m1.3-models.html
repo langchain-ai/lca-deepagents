@@ -136,6 +136,7 @@
         pre {
             background: #030710;
             padding: 0.5rem 1rem;
+            padding-top: 2.85rem;
             border-radius: 12px;
             overflow-x: auto;
             overflow-y: auto;
@@ -212,27 +213,31 @@
             background: #0a0f1a;
             border: 1px solid #1a2a3a;
             opacity: 0.85;
+            padding-top: 0.75rem;
         }
 
         pre .copy-button-inline {
             position: absolute;
             top: 0.5rem;
-            right: 1rem;
+            right: 0.5rem;
             padding: 0;
             border: none;
-            background: transparent url('symbols/copy.png') center/18px no-repeat;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
+            background-position: center;
+            background-size: 16px;
+            background-repeat: no-repeat;
+            background-color: rgba(127, 200, 255, 0.14);
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: all 0.2s;
             width: 28px;
             height: 28px;
-            opacity: 0.7;
-            filter: invert(1) brightness(1);
+            opacity: 0.85;
         }
 
         pre .copy-button-inline:hover {
             opacity: 1;
-            filter: invert(1) brightness(1);
+            background-color: rgba(127, 200, 255, 0.30);
         }
 
         pre .copy-button-inline.copied {
@@ -441,22 +446,25 @@
         .copy-button {
             padding: 0;
             border: none;
-            background: transparent url('symbols/copy.png') center/20px no-repeat;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
+            background-position: center;
+            background-size: 16px;
+            background-repeat: no-repeat;
+            background-color: rgba(127, 200, 255, 0.14);
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 32px;
             height: 32px;
-            opacity: 0.7;
-            filter: invert(1) brightness(1);
+            opacity: 0.85;
         }
 
         .copy-button:hover {
             opacity: 1;
-            filter: invert(1) brightness(1);
+            background-color: rgba(127, 200, 255, 0.30);
         }
 
         .copy-button.copied {
@@ -633,45 +641,31 @@
 <p>The table above covers the main categories used in this course. For the full directory of 50+ supported providers (OpenAI, Anthropic, Google, Groq, Ollama, Mistral, and many more), see the <a href="https://docs.langchain.com/oss/python/integrations/chat" target="_blank" rel="noopener noreferrer">LangChain chat model integrations</a>.</p>
 <p>Every lab gets its model from a single shared file, <strong><code>python/models.py</code></strong>. It exports a <code>model</code> object built with <code>init_chat_model(...)</code>, and the lab scripts simply do <code>from models import model</code>.</p>
 <p>To use a different model or provider, edit <code>models.py</code> (comment out the active line and uncomment the desired model):</p>
-<pre><code class="language-python"># python/models.py
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/models.py
 model = init_chat_model(&quot;anthropic:claude-haiku-4-5&quot;)   # workshop default, fast &amp; cheap
 # model = init_chat_model(&quot;ollama:llama3.2&quot;)
 # model = init_chat_model(&quot;openai:gpt-4.1-mini&quot;)
 # model = init_chat_model(&quot;openai:gpt-4.1&quot;)
 </code></pre>
-<p>Anthropic and OpenAI work out of the box. Azure, Bedrock, and Google need an<br />
-extra install (<code>uv sync --extra azure|bedrock|google</code>) and a few env vars; see<br />
-the notes at the top of <code>models.py</code>.</p>
+<p>If you set up Anthropic or OpenAI in the setup lesson, those work out of the box. If you want to use Azure, Bedrock, or Google, those require an extra install (<code>uv sync --extra azure|bedrock|google</code>) and additional env vars; see the notes at the top of <code>models.py</code>.</p>
 <p>Head to <strong>Lab 1</strong> to run this yourself and see how the output changes across models.</p>
 </div>
 <div class="lt-panel" id="p-lab1" role="tabpanel">
 <h2 id="models_1">Models</h2>
-<p>Start by reviewing <code>python/models.py</code> to see the available models, add your API keys to your <code>.env</code> file, then run your scratch agent from the previous lesson. The video below is a quick walkthrough:</p>
-<div class="video-container" style="max-width: 750px;">
-    <div class="video-wrapper">
-        <iframe
-            src="https://share.descript.com/embed/wrBAiwlKtL2"
-            frameborder="0"
-            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-            allowfullscreen>
-        </iframe>
-    </div>
-</div>
-<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/scratch_agent.py
+<p>Run your scratch agent from the previous lesson (if you don't already have it up). Review <code>models.py</code> to see the available models, then switch the model in <code>models.py</code> (comment the current line for Haiku and uncomment another line for the model you want to use) and run it again.</p>
+<p>The video below is a quick walkthrough on how to change your model:</p>
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/m1.2_scratch_agent.py
 </code></pre>
-<p>Now <strong>switch the model in <code>python/models.py</code></strong> (comment the current line for<br />
-Haiku and uncomment another line for the model you want to use) and run it<br />
-again, so you have two runs to compare.</p>
-<pre><code class="language-bash">uv run ./python/m1/scratch_agent.py
+<p>Run it again with the new model to compare:</p>
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">uv run ./python/m1/m1.2_scratch_agent.py
 </code></pre>
 <p>This also works with open-source models; no code changes required, just a different model line in <code>models.py</code>.</p>
 <div style="margin:1.5rem 0;padding:1.25rem 1.5rem;border-radius:12px;border:1px solid #b3e0b3;background-color:#f0faf0;color:#1a4d1a;">
 <strong>Try an open-source model via OpenRouter</strong>
-<p style="margin:0.5rem 0 0;">OpenRouter gives you access to free hosted open-source models with no extra install. Add your <code>OPENROUTER_API_KEY</code> to <code>.env</code>, uncomment the OpenRouter lines in <code>models.py</code>, and run the lab again.</p>
+<p style="margin:0.5rem 0 0;">OpenRouter gives you access to free hosted open-source models with no extra install. If you added your <code>OPENROUTER_API_KEY</code> to <code>.env</code> during setup, just uncomment the OpenRouter lines in <code>models.py</code> and run the lab again. If you haven't added it yet, head back to the <a href="../m0/m0.1-setup-python.html">setup lesson</a> to add it to your <code>.env</code> file.</p>
 <p style="margin:0.5rem 0 0;">Model used in this course: <a href="https://openrouter.ai/nvidia/nemotron-3-ultra-550b-a55b:free" target="_blank" rel="noopener noreferrer">nvidia/nemotron-3-ultra-550b-a55b:free on OpenRouter</a></p>
 <p style="margin:0.75rem 0 0;font-size:0.9em;color:#3a5a3a;"><strong>Note:</strong> Free models on hosted platforms typically mean you are consenting to the provider using your prompts and completions as training data. Avoid sending sensitive or proprietary information through free-tier endpoints.</p>
 </div>
-
 <div class="video-container" style="max-width: 750px;">
     <div class="video-wrapper">
         <iframe
@@ -682,7 +676,6 @@ again, so you have two runs to compare.</p>
         </iframe>
     </div>
 </div>
-
 <p>Here are two real responses to "What is an LLM?", one from each model:</p>
 <div style="display:flex;gap:20px;align-items:flex-start;margin:1.5rem 0;">
 
@@ -738,10 +731,10 @@ again, so you have two runs to compare.</p>
 
 <p><strong>Step 1: Install Ollama</strong> from <a href="https://ollama.com" target="_blank" rel="noopener noreferrer">ollama.com</a></p>
 <p><strong>Step 2: Pull a model:</strong></p>
-<pre><code class="language-bash">ollama pull llama3.2
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">ollama pull llama3.2
 </code></pre>
 <p><strong>Step 3: Update <code>python/models.py</code>.</strong> Comment out the active line and uncomment the Ollama line:</p>
-<pre><code class="language-python"># model = init_chat_model(&quot;anthropic:claude-haiku-4-5&quot;)
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># model = init_chat_model(&quot;anthropic:claude-haiku-4-5&quot;)
 model = init_chat_model(&quot;ollama:llama3.2&quot;)
 </code></pre>
 <p><strong>Step 4: Run the lab as normal.</strong> No other code changes needed.</p>
@@ -756,7 +749,7 @@ model = init_chat_model(&quot;ollama:llama3.2&quot;)
 <li><code>init_chat_model("provider:model")</code> targets any LangChain-supported backend with a single string; swap the prefix to switch providers, swap the suffix to switch models</li>
 <li>All labs share one model object from <code>python/models.py</code>; changing that one line is the only code change needed to run a different model</li>
 <li>Three categories in this course: Proprietary &amp; Conversational, Advanced Reasoning, and Open-Source/Open-Weight; 50+ providers are supported in total</li>
-<li>Swapping the model changes nothing else in the agent — the system prompt, tools, and behavior instructions stay identical</li>
+<li>Swapping the model changes nothing else in the agent; the system prompt, tools, and behavior instructions stay identical</li>
 </ul>
 <hr />
 <h2 id="references">References</h2>
@@ -902,6 +895,47 @@ model = init_chat_model(&quot;ollama:llama3.2&quot;)
                 }
             });
         }
+    </script>
+
+    <script>
+    // Attach copy handlers to static .copy-button-inline buttons injected at build time.
+    // This runs synchronously so it fires before Babel compiles the text/babel script.
+    (function () {
+        function attachCopyHandler(button) {
+            if (button.dataset.copySetup) return;
+            button.dataset.copySetup = '1';
+            var pre = button.closest('pre');
+            var code = pre && pre.querySelector('code');
+            if (!code) return;
+            function showDone() {
+                button.textContent = '✓';
+                button.classList.add('copied');
+                setTimeout(function () {
+                    button.textContent = '';
+                    button.classList.remove('copied');
+                }, 2000);
+            }
+            function fallback(text) {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(ta);
+                showDone();
+            }
+            button.addEventListener('click', function () {
+                var text = code.textContent;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(showDone, function () { fallback(text); });
+                } else {
+                    fallback(text);
+                }
+            });
+        }
+        document.querySelectorAll('pre:not(.no-copy) .copy-button-inline').forEach(attachCopyHandler);
+    })();
     </script>
 
     <script type="text/babel">
@@ -1136,7 +1170,11 @@ model = init_chat_model(&quot;ollama:llama3.2&quot;)
                                     right: '1rem',
                                     padding: '0',
                                     border: 'none',
-                                    background: copied ? 'none' : 'transparent url("symbols/copy.png") center/18px no-repeat',
+                                    backgroundImage: copied ? 'none' : 'url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23cfe8ff%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Crect x=%279%27 y=%279%27 width=%2713%27 height=%2713%27 rx=%272%27/%3E%3Cpath d=%27M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1%27/%3E%3C/svg%3E")',
+                                    backgroundColor: copied ? 'transparent' : 'rgba(127, 200, 255, 0.14)',
+                                    backgroundPosition: 'center',
+                                    backgroundSize: '16px',
+                                    backgroundRepeat: 'no-repeat',
                                     cursor: 'pointer',
                                     borderRadius: '4px',
                                     width: '28px',
@@ -1297,17 +1335,21 @@ model = init_chat_model(&quot;ollama:llama3.2&quot;)
             const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre):not(.no-copy)');
 
             preBlocks.forEach(pre => {
-                // Skip if already has a copy button
-                if (pre.querySelector('.copy-button-inline')) return;
-
                 const code = pre.querySelector('code');
                 if (!code) return;
 
-                // Create copy button
-                const button = document.createElement('button');
-                button.className = 'copy-button-inline';
-                button.setAttribute('aria-label', 'Copy code');
-                button.setAttribute('title', 'Copy code');
+                // Use existing static button (injected at convert time) or create one
+                let button = pre.querySelector('.copy-button-inline');
+                if (!button) {
+                    button = document.createElement('button');
+                    button.className = 'copy-button-inline';
+                    button.setAttribute('aria-label', 'Copy code');
+                    button.setAttribute('title', 'Copy code');
+                    pre.appendChild(button);
+                } else if (button.dataset.copySetup) {
+                    return;
+                }
+                button.dataset.copySetup = '1';
 
                 button.addEventListener('click', async () => {
                     const text = code.textContent;
@@ -1346,8 +1388,6 @@ model = init_chat_model(&quot;ollama:llama3.2&quot;)
                         }
                     }
                 });
-
-                pre.appendChild(button);
             });
         }
 

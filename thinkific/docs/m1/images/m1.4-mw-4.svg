@@ -20,7 +20,7 @@
   <rect x="62" y="190" width="276" height="40" rx="6" fill="#161F34" stroke="#634643" stroke-width="1"/>
   <text x="200" y="214" text-anchor="middle" font-size="9" fill="#FBB0A5" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">no read_file tool available</text>
 
-  <rect x="62" y="246" width="276" height="116" rx="8" fill="#161F34" stroke="#634643" stroke-width="1.2"/>
+  <rect x="62" y="246" width="276" height="116" rx="8" fill="#1E3A5F" stroke="#634643" stroke-width="1.2"/>
   <text x="200" y="270" text-anchor="middle" font-size="9.5" font-weight="400" fill="#FBB0A5">Answer</text>
   <text x="200" y="296" text-anchor="middle" font-size="9.5" fill="#B27D75">"I don't have access to your</text>
   <text x="200" y="312" text-anchor="middle" font-size="9.5" fill="#B27D75">files, so I can't read</text>
@@ -35,7 +35,7 @@
   <text x="540" y="208" text-anchor="middle" font-size="9" fill="#E3FF8F" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">calls read_file("notes.txt")</text>
   <text x="540" y="222" text-anchor="middle" font-size="8" fill="#B2DEFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">→ reads the file contents</text>
 
-  <rect x="402" y="246" width="276" height="116" rx="8" fill="#161F34" stroke="#6E8900" stroke-width="1.2"/>
+  <rect x="402" y="246" width="276" height="116" rx="8" fill="#1E3A5F" stroke="#6E8900" stroke-width="1.2"/>
   <text x="540" y="270" text-anchor="middle" font-size="9.5" font-weight="400" fill="#E3FF8F">Answer</text>
   <text x="540" y="296" text-anchor="middle" font-size="9.5" fill="#B2DEFF">"Your notes cover three topics:</text>
   <text x="540" y="312" text-anchor="middle" font-size="9.5" fill="#B2DEFF">the migration plan, open</text>

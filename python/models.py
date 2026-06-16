@@ -25,7 +25,6 @@ To swap providers:
   4. Set the provider's env vars in `.env` (see notes inline).
 """
 
-import os
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -56,8 +55,9 @@ strong_model = init_chat_model("anthropic:claude-sonnet-4-6")
 #
 # model = init_chat_model("groq:llama-3.3-70b-versatile")
 
-# Ollama: run models locally — no API key required
-# Install first:  uv add langchain-ollama  (and install Ollama: https://ollama.com)
+# Ollama: run models locally (no API key required)
+# langchain-ollama is already installed (default dep)
+# Install the Ollama app first: https://ollama.com
 # Pull a model first, e.g.:  ollama pull llama3.2
 #
 # model = init_chat_model("ollama:llama3.2")
@@ -71,14 +71,14 @@ strong_model = init_chat_model("anthropic:claude-sonnet-4-6")
 
 # OpenRouter: hosted open-source models via OpenAI-compatible API
 # No extra install needed (langchain-openai is already a default dep)
-# Free models available — sign up at openrouter.ai and get an API key
+# Free models available; sign up at openrouter.ai and get an API key
 # Requires OPENROUTER_API_KEY in .env
 #
 # from langchain_openai import ChatOpenAI
 # model = ChatOpenAI(model="nvidia/nemotron-3-ultra-550b-a55b:free", base_url="https://openrouter.ai/api/v1", api_key=os.environ["OPENROUTER_API_KEY"])
 
 
-# ═══ Cloud Provider Models (extra install required — see table above) ═════════
+# ═══ Cloud Provider Models (extra install required, see table above) ═════════
 # ─── Azure OpenAI ─────────────────────────────────────────────────────────────
 # Install first:  uv sync --extra azure
 # Requires AZURE_OPENAI_API_KEY, AZURE_OPENAI_ENDPOINT,

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>m2.4-message-history</title>
+    <title>m3.x-summarization</title>
     <meta name="description" content="">
 
     <!-- Syntax highlighting -->
@@ -136,6 +136,7 @@
         pre {
             background: #030710;
             padding: 0.5rem 1rem;
+            padding-top: 2.85rem;
             border-radius: 12px;
             overflow-x: auto;
             overflow-y: auto;
@@ -207,25 +208,36 @@
             padding-left: 5px;
         }
 
+        /* Code output blocks (non-copyable) */
+        pre.no-copy {
+            background: #0a0f1a;
+            border: 1px solid #1a2a3a;
+            opacity: 0.85;
+            padding-top: 0.75rem;
+        }
+
         pre .copy-button-inline {
             position: absolute;
             top: 0.5rem;
-            right: 1rem;
+            right: 0.5rem;
             padding: 0;
             border: none;
-            background: transparent url('symbols/copy.png') center/18px no-repeat;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
+            background-position: center;
+            background-size: 16px;
+            background-repeat: no-repeat;
+            background-color: rgba(127, 200, 255, 0.14);
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: all 0.2s;
             width: 28px;
             height: 28px;
-            opacity: 0.7;
-            filter: invert(1) brightness(1);
+            opacity: 0.85;
         }
 
         pre .copy-button-inline:hover {
             opacity: 1;
-            filter: invert(1) brightness(1);
+            background-color: rgba(127, 200, 255, 0.30);
         }
 
         pre .copy-button-inline.copied {
@@ -434,22 +446,25 @@
         .copy-button {
             padding: 0;
             border: none;
-            background: transparent url('symbols/copy.png') center/20px no-repeat;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
+            background-position: center;
+            background-size: 16px;
+            background-repeat: no-repeat;
+            background-color: rgba(127, 200, 255, 0.14);
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 32px;
             height: 32px;
-            opacity: 0.7;
-            filter: invert(1) brightness(1);
+            opacity: 0.85;
         }
 
         .copy-button:hover {
             opacity: 1;
-            filter: invert(1) brightness(1);
+            background-color: rgba(127, 200, 255, 0.30);
         }
 
         .copy-button.copied {
@@ -526,7 +541,7 @@
     </style>
 </head>
 <body>
-    <p><a href="https://langchain-ai.github.io/lca-deepagents/m2/m2.4-message-history.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
+    <p><a href="https://langchain-ai.github.io/lca-deepagents/m3/m3.x-summarization.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
 <style>@import url('../shared/sd-components.css');</style>
 <script src="../shared/sd-components.js"></script>
 
@@ -547,12 +562,12 @@ buildSlideshow({
   id: 'ss-compaction',
   slides: [
     {
-      src: 'images/m2.4-compaction.svg',
+      src: 'images/m3.x-compaction.svg',
       tag: 'Slide 1 of 2',
       caption: `When the context window hits 85% capacity, the middleware fires. Messages below the keep cutoff (amber) are replaced by a single summary block (green), right at the boundary. The recent messages at the top are untouched. The thermometer drops back down; room to grow again.`
     },
     {
-      src: 'images/m2.4-compaction2.svg',
+      src: 'images/m3.x-compaction2.svg',
       tag: 'Slide 2 of 2',
       caption: `When the window fills a second time, the same process runs, but now the previous summary sits at the bottom of the history alongside new old messages. Both get folded into a new combined summary (darker green). The recent messages are still untouched. This rolling compaction continues indefinitely.`
     },
@@ -570,46 +585,45 @@ buildSlideshow({
 <li><strong>Next steps</strong>: what remains to do</li>
 </ul>
 <p>The resulting text is injected as a single <code>HumanMessage</code> at the top of the preserved recent messages. The model picks up the conversation as if it had been there the whole time.</p>
-<details>
-<summary>Summarization details (for LangGraph users)</summary>
-<p><br></p>
-<p><strong><code>state["messages"]</code> never shrinks.</strong> Every message ever sent is retained in state. The list only grows.</p>
-<p><strong>The effective list is transient.</strong> Before each model call the middleware assembles the list the model actually sees; it is never stored back in state:</p>
-<pre><code class="language-python">effective_list = [S_n] + state[&quot;messages&quot;][cutoff_index:]
-#                 ↑ oldest (index 0)          ↑ recent messages
-</code></pre>
-<p><code>S_n</code> is the summary from the last compaction event. It sits at index 0, the oldest position, acting as a stand-in for everything that was dropped.</p>
-<p><strong><code>state["_summarization_event"]</code></strong> is the only state that changes at compaction time:</p>
-<pre><code class="language-python">{
-    &quot;cutoff_index&quot;:    int,          # ignore state[&quot;messages&quot;][:cutoff_index]
-    &quot;summary_message&quot;: HumanMessage, # S_n: the summary text
-}
-</code></pre>
-<p><strong>Rolling compaction (n → n+1).</strong> When the effective list fills up again, the middleware assembles it the same way. <code>S_n</code> is at index 0 of that list, so it gets included in what is sent to the summarizer, absorbed into the new <code>S_n+1</code>. The <code>cutoff_index</code> advances further into <code>state["messages"]</code>, permanently skipping the messages that are now covered by <code>S_n+1</code>.</p>
-<pre><code>After compaction n:
-  state[&quot;messages&quot;]   = [m0  m1  m2  m3  m4 | m5  m6  m7]
-                                              ↑ cutoff_index = 5
-  effective list      = [S_n  m5  m6  m7]
-
-After more turns, compaction n+1 fires:
-  state[&quot;messages&quot;]   = [m0  m1  m2  m3  m4  m5  m6  m7  m8  m9  m10  m11]
-  effective list      = [S_n  m5  m6  m7  m8  m9  m10  m11]   ← over threshold
-  summarize           = [S_n  m5  m6  m7  m8]  →  S_n+1
-  cutoff_index        = 8 (skips m0–m7 forever)
-  effective list      = [S_n+1  m9  m10  m11]
-</code></pre>
-<p><code>m0–m4</code> and <code>m5–m8</code> remain in <code>state["messages"]</code> but are never read again.</p>
-</details>
 <hr />
 <h2 id="seeing-it-in-action">Seeing it in action</h2>
 <p>The default trigger is 85% of the model's real context window: 170,000 tokens for Claude Haiku 4.5. To observe it in a demo we set <code>model.profile["max_input_tokens"]</code> to a small value so the threshold is hit after a few turns:</p>
-<div class="tabs-block" data-tabs="[{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m2/m2.4_MessageHistory.py\nMODEL = \&quot;anthropic:claude-haiku-4-5\&quot;\nmodel = init_chat_model(MODEL)\n\n# Lower the reported context window so summarization fires at ~1700 tokens\n# instead of the real 170,000-token threshold.\nmodel.profile = {**model.profile, \&quot;max_input_tokens\&quot;: 700}\n\nagent = create_deep_agent(\n    model=model,\n    checkpointer=MemorySaver(),\n    system_prompt=\&quot;You are a helpful assistant. Keep every response to one sentence.\&quot;,\n)&quot;, &quot;highlights&quot;: []}]"></div>
+<div class="tabs-block" data-tabs="[{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m3/m3.x_summarization.py\nfrom models import model\n\n# Lower the reported context window so summarization fires at ~595 tokens\n# (85% of 700) instead of the real threshold. Must pass model object, not string.\nmodel.profile = {**model.profile, \&quot;max_input_tokens\&quot;: 700}\n\nagent = create_deep_agent(\n    model=model,\n    checkpointer=MemorySaver(),\n    system_prompt=\&quot;You are a helpful assistant. Keep every response to one sentence.\&quot;,\n)&quot;, &quot;highlights&quot;: []}]"></div>
+
+<div class="language-tabs-block" data-languages="{&quot;Python&quot;: [{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;bash&quot;, &quot;code&quot;: &quot;cd python\nuv run python m3/m3.x_summarization.py&quot;, &quot;highlights&quot;: [], &quot;noHeader&quot;: true}]}"></div>
+
+<p><strong>Expected output:</strong></p>
+<pre style="max-height:260px;overflow-y:auto;background:#0d1117;color:#e6edf3;padding:16px;border-radius:6px;font-size:12px;font-family:'IBM Plex Mono',monospace;line-height:1.6;white-space:pre-wrap;"><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button>──────────────────────────────────────────────────
+Turn 1  User:  My name is Alex. I work at Acme Corp.
+Turn 1  Agent: Hello Alex, it's nice to meet you — welcome from Acme Corp!
+  stored : 2 message(s) (raw history, never trimmed)
+
+──────────────────────────────────────────────────
+Turn 2  User:  What is 2 + 2?
+Turn 2  Agent: 2 + 2 equals 4.
+  stored : 4 message(s) (raw history, never trimmed)
+
+──────────────────────────────────────────────────
+Turn 3  User:  I have been building a distributed cache for three months.
+Turn 3  Agent: That sounds like a substantial project — distributed caches are complex but rewarding to build!
+  stored : 6 message(s) (raw history, never trimmed)
+  model saw : summary + messages[4:]  [SUMMARIZED]
+
+──────────────────────────────────────────────────
+Turn 4  User:  What is the capital of France?
+Turn 4  Agent: The capital of France is Paris.
+  stored : 8 message(s) (raw history, never trimmed)
+  model saw : summary + messages[4:]  [SUMMARIZED]
+
+──────────────────────────────────────────────────
+Turn 5  User:  What do you remember about me?
+Turn 5  Agent: You mentioned your name is Alex, you work at Acme Corp, and you've been building a distributed cache for three months.
+  stored : 10 message(s) (raw history, never trimmed)
+  model saw : summary + messages[4:]  [SUMMARIZED]</pre>
 
 <div class="tip"><p><strong>Passing <code>model</code> not <code>MODEL</code>.</strong> Notice <code>create_deep_agent(model=model, ...)</code> receives the model <em>object</em>, not the string <code>"anthropic:claude-haiku-4-5"</code>. Passing the string would re-initialize the model internally and ignore the <code>profile</code> override.</p></div>
 
 <p>When summarization fires, a private <code>_summarization_event</code> key appears in the agent's state. The <code>state["messages"]</code> list itself is never modified; the summarization happens only on what gets <em>sent</em> to the model each turn.</p>
-<details class="run-code"><summary>&lt;/&gt; run this code</summary><div class="run-code-content"><div class="language-tabs-block" data-languages="{&quot;Python&quot;: [{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;bash&quot;, &quot;code&quot;: &quot;pushd ~/Documents/Github/lca-deepagents/python\nuv run python m2/m2.4_MessageHistory.py\npopd&quot;, &quot;highlights&quot;: [], &quot;noHeader&quot;: true}]}"></div></div></details>
-
 <hr />
 <h2 id="recap">Recap</h2>
 <ul>
@@ -741,6 +755,47 @@ After more turns, compaction n+1 fires:
                 }
             });
         }
+    </script>
+
+    <script>
+    // Attach copy handlers to static .copy-button-inline buttons injected at build time.
+    // This runs synchronously so it fires before Babel compiles the text/babel script.
+    (function () {
+        function attachCopyHandler(button) {
+            if (button.dataset.copySetup) return;
+            button.dataset.copySetup = '1';
+            var pre = button.closest('pre');
+            var code = pre && pre.querySelector('code');
+            if (!code) return;
+            function showDone() {
+                button.textContent = '✓';
+                button.classList.add('copied');
+                setTimeout(function () {
+                    button.textContent = '';
+                    button.classList.remove('copied');
+                }, 2000);
+            }
+            function fallback(text) {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(ta);
+                showDone();
+            }
+            button.addEventListener('click', function () {
+                var text = code.textContent;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(showDone, function () { fallback(text); });
+                } else {
+                    fallback(text);
+                }
+            });
+        }
+        document.querySelectorAll('pre:not(.no-copy) .copy-button-inline').forEach(attachCopyHandler);
+    })();
     </script>
 
     <script type="text/babel">
@@ -975,7 +1030,11 @@ After more turns, compaction n+1 fires:
                                     right: '1rem',
                                     padding: '0',
                                     border: 'none',
-                                    background: copied ? 'none' : 'transparent url("symbols/copy.png") center/18px no-repeat',
+                                    backgroundImage: copied ? 'none' : 'url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23cfe8ff%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Crect x=%279%27 y=%279%27 width=%2713%27 height=%2713%27 rx=%272%27/%3E%3Cpath d=%27M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1%27/%3E%3C/svg%3E")',
+                                    backgroundColor: copied ? 'transparent' : 'rgba(127, 200, 255, 0.14)',
+                                    backgroundPosition: 'center',
+                                    backgroundSize: '16px',
+                                    backgroundRepeat: 'no-repeat',
                                     cursor: 'pointer',
                                     borderRadius: '4px',
                                     width: '28px',
@@ -1133,20 +1192,24 @@ After more turns, compaction n+1 fires:
         // Add copy buttons to regular code blocks
         function addCopyButtonsToCodeBlocks() {
             // Find all pre blocks that aren't inside tabs-block containers
-            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre)');
+            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre):not(.no-copy)');
 
             preBlocks.forEach(pre => {
-                // Skip if already has a copy button
-                if (pre.querySelector('.copy-button-inline')) return;
-
                 const code = pre.querySelector('code');
                 if (!code) return;
 
-                // Create copy button
-                const button = document.createElement('button');
-                button.className = 'copy-button-inline';
-                button.setAttribute('aria-label', 'Copy code');
-                button.setAttribute('title', 'Copy code');
+                // Use existing static button (injected at convert time) or create one
+                let button = pre.querySelector('.copy-button-inline');
+                if (!button) {
+                    button = document.createElement('button');
+                    button.className = 'copy-button-inline';
+                    button.setAttribute('aria-label', 'Copy code');
+                    button.setAttribute('title', 'Copy code');
+                    pre.appendChild(button);
+                } else if (button.dataset.copySetup) {
+                    return;
+                }
+                button.dataset.copySetup = '1';
 
                 button.addEventListener('click', async () => {
                     const text = code.textContent;
@@ -1185,8 +1248,6 @@ After more turns, compaction n+1 fires:
                         }
                     }
                 });
-
-                pre.appendChild(button);
             });
         }
 

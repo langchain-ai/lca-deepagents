@@ -136,6 +136,7 @@
         pre {
             background: #030710;
             padding: 0.5rem 1rem;
+            padding-top: 2.85rem;
             border-radius: 12px;
             overflow-x: auto;
             overflow-y: auto;
@@ -212,27 +213,31 @@
             background: #0a0f1a;
             border: 1px solid #1a2a3a;
             opacity: 0.85;
+            padding-top: 0.75rem;
         }
 
         pre .copy-button-inline {
             position: absolute;
             top: 0.5rem;
-            right: 1rem;
+            right: 0.5rem;
             padding: 0;
             border: none;
-            background: transparent url('symbols/copy.png') center/18px no-repeat;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
+            background-position: center;
+            background-size: 16px;
+            background-repeat: no-repeat;
+            background-color: rgba(127, 200, 255, 0.14);
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: all 0.2s;
             width: 28px;
             height: 28px;
-            opacity: 0.7;
-            filter: invert(1) brightness(1);
+            opacity: 0.85;
         }
 
         pre .copy-button-inline:hover {
             opacity: 1;
-            filter: invert(1) brightness(1);
+            background-color: rgba(127, 200, 255, 0.30);
         }
 
         pre .copy-button-inline.copied {
@@ -441,22 +446,25 @@
         .copy-button {
             padding: 0;
             border: none;
-            background: transparent url('symbols/copy.png') center/20px no-repeat;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
+            background-position: center;
+            background-size: 16px;
+            background-repeat: no-repeat;
+            background-color: rgba(127, 200, 255, 0.14);
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 32px;
             height: 32px;
-            opacity: 0.7;
-            filter: invert(1) brightness(1);
+            opacity: 0.85;
         }
 
         .copy-button:hover {
             opacity: 1;
-            filter: invert(1) brightness(1);
+            background-color: rgba(127, 200, 255, 0.30);
         }
 
         .copy-button.copied {
@@ -636,7 +644,7 @@ In this example, I've given it a posh British butler persona.
 <p>Here is a live demo: the same "What is an LLM?" question, but with a posh British butler set as the <code>system_prompt</code>:</p>
 <!-- code-highlight-0:2,3,4,5,6,7 -->
 
-<pre><code class="language-python"># python/m1/scratch_agent.py
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m1/m1.4_scratch_agent_butler.py
 SYSTEM_PROMPT = (
     &quot;YOU ARE AN EXTREMELY POSH BRITISH BUTLER. You speak ONLY in the most &quot;
     &quot;refined, formal, over-the-top Victorian English. You say 'indeed', 'quite', &quot;
@@ -645,47 +653,46 @@ SYSTEM_PROMPT = (
     &quot;circumstances.&quot;
 )
 </code></pre>
+<p>Then pass it to <code>create_deep_agent</code>:</p>
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python">agent = create_deep_agent(model=model, system_prompt=SYSTEM_PROMPT)
+</code></pre>
 <p><strong>Code output:</strong></p>
-<pre class="no-copy"><code class="language-plaintext">Ah, what an *exceedingly* pedestrian inquiry, I must say! Indeed, I shall endeavor
-to illuminate this matter with the utmost refinement and precision.
+<pre class="no-copy"><code class="language-plaintext">An LLM, or Large Language Model, is quite simply a vast artificial intelligence
+system trained upon enormous quantities of textual data, I dare say.
 
-An LLM (or "Large Language Model," if one must be so dreadfully technical) is, quite
-simply, an artificial intelligence system constructed upon neural networks of the most
-sophisticated design. These contraptions are trained upon vast corpora of textual data,
-allowing them to predict and generate human language with a degree of coherence that
-would have seemed positively *miraculous* to our predecessors.
+These computational contraptions possess the remarkable capacity to comprehend and
+generate human language with considerable sophistication. One might describe them as
+exceptionally refined pattern-recognition mechanisms, trained through a process most
+labyrinthine upon billions upon billions of words.
 
-In the most elementary terms, one might say that an LLM is a computational apparatus
-that has consumed an ungodly quantity of written material (books, articles, and other
-such literary productions) and thus acquired the capacity to engage in discourse, answer
-inquiries, and compose responses of considerable eloquence.
+The distinguishing feature of such models is their sheer magnitude, hence the
+appellation "Large." They employ neural network architectures of the deepest
+complexity, allowing them to capture the nuances and subtleties of linguistic
+expression in a manner most extraordinary.
 
-The system responsible for our present conversation is, I dare say, precisely such a
-contraption.
+In practical application, these systems can engage in dialogue, compose text,
+translate languages, and perform sundry intellectual tasks requiring comprehension
+of language. Quite remarkable, indeed, though I confess the underlying machinery to
+be rather pedestrian in nature, merely mathematical operations and matrix
+multiplications, nothing terribly dignified, one supposes.
 
-These models function through a process known as "transformer architecture," a
-methodology that allows them to attend to patterns and relationships within language
-with remarkable facility. They are not, mind you, *conscious* or possessed of genuine
-understanding; they are, rather, exceedingly sophisticated probability machines that
-divine the most statistically likely continuations of textual sequences.
+*Adjusts monocle with an air of refined superiority*
 
-Most fascinating, though I confess it all strikes me as rather *common* in its
-computational mechanics, is it not?
-
-Is there some particular aspect of this linguistic automaton you wish to explore further?
+Is there some particular aspect of these digital contraptions you wish to comprehend
+further?
 </code></pre>
 
 </div>
 <div class="lt-panel" id="p-lab2" role="tabpanel">
 <h2 id="the-system-prompt_2">The System Prompt</h2>
 <p><strong>The discovery:</strong> <code>system_prompt</code> is free-form text; use it to set a persona, lay down constraints, or define the agent's domain. The SDK slots it in as the <strong>USER</strong> segment at the front of the assembled prompt, leaving the BASE segment untouched.</p>
-<p>Open <code>python/m1/scratch_agent.py</code> and make two changes: add a <code>SYSTEM_PROMPT</code> variable, then pass it to <code>create_deep_agent</code>:</p>
-<div class="language-tabs-block" data-languages="{&quot;Python&quot;: [{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m1/scratch_agent.py\nSYSTEM_PROMPT = \&quot;You are a salty pirate captain...\&quot;  # \u2190 your text here\n\nfrom models import model\nfrom deepagents import create_deep_agent\nagent = create_deep_agent(model=model, system_prompt=SYSTEM_PROMPT)&quot;, &quot;highlights&quot;: [2, 3, 6], &quot;noHeader&quot;: true}]}"></div>
+<p>Open <code>python/m1/m1.4_scratch_agent_butler.py</code>; the <code>SYSTEM_PROMPT</code> is already defined and passed to <code>create_deep_agent</code>. Run it to see the butler in action, then try swapping the <code>SYSTEM_PROMPT</code> for one of the personas below and run it again:</p>
+<div class="language-tabs-block" data-languages="{&quot;Python&quot;: [{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m1/m1.4_scratch_agent_butler.py\nSYSTEM_PROMPT = \&quot;You are a salty pirate captain...\&quot;  # \u2190 swap this\n\nfrom models import model\nfrom deepagents import create_deep_agent\nagent = create_deep_agent(model=model, system_prompt=SYSTEM_PROMPT)&quot;, &quot;highlights&quot;: [2, 3, 6], &quot;noHeader&quot;: true}]}"></div>
 <details>
 <summary>Persona ideas [click to expand]</summary>
 <p><br></p>
 <p>Pick one of these or write your own:</p>
-<pre><code class="language-python"># python/m1/scratch_agent.py
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m1/m1.4_scratch_agent_butler.py
 # Pirate
 SYSTEM_PROMPT = (
     &quot;You are a salty pirate captain with decades at sea. Talk in 'arr' and nautical slang. &quot;
@@ -707,7 +714,7 @@ SYSTEM_PROMPT = (
 <p>Each one changes the agent's voice without touching anything else. That single<br />
 string is your USER segment.</p>
 </details>
-<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/scratch_agent.py
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/m1.4_scratch_agent_butler.py
 </code></pre>
 <p>If you used the pirate persona, the reply should come back with 'arr' and nautical slang. That's the USER segment taking effect.</p>
 <h3 id="check-the-trace-in-langsmith">Check the trace in LangSmith</h3>
@@ -722,7 +729,7 @@ that this single string is all you touched to redirect the agent's behavior.</p>
 <ul>
 <li><code>create_deep_agent</code> assembles the system prompt from three parts: <strong>USER</strong> (your <code>system_prompt</code> argument), <strong>BASE</strong> (the SDK's built-in behavior guidance), and <strong>SUFFIX</strong> (model-specific tuning from a HarnessProfile)</li>
 <li>The USER segment sits at the very front of the assembled prompt, ahead of BASE and SUFFIX</li>
-<li>Defining the <code>SYSTEM_PROMPT</code> string is not enough — it must be passed as <code>system_prompt=SYSTEM_PROMPT</code> to <code>create_deep_agent</code>; without it, the agent only sees the BASE instructions</li>
+<li>Defining the <code>SYSTEM_PROMPT</code> string is not enough; it must be passed as <code>system_prompt=SYSTEM_PROMPT</code> to <code>create_deep_agent</code>; without it, the agent only sees the BASE instructions</li>
 <li>One string controls the agent's persona, domain, and constraints without touching tools, the model, or anything else</li>
 </ul>
 <hr />
@@ -867,6 +874,47 @@ that this single string is all you touched to redirect the agent's behavior.</p>
                 }
             });
         }
+    </script>
+
+    <script>
+    // Attach copy handlers to static .copy-button-inline buttons injected at build time.
+    // This runs synchronously so it fires before Babel compiles the text/babel script.
+    (function () {
+        function attachCopyHandler(button) {
+            if (button.dataset.copySetup) return;
+            button.dataset.copySetup = '1';
+            var pre = button.closest('pre');
+            var code = pre && pre.querySelector('code');
+            if (!code) return;
+            function showDone() {
+                button.textContent = '✓';
+                button.classList.add('copied');
+                setTimeout(function () {
+                    button.textContent = '';
+                    button.classList.remove('copied');
+                }, 2000);
+            }
+            function fallback(text) {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(ta);
+                showDone();
+            }
+            button.addEventListener('click', function () {
+                var text = code.textContent;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(showDone, function () { fallback(text); });
+                } else {
+                    fallback(text);
+                }
+            });
+        }
+        document.querySelectorAll('pre:not(.no-copy) .copy-button-inline').forEach(attachCopyHandler);
+    })();
     </script>
 
     <script type="text/babel">
@@ -1101,7 +1149,11 @@ that this single string is all you touched to redirect the agent's behavior.</p>
                                     right: '1rem',
                                     padding: '0',
                                     border: 'none',
-                                    background: copied ? 'none' : 'transparent url("symbols/copy.png") center/18px no-repeat',
+                                    backgroundImage: copied ? 'none' : 'url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23cfe8ff%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Crect x=%279%27 y=%279%27 width=%2713%27 height=%2713%27 rx=%272%27/%3E%3Cpath d=%27M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1%27/%3E%3C/svg%3E")',
+                                    backgroundColor: copied ? 'transparent' : 'rgba(127, 200, 255, 0.14)',
+                                    backgroundPosition: 'center',
+                                    backgroundSize: '16px',
+                                    backgroundRepeat: 'no-repeat',
                                     cursor: 'pointer',
                                     borderRadius: '4px',
                                     width: '28px',
@@ -1262,17 +1314,21 @@ that this single string is all you touched to redirect the agent's behavior.</p>
             const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre):not(.no-copy)');
 
             preBlocks.forEach(pre => {
-                // Skip if already has a copy button
-                if (pre.querySelector('.copy-button-inline')) return;
-
                 const code = pre.querySelector('code');
                 if (!code) return;
 
-                // Create copy button
-                const button = document.createElement('button');
-                button.className = 'copy-button-inline';
-                button.setAttribute('aria-label', 'Copy code');
-                button.setAttribute('title', 'Copy code');
+                // Use existing static button (injected at convert time) or create one
+                let button = pre.querySelector('.copy-button-inline');
+                if (!button) {
+                    button = document.createElement('button');
+                    button.className = 'copy-button-inline';
+                    button.setAttribute('aria-label', 'Copy code');
+                    button.setAttribute('title', 'Copy code');
+                    pre.appendChild(button);
+                } else if (button.dataset.copySetup) {
+                    return;
+                }
+                button.dataset.copySetup = '1';
 
                 button.addEventListener('click', async () => {
                     const text = code.textContent;
@@ -1311,8 +1367,6 @@ that this single string is all you touched to redirect the agent's behavior.</p>
                         }
                     }
                 });
-
-                pre.appendChild(button);
             });
         }
 

@@ -1,0 +1,86 @@
+<svg width="740" height="240" xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="740" height="240" fill="#030710" rx="8"/>
+
+  <!-- divider -->
+  <line x1="370" y1="14" x2="370" y2="220" stroke="#1E3A5F" stroke-width="1"/>
+
+  <!-- ===== LEFT: Agent Memory ===== -->
+  <text x="185" y="30" text-anchor="middle" font-size="14" font-weight="600" fill="#F2FAFF">Agent Memory</text>
+  <text x="185" y="47" text-anchor="middle" font-size="10" fill="#7FC8FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">shared across all users, one file</text>
+
+  <!-- person 1 (cx=80) -->
+  <circle cx="80" cy="76" r="8" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+  <rect x="68" y="86" width="24" height="13" rx="6" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+
+  <!-- person 2 (cx=185) -->
+  <circle cx="185" cy="76" r="8" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+  <rect x="173" y="86" width="24" height="13" rx="6" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+
+  <!-- person 3 (cx=290) -->
+  <circle cx="290" cy="76" r="8" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+  <rect x="278" y="86" width="24" height="13" rx="6" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+
+  <!-- converging lines to shared file -->
+  <line x1="80" y1="99" x2="185" y2="140" stroke="#2F4B68" stroke-width="1.5"/>
+  <line x1="185" y1="99" x2="185" y2="140" stroke="#2F4B68" stroke-width="1.5"/>
+  <line x1="290" y1="99" x2="185" y2="140" stroke="#2F4B68" stroke-width="1.5"/>
+
+  <!-- shared AGENTS.md file -->
+  <path d="M 163,140 L 193,140 L 207,154 L 207,184 L 163,184 Z" fill="#0D1322" stroke="#7FC8FF" stroke-width="2"/>
+  <path d="M 193,140 L 207,140 L 207,154 Z" fill="#1E3A5F"/>
+  <line x1="193" y1="140" x2="207" y2="154" stroke="#7FC8FF" stroke-width="1.5"/>
+  <rect x="170" y="160" width="28" height="2" rx="1" fill="#40668D"/>
+  <rect x="170" y="167" width="22" height="2" rx="1" fill="#40668D"/>
+  <rect x="170" y="174" width="24" height="2" rx="1" fill="#40668D"/>
+
+  <text x="185" y="204" text-anchor="middle" font-size="9" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">AGENTS.md</text>
+
+  <!-- ===== RIGHT: User Memory ===== -->
+  <text x="555" y="30" text-anchor="middle" font-size="14" font-weight="600" fill="#F2FAFF">User Memory</text>
+  <text x="555" y="47" text-anchor="middle" font-size="10" fill="#7FC8FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">per user, separate file each</text>
+
+  <!-- person A (cx=450) -->
+  <circle cx="450" cy="76" r="8" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+  <rect x="438" y="86" width="24" height="13" rx="6" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+
+  <!-- person B (cx=555) -->
+  <circle cx="555" cy="76" r="8" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+  <rect x="543" y="86" width="24" height="13" rx="6" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+
+  <!-- person C (cx=660) -->
+  <circle cx="660" cy="76" r="8" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+  <rect x="648" y="86" width="24" height="13" rx="6" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+
+  <!-- straight lines to own files -->
+  <line x1="450" y1="99" x2="450" y2="140" stroke="#2F4B68" stroke-width="1.5"/>
+  <line x1="555" y1="99" x2="555" y2="140" stroke="#2F4B68" stroke-width="1.5"/>
+  <line x1="660" y1="99" x2="660" y2="140" stroke="#2F4B68" stroke-width="1.5"/>
+
+  <!-- file A (user A, center x=450) -->
+  <path d="M 428,140 L 458,140 L 472,154 L 472,184 L 428,184 Z" fill="#0D1322" stroke="#2F4B68" stroke-width="1.5"/>
+  <path d="M 458,140 L 472,140 L 472,154 Z" fill="#161F34"/>
+  <line x1="458" y1="140" x2="472" y2="154" stroke="#2F4B68" stroke-width="1"/>
+  <rect x="435" y="160" width="26" height="2" rx="1" fill="#2F4B68"/>
+  <rect x="435" y="167" width="20" height="2" rx="1" fill="#2F4B68"/>
+  <rect x="435" y="174" width="22" height="2" rx="1" fill="#2F4B68"/>
+
+  <!-- file B (user B, center x=555) -->
+  <path d="M 533,140 L 563,140 L 577,154 L 577,184 L 533,184 Z" fill="#0D1322" stroke="#2F4B68" stroke-width="1.5"/>
+  <path d="M 563,140 L 577,140 L 577,154 Z" fill="#161F34"/>
+  <line x1="563" y1="140" x2="577" y2="154" stroke="#2F4B68" stroke-width="1"/>
+  <rect x="540" y="160" width="26" height="2" rx="1" fill="#2F4B68"/>
+  <rect x="540" y="167" width="20" height="2" rx="1" fill="#2F4B68"/>
+  <rect x="540" y="174" width="22" height="2" rx="1" fill="#2F4B68"/>
+
+  <!-- file C (user C, center x=660) -->
+  <path d="M 638,140 L 668,140 L 682,154 L 682,184 L 638,184 Z" fill="#0D1322" stroke="#2F4B68" stroke-width="1.5"/>
+  <path d="M 668,140 L 682,140 L 682,154 Z" fill="#161F34"/>
+  <line x1="668" y1="140" x2="682" y2="154" stroke="#2F4B68" stroke-width="1"/>
+  <rect x="645" y="160" width="26" height="2" rx="1" fill="#2F4B68"/>
+  <rect x="645" y="167" width="20" height="2" rx="1" fill="#2F4B68"/>
+  <rect x="645" y="174" width="22" height="2" rx="1" fill="#2F4B68"/>
+
+  <text x="450" y="204" text-anchor="middle" font-size="9" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">user_a.md</text>
+  <text x="555" y="204" text-anchor="middle" font-size="9" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">user_b.md</text>
+  <text x="660" y="204" text-anchor="middle" font-size="9" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">user_c.md</text>
+</svg>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../shared/sd-components.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { background: #030710; overflow: hidden; }
+  .sd-wrap { margin: 0; border-radius: 0; box-shadow: none; height: 100%; display: flex; flex-direction: column; }
+  .sd-stage { flex: 1; overflow: hidden; position: relative; cursor: pointer; }
+  #slides { height: 100%; }
+  .slide { display: none; height: 100%; }
+  .slide.active { display: block; }
+  .slide svg { width: 100%; height: 100%; display: block; }
+  .sd-dots { padding: 13px 18px 20px; }
+</style>
+</head>
+<body>
+<div class="sd-wrap">
+
+  <div class="sd-stage" id="stage" tabindex="0">
+    <div id="slides">
+
+      <!-- SLIDE 1: Generic structure -->
+      <div class="slide active">
+        <svg viewBox="0 0 720 410" xmlns="http://www.w3.org/2000/svg" font-family="'IBM Plex Mono','Courier New',monospace">
+          <rect width="720" height="410" fill="#030710"/>
+          <text x="360" y="50" text-anchor="middle" font-size="22" font-weight="300" fill="#F2FAFF" font-family="'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">Skill directory structure</text>
+          <text x="360" y="76" text-anchor="middle" font-size="13" fill="#99D3FF">one SKILL.md file is all that is required; the rest is optional</text>
+
+          <!-- Code box -->
+          <rect x="40" y="90" width="640" height="295" rx="8" fill="#0D1322" stroke="#2F4B68" stroke-width="1.2"/>
+
+          <!-- Tree content -->
+          <text x="85" y="122" font-size="17" fill="#7FC8FF">skills/</text>
+
+          <text x="85" y="160" font-size="17" fill="#CCE9FF">&#x251C;&#x2500;&#x2500; skill-name/</text>
+
+          <text x="85" y="198" font-size="17" fill="#E3FF8F">&#x2502;   &#x251C;&#x2500;&#x2500; SKILL.md</text>
+          <text x="340" y="198" font-size="14" fill="#40668D"># Required: metadata + instructions</text>
+
+          <text x="85" y="236" font-size="17" fill="#B2DEFF">&#x2502;   &#x251C;&#x2500;&#x2500; scripts/</text>
+          <text x="340" y="236" font-size="14" fill="#40668D"># Optional: executable code</text>
+
+          <text x="85" y="274" font-size="17" fill="#B2DEFF">&#x2502;   &#x251C;&#x2500;&#x2500; references/</text>
+          <text x="340" y="274" font-size="14" fill="#40668D"># Optional: documentation</text>
+
+          <text x="85" y="312" font-size="17" fill="#B2DEFF">&#x2502;   &#x251C;&#x2500;&#x2500; assets/</text>
+          <text x="340" y="312" font-size="14" fill="#40668D"># Optional: resources, templates</text>
+
+          <text x="85" y="350" font-size="17" fill="#5BADDF">&#x2502;   &#x2514;&#x2500;&#x2500; ...</text>
+          <text x="340" y="350" font-size="14" fill="#40668D"># Any additional files</text>
+        </svg>
+      </div>
+
+      <!-- SLIDE 2: Concrete example with qualify-lead and draft-pitch -->
+      <div class="slide">
+        <svg viewBox="0 0 720 410" xmlns="http://www.w3.org/2000/svg" font-family="'IBM Plex Mono','Courier New',monospace">
+          <rect width="720" height="410" fill="#030710"/>
+          <text x="360" y="50" text-anchor="middle" font-size="22" font-weight="300" fill="#F2FAFF" font-family="'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">Two skills: qualify-lead and draft-pitch</text>
+          <text x="360" y="76" text-anchor="middle" font-size="13" fill="#99D3FF">both descriptions are always in context; each SKILL.md is loaded only when activated</text>
+
+          <!-- Code box -->
+          <rect x="40" y="90" width="640" height="295" rx="8" fill="#0D1322" stroke="#2F4B68" stroke-width="1.2"/>
+
+          <!-- Tree content -->
+          <text x="85" y="116" font-size="17" fill="#7FC8FF">skills/</text>
+
+          <text x="85" y="153" font-size="17" fill="#CCE9FF">&#x251C;&#x2500;&#x2500; qualify-lead/</text>
+
+          <text x="85" y="190" font-size="17" fill="#E3FF8F">&#x2502;   &#x2514;&#x2500;&#x2500; SKILL.md</text>
+
+          <text x="85" y="219" font-size="14">
+            <tspan fill="#5BADDF">&#x2502;         name: </tspan><tspan fill="#CCE9FF">qualify-lead</tspan>
+          </text>
+          <text x="85" y="242" font-size="14">
+            <tspan fill="#5BADDF">&#x2502;         description: </tspan><tspan fill="#99D3FF">Use when qualifying a sales lead</tspan>
+          </text>
+
+          <text x="85" y="280" font-size="17" fill="#CCE9FF">&#x2514;&#x2500;&#x2500; draft-pitch/</text>
+
+          <text x="85" y="317" font-size="17" fill="#E3FF8F">    &#x2514;&#x2500;&#x2500; SKILL.md</text>
+
+          <text x="85" y="346" font-size="14">
+            <tspan fill="#5BADDF">          name: </tspan><tspan fill="#CCE9FF">draft-pitch</tspan>
+          </text>
+          <text x="85" y="369" font-size="14">
+            <tspan fill="#5BADDF">          description: </tspan><tspan fill="#99D3FF">Use when writing a sales pitch</tspan>
+          </text>
+        </svg>
+      </div>
+
+    </div><!-- #slides -->
+  </div><!-- .sd-stage -->
+
+  <div class="sd-bar">
+    <div class="sd-caption">
+      <strong id="tag">Click &#8594; to begin</strong>
+      <span id="cap">The only required file is SKILL.md. Optional directories hold supporting material the instructions can reference; the agent cannot see them unless the skill body mentions them explicitly.</span>
+    </div>
+    <div class="sd-controls">
+      <button class="sd-btn" id="prev" disabled title="Previous">&#8592;</button>
+      <button class="sd-btn" id="next" title="Next">&#8594;</button>
+    </div>
+  </div>
+
+  <div class="sd-dots" id="dots"></div>
+
+</div><!-- .sd-wrap -->
+
+<script>
+(function () {
+  var STEPS = [
+    { tag: 'Skill directory structure',
+      cap: 'The only required file is SKILL.md. Optional directories hold supporting material the instructions can reference; the agent cannot see them unless the skill body mentions them explicitly.' },
+    { tag: 'qualify-lead and draft-pitch',
+      cap: 'Both skill names and descriptions are injected into the system prompt on every call. The full SKILL.md body is only loaded when the agent activates the skill by calling read_file.' }
+  ];
+
+  var slides = document.querySelectorAll('#slides .slide');
+  var dotsEl  = document.getElementById('dots');
+  var tagEl   = document.getElementById('tag');
+  var capEl   = document.getElementById('cap');
+  var prevBtn = document.getElementById('prev');
+  var nextBtn = document.getElementById('next');
+  var stage   = document.getElementById('stage');
+  var cur = 0;
+
+  slides.forEach(function (_, i) {
+    var d = document.createElement('div');
+    d.className = 'sd-dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', function () { goTo(i); });
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(n) {
+    if (n < 0 || n >= slides.length) return;
+    slides[cur].classList.remove('active');
+    dotsEl.children[cur].classList.remove('active');
+    cur = n;
+    slides[cur].classList.add('active');
+    dotsEl.children[cur].classList.add('active');
+    tagEl.textContent = STEPS[cur].tag;
+    capEl.textContent = STEPS[cur].cap;
+    prevBtn.disabled = cur === 0;
+    nextBtn.disabled = cur === slides.length - 1;
+  }
+
+  stage.addEventListener('click', function () {
+    if (cur < slides.length - 1) goTo(cur + 1);
+  });
+
+  prevBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (cur > 0) goTo(cur - 1);
+  });
+
+  nextBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (cur < slides.length - 1) goTo(cur + 1);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { if (cur < slides.length - 1) goTo(cur + 1); }
+    if (e.key === 'ArrowLeft')  { if (cur > 0) goTo(cur - 1); }
+  });
+})();
+</script>
+</body>
+</html>

@@ -136,6 +136,7 @@
         pre {
             background: #030710;
             padding: 0.5rem 1rem;
+            padding-top: 2.85rem;
             border-radius: 12px;
             overflow-x: auto;
             overflow-y: auto;
@@ -212,27 +213,31 @@
             background: #0a0f1a;
             border: 1px solid #1a2a3a;
             opacity: 0.85;
+            padding-top: 0.75rem;
         }
 
         pre .copy-button-inline {
             position: absolute;
             top: 0.5rem;
-            right: 1rem;
+            right: 0.5rem;
             padding: 0;
             border: none;
-            background: transparent url('symbols/copy.png') center/18px no-repeat;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
+            background-position: center;
+            background-size: 16px;
+            background-repeat: no-repeat;
+            background-color: rgba(127, 200, 255, 0.14);
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: all 0.2s;
             width: 28px;
             height: 28px;
-            opacity: 0.7;
-            filter: invert(1) brightness(1);
+            opacity: 0.85;
         }
 
         pre .copy-button-inline:hover {
             opacity: 1;
-            filter: invert(1) brightness(1);
+            background-color: rgba(127, 200, 255, 0.30);
         }
 
         pre .copy-button-inline.copied {
@@ -441,22 +446,25 @@
         .copy-button {
             padding: 0;
             border: none;
-            background: transparent url('symbols/copy.png') center/20px no-repeat;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
+            background-position: center;
+            background-size: 16px;
+            background-repeat: no-repeat;
+            background-color: rgba(127, 200, 255, 0.14);
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 32px;
             height: 32px;
-            opacity: 0.7;
-            filter: invert(1) brightness(1);
+            opacity: 0.85;
         }
 
         .copy-button:hover {
             opacity: 1;
-            filter: invert(1) brightness(1);
+            background-color: rgba(127, 200, 255, 0.30);
         }
 
         .copy-button.copied {
@@ -554,14 +562,14 @@
 </ul>
 <h3 id="installation">Installation</h3>
 <p>Clone the repository and move to the <code>python</code> directory:</p>
-<pre><code class="language-bash">git clone https://github.com/langchain-ai/lca-deepagents.git
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">git clone https://github.com/langchain-ai/lca-deepagents.git
 cd lca-deepagents/python
 </code></pre>
 <p>Make a copy of <code>.env.example</code>:</p>
-<pre><code class="language-bash">cp .env.example .env
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">cp .env.example .env
 </code></pre>
-<p>Insert API keys directly into <code>.env</code>. LangSmith (required) and your model provider (required):</p>
-<pre><code class="language-bash"># LangSmith: tracing and observability
+<p>Insert API keys directly into <code>.env</code> (LangSmith and your model provider are both required):</p>
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash"># LangSmith: tracing and observability
 LANGSMITH_API_KEY=lsv2_...
 LANGSMITH_TRACING=true
 LANGSMITH_PROJECT=lca-deepagents
@@ -574,21 +582,21 @@ ANTHROPIC_API_KEY=your-anthropic-api-key
 # OPENAI_API_KEY=your-openai-api-key
 # GOOGLE_API_KEY=your-google-api-key
 
-# OpenRouter: access free open-source and NVIDIA models via an OpenAI-compatible API.
-# No extra install needed. Get a free key at https://openrouter.ai
-# OPENROUTER_API_KEY=your-openrouter-api-key
+# OpenRouter: optional, for trying free hosted open-source models (used in the Models lesson)
+# Get a free key at https://openrouter.ai/keys
+# OPENROUTER_API_KEY=sk-or-v1-...
 
 # Tavily web search: only needed for the Module 4 subagent lab (m4.2).
 # Get a free key at https://app.tavily.com
 # TAVILY_API_KEY=tvly-your-tavily-api-key
 </code></pre>
-<p>This course uses <code>load_dotenv(override=True)</code>: <code>.env</code> values always win over OS environment variables.</p>
+<p>This course uses <code>load_dotenv(override=True)</code>; <code>.env</code> values always win over OS environment variables.</p>
 <p>Install dependencies:</p>
-<pre><code class="language-bash">uv sync
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">uv sync
 </code></pre>
 <h3 id="setup-verification">Setup Verification</h3>
 <p>After completing the steps above, run the following to verify your environment:</p>
-<pre><code class="language-bash">cd python
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">cd python
 uv run python env_utils.py
 </code></pre>
 <p>You should see masked values for each key in your <code>.env</code> file. If anything shows <code>&lt;not set&gt;</code>, see <a href="#setup-verification-issues">Setup Verification Issues</a>.</p>
@@ -596,7 +604,7 @@ uv run python env_utils.py
 <p>Using a coding agent to build your agents is encouraged throughout this course. Three additions make it significantly more effective.</p>
 <h4 id="langchain-skills">LangChain Skills</h4>
 <p>Install the LangChain skills to give your coding agent deep knowledge of Deep Agents, LangGraph, and the LangChain ecosystem:</p>
-<pre><code class="language-bash">npx skills add langchain-ai/langchain-skills --skill '*' --yes --global
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">npx skills add langchain-ai/langchain-skills --skill '*' --yes --global
 </code></pre>
 <p>This installs skills including <code>deep-agents-core</code>, <code>deep-agents-memory</code>, <code>deep-agents-orchestration</code>, and more.</p>
 <h4 id="langchain-docs-mcp-server">LangChain Docs MCP Server</h4>
@@ -627,7 +635,7 @@ uv run python env_utils.py
 <details>
 <summary>Wrong Python version</summary>
 <p>The course requires Python 3.11–3.14.</p>
-<p><strong>Solution:</strong> If using <code>uv</code>, run <code>uv sync</code>: it will install the correct Python version automatically. If using pip, install Python 3.11–3.14 from <a href="https://www.python.org/downloads/" target="_blank" rel="noopener noreferrer">python.org</a>.</p>
+<p><strong>Solution:</strong> If using <code>uv</code>, run <code>uv sync</code>; it will install the correct Python version automatically. If using pip, install Python 3.11–3.14 from <a href="https://www.python.org/downloads/" target="_blank" rel="noopener noreferrer">python.org</a>.</p>
 </details>
 <h3 id="getting-started-with-langsmith">Getting Started with LangSmith</h3>
 <ul>
@@ -638,7 +646,7 @@ uv run python env_utils.py
 <img width="600" alt="LangSmith API key - step 2" src="https://github.com/user-attachments/assets/2e916b2d-e3b0-4c59-a178-c5818604b8fe" /></p>
 <h3 id="installing-uv">Installing uv</h3>
 <p>See the <a href="https://docs.astral.sh/uv/getting-started/installation/" target="_blank" rel="noopener noreferrer">uv installation docs</a> for full instructions. Common options:</p>
-<pre><code class="language-bash"># macOS / Linux
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash"># macOS / Linux
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # macOS with Homebrew
@@ -775,6 +783,47 @@ powershell -ExecutionPolicy ByPass -c &quot;irm https://astral.sh/uv/install.ps1
                 }
             });
         }
+    </script>
+
+    <script>
+    // Attach copy handlers to static .copy-button-inline buttons injected at build time.
+    // This runs synchronously so it fires before Babel compiles the text/babel script.
+    (function () {
+        function attachCopyHandler(button) {
+            if (button.dataset.copySetup) return;
+            button.dataset.copySetup = '1';
+            var pre = button.closest('pre');
+            var code = pre && pre.querySelector('code');
+            if (!code) return;
+            function showDone() {
+                button.textContent = '✓';
+                button.classList.add('copied');
+                setTimeout(function () {
+                    button.textContent = '';
+                    button.classList.remove('copied');
+                }, 2000);
+            }
+            function fallback(text) {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(ta);
+                showDone();
+            }
+            button.addEventListener('click', function () {
+                var text = code.textContent;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(showDone, function () { fallback(text); });
+                } else {
+                    fallback(text);
+                }
+            });
+        }
+        document.querySelectorAll('pre:not(.no-copy) .copy-button-inline').forEach(attachCopyHandler);
+    })();
     </script>
 
     <script type="text/babel">
@@ -1009,7 +1058,11 @@ powershell -ExecutionPolicy ByPass -c &quot;irm https://astral.sh/uv/install.ps1
                                     right: '1rem',
                                     padding: '0',
                                     border: 'none',
-                                    background: copied ? 'none' : 'transparent url("symbols/copy.png") center/18px no-repeat',
+                                    backgroundImage: copied ? 'none' : 'url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23cfe8ff%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Crect x=%279%27 y=%279%27 width=%2713%27 height=%2713%27 rx=%272%27/%3E%3Cpath d=%27M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1%27/%3E%3C/svg%3E")',
+                                    backgroundColor: copied ? 'transparent' : 'rgba(127, 200, 255, 0.14)',
+                                    backgroundPosition: 'center',
+                                    backgroundSize: '16px',
+                                    backgroundRepeat: 'no-repeat',
                                     cursor: 'pointer',
                                     borderRadius: '4px',
                                     width: '28px',
@@ -1170,17 +1223,21 @@ powershell -ExecutionPolicy ByPass -c &quot;irm https://astral.sh/uv/install.ps1
             const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre):not(.no-copy)');
 
             preBlocks.forEach(pre => {
-                // Skip if already has a copy button
-                if (pre.querySelector('.copy-button-inline')) return;
-
                 const code = pre.querySelector('code');
                 if (!code) return;
 
-                // Create copy button
-                const button = document.createElement('button');
-                button.className = 'copy-button-inline';
-                button.setAttribute('aria-label', 'Copy code');
-                button.setAttribute('title', 'Copy code');
+                // Use existing static button (injected at convert time) or create one
+                let button = pre.querySelector('.copy-button-inline');
+                if (!button) {
+                    button = document.createElement('button');
+                    button.className = 'copy-button-inline';
+                    button.setAttribute('aria-label', 'Copy code');
+                    button.setAttribute('title', 'Copy code');
+                    pre.appendChild(button);
+                } else if (button.dataset.copySetup) {
+                    return;
+                }
+                button.dataset.copySetup = '1';
 
                 button.addEventListener('click', async () => {
                     const text = code.textContent;
@@ -1219,8 +1276,6 @@ powershell -ExecutionPolicy ByPass -c &quot;irm https://astral.sh/uv/install.ps1
                         }
                     }
                 });
-
-                pre.appendChild(button);
             });
         }
 

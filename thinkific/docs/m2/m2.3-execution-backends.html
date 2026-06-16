@@ -136,6 +136,7 @@
         pre {
             background: #030710;
             padding: 0.5rem 1rem;
+            padding-top: 2.85rem;
             border-radius: 12px;
             overflow-x: auto;
             overflow-y: auto;
@@ -212,27 +213,31 @@
             background: #0a0f1a;
             border: 1px solid #1a2a3a;
             opacity: 0.85;
+            padding-top: 0.75rem;
         }
 
         pre .copy-button-inline {
             position: absolute;
             top: 0.5rem;
-            right: 1rem;
+            right: 0.5rem;
             padding: 0;
             border: none;
-            background: transparent url('symbols/copy.png') center/18px no-repeat;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
+            background-position: center;
+            background-size: 16px;
+            background-repeat: no-repeat;
+            background-color: rgba(127, 200, 255, 0.14);
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: all 0.2s;
             width: 28px;
             height: 28px;
-            opacity: 0.7;
-            filter: invert(1) brightness(1);
+            opacity: 0.85;
         }
 
         pre .copy-button-inline:hover {
             opacity: 1;
-            filter: invert(1) brightness(1);
+            background-color: rgba(127, 200, 255, 0.30);
         }
 
         pre .copy-button-inline.copied {
@@ -441,22 +446,25 @@
         .copy-button {
             padding: 0;
             border: none;
-            background: transparent url('symbols/copy.png') center/20px no-repeat;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
+            background-position: center;
+            background-size: 16px;
+            background-repeat: no-repeat;
+            background-color: rgba(127, 200, 255, 0.14);
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 32px;
             height: 32px;
-            opacity: 0.7;
-            filter: invert(1) brightness(1);
+            opacity: 0.85;
         }
 
         .copy-button:hover {
             opacity: 1;
-            filter: invert(1) brightness(1);
+            background-color: rgba(127, 200, 255, 0.30);
         }
 
         .copy-button.copied {
@@ -726,7 +734,7 @@ graph TB
 <p>This lab uses <code>LangSmithSandbox</code>; commands run in an isolated LangSmith-managed environment, not on your local machine.</p>
 <hr />
 <p>Create <code>python/m2/sandbox_agent.py</code>:</p>
-<pre><code class="language-python"># python/m2/sandbox_agent.py
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m2/sandbox_agent.py
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -766,7 +774,7 @@ try:
 finally:
     client.delete_sandbox(ls_sandbox.name)
 </code></pre>
-<pre><code class="language-bash">cd python
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">cd python
 uv run ./m2/sandbox_agent.py
 </code></pre>
 <hr />
@@ -785,6 +793,167 @@ uv run ./m2/sandbox_agent.py
 <li><code>"Write a Python script that generates a multiplication table for numbers 1 to 5, save it to times_table.py, and run it."</code></li>
 </ul>
 </div>
+<div class="lt-panel" id="p-lab2" role="tabpanel">
+<h2 id="lab-2-sales-chart-agent">Lab 2: Sales Chart Agent</h2>
+<p>Build an agent that queries the Chinook music store database inside a sandbox and generates a chart. The agent installs its own dependencies, writes and runs Python, and you retrieve the output file from the sandbox.</p>
+<p>This lab introduces two new patterns: <strong>uploading files</strong> to a sandbox before the agent runs, and <strong>reading files</strong> back from the sandbox after it finishes.</p>
+<hr />
+<!-- code-highlight-2:13,14,16,17,55,56,57 -->
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m2/m2_3_sales_agent.py
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from models import model
+from deepagents import create_deep_agent
+from deepagents.backends.langsmith import LangSmithSandbox
+from langsmith.sandbox import SandboxClient
+
+DB_PATH = Path(__file__).resolve().parent / &quot;chinook.db&quot;
+
+client = SandboxClient()
+ls_sandbox = client.create_sandbox(name=&quot;lca-deepagents-lab&quot;)
+print(f&quot;Sandbox: {ls_sandbox.name}  (id: {ls_sandbox.id})&quot;)
+
+backend = LangSmithSandbox(sandbox=ls_sandbox)
+with open(DB_PATH, &quot;rb&quot;) as f:
+    backend.upload_files([(&quot;/chinook.db&quot;, f.read())])
+
+agent = create_deep_agent(
+    model=model,
+    backend=backend,
+    system_prompt=(
+        &quot;You are a sales data analyst with access to the Chinook music store database &quot;
+        &quot;at /chinook.db. Use sqlite3 and matplotlib to answer questions with charts. &quot;
+        &quot;Install any packages you need with pip before importing them. &quot;
+        &quot;When asked to produce a chart, write a Python script, execute it, and confirm &quot;
+        &quot;the output file was created.&quot;
+    ),
+)
+
+try:
+    result = agent.invoke(
+        {
+            &quot;messages&quot;: [
+                {
+                    &quot;role&quot;: &quot;user&quot;,
+                    &quot;content&quot;: (
+                        &quot;Query the Chinook database at /chinook.db to get total revenue &quot;
+                        &quot;by genre. Create a clean donut chart showing each genre's share &quot;
+                        &quot;of total sales revenue. Group any genres that individually &quot;
+                        &quot;account for less than 3% of total revenue into a single 'Other' &quot;
+                        &quot;slice. Label each slice with the genre name and percentage. &quot;
+                        &quot;Use a visually distinct color palette, leave a white center hole, &quot;
+                        &quot;and make sure no labels overlap with each other or with the title. &quot;
+                        &quot;Add enough top padding so the title is fully visible. &quot;
+                        &quot;Save the chart to /genre_revenue.png.&quot;
+                    ),
+                }
+            ]
+        }
+    )
+    print(result[&quot;messages&quot;][-1].content)
+
+    png_bytes = ls_sandbox.read(&quot;/genre_revenue.png&quot;)
+    out_path = Path(__file__).parent / &quot;genre_revenue.png&quot;
+    out_path.write_bytes(png_bytes)
+    print(f&quot;Chart saved to {out_path}&quot;)
+
+finally:
+    client.delete_sandbox(ls_sandbox.name)
+</code></pre>
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">cd python
+uv run ./m2/m2_3_sales_agent.py
+open m2/genre_revenue.png
+</code></pre>
+<hr />
+<p><strong>Expected output:</strong></p>
+<pre style="max-height:260px;overflow-y:auto;background:#0d1117;color:#e6edf3;padding:16px;border-radius:6px;font-size:12px;font-family:'IBM Plex Mono',monospace;line-height:1.6;white-space:pre-wrap;"><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button>Sandbox: lca-deepagents-lab  (id: 510c7cfa-7809-4317-a272-715c05221a24)
+Done! I've successfully created your donut chart showing revenue by genre.
+
+Data Summary:
+- Total Revenue: $2,328.60
+- Rock: 35.5% ($826.65)
+- Latin: 16.4% ($382.14)
+- Metal: 11.2% ($261.36)
+- Alternative &amp; Punk: 10.4% ($241.56)
+- TV Shows: 4.0% ($93.53)
+- Jazz: 3.4% ($79.20)
+- Other (&lt;3%): 19.1% ($444.16)
+
+Chart saved to python/m2/genre_revenue.png</pre>
+<p>The chart is saved locally as <code>genre_revenue.png</code>. Open it with <code>open m2/genre_revenue.png</code>.</p>
+<details>
+<summary>📊 Expected chart [click to expand]</summary>
+<p><br><br />
+<img width="480" alt="Donut chart showing Chinook revenue by genre" src="../m2/images/genre_revenue.png" /></p>
+</details>
+</div>
+<hr />
+<h2 id="check-your-understanding">Check your understanding</h2>
+<div class="mcq-container" id="mcq-70606047">
+    <div class="mcq-question">
+        <strong>Question:</strong> What does the execute tool return to the agent?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, true, '70606047')"><strong>A)</strong> stdout, stderr, and an exit code</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '70606047')"><strong>B)</strong> The script file contents</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '70606047')"><strong>C)</strong> A boolean success or failure</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '70606047')"><strong>D)</strong> stdout only</div>
+    </div>
+    <div id="mcq-answer-70606047" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: A</strong> &#10003;</div>
+        <div class="mcq-explanation">execute returns stdout, stderr, and an exit code as a tool result. The LLM sees all three on the next call, which lets it diagnose errors and retry.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-df396afc">
+    <div class="mcq-question">
+        <strong>Question:</strong> What does root_dir limit in LocalShellBackend?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'df396afc')"><strong>A)</strong> All shell commands executed via execute</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, 'df396afc')"><strong>B)</strong> Filesystem tool access — ls, read_file, write_file, and similar</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'df396afc')"><strong>C)</strong> Network access from the agent</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'df396afc')"><strong>D)</strong> Which Python packages the agent can import</div>
+    </div>
+    <div id="mcq-answer-df396afc" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: B</strong> &#10003;</div>
+        <div class="mcq-explanation">root_dir scopes the filesystem tools only. The execute tool still runs with full host permissions regardless of root_dir — that's why LocalShellBackend is unsuitable for production.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-420f73f9">
+    <div class="mcq-question">
+        <strong>Question:</strong> Which sandbox model does this course use?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '420f73f9')"><strong>A)</strong> Agent in Sandbox — the agent runs inside the sandbox</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '420f73f9')"><strong>B)</strong> Both models equally</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '420f73f9')"><strong>C)</strong> Neither — the course uses LocalShellBackend</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '420f73f9')"><strong>D)</strong> Sandbox as a Tool — the agent runs outside and calls the sandbox via execute</div>
+    </div>
+    <div id="mcq-answer-420f73f9" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> &#10003;</div>
+        <div class="mcq-explanation">This course uses the Sandbox as a Tool pattern: the agent runs on the host and calls the sandbox via execute and filesystem tools. API keys stay on the host and the agent code is easy to update.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-638ff72b">
+    <div class="mcq-question">
+        <strong>Question:</strong> How do you make a local file available inside a LangSmith sandbox before the agent runs?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '638ff72b')"><strong>A)</strong> Pass the file path in the system prompt</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '638ff72b')"><strong>B)</strong> The sandbox automatically syncs the local filesystem</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '638ff72b')"><strong>C)</strong> Call backend.upload_files() with the file contents before invoking the agent</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '638ff72b')"><strong>D)</strong> Write the file to /tmp — the sandbox reads it from there</div>
+    </div>
+    <div id="mcq-answer-638ff72b" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: C</strong> &#10003;</div>
+        <div class="mcq-explanation">upload_files() seeds the sandbox filesystem before the agent starts. Without it the sandbox starts empty — the agent has no access to local files unless you explicitly upload them.</div>
+    </div>
+</div>
+
 <script>
 (function () {
   var tabs = document.querySelectorAll('.lt-tab');
@@ -918,6 +1087,47 @@ uv run ./m2/sandbox_agent.py
                 }
             });
         }
+    </script>
+
+    <script>
+    // Attach copy handlers to static .copy-button-inline buttons injected at build time.
+    // This runs synchronously so it fires before Babel compiles the text/babel script.
+    (function () {
+        function attachCopyHandler(button) {
+            if (button.dataset.copySetup) return;
+            button.dataset.copySetup = '1';
+            var pre = button.closest('pre');
+            var code = pre && pre.querySelector('code');
+            if (!code) return;
+            function showDone() {
+                button.textContent = '✓';
+                button.classList.add('copied');
+                setTimeout(function () {
+                    button.textContent = '';
+                    button.classList.remove('copied');
+                }, 2000);
+            }
+            function fallback(text) {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(ta);
+                showDone();
+            }
+            button.addEventListener('click', function () {
+                var text = code.textContent;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(showDone, function () { fallback(text); });
+                } else {
+                    fallback(text);
+                }
+            });
+        }
+        document.querySelectorAll('pre:not(.no-copy) .copy-button-inline').forEach(attachCopyHandler);
+    })();
     </script>
 
     <script type="text/babel">
@@ -1152,7 +1362,11 @@ uv run ./m2/sandbox_agent.py
                                     right: '1rem',
                                     padding: '0',
                                     border: 'none',
-                                    background: copied ? 'none' : 'transparent url("symbols/copy.png") center/18px no-repeat',
+                                    backgroundImage: copied ? 'none' : 'url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23cfe8ff%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Crect x=%279%27 y=%279%27 width=%2713%27 height=%2713%27 rx=%272%27/%3E%3Cpath d=%27M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1%27/%3E%3C/svg%3E")',
+                                    backgroundColor: copied ? 'transparent' : 'rgba(127, 200, 255, 0.14)',
+                                    backgroundPosition: 'center',
+                                    backgroundSize: '16px',
+                                    backgroundRepeat: 'no-repeat',
                                     cursor: 'pointer',
                                     borderRadius: '4px',
                                     width: '28px',
@@ -1313,17 +1527,21 @@ uv run ./m2/sandbox_agent.py
             const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre):not(.no-copy)');
 
             preBlocks.forEach(pre => {
-                // Skip if already has a copy button
-                if (pre.querySelector('.copy-button-inline')) return;
-
                 const code = pre.querySelector('code');
                 if (!code) return;
 
-                // Create copy button
-                const button = document.createElement('button');
-                button.className = 'copy-button-inline';
-                button.setAttribute('aria-label', 'Copy code');
-                button.setAttribute('title', 'Copy code');
+                // Use existing static button (injected at convert time) or create one
+                let button = pre.querySelector('.copy-button-inline');
+                if (!button) {
+                    button = document.createElement('button');
+                    button.className = 'copy-button-inline';
+                    button.setAttribute('aria-label', 'Copy code');
+                    button.setAttribute('title', 'Copy code');
+                    pre.appendChild(button);
+                } else if (button.dataset.copySetup) {
+                    return;
+                }
+                button.dataset.copySetup = '1';
 
                 button.addEventListener('click', async () => {
                     const text = code.textContent;
@@ -1362,8 +1580,6 @@ uv run ./m2/sandbox_agent.py
                         }
                     }
                 });
-
-                pre.appendChild(button);
             });
         }
 

@@ -214,6 +214,7 @@ details > *:not(summary) { padding: 0 16px; }
 /* ── Code-block copy button: always-visible icon, never overlapping the code ── */
 /* Extra top padding reserves a band for the button so the first line stays clear. */
 pre { padding-top: 2.85rem; }
+pre.no-copy { padding-top: 0.75rem; }
 
 /* Self-contained clipboard icon (inline SVG data-URI) so the button shows even
    when the pipeline's symbols/copy.png isn't copied next to the page. */

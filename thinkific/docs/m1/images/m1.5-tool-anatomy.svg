@@ -6,12 +6,12 @@
 
   <!-- editor window: narrowed to give annotation boxes more room -->
   <rect x="36" y="65" width="320" height="248" rx="8" fill="#0D1322" stroke="#2F4B68" stroke-width="1.5"/>
-  <rect x="36" y="65" width="320" height="26" rx="8" fill="#161F34"/>
-  <rect x="36" y="83" width="320" height="8" fill="#161F34"/>
+  <rect x="36" y="65" width="320" height="26" rx="8" fill="#1E3A5F"/>
+  <rect x="36" y="83" width="320" height="8" fill="#1E3A5F"/>
   <circle cx="52" cy="78" r="4" fill="#441E33"/>
   <circle cx="66" cy="78" r="4" fill="#634643"/>
   <circle cx="80" cy="78" r="4" fill="#2E3900"/>
-  <text x="96" y="82" font-size="9" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">agent.py</text>
+  <text x="96" y="82" font-size="9" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">agent.py</text>
 
   <!-- highlight rects -->
   <rect x="40" y="148" width="312" height="22" rx="3" fill="#2E3900" stroke="#6E8900" stroke-width="1.5"/>
@@ -53,5 +53,5 @@
 
   <!-- footer -->
   <text x="400" y="408" text-anchor="middle" font-size="10" fill="#B2DEFF">The description is the most important: it is the only signal the model has for deciding when to reach for this tool.</text>
-  <text x="400" y="426" text-anchor="middle" font-size="9" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Write it as a clear, specific sentence describing what the tool does and when to use it.</text>
+  <text x="400" y="426" text-anchor="middle" font-size="9" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Write it as a clear, specific sentence describing what the tool does and when to use it.</text>
 </svg>

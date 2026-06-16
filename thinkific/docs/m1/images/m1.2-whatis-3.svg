@@ -8,7 +8,7 @@
   <text x="80" y="92" font-size="11" font-weight="400" fill="#5BADDF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">DEEP AGENT  ·  agent harness</text>
 
   <!-- AGENT box -->
-  <rect x="170" y="120" width="400" height="200" rx="8" fill="#161F34" stroke="#40668D" stroke-width="2"/>
+  <rect x="170" y="120" width="400" height="200" rx="8" fill="#1E3A5F" stroke="#40668D" stroke-width="2"/>
   <text x="190" y="141" font-size="11" font-weight="400" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">AGENT  ·  tool-calling loop</text>
 
   <!-- LLM -->

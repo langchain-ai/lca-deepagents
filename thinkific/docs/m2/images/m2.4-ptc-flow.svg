@@ -1,0 +1,94 @@
+<svg width="760" height="340" xmlns="http://www.w3.org/2000/svg">
+  <rect width="760" height="340" fill="#F2FAFF" rx="8"/>
+
+  <!-- Title -->
+  <text x="380" y="28" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" font-weight="600" fill="#030710">Programmatic Tool Calling — 6 queries, 1 LLM tool call</text>
+
+  <!-- Column headers -->
+  <text x="90" y="52" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#40668D">LLM</text>
+  <text x="380" y="52" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#40668D">JavaScript  (inside eval)</text>
+  <text x="650" y="52" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#40668D">Python host</text>
+
+  <!-- Dividers -->
+  <line x1="210" y1="38" x2="210" y2="320" stroke="#CCE9FF" stroke-width="1" stroke-dasharray="4"/>
+  <line x1="530" y1="38" x2="530" y2="320" stroke="#CCE9FF" stroke-width="1" stroke-dasharray="4"/>
+
+  <!-- LLM box top -->
+  <rect x="20" y="62" width="140" height="36" rx="6" fill="#161F34" stroke="#2F4B68"/>
+  <text x="90" y="85" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#7FC8FF">LLM</text>
+
+  <!-- Arrow: LLM → eval -->
+  <line x1="160" y1="80" x2="222" y2="80" stroke="#006DDD" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="191" y="74" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#006DDD">eval(code)</text>
+
+  <!-- eval box -->
+  <rect x="225" y="62" width="300" height="36" rx="6" fill="#CCE9FF" stroke="#006DDD" stroke-width="1.5"/>
+  <text x="375" y="85" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#030710">eval( JS code )</text>
+
+  <!-- Arrow: eval → query 1 on Python -->
+  <line x1="525" y1="80" x2="535" y2="80" stroke="#2F4B68" stroke-width="1"/>
+  <line x1="540" y1="62" x2="540" y2="98" stroke="#2F4B68" stroke-width="1"/>
+
+  <!-- Arrow down inside JS column -->
+  <line x1="375" y1="98" x2="375" y2="118" stroke="#2F4B68" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Call 1 box in JS -->
+  <rect x="225" y="118" width="300" height="32" rx="4" fill="#E5F4FF" stroke="#006DDD"/>
+  <text x="375" y="138" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#030710">query: top 5 genres by revenue</text>
+
+  <!-- Arrow: Call 1 → Python -->
+  <line x1="525" y1="134" x2="615" y2="134" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4"/>
+
+  <!-- Python: query 1 -->
+  <rect x="545" y="118" width="200" height="32" rx="4" fill="#E5F4FF" stroke="#40668D"/>
+  <text x="645" y="138" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#030710">query_chinook( ) ×1</text>
+
+  <!-- Arrow: result back to JS -->
+  <line x1="545" y1="150" x2="525" y2="165" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4"/>
+  <text x="590" y="163" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#40668D">genre IDs</text>
+
+  <!-- Arrow down: drives parallel calls -->
+  <line x1="375" y1="150" x2="375" y2="175" stroke="#2F4B68" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="450" y="170" font-family="IBM Plex Mono,monospace" font-size="10" fill="#40668D">drives →</text>
+
+  <!-- Call 2-6 box in JS -->
+  <rect x="225" y="178" width="300" height="32" rx="4" fill="#E5F4FF" stroke="#006DDD"/>
+  <text x="375" y="194" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#030710">Promise.all — top track per genre</text>
+  <text x="375" y="206" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#40668D">(Rock, Latin, Metal, Alt&amp;Punk, TV Shows)</text>
+
+  <!-- Arrow: Calls 2-6 → Python -->
+  <line x1="525" y1="194" x2="615" y2="194" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4"/>
+
+  <!-- Python: queries 2-6 -->
+  <rect x="545" y="178" width="200" height="32" rx="4" fill="#E5F4FF" stroke="#40668D"/>
+  <text x="645" y="198" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#030710">query_chinook( ) ×5</text>
+
+  <!-- Arrow: results back -->
+  <line x1="545" y1="210" x2="525" y2="225" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4"/>
+  <text x="593" y="223" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#40668D">track names</text>
+
+  <!-- Arrow down: combine -->
+  <line x1="375" y1="210" x2="375" y2="235" stroke="#2F4B68" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Combine box -->
+  <rect x="225" y="238" width="300" height="32" rx="4" fill="#030710" stroke="#2F4B68"/>
+  <text x="375" y="258" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#7FC8FF">combine + format ranking</text>
+
+  <!-- Arrow: result → LLM -->
+  <line x1="225" y1="254" x2="163" y2="254" stroke="#006DDD" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="192" y="248" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#006DDD">result</text>
+
+  <!-- LLM box bottom -->
+  <rect x="20" y="238" width="140" height="36" rx="6" fill="#161F34" stroke="#2F4B68"/>
+  <text x="90" y="261" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#7FC8FF">LLM</text>
+
+  <!-- Footer note -->
+  <text x="380" y="308" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#40668D">6 SQL queries run inside eval — only the formatted result reaches the LLM context window</text>
+
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2F4B68"/>
+    </marker>
+  </defs>
+</svg>
