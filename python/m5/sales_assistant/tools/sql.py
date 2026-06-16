@@ -24,9 +24,9 @@ from pathlib import Path
 
 from langchain.tools import tool
 
-# The database ships next to the module. Read path uses a read-only URI so even
-# a creative SELECT (e.g. a sqlite PRAGMA write) cannot change the file.
-DB_PATH = Path(__file__).resolve().parent.parent / "chinook.db"
+# The database ships with the agent under data/. Read path uses a read-only URI
+# so even a creative SELECT (e.g. a sqlite PRAGMA write) cannot change the file.
+DB_PATH = Path(__file__).resolve().parent.parent / "data" / "chinook.db"
 _RO_URI = f"file:{DB_PATH}?mode=ro"
 
 # The persona: Jane Peacock, Sales Support Agent. "My customers" = SupportRepId.

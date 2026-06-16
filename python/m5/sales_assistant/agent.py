@@ -22,7 +22,8 @@ from pathlib import Path
 
 # Make the shared workshop model module importable (python/models.py). models.py
 # also calls load_dotenv, so env vars (API keys, GMAIL_BACKEND) are loaded.
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+# parents[2] = python/ (this file is python/m5/sales_assistant/agent.py).
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from models import strong_model  # noqa: E402
 
 from deepagents import create_deep_agent  # noqa: E402
