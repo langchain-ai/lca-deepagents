@@ -724,6 +724,21 @@ Available skills:
 <h2 id="sales-assistant-with-skills">Sales Assistant with Skills</h2>
 <p>This lab uses a sales assistant with two skills: one for qualifying leads and one for drafting pitches. Using two skills makes the discovery and activation stages visible: both descriptions are always in the system prompt, but only the relevant skill's <code>SKILL.md</code> is read when needed.</p>
 <p>All files are already in the repo under <code>python/m3/</code>. Open <code>m3.2_scratch_agent_skills.py</code> and run it directly, or use a coding agent to explore the setup.</p>
+<details class="video-walkthrough">
+<summary>Video Walk-through [click to expand] — script available, video later</summary>
+<p><br></p>
+<p><strong>Script (will be recorded):</strong> [Open m3.2_scratch_agent_skills.py in VS Code]</p>
+<p>This is the whole agent! The point of this lab is to see skills in action so let's get right to it.</p>
+<p>[Highlight create_deep_agent]</p>
+<p>There are only three things being passed here: the model, a system prompt saying "You are a sales assistant", and the skills= parameter pointing to the skills/ directory. That's it. The SDK scans that directory, reads the frontmatter from each SKILL.md, and generates the Skills System block in the system prompt automatically.</p>
+<p>[Highlight the agent.invoke line]</p>
+<p>The agent is invoked with a single message: qualifying a lead at Acme Corp. Run this and you'll see the agent activate the qualify-lead skill; it calls read_file on qualify-lead/SKILL.md, loads the BANT framework instructions, and follows them.</p>
+<p>[Run it in terminal]</p>
+<p>Let's run it. Watch the output: the agent works through the qualification steps and classifies the lead.</p>
+<p>Now try swapping the message for: "Write a cold outreach message for a prospect at a mid-size logistics company." That will activate draft-pitch instead.</p>
+<p>[Open LangSmith]</p>
+<p>Let's open both runs in LangSmith and compare the system messages. In both, you'll see the Skills System section listing both skill names and descriptions. But the read_file call will target a different SKILL.md in each run. That's the activation stage made visible. The description was the only thing that determined which skill got loaded.</p>
+</details>
 <hr />
 <h3 id="1-qualify-leadskillmd">1. <code>qualify-lead/SKILL.md</code></h3>
 <p>Located at <code>python/m3/skills/qualify-lead/SKILL.md</code>:</p>
