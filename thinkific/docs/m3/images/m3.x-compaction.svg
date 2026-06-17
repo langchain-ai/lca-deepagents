@@ -67,7 +67,7 @@
   <line x1="463" y1="295" x2="677" y2="295" stroke="#7FC8FF" stroke-width="1"/>
   <text x="570" y="312" text-anchor="middle" font-size="12" fill="#030710">Session intent &#xb7; key facts</text>
   <text x="570" y="330" text-anchor="middle" font-size="12" fill="#030710">decisions &#xb7; next steps</text>
-  <text x="570" y="354" text-anchor="middle" font-size="11" font-style="italic" fill="#40668D">&#x2190; replaced 5 old messages</text>
+  <text x="570" y="354" text-anchor="middle" font-size="11" font-style="italic" fill="#40668D">&#x2190; replaced 4 old messages</text>
 
   <!-- Thermometer: After (~30% full) -->
   <rect x="718" y="90" width="18" height="410" rx="9" fill="#FFFFFF" stroke="#CCE9FF" stroke-width="1.5"/>
