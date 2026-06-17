@@ -634,7 +634,7 @@ graph TB
 <div class="mermaid">
 graph LR
     A1[Agent] --&gt; SB[StoreBackend]
-    SB --&gt; D1[(Store)]
+    SB --&gt; D1[Store]
 
     classDef agent fill:#CCE9FF,stroke:#006DDD,stroke-width:2px,color:#030710
     classDef backend fill:#7FC8FF,stroke:#006DDD,stroke-width:2px,color:#030710
@@ -650,7 +650,7 @@ graph LR
 <div class="mermaid">
 graph LR
     A2[Agent] --&gt; CB[CompositeBackend]
-    CB --&gt;|"/memories/, /skills/"| D2[(Store)]
+    CB --&gt;|"/memories/, /skills/"| D2[Store]
     CB --&gt;|"everything else"| ST[State]
 
     classDef agent fill:#CCE9FF,stroke:#006DDD,stroke-width:2px,color:#030710
