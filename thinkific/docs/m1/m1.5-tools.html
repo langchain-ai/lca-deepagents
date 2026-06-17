@@ -585,7 +585,7 @@
 <div class="lt-panel active" id="p-tools" role="tabpanel">
 <h2 id="tools-extending-the-agent">Tools: Extending the Agent</h2>
 <details class="video-walkthrough">
-<summary>Video Walk-through [click to expand] — placeholder, not yet recorded</summary>
+<summary>Video Walk-through [click to expand] — script available, video later</summary>
 <p><br></p>
 <p><strong>Script (will be recorded):</strong> Tools are functions you give an agent so it can act: look things up, run queries, call APIs. You define what they do and the agent decides when and how to call them.</p>
 <p>Every deep agent ships with a built-in set: you already saw them in the LangSmith trace as write_todos and Filesystem Tools in the system message.</p>
@@ -746,7 +746,7 @@ buildDiagram({
 </details>
 <h3 id="defining-a-tool-with-tool">Defining a tool with <code>@tool</code></h3>
 <details class="video-walkthrough">
-<summary>Video Walk-through [click to expand] — placeholder, not yet recorded</summary>
+<summary>Video Walk-through [click to expand] — script available, video later</summary>
 <p><br></p>
 <p><strong>Script (will be recorded):</strong> Now we're at the fun part! Defining a tool with the @tool decorator!</p>
 <p>The @tool decorator from the langchain library is super simple: you write a regular Python function and the decorator turns it into something the model can call.</p>
@@ -771,7 +771,7 @@ def get_stock_price(ticker: str) -&gt; str:
 <p><strong>Human-in-the-Loop (HITL)</strong> is a pattern where agent execution pauses at a critical step and waits for a human to approve, modify, or cancel before continuing. It is important because agents can take irreversible actions: writing to a database, sending a message, deleting a file. HITL gives you a checkpoint before those actions happen.</p>
 </blockquote>
 <details class="video-walkthrough">
-<summary>Video Walk-through [click to expand] — placeholder, not yet recorded</summary>
+<summary>Video Walk-through [click to expand] — script available, video later</summary>
 <p><br></p>
 <p><strong>Script (will be recorded):</strong> Now that you know how to define tools, it's important to keep in mind that tools can take irreversible actions, such as writing to a database, sending a message, deleting a file.</p>
 <p>Human-in-the-Loop is how you put a checkpoint before those actions happen, so the agent pauses and waits for you to approve, modify, or cancel before continuing.</p>
@@ -1005,7 +1005,7 @@ def get_stock_price(ticker: str) -&gt; str:
 </ul>
 <p>The <a href="https://github.com/lerocha/chinook-database" target="_blank" rel="noopener noreferrer">Chinook</a> database is a standard SQLite music store sample with 11 tables covering artists, albums, tracks, customers, invoices, and employees. The file is already in the repo at <code>python/m1/chinook.db</code>.</p>
 <details class="video-walkthrough">
-<summary>Video Walk-through [click to expand] — placeholder, not yet recorded</summary>
+<summary>Video Walk-through [click to expand] — script available, video later</summary>
 <p><br></p>
 <p><strong>Script (will be recorded):</strong> [Open scratch_agent_tools in VSCode]</p>
 <p>This lab puts everything we just covered into practice. We have two SQL tools and Human-in-the-Loop on the write operation. Let's walk through the file.</p>
