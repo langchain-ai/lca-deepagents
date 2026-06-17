@@ -526,7 +526,7 @@
     </style>
 </head>
 <body>
-    <p><a href="https://langchain-ai.github.io/lca-deepagents/m5/m5.2-local-deployment.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
+    <p><a href="https://langchain-ai.github.io/lca-deepagents/m5/m5.2-local-deployment.html" target="_blank" rel="noopener noreferrer">For translation, open lesson in new tab and use Chrome translate</a></p>
 <style>@import url('../shared/sd-components.css');</style>
 <script src="../shared/sd-components.js"></script>
 
@@ -540,8 +540,9 @@
   border-bottom: 2px solid #CCE9FF;
 }
 .lt-group { display: flex; gap: 3px; }
-.lt-dep { --c: #006DDD; }
-.lt-lab { --c: #B45309; }
+.lt-dep  { --c: #006DDD; }
+.lt-quiz { --c: #7C3AED; }
+.lt-lab  { --c: #B45309; }
 .lt-tab {
   font: 500 14px 'IBM Plex Mono', monospace;
   padding: 9px 14px;
@@ -573,16 +574,24 @@
   <div class="lt-group lt-dep">
     <button class="lt-tab active" data-p="lesson" role="tab" aria-selected="true">Local Deployment</button>
   </div>
+  <div class="lt-group lt-quiz">
+    <button class="lt-tab" data-p="quiz" role="tab" aria-selected="false">Quiz</button>
+  </div>
   <div class="lt-group lt-lab">
     <button class="lt-tab" data-p="lab" role="tab" aria-selected="false">Lab</button>
   </div>
 </div>
 
 <div class="lt-panel active" id="p-lesson" role="tabpanel">
-<details>
-<summary>🎥 Video Walk-through [click to expand]</summary>
-<p><br></p>
+<details class="video-walkthrough">
+<summary>Video Walk-through [click to expand]</summary>
+<br>
+
+
 <Video src="TODO" />
+
+
+
 </details>
 <p>So far you've run every agent as a Python script that calls <code>agent.invoke(...)</code> and prints the result. That's a great fit for one-off tasks. The Chinook Sales Assistant you'll build and run next has different requirements: it must remain available and accept requests over the web, so it runs as a <strong>service</strong> rather than a one-time script.</p>
 <div style="text-align: center;">
@@ -744,6 +753,8 @@
 <li><strong><code>langgraph dev</code> ships a client</strong> for that API: <strong>LangGraph Studio</strong>, a combined <strong>chat + debug</strong> interface: and any other chat UI talks to the agent the same way, over HTTP.</li>
 </ul>
 <p>Try it yourself in the <strong>Lab</strong> tab above.</p>
+</div>
+<div class="lt-panel" id="p-quiz" role="tabpanel">
 <h2 id="check-your-understanding">Check your understanding</h2>
 <div class="mcq-container" id="mcq-5326ed49">
     <div class="mcq-question">
@@ -811,6 +822,8 @@
     </div>
 </div>
 
+</div>
+<hr />
 <h2 id="next">Next</h2>
 <p>With deployment understood, the next lesson builds and runs the capstone itself: <strong>the Chinook Sales Assistant</strong>.</p>
 <hr />
@@ -819,9 +832,8 @@
 - <a href="https://docs.langchain.com/oss/python/langgraph/local-server" target="_blank" rel="noopener noreferrer">Run a local server (<code>langgraph dev</code>)</a><br />
 - <a href="https://docs.langchain.com/oss/python/langgraph/studio" target="_blank" rel="noopener noreferrer">LangGraph Studio</a><br />
 - <a href="https://docs.langchain.com/langsmith/server-api-ref" target="_blank" rel="noopener noreferrer">Agent Server API reference</a></p>
-</div>
 <div class="lt-panel" id="p-lab" role="tabpanel">
-<h2 id="lab-deploy-a-basic-agent">Lab: deploy a basic agent</h2>
+<h2 id="lab-deploy-a-basic-agent">Lab: Deploy a Basic Agent</h2>
 <p>You'll build a simple agent.</p>
 <p>The agent itself is a single <code>create_deep_agent</code> call. It pulls <code>model</code> from the course's shared <code>models.py</code> - so the agent uses whatever provider you configured during setup - and is exposed as a module-level <code>graph</code> so the server can find it:</p>
 <pre><code class="language-python"># python/m5/hello/agent.py

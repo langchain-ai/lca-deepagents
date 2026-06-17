@@ -10,7 +10,7 @@
   <rect x="30" y="90" width="268" height="410" rx="6" fill="#FFFFFF" stroke="#CCE9FF" stroke-width="1.5"/>
   <text x="164" y="109" text-anchor="middle" font-size="10" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace" letter-spacing="1">CONTEXT WINDOW</text>
 
-  <!-- Recent messages (kept — light blue) -->
+  <!-- Recent messages (kept light blue) -->
   <rect x="42" y="116" width="244" height="32" rx="3" fill="#E5F4FF" stroke="#006DDD" stroke-width="1"/>
   <text x="164" y="137" text-anchor="middle" font-size="12" fill="#030710">Human: What do you remember?</text>
   <rect x="42" y="152" width="244" height="32" rx="3" fill="#E5F4FF" stroke="#006DDD" stroke-width="1"/>
@@ -22,7 +22,7 @@
   <text x="164" y="237" text-anchor="middle" font-size="10" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace">keep cutoff</text>
   <line x1="30" y1="249" x2="298" y2="249" stroke="#40668D" stroke-width="1.5" stroke-dasharray="5,3"/>
 
-  <!-- Old messages (archived — dark) -->
+  <!-- Old messages (archived dark) -->
   <rect x="42" y="262" width="244" height="32" rx="3" fill="#0D1322" stroke="#40668D" stroke-width="1"/>
   <text x="164" y="283" text-anchor="middle" font-size="12" fill="#7FC8FF">AI: 4</text>
   <rect x="42" y="298" width="244" height="32" rx="3" fill="#0D1322" stroke="#40668D" stroke-width="1"/>

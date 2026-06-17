@@ -21,7 +21,7 @@
   <text x="54" y="155" text-anchor="end" font-size="8.5" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">main</text>
   <rect x="58" y="146" width="60" height="14" rx="3" fill="#7FC8FF"/>
   <rect x="118" y="146" width="182" height="14" rx="3" fill="#161F34" stroke="#40668D" stroke-width="1" stroke-dasharray="4 3"/>
-  <text x="209" y="156" text-anchor="middle" font-size="8" fill="#5BADDF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">blocked — waiting</text>
+  <text x="209" y="156" text-anchor="middle" font-size="8" fill="#5BADDF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">blocked, waiting</text>
   <rect x="300" y="146" width="42" height="14" rx="3" fill="#7FC8FF"/>
 
   <!-- subagent lanes -->

@@ -66,5 +66,5 @@
     <text x="620" y="328">Design</text>
   </g>
 
-  <text x="370" y="370" text-anchor="middle" font-size="9" fill="#5BADDF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Each subagent has its own prompt and isolated context — and optionally its own tools and model</text>
+  <text x="370" y="370" text-anchor="middle" font-size="9" fill="#5BADDF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Each subagent has its own prompt and isolated context, and optionally its own tools and model</text>
 </svg>

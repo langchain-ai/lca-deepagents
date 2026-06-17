@@ -526,7 +526,7 @@
     </style>
 </head>
 <body>
-    <p><a href="https://langchain-ai.github.io/lca-deepagents/m2/m2.3-execution-backends.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
+    <p><a href="https://langchain-ai.github.io/lca-deepagents/m2/m2.3-execution-backends.html" target="_blank" rel="noopener noreferrer">For translation, open lesson in new tab and use Chrome translate</a></p>
 <style>@import url('../shared/sd-components.css');</style>
 <script src="../shared/sd-components.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
@@ -544,6 +544,7 @@ document.addEventListener('DOMContentLoaded', function() { mermaid.run(); });</s
 }
 .lt-group { display: flex; gap: 3px; }
 .lt-exec { --c: #7C3AED; }
+.lt-quiz { --c: #7C3AED; }
 .lt-wrap { --c: #B45309; }
 .lt-tab {
   font: 500 14px 'IBM Plex Mono', monospace;
@@ -576,8 +577,12 @@ document.addEventListener('DOMContentLoaded', function() { mermaid.run(); });</s
   <div class="lt-group lt-exec">
     <button class="lt-tab active" data-p="exec" role="tab" aria-selected="true">Execution</button>
   </div>
+  <div class="lt-group lt-quiz">
+    <button class="lt-tab" data-p="quiz" role="tab" aria-selected="false">Quiz</button>
+  </div>
   <div class="lt-group lt-wrap">
-    <button class="lt-tab" data-p="lab1" role="tab" aria-selected="false">Lab</button>
+    <button class="lt-tab" data-p="lab1" role="tab" aria-selected="false">Lab 1</button>
+    <button class="lt-tab" data-p="lab2" role="tab" aria-selected="false">Lab 2</button>
   </div>
 </div>
 
@@ -873,24 +878,26 @@ Chart saved to python/m2/genre_revenue.png</pre>
 <img width="480" alt="Donut chart showing Chinook revenue by genre" src="../m2/images/genre_revenue.png" /></p>
 </details>
 </div>
-<hr />
+<div class="lt-panel" id="p-quiz" role="tabpanel">
 <h2 id="check-your-understanding">Check your understanding</h2>
 <div class="mcq-container" id="mcq-70606047">
     <div class="mcq-question">
         <strong>Question:</strong> What does the execute tool return to the agent?
     </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, true, '70606047')"><strong>A)</strong> stdout, stderr, and an exit code</div>
+<pre><code>&lt;div class="mcq-choices"&gt;
+    &lt;div class="mcq-choice" onclick="handleMcqClick(this, true, '70606047')"&gt;&lt;strong&gt;A)&lt;/strong&gt; stdout, stderr, and an exit code
+</code></pre>
+</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '70606047')"><strong>B)</strong> The script file contents</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '70606047')"><strong>C)</strong> A boolean success or failure</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '70606047')"><strong>D)</strong> stdout only</div>
-    </div>
-    <div id="mcq-answer-70606047" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
-        <div class="mcq-explanation">execute returns stdout, stderr, and an exit code as a tool result. The LLM sees all three on the next call, which lets it diagnose errors and retry.</div>
-    </div>
+<pre><code>&lt;/div&gt;
+&lt;div id="mcq-answer-70606047" class="mcq-answer" style="display: none;"&gt;
+    &lt;div class="mcq-answer-header"&gt;&lt;strong&gt;Answer: A&lt;/strong&gt; ✅&lt;/div&gt;
+    &lt;div class="mcq-explanation"&gt;execute returns stdout, stderr, and an exit code as a tool result. The LLM sees all three on the next call, which lets it diagnose errors and retry.&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
 </div>
-
 <div class="mcq-container" id="mcq-df396afc">
     <div class="mcq-question">
         <strong>Question:</strong> What does root_dir limit in LocalShellBackend?
@@ -939,6 +946,7 @@ Chart saved to python/m2/genre_revenue.png</pre>
     </div>
 </div>
 
+</div>
 <script>
 (function () {
   var tabs = document.querySelectorAll('.lt-tab');

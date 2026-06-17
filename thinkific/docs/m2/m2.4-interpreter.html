@@ -526,7 +526,7 @@
     </style>
 </head>
 <body>
-    <p><a href="https://langchain-ai.github.io/lca-deepagents/m2/m2.4-interpreter.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
+    <p><a href="https://langchain-ai.github.io/lca-deepagents/m2/m2.4-interpreter.html" target="_blank" rel="noopener noreferrer">For translation, open lesson in new tab and use Chrome translate</a></p>
 <style>@import url('../shared/sd-components.css');</style>
 
 <h1 id="interpreters">Interpreters</h1>
@@ -540,6 +540,7 @@
 }
 .lt-group { display: flex; gap: 3px; }
 .lt-exec { --c: #7C3AED; }
+.lt-quiz { --c: #7C3AED; }
 .lt-wrap { --c: #B45309; }
 .lt-tab {
   font: 500 14px 'IBM Plex Mono', monospace;
@@ -572,6 +573,9 @@
   <div class="lt-group lt-exec">
     <button class="lt-tab active" data-p="exec" role="tab" aria-selected="true">Interpreters</button>
   </div>
+  <div class="lt-group lt-quiz">
+    <button class="lt-tab" data-p="quiz" role="tab" aria-selected="false">Quiz</button>
+  </div>
   <div class="lt-group lt-wrap">
     <button class="lt-tab" data-p="lab1" role="tab" aria-selected="false">Lab 1</button>
     <button class="lt-tab" data-p="lab2" role="tab" aria-selected="false">Lab 2</button>
@@ -579,10 +583,15 @@
 </div>
 
 <div class="lt-panel active" id="p-exec" role="tabpanel">
-<details>
-<summary>🎥 Video Walk-through [click to expand]</summary>
-<p><br></p>
+<details class="video-walkthrough">
+<summary>Video Walk-through [click to expand]</summary>
+<br>
+
+
 <Video src="TODO" />
+
+
+
 </details>
 <p>Code execution is a powerful capability for agents. The previous lesson introduced sandboxes - isolated cloud environments where agents run arbitrary scripts, install packages, and access files. Sandboxes are the right tool when an agent needs Python libraries, a real filesystem, or persistent state across steps.</p>
 <p><strong>Interpreters are a lighter-weight alternative.</strong> They embed a JavaScript runtime directly in the agent process - no cloud infrastructure, no API calls to spin up an environment. The tradeoff is a narrower capability set: the JavaScript standard library only, no external packages, no filesystem, no network.</p>
@@ -846,24 +855,26 @@ uv run ./m2/m2_4_interpreter_agent.py
 5. TV Shows: $93.53 → Top track: "Walkabout" ($3.98)</pre>
 <p><strong>What to watch for in LangSmith:</strong> One <code>eval</code> tool call in the trace. Inside it, the PTC bridge fires <code>query_chinook</code> once for genres, then five times in parallel for top tracks. None of those six result sets appear in the LLM message history.</p>
 </div>
-<hr />
+<div class="lt-panel" id="p-quiz" role="tabpanel">
 <h2 id="check-your-understanding">Check your understanding</h2>
 <div class="mcq-container" id="mcq-46082622">
     <div class="mcq-question">
         <strong>Question:</strong> What is the key advantage of Programmatic Tool Calling over normal tool use?
     </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '46082622')"><strong>A)</strong> The agent can call more tools per turn</div>
+<pre><code>&lt;div class="mcq-choices"&gt;
+    &lt;div class="mcq-choice" onclick="handleMcqClick(this, false, '46082622')"&gt;&lt;strong&gt;A)&lt;/strong&gt; The agent can call more tools per turn
+</code></pre>
+</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '46082622')"><strong>B)</strong> Intermediate tool results never enter the LLM context window</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '46082622')"><strong>C)</strong> Tools run faster inside the interpreter</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '46082622')"><strong>D)</strong> The LLM can see all tool results at once</div>
-    </div>
-    <div id="mcq-answer-46082622" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
-        <div class="mcq-explanation">With PTC, JavaScript drives the tool calls and processes the results entirely inside the interpreter. Only the final computed value is returned to the LLM - the intermediate results never become LLM messages.</div>
-    </div>
+<pre><code>&lt;/div&gt;
+&lt;div id="mcq-answer-46082622" class="mcq-answer" style="display: none;"&gt;
+    &lt;div class="mcq-answer-header"&gt;&lt;strong&gt;Answer: B&lt;/strong&gt; ✅&lt;/div&gt;
+    &lt;div class="mcq-explanation"&gt;With PTC, JavaScript drives the tool calls and processes the results entirely inside the interpreter. Only the final computed value is returned to the LLM - the intermediate results never become LLM messages.&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
 </div>
-
 <div class="mcq-container" id="mcq-3c1a26fa">
     <div class="mcq-question">
         <strong>Question:</strong> What language does the agent write when calling the eval tool?
@@ -912,6 +923,7 @@ uv run ./m2/m2_4_interpreter_agent.py
     </div>
 </div>
 
+</div>
 <script>
 (function () {
   var tabs = document.querySelectorAll('.lt-tab');

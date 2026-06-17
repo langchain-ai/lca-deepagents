@@ -211,6 +211,14 @@ details[open] > summary {
 }
 details > *:not(summary) { padding: 0 16px; }
 
+/* ── Video walk-through blocks (pink) ── */
+details.video-walkthrough {
+  border-color: #F4ABCD;
+  background: #FFF0F7;
+}
+details.video-walkthrough > summary { color: #BE185D; }
+details[open].video-walkthrough > summary { border-bottom-color: #F4ABCD; }
+
 /* ── Code-block copy button: always-visible icon, never overlapping the code ── */
 /* Extra top padding reserves a band for the button so the first line stays clear. */
 pre { padding-top: 2.85rem; }

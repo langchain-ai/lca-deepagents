@@ -1,7 +1,7 @@
 <svg width="740" height="432" xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
   <rect width="740" height="432" fill="#030710" rx="8"/>
   <text x="370" y="34" text-anchor="middle" font-size="15" font-weight="300" fill="#F2FAFF">Building a subagent team</text>
-  <text x="370" y="53" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">The editor delegates one genre to each researcher — in parallel</text>
+  <text x="370" y="53" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">The editor delegates one genre to each researcher , in parallel</text>
 
   <!-- fan-out lines -->
   <line x1="370" y1="182" x2="120" y2="250" stroke="#40668D" stroke-width="1.5"/>

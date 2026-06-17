@@ -526,7 +526,7 @@
     </style>
 </head>
 <body>
-    <p><a href="https://langchain-ai.github.io/lca-deepagents/m3/m3.x-summarization.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
+    <p><a href="https://langchain-ai.github.io/lca-deepagents/m3/m3.1-summarization.html" target="_blank" rel="noopener noreferrer">For translation, open lesson in new tab and use Chrome translate</a></p>
 <style>@import url('../shared/sd-components.css');</style>
 <script src="../shared/sd-components.js"></script>
 
@@ -579,10 +579,15 @@
 </div>
 
 <div class="lt-panel active" id="p-summ" role="tabpanel">
-<details>
-<summary>🎥 Video Walk-through [click to expand]</summary>
-<p><br></p>
+<details class="video-walkthrough">
+<summary>Video Walk-through [click to expand]</summary>
+<br>
+
+
 <Video src="TODO" />
+
+
+
 </details>
 <p>When a conversation runs long enough, older messages push the total token count toward the model's context limit. Deep Agents handles this automatically with <strong>SummarizationMiddleware</strong>; it watches the context fill up and compacts old messages into a summary before the model ever sees them.</p>
 <hr />
@@ -596,12 +601,12 @@ buildSlideshow({
     {
       src: 'images/m3.x-compaction.svg',
       tag: 'Slide 1 of 2',
-      caption: `When the context hits 85%, the middleware picks a cutoff point that keeps the most recent messages intact and summarizes everything older into a single block. The original messages are gone from the model's view — only the summary remains. Because a summary is far more compact than the messages it replaces, the token count drops sharply and the conversation can continue.`
+      caption: `When the context hits 85%, the middleware picks a cutoff point that keeps the most recent messages intact and summarizes everything older into a single block. The original messages are gone from the model's view; only the summary remains. Because a summary is far more compact than the messages it replaces, the token count drops sharply and the conversation can continue.`
     },
     {
       src: 'images/m3.x-compaction2.svg',
       tag: 'Slide 2 of 2',
-      caption: `On a second compaction event, the prior summary is treated like any other old message: it gets folded into a new combined summary along with whatever else has aged past the cutoff. There is no special handling for summaries — the same logic applies every time. This is what makes compaction scale indefinitely: each event produces one summary block, regardless of how many rounds have run before.`
+      caption: `On a second compaction event, the prior summary is treated like any other old message: it gets folded into a new combined summary along with whatever else has aged past the cutoff. There is no special handling for summaries; the same logic applies every time. This is what makes compaction scale indefinitely: each event produces one summary block, regardless of how many rounds have run before.`
     },
   ]
 });

@@ -2,7 +2,7 @@
   <rect width="800" height="446" fill="#030710" rx="8"/>
 
   <text x="400" y="32" text-anchor="middle" font-size="15" font-weight="300" fill="#F2FAFF">Anatomy of a subagent</text>
-  <text x="400" y="51" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">What each field does — and whether it inherits from the main agent or overrides it</text>
+  <text x="400" y="51" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">What each field does, and whether it inherits from the main agent or overrides it</text>
 
   <!-- editor window -->
   <rect x="36" y="66" width="400" height="318" rx="8" fill="#0D1322" stroke="#2F4B68" stroke-width="1.5"/>
@@ -71,5 +71,5 @@
 
   <!-- footer -->
   <text x="400" y="408" text-anchor="middle" font-size="10" fill="#B2DEFF">A subagent must define its own system_prompt; tools, model, and permissions override the parent only when set.</text>
-  <text x="400" y="426" text-anchor="middle" font-size="9" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Everything else — model &amp; tool defaults, the shared backend, built-in filesystem tools, runtime context — inherits from the main agent.</text>
+  <text x="400" y="426" text-anchor="middle" font-size="9" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Everything else: model &amp; tool defaults, the shared backend, built-in filesystem tools, runtime context; inherits from the main agent.</text>
 </svg>

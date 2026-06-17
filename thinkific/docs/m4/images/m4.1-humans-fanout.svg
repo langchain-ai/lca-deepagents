@@ -17,7 +17,7 @@
     <text x="370" y="192" text-anchor="middle" font-size="11" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Supervisor</text>
   </g>
 
-  <!-- WORKERS — each is its own hoverable group with a role tooltip -->
+  <!-- WORKERS each is its own hoverable group with a role tooltip -->
   <g style="cursor:pointer">
     <title>Finds the sources, facts, and background</title>
     <circle cx="120" cy="268" r="20" fill="#40668D"/>

@@ -4,7 +4,7 @@
   <!-- divider -->
   <line x1="370" y1="44" x2="370" y2="226" stroke="#1E3A5F" stroke-width="1"/>
 
-  <!-- ============ LEFT: PLANNING — to-do list ============ -->
+  <!-- ============ LEFT: PLANNING to-do list ============ -->
   <rect x="80" y="46" width="210" height="172" rx="10" fill="#0D1322" stroke="#2F4B68" stroke-width="2"/>
   <text x="96" y="70" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">To-do list</text>
   <line x1="96" y1="80" x2="274" y2="80" stroke="#2F4B68" stroke-width="1"/>
@@ -30,7 +30,7 @@
 
   <text x="185" y="252" text-anchor="middle" font-size="12" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Planning</text>
 
-  <!-- ============ RIGHT: SUBAGENTS — mini robot fan-out ============ -->
+  <!-- ============ RIGHT: SUBAGENTS mini robot fan-out ============ -->
   <!-- fan-out lines -->
   <line x1="560" y1="124" x2="480" y2="150" stroke="#40668D" stroke-width="1.5"/>
   <line x1="560" y1="124" x2="560" y2="150" stroke="#40668D" stroke-width="1.5"/>

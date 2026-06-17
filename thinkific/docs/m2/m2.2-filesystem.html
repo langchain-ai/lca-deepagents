@@ -526,7 +526,7 @@
     </style>
 </head>
 <body>
-    <p><a href="https://langchain-ai.github.io/lca-deepagents/m2/m2.2-filesystem.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
+    <p><a href="https://langchain-ai.github.io/lca-deepagents/m2/m2.2-filesystem.html" target="_blank" rel="noopener noreferrer">For translation, open lesson in new tab and use Chrome translate</a></p>
 <style>@import url('../shared/sd-components.css');</style>
 <script src="../shared/sd-components.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
@@ -685,7 +685,7 @@ graph TB
 - <a href="https://docs.langchain.com/oss/python/deepagents/backends" target="_blank" rel="noopener noreferrer">Filesystem Backends</a></p>
 </div>
 <div class="lt-panel" id="p-lab1" role="tabpanel">
-<h2 id="permissions_1">Permissions</h2>
+<h2 id="lab-filesystem-permissions">Lab: Filesystem Permissions</h2>
 <p>The lab agent uses a <code>CompositeBackend</code> with <code>/memories/</code> and <code>/skills/</code> both routed to the store. A <code>FilesystemPermission</code> rule denies all writes to <code>/skills/**</code>.</p>
 <p>The agent is pre-seeded with a Chinook sales skill and asked to read it, then add a promotion note. You'll see it read successfully and get blocked on the write.</p>
 <pre><code class="language-python"># python/m2/m2_2_agent.py

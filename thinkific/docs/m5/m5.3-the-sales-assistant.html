@@ -526,15 +526,68 @@
     </style>
 </head>
 <body>
-    <p><a href="https://langchain-ai.github.io/lca-deepagents/m5/m5.3-the-sales-assistant.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
+    <p><a href="https://langchain-ai.github.io/lca-deepagents/m5/m5.3-the-sales-assistant.html" target="_blank" rel="noopener noreferrer">For translation, open lesson in new tab and use Chrome translate</a></p>
 <style>@import url('../shared/sd-components.css');</style>
 <script src="../shared/sd-components.js"></script>
 
 <h1 id="the-sales-assistant">The Sales Assistant</h1>
-<details>
-<summary>🎥 Video Walk-through [click to expand]</summary>
-<p><br></p>
+<style>
+.lt-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 28px 0 0;
+  border-bottom: 2px solid #CCE9FF;
+}
+.lt-group { display: flex; gap: 3px; }
+.lt-quiz  { --c: #7C3AED; }
+.lt-sales { --c: #D97706; }
+.lt-tab {
+  font: 500 14px 'IBM Plex Mono', monospace;
+  padding: 9px 14px;
+  border: none;
+  background: transparent;
+  color: #40668D;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  border-radius: 6px 6px 0 0;
+  transition: background .15s, color .15s, border-color .15s;
+  white-space: nowrap;
+}
+.lt-tab:hover { background: #F2FAFF; color: #030710; }
+.lt-tab.active {
+  color: var(--c);
+  border-bottom-color: var(--c);
+  background: #fff;
+}
+.lt-panel { display: none; padding-top: 24px; }
+.lt-panel.active { display: block; }
+@media (max-width: 600px) {
+  .lt-bar { flex-wrap: nowrap; overflow-x: auto; gap: 12px; }
+  .lt-tab { padding: 8px 10px; font-size: 13px; }
+}
+</style>
+
+<div class="lt-bar" role="tablist" aria-label="Lesson sections">
+  <div class="lt-group lt-sales">
+    <button class="lt-tab active" data-p="sales" role="tab" aria-selected="true">Sales Assistant</button>
+  </div>
+  <div class="lt-group lt-quiz">
+    <button class="lt-tab" data-p="quiz" role="tab" aria-selected="false">Quiz</button>
+  </div>
+</div>
+
+<div class="lt-panel active" id="p-sales" role="tabpanel">
+<details class="video-walkthrough">
+<summary>Video Walk-through [click to expand]</summary>
+<br>
+
+
 <Video src="TODO" />
+
+
+
 </details>
 <p>In Lesson 1 you saw <em>what</em> the Chinook Sales Assistant is and which Deep Agents feature each part uses. In Lesson 2 you learned how to <em>serve</em> an agent with <code>langgraph dev</code>. Now we put it together: meet the finished assistant, see how little <em>new</em> code you write to assemble it, and run it locally.</p>
 <p>The assistant works for <strong>Jane Peacock</strong>, a Sales Support Agent at Chinook (an online music distributor). "Her book of business" means the customers whose support rep is Jane - <code>Customer.SupportRepId = 3</code> in the database. The assistant helps her answer quote requests, keep customer records current, research the market, and report on her territory.</p>
@@ -549,31 +602,49 @@
   <rect width="760" height="380" fill="#030710" rx="8"/>
   <text x="380" y="36" text-anchor="middle" font-size="17" font-weight="300" fill="#F2FAFF">The sales assistant, running locally</text>
 
-  <!-- Chat UI client -->
+  
+<!-- Chat UI client -->
+
+
   <rect x="24" y="158" width="146" height="78" rx="8" fill="#161F34" stroke="#40668D" stroke-width="1"/>
   <text x="97" y="192" text-anchor="middle" font-size="16" font-weight="600" fill="#7FC8FF">Chat UI</text>
   <text x="97" y="214" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">Studio</text>
 
-  <!-- HTTP arrow -->
+  
+<!-- HTTP arrow -->
+
+
   <line x1="170" y1="197" x2="206" y2="197" stroke="#40668D" stroke-width="1.5"/>
   <polygon points="206,190 215,197 206,204" fill="#40668D"/>
   <text x="190" y="185" text-anchor="middle" font-size="13" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">HTTP</text>
 
-  <!-- langgraph dev box -->
+  
+<!-- langgraph dev box -->
+
+
   <rect x="216" y="72" width="520" height="292" rx="8" fill="#0D1322" stroke="#40668D" stroke-width="1" stroke-dasharray="4 3"/>
   <text x="236" y="98" font-size="14" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">langgraph dev</text>
 
-  <!-- agent node -->
+  
+<!-- agent node -->
+
+
   <rect x="358" y="116" width="236" height="60" rx="8" fill="#161F34" stroke="#7FC8FF" stroke-width="1.5"/>
   <text x="476" y="142" text-anchor="middle" font-size="16" font-weight="600" fill="#F2FAFF">Chinook Sales Assistant</text>
   <text x="476" y="163" text-anchor="middle" font-size="12" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">create_deep_agent(...)</text>
 
-  <!-- connectors -->
+  
+<!-- connectors -->
+
+
   <line x1="476" y1="176" x2="317" y2="276" stroke="#40668D" stroke-width="1.5"/>
   <line x1="476" y1="176" x2="480" y2="276" stroke="#40668D" stroke-width="1.5"/>
   <line x1="476" y1="176" x2="643" y2="276" stroke="#40668D" stroke-width="1.5"/>
 
-  <!-- resource tiles -->
+  
+<!-- resource tiles -->
+
+
   <rect x="242" y="276" width="150" height="72" rx="6" fill="#161F34" stroke="#40668D" stroke-width="1"/>
   <text x="317" y="308" text-anchor="middle" font-size="14" font-weight="600" fill="#7FC8FF">Chinook DB</text>
   <text x="317" y="330" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">SQL data</text>
@@ -588,9 +659,7 @@
 </svg>
 
 <p><em>The agent runs inside <code>langgraph dev</code> and draws on the database, its playbooks, and Gmail. A chat UI reaches it over HTTP.</em></p>
-
 </div>
-
 <hr />
 <h2 id="how-little-of-it-is-new-code">How little of it is <em>new</em> code</h2>
 <p>Here is the project. There <em>is</em> real code here - the tools, the subagents, a mock mail server. But notice how much of the agent's <strong>behavior</strong> is set by plain-text files rather than by new code you write:</p>
@@ -716,7 +785,6 @@ async def make_graph():
 <style>
 #agentpy-scroll pre { max-height: 32em; overflow: auto; }
 </style>
-
 <script>
 window.addEventListener('load', function () {
   var box = document.querySelector('#agentpy-scroll pre');
@@ -725,7 +793,6 @@ window.addEventListener('load', function () {
   box.scrollTop = (box.scrollHeight / 87) * (48 - 3);
 });
 </script>
-
 <p>Two things are worth pausing on:</p>
 <ul>
 <li><strong>We hand the server a <em>graph</em>, not a <code>main()</code>.</strong> Earlier modules ran an agent with <code>asyncio.run(main())</code>. Here we never run it ourselves: <code>langgraph.json</code> points at <code>make_graph</code>, and <code>langgraph dev</code> calls it. We <em>expose</em> the agent; the server runs it.</li>
@@ -786,23 +853,27 @@ uv run langgraph dev --allow-blocking
 <li>The agent is served as a <strong>graph</strong> (a <code>make_graph</code> factory), not run with <code>main()</code>, and it <strong>discovers its MCP tools up front</strong>: tolerating a down Gmail server.</li>
 <li>Run it with <code>uv run langgraph dev --allow-blocking</code> and talk to it in <strong>Studio</strong>; the <strong>two approval steps</strong> (saving a draft, adding a customer) pause for you to approve, edit, or reject. An optional hosted chat UI shows them as inline cards.</li>
 </ul>
+</div>
+<div class="lt-panel" id="p-quiz" role="tabpanel">
 <h2 id="check-your-understanding">Check your understanding</h2>
 <div class="mcq-container" id="mcq-5159d664">
     <div class="mcq-question">
         <strong>Question:</strong> Why does agent.py use an async make_graph factory instead of a module-level agent = create_deep_agent(...)?
     </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '5159d664')"><strong>A)</strong> To make the agent start faster</div>
+<pre><code>&lt;div class="mcq-choices"&gt;
+    &lt;div class="mcq-choice" onclick="handleMcqClick(this, false, '5159d664')"&gt;&lt;strong&gt;A)&lt;/strong&gt; To make the agent start faster
+</code></pre>
+</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '5159d664')"><strong>B)</strong> So the agent can be invoked with asyncio.run()</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '5159d664')"><strong>C)</strong> Because the Gmail tools come from an MCP server, and getting its tool list is an async call that must finish before the agent is built</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '5159d664')"><strong>D)</strong> Because langgraph dev cannot load module-level variables</div>
-    </div>
-    <div id="mcq-answer-5159d664" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
-        <div class="mcq-explanation">A model can only call tools it has been told about. The Gmail tools come from an MCP server whose tool list arrives via an async call, so discovery must be awaited before the agent is assembled - hence an async factory.</div>
-    </div>
+<pre><code>&lt;/div&gt;
+&lt;div id="mcq-answer-5159d664" class="mcq-answer" style="display: none;"&gt;
+    &lt;div class="mcq-answer-header"&gt;&lt;strong&gt;Answer: C&lt;/strong&gt; ✅&lt;/div&gt;
+    &lt;div class="mcq-explanation"&gt;A model can only call tools it has been told about. The Gmail tools come from an MCP server whose tool list arrives via an async call, so discovery must be awaited before the agent is assembled - hence an async factory.&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
 </div>
-
 <div class="mcq-container" id="mcq-772d41e8">
     <div class="mcq-question">
         <strong>Question:</strong> What is the --allow-blocking flag on langgraph dev for?
@@ -851,6 +922,8 @@ uv run langgraph dev --allow-blocking
     </div>
 </div>
 
+</div>
+<hr />
 <h2 id="next">Next</h2>
 <p>That is the capstone. You have now built and run a complete deep agent end to end - and seen that most of the effort is describing behavior in text, not writing code. From here, try extending it: add a task sequence, write a new skill, or wire in real Gmail.</p>
 <hr />
@@ -861,6 +934,24 @@ uv run langgraph dev --allow-blocking
 - <a href="https://docs.langchain.com/oss/python/deepagents/overview" target="_blank" rel="noopener noreferrer">Deep Agents overview</a><br />
 - <a href="https://docs.langchain.com/oss/python/langgraph/local-server" target="_blank" rel="noopener noreferrer">Run a local server (<code>langgraph dev</code>)</a><br />
 - <a href="https://github.com/langchain-ai/agent-chat-ui" target="_blank" rel="noopener noreferrer">agent-chat-ui</a></p>
+<script>
+(function () {
+  var tabs = document.querySelectorAll('.lt-tab');
+  function show(p) {
+    tabs.forEach(function (t) {
+      var on = t.getAttribute('data-p') === p;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    document.querySelectorAll('.lt-panel').forEach(function (panel) {
+      panel.classList.toggle('active', panel.id === 'p-' + p);
+    });
+  }
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () { show(t.getAttribute('data-p')); });
+  });
+})();
+</script>
 
     <script>
         // Handle MCQ choice clicks
