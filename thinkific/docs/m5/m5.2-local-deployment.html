@@ -752,71 +752,57 @@
 <div class="lt-panel" id="p-quiz" role="tabpanel">
 <h2 id="check-your-understanding">Check your understanding</h2>
 <div class="mcq-container" id="mcq-5326ed49">
-    <div class="mcq-question">
-        <strong>Question:</strong> What does it mean to deploy an agent with langgraph dev?
-    </div>
-<pre><code>&lt;div class="mcq-choices"&gt;
-    &lt;div class="mcq-choice" onclick="handleMcqClick(this, true, '5326ed49')"&gt;&lt;strong&gt;A)&lt;/strong&gt; The agent runs as a service reached over an HTTP API, rather than a script you invoke in Python
-</code></pre>
-</div>
+<div class="mcq-question"><strong>Question:</strong> What does it mean to deploy an agent with langgraph dev?</div>
+<div class="mcq-choices">
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '5326ed49')"><strong>A)</strong> The agent runs as a service reached over an HTTP API, rather than a script you invoke in Python</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '5326ed49')"><strong>B)</strong> The agent is compiled into a standalone binary you distribute to users</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '5326ed49')"><strong>C)</strong> The agent is uploaded to LangSmith Cloud automatically</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '5326ed49')"><strong>D)</strong> The agent can only be run from inside LangGraph Studio</div>
-<pre><code>&lt;/div&gt;
-&lt;div id="mcq-answer-5326ed49" class="mcq-answer" style="display: none;"&gt;
-    &lt;div class="mcq-answer-header"&gt;&lt;strong&gt;Answer: A&lt;/strong&gt; ✅&lt;/div&gt;
-    &lt;div class="mcq-explanation"&gt;A deployed agent runs as a service: langgraph dev hosts it behind an HTTP API, and clients reach it over HTTP instead of calling agent.invoke() in a Python script.&lt;/div&gt;
-&lt;/div&gt;
-</code></pre>
+</div>
+<div class="mcq-answer" id="mcq-answer-5326ed49" style="display: none;">
+<div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
+<div class="mcq-explanation">A deployed agent runs as a service: langgraph dev hosts it behind an HTTP API, and clients reach it over HTTP instead of calling agent.invoke() in a Python script.</div>
+</div>
 </div>
 <div class="mcq-container" id="mcq-6e14246b">
-    <div class="mcq-question">
-        <strong>Question:</strong> What is the role of langgraph.json?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '6e14246b')"><strong>A)</strong> It stores the conversation history for each thread</div>
+<div class="mcq-question"><strong>Question:</strong> What is the role of langgraph.json?</div>
+<div class="mcq-choices">
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '6e14246b')"><strong>A)</strong> It stores the conversation history for each thread</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '6e14246b')"><strong>B)</strong> It holds your API keys and secrets</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '6e14246b')"><strong>C)</strong> It declares which graph langgraph dev should serve, where its dependencies are, and which env file to load</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '6e14246b')"><strong>D)</strong> It defines the HTTP endpoints the server exposes</div>
-    </div>
-    <div id="mcq-answer-6e14246b" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
-        <div class="mcq-explanation">langgraph.json is the deployment config. It points at your graph (e.g. ./agent.py:graph), lists dependencies, and names the env file to load. The server derives its endpoints automatically.</div>
-    </div>
 </div>
-
+<div class="mcq-answer" id="mcq-answer-6e14246b" style="display: none;">
+<div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+<div class="mcq-explanation">langgraph.json is the deployment config. It points at your graph (e.g. ./agent.py:graph), lists dependencies, and names the env file to load. The server derives its endpoints automatically.</div>
+</div>
+</div>
 <div class="mcq-container" id="mcq-12b793a2">
-    <div class="mcq-question">
-        <strong>Question:</strong> In the Agent Server API, what is an Assistant?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '12b793a2')"><strong>A)</strong> A single invocation of a graph on a thread</div>
+<div class="mcq-question"><strong>Question:</strong> In the Agent Server API, what is an Assistant?</div>
+<div class="mcq-choices">
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '12b793a2')"><strong>A)</strong> A single invocation of a graph on a thread</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '12b793a2')"><strong>B)</strong> The accumulated state of a conversation</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '12b793a2')"><strong>C)</strong> A long-term key-value memory store</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '12b793a2')"><strong>D)</strong> A configured instance of a graph - a graph plus its configuration</div>
-    </div>
-    <div id="mcq-answer-12b793a2" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
-        <div class="mcq-explanation">An Assistant is a configured instance of a graph: the graph plus the configuration it runs with. A run is one invocation; a thread holds accumulated state; the store is long-term memory.</div>
-    </div>
 </div>
-
+<div class="mcq-answer" id="mcq-answer-12b793a2" style="display: none;">
+<div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+<div class="mcq-explanation">An Assistant is a configured instance of a graph: the graph plus the configuration it runs with. A run is one invocation; a thread holds accumulated state; the store is long-term memory.</div>
+</div>
+</div>
 <div class="mcq-container" id="mcq-686d8266">
-    <div class="mcq-question">
-        <strong>Question:</strong> What is LangGraph Studio?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '686d8266')"><strong>A)</strong> A separate runtime that replaces langgraph dev in production</div>
+<div class="mcq-question"><strong>Question:</strong> What is LangGraph Studio?</div>
+<div class="mcq-choices">
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '686d8266')"><strong>A)</strong> A separate runtime that replaces langgraph dev in production</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '686d8266')"><strong>B)</strong> A client for the Agent Server API - a combined chat and graphical debugging interface that talks to the agent over HTTP</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '686d8266')"><strong>C)</strong> A command-line tool for editing langgraph.json</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '686d8266')"><strong>D)</strong> A hosted cloud service that deploys your agent</div>
-    </div>
-    <div id="mcq-answer-686d8266" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
-        <div class="mcq-explanation">Studio is a client of the same Agent Server API. It provides both a chat interface and a graphical debugger, and it reaches the agent over HTTP - exactly as any other chat UI would.</div>
-    </div>
 </div>
-
+<div class="mcq-answer" id="mcq-answer-686d8266" style="display: none;">
+<div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+<div class="mcq-explanation">Studio is a client of the same Agent Server API. It provides both a chat interface and a graphical debugger, and it reaches the agent over HTTP - exactly as any other chat UI would.</div>
+</div>
+</div>
 </div>
 <hr />
 <h2 id="next">Next</h2>

@@ -1004,6 +1004,30 @@ def get_stock_price(ticker: str) -&gt; str:
 <li><code>write_sql</code> uses Human-in-the-Loop: the agent proposes the SQL, execution pauses, and you approve or reject before anything is written to the database.</li>
 </ul>
 <p>The <a href="https://github.com/lerocha/chinook-database" target="_blank" rel="noopener noreferrer">Chinook</a> database is a standard SQLite music store sample with 11 tables covering artists, albums, tracks, customers, invoices, and employees. The file is already in the repo at <code>python/m1/chinook.db</code>.</p>
+<details class="video-walkthrough">
+<summary>Video Walk-through [click to expand] — placeholder, not yet recorded</summary>
+<p><br></p>
+<p><strong>Script (will be recorded):</strong> [Open scratch_agent_tools in VSCode]</p>
+<p>This lab puts everything we just covered into practice. We have two SQL tools and Human-in-the-Loop on the write operation. Let's walk through the file.</p>
+<p>[Highlight the imports block]</p>
+<p>At the top, notice two new imports: interrupt and Command from LangGraph. These are what power the Human-in-the-Loop pattern. We're also importing MemorySaver, which is our checkpointer. Remember, interrupt() needs to pause and resume the graph, and the checkpointer is what makes that possible. Without it, the graph has no way to save its state mid-run.</p>
+<p>[Highlight the SQLDatabase line]</p>
+<p>We're also connecting to the Chinook database here, which is a sample SQLite music store that ships with the repo.</p>
+<p>[Scroll to and highlight the system prompt]</p>
+<p>The system prompt tells the agent which tool to reach for: read_sql for SELECT queries, write_sql for anything that writes. This is a good example of why descriptions matter because the agent uses both the system prompt and the tool descriptions together to make that decision.</p>
+<p>[Scroll to and highlight read_sql]</p>
+<p>read_sql is straightforward. It takes a query, runs it, and returns the result. No HITL here because reads are safe.</p>
+<p>[Highlight write_sql, specifically the interrupt() line]</p>
+<p>write_sql is where it gets interesting. Notice that interrupt() fires before db.run(). At this point the graph freezes, saves its state, and surfaces the pending SQL to your script. Nothing has touched the database yet. Then depending on your response, it either calls db.run() or returns "Write cancelled."</p>
+<p>[Scroll to the while loop]</p>
+<p>Down here is where your script handles the pause. When the graph hits interrupt(), it returns with a <strong>interrupt</strong> key. The while loop catches that, prints the pending SQL, waits for your input, and then calls agent.invoke(Command(resume=approval)) to resume from exactly where it left off.</p>
+<p>[Highlight create_deep_agent call]</p>
+<p>And notice that the checkpointer is passed into create_deep_agent here, alongside the two tools.</p>
+<p>Let's run it. [Run it in terminal]</p>
+<p>The agent will first read the genres table, then propose an INSERT for "Synthwave". When it pauses, type yes to approve or no to cancel. Let's say yes.</p>
+<p>[Then open the run in LangSmith]</p>
+<p>You'll see here the pause and resume as two distinct steps in the trace.</p>
+</details>
 <hr />
 <h3 id="setup">Setup</h3>
 <p>Confirm <code>langchain-community</code> is available (it ships with the workshop dependencies):</p>

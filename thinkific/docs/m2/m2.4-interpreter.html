@@ -853,71 +853,57 @@ uv run ./m2/m2_4_interpreter_agent.py
 <div class="lt-panel" id="p-quiz" role="tabpanel">
 <h2 id="check-your-understanding">Check your understanding</h2>
 <div class="mcq-container" id="mcq-46082622">
-    <div class="mcq-question">
-        <strong>Question:</strong> What is the key advantage of Programmatic Tool Calling over normal tool use?
-    </div>
-<pre><code>&lt;div class="mcq-choices"&gt;
-    &lt;div class="mcq-choice" onclick="handleMcqClick(this, false, '46082622')"&gt;&lt;strong&gt;A)&lt;/strong&gt; The agent can call more tools per turn
-</code></pre>
-</div>
+<div class="mcq-question"><strong>Question:</strong> What is the key advantage of Programmatic Tool Calling over normal tool use?</div>
+<div class="mcq-choices">
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '46082622')"><strong>A)</strong> The agent can call more tools per turn</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '46082622')"><strong>B)</strong> Intermediate tool results never enter the LLM context window</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '46082622')"><strong>C)</strong> Tools run faster inside the interpreter</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '46082622')"><strong>D)</strong> The LLM can see all tool results at once</div>
-<pre><code>&lt;/div&gt;
-&lt;div id="mcq-answer-46082622" class="mcq-answer" style="display: none;"&gt;
-    &lt;div class="mcq-answer-header"&gt;&lt;strong&gt;Answer: B&lt;/strong&gt; ✅&lt;/div&gt;
-    &lt;div class="mcq-explanation"&gt;With PTC, JavaScript drives the tool calls and processes the results entirely inside the interpreter. Only the final computed value is returned to the LLM - the intermediate results never become LLM messages.&lt;/div&gt;
-&lt;/div&gt;
-</code></pre>
+</div>
+<div class="mcq-answer" id="mcq-answer-46082622" style="display: none;">
+<div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+<div class="mcq-explanation">With PTC, JavaScript drives the tool calls and processes the results entirely inside the interpreter. Only the final computed value is returned to the LLM - the intermediate results never become LLM messages.</div>
+</div>
 </div>
 <div class="mcq-container" id="mcq-3c1a26fa">
-    <div class="mcq-question">
-        <strong>Question:</strong> What language does the agent write when calling the eval tool?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '3c1a26fa')"><strong>A)</strong> Python</div>
+<div class="mcq-question"><strong>Question:</strong> What language does the agent write when calling the eval tool?</div>
+<div class="mcq-choices">
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '3c1a26fa')"><strong>A)</strong> Python</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '3c1a26fa')"><strong>B)</strong> TypeScript</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '3c1a26fa')"><strong>C)</strong> Bash</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '3c1a26fa')"><strong>D)</strong> JavaScript</div>
-    </div>
-    <div id="mcq-answer-3c1a26fa" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
-        <div class="mcq-explanation">The eval tool runs code in a QuickJS JavaScript runtime. The model writes JavaScript - not Python - as the code argument to eval().</div>
-    </div>
 </div>
-
+<div class="mcq-answer" id="mcq-answer-3c1a26fa" style="display: none;">
+<div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+<div class="mcq-explanation">The eval tool runs code in a QuickJS JavaScript runtime. The model writes JavaScript - not Python - as the code argument to eval().</div>
+</div>
+</div>
 <div class="mcq-container" id="mcq-782ba8e2">
-    <div class="mcq-question">
-        <strong>Question:</strong> Which of the following is available inside the QuickJS runtime?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '782ba8e2')"><strong>A)</strong> fetch for network requests</div>
+<div class="mcq-question"><strong>Question:</strong> Which of the following is available inside the QuickJS runtime?</div>
+<div class="mcq-choices">
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '782ba8e2')"><strong>A)</strong> fetch for network requests</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '782ba8e2')"><strong>B)</strong> fs for filesystem access</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '782ba8e2')"><strong>C)</strong> Array.reduce, Map, JSON, and Promise</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '782ba8e2')"><strong>D)</strong> npm packages via import</div>
-    </div>
-    <div id="mcq-answer-782ba8e2" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
-        <div class="mcq-explanation">QuickJS provides the JavaScript standard library: array methods, Map, Set, JSON, Math, Promise, and console.log. There is no filesystem, network, clock, or package manager access.</div>
-    </div>
 </div>
-
+<div class="mcq-answer" id="mcq-answer-782ba8e2" style="display: none;">
+<div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+<div class="mcq-explanation">QuickJS provides the JavaScript standard library: array methods, Map, Set, JSON, Math, Promise, and console.log. There is no filesystem, network, clock, or package manager access.</div>
+</div>
+</div>
 <div class="mcq-container" id="mcq-7d5868f2">
-    <div class="mcq-question">
-        <strong>Question:</strong> The interpreter state persists within a thread. What does this mean?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, true, '7d5868f2')"><strong>A)</strong> Variables from one eval() call are available in the next eval() call</div>
+<div class="mcq-question"><strong>Question:</strong> The interpreter state persists within a thread. What does this mean?</div>
+<div class="mcq-choices">
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '7d5868f2')"><strong>A)</strong> Variables from one eval() call are available in the next eval() call</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '7d5868f2')"><strong>B)</strong> The interpreter remembers results across different agent invocations</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '7d5868f2')"><strong>C)</strong> JavaScript variables are saved to disk automatically</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '7d5868f2')"><strong>D)</strong> The agent can share interpreter state with other agents</div>
-    </div>
-    <div id="mcq-answer-7d5868f2" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
-        <div class="mcq-explanation">The QuickJS context lives for the duration of a thread. Variables defined in one eval() call remain in scope for subsequent eval() calls in the same thread - like a persistent REPL session. Between separate agent.invoke() calls, state is also preserved as long as the same thread_id is used. Switch to a different thread_id and the interpreter starts fresh.</div>
-    </div>
 </div>
-
+<div class="mcq-answer" id="mcq-answer-7d5868f2" style="display: none;">
+<div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
+<div class="mcq-explanation">The QuickJS context lives for the duration of a thread. Variables defined in one eval() call remain in scope for subsequent eval() calls in the same thread - like a persistent REPL session. Between separate agent.invoke() calls, state is also preserved as long as the same thread_id is used. Switch to a different thread_id and the interpreter starts fresh.</div>
+</div>
+</div>
 </div>
 <script>
 (function () {

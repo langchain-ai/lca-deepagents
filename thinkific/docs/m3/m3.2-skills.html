@@ -650,22 +650,17 @@ Available skills:
 <div class="lt-panel" id="p-quiz" role="tabpanel">
 <h2 id="check-your-understanding">Check your understanding</h2>
 <div class="mcq-container" id="mcq-71d7668c">
-    <div class="mcq-question">
-        <strong>Question:</strong> What constraint links the skill directory name to its SKILL.md frontmatter?
-    </div>
-<pre><code>&lt;div class="mcq-choices"&gt;
-    &lt;div class="mcq-choice" onclick="handleMcqClick(this, true, '71d7668c')"&gt;&lt;strong&gt;A)&lt;/strong&gt; The directory name must match the name field in the frontmatter
-</code></pre>
-</div>
+<div class="mcq-question"><strong>Question:</strong> What constraint links the skill directory name to its SKILL.md frontmatter?</div>
+<div class="mcq-choices">
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '71d7668c')"><strong>A)</strong> The directory name must match the name field in the frontmatter</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '71d7668c')"><strong>B)</strong> The directory name must match the description field</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '71d7668c')"><strong>C)</strong> The directory name must be all uppercase</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '71d7668c')"><strong>D)</strong> There is no constraint; the two are independent</div>
-<pre><code>&lt;/div&gt;
-&lt;div id="mcq-answer-71d7668c" class="mcq-answer" style="display: none;"&gt;
-    &lt;div class="mcq-answer-header"&gt;&lt;strong&gt;Answer: A&lt;/strong&gt; ✅&lt;/div&gt;
-    &lt;div class="mcq-explanation"&gt;Each skill lives in its own named directory, and that directory name must match the name field in the SKILL.md frontmatter. Breaking this constraint means the SDK cannot resolve the skill correctly.&lt;/div&gt;
-&lt;/div&gt;
-</code></pre>
+</div>
+<div class="mcq-answer" id="mcq-answer-71d7668c" style="display: none;">
+<div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
+<div class="mcq-explanation">Each skill lives in its own named directory, and that directory name must match the name field in the SKILL.md frontmatter. Breaking this constraint means the SDK cannot resolve the skill correctly.</div>
+</div>
 </div>
 <p><MCQ
     question="At which stage does the agent call read_file on a skill's SKILL.md path?"
@@ -686,21 +681,18 @@ Available skills:
     explanation="Progressive disclosure keeps the context lean. Only the compact name and description are always present. The full body (steps, output format, bundled files) loads only when the agent activates the skill for a matching task."
 /></p>
 <div class="mcq-container" id="mcq-9033a08c">
-    <div class="mcq-question">
-        <strong>Question:</strong> Which two frontmatter fields in SKILL.md are required?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '9033a08c')"><strong>A)</strong> name and allowed-tools</div>
+<div class="mcq-question"><strong>Question:</strong> Which two frontmatter fields in SKILL.md are required?</div>
+<div class="mcq-choices">
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '9033a08c')"><strong>A)</strong> name and allowed-tools</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '9033a08c')"><strong>B)</strong> name and compatibility</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '9033a08c')"><strong>C)</strong> description and metadata</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '9033a08c')"><strong>D)</strong> name and description</div>
-    </div>
-    <div id="mcq-answer-9033a08c" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
-        <div class="mcq-explanation">name and description are the only required fields. allowed-tools, compatibility, and metadata are all optional. name must be lowercase alphanumeric with hyphens and must match the directory name.</div>
-    </div>
 </div>
-
+<div class="mcq-answer" id="mcq-answer-9033a08c" style="display: none;">
+<div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+<div class="mcq-explanation">name and description are the only required fields. allowed-tools, compatibility, and metadata are all optional. name must be lowercase alphanumeric with hyphens and must match the directory name.</div>
+</div>
+</div>
 </div>
 <div class="lt-panel" id="p-lab" role="tabpanel">
 <h2 id="sales-assistant-with-skills">Sales Assistant with Skills</h2>

@@ -704,39 +704,31 @@ Here is a preview showing the head and tail of the result:
     explanation="SummarizationMiddleware fires when total tokens exceed 85% of max_input_tokens. For Claude Haiku 4.5 that is 170,000 tokens. You can lower the threshold for demos by overriding model.profile[\"max_input_tokens\"]."
 /></p>
 <div class="mcq-container" id="mcq-bb682f59">
-    <div class="mcq-question">
-        <strong>Question:</strong> How is the summary itself generated when SummarizationMiddleware fires?
-    </div>
-<pre><code>&lt;div class="mcq-choices"&gt;
-    &lt;div class="mcq-choice" onclick="handleMcqClick(this, false, 'bb682f59')"&gt;&lt;strong&gt;A)&lt;/strong&gt; By truncating the oldest messages until the token count drops below the limit
-</code></pre>
-</div>
+<div class="mcq-question"><strong>Question:</strong> How is the summary itself generated when SummarizationMiddleware fires?</div>
+<div class="mcq-choices">
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'bb682f59')"><strong>A)</strong> By truncating the oldest messages until the token count drops below the limit</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'bb682f59')"><strong>B)</strong> By a fixed template that extracts the first sentence of each message</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, 'bb682f59')"><strong>C)</strong> By a separate LLM call using the same model as the agent</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'bb682f59')"><strong>D)</strong> By the agent model as part of generating its next response</div>
-<pre><code>&lt;/div&gt;
-&lt;div id="mcq-answer-bb682f59" class="mcq-answer" style="display: none;"&gt;
-    &lt;div class="mcq-answer-header"&gt;&lt;strong&gt;Answer: C&lt;/strong&gt; ✅&lt;/div&gt;
-    &lt;div class="mcq-explanation"&gt;The middleware makes its own dedicated LLM call, separate from the agent's response turn, using the same underlying model. It sends the old messages to that call with a structured prompt to extract session intent, key facts, artifacts, and next steps.&lt;/div&gt;
-&lt;/div&gt;
-</code></pre>
+</div>
+<div class="mcq-answer" id="mcq-answer-bb682f59" style="display: none;">
+<div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+<div class="mcq-explanation">The middleware makes its own dedicated LLM call, separate from the agent's response turn, using the same underlying model. It sends the old messages to that call with a structured prompt to extract session intent, key facts, artifacts, and next steps.</div>
+</div>
 </div>
 <div class="mcq-container" id="mcq-054f884f">
-    <div class="mcq-question">
-        <strong>Question:</strong> Where in the message list does the generated summary appear?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '054f884f')"><strong>A)</strong> Appended to the system prompt as an additional instruction block</div>
+<div class="mcq-question"><strong>Question:</strong> Where in the message list does the generated summary appear?</div>
+<div class="mcq-choices">
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '054f884f')"><strong>A)</strong> Appended to the system prompt as an additional instruction block</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '054f884f')"><strong>B)</strong> As the very first message in state["messages"]</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '054f884f')"><strong>C)</strong> As a ToolMessage returned by a built-in summarize tool</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '054f884f')"><strong>D)</strong> As a HumanMessage injected at the top of the preserved recent messages</div>
-    </div>
-    <div id="mcq-answer-054f884f" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
-        <div class="mcq-explanation">The summary text is injected as a single HumanMessage placed at the top of the recent messages that were kept. The model receives the summary followed by the recent history, and picks up the conversation as if it had been there the whole time.</div>
-    </div>
 </div>
-
+<div class="mcq-answer" id="mcq-answer-054f884f" style="display: none;">
+<div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+<div class="mcq-explanation">The summary text is injected as a single HumanMessage placed at the top of the recent messages that were kept. The model receives the summary followed by the recent history, and picks up the conversation as if it had been there the whole time.</div>
+</div>
+</div>
 <p><MCQ
     question="What happens to state[\"messages\"] when summarization fires?"
     choices='["Older messages are deleted in place and replaced by the summary message", "state[\"messages\"] is never mutated; summarization only affects what is sent to the model each turn", "state[\"messages\"] is cleared and rebuilt from the summary on every subsequent turn", "A new summarized state replaces the original, and the old state is discarded"]'
@@ -744,37 +736,31 @@ Here is a preview showing the head and tail of the result:
     explanation="state[\"messages\"] is never modified. The full message history is always stored intact. Summarization happens only at the send layer: the middleware intercepts what gets forwarded to the model each turn, not the stored list."
 /></p>
 <div class="mcq-container" id="mcq-07ae7f94">
-    <div class="mcq-question">
-        <strong>Question:</strong> Why must you pass the model object to create_deep_agent when using a profile override, rather than the model ID string?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '07ae7f94')"><strong>A)</strong> The string form does not support multimodal inputs required for summarization</div>
+<div class="mcq-question"><strong>Question:</strong> Why must you pass the model object to create_deep_agent when using a profile override, rather than the model ID string?</div>
+<div class="mcq-choices">
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '07ae7f94')"><strong>A)</strong> The string form does not support multimodal inputs required for summarization</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '07ae7f94')"><strong>B)</strong> String initialization disables SummarizationMiddleware entirely</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '07ae7f94')"><strong>C)</strong> Passing the string re-initializes the model internally and discards the profile override</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '07ae7f94')"><strong>D)</strong> The profile attribute only exists on string-initialized models, not objects</div>
-    </div>
-    <div id="mcq-answer-07ae7f94" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
-        <div class="mcq-explanation">When you pass the model ID string, create_deep_agent re-initializes the model from scratch, which ignores any profile changes you made on the object. Passing the already-configured model object is the only way to ensure the overridden max_input_tokens reaches the middleware.</div>
-    </div>
 </div>
-
+<div class="mcq-answer" id="mcq-answer-07ae7f94" style="display: none;">
+<div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+<div class="mcq-explanation">When you pass the model ID string, create_deep_agent re-initializes the model from scratch, which ignores any profile changes you made on the object. Passing the already-configured model object is the only way to ensure the overridden max_input_tokens reaches the middleware.</div>
+</div>
+</div>
 <div class="mcq-container" id="mcq-796d72d7">
-    <div class="mcq-question">
-        <strong>Question:</strong> When FilesystemMiddleware evicts a large tool result, what does the agent see in its message history?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '796d72d7')"><strong>A)</strong> The tool result is silently dropped and the agent continues without it</div>
+<div class="mcq-question"><strong>Question:</strong> When FilesystemMiddleware evicts a large tool result, what does the agent see in its message history?</div>
+<div class="mcq-choices">
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '796d72d7')"><strong>A)</strong> The tool result is silently dropped and the agent continues without it</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '796d72d7')"><strong>B)</strong> A short head-and-tail preview of the result plus a file path the agent can read_file to retrieve the full content</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '796d72d7')"><strong>C)</strong> The full result compressed into a single summary message by a separate LLM call</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '796d72d7')"><strong>D)</strong> An error message asking the agent to call the tool again with a smaller query</div>
-    </div>
-    <div id="mcq-answer-796d72d7" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
-        <div class="mcq-explanation">FilesystemMiddleware writes the full result to /large_tool_results/<tool_call_id> on the filesystem, then replaces the inline ToolMessage with a preview showing the first and last 5 lines plus the file path. The agent can then use read_file with offset and limit to page through the full content on demand.</div>
-    </div>
 </div>
-
+<div class="mcq-answer" id="mcq-answer-796d72d7" style="display: none;">
+<div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+<div class="mcq-explanation">FilesystemMiddleware writes the full result to /large_tool_results/<tool_call_id> on the filesystem, then replaces the inline ToolMessage with a preview showing the first and last 5 lines plus the file path. The agent can then use read_file with offset and limit to page through the full content on demand.</div>
+</div>
+</div>
 </div>
 <hr />
 <h2 id="references">References</h2>

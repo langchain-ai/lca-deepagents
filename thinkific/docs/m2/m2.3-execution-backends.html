@@ -881,71 +881,57 @@ Chart saved to python/m2/genre_revenue.png</pre>
 <div class="lt-panel" id="p-quiz" role="tabpanel">
 <h2 id="check-your-understanding">Check your understanding</h2>
 <div class="mcq-container" id="mcq-70606047">
-    <div class="mcq-question">
-        <strong>Question:</strong> What does the execute tool return to the agent?
-    </div>
-<pre><code>&lt;div class="mcq-choices"&gt;
-    &lt;div class="mcq-choice" onclick="handleMcqClick(this, true, '70606047')"&gt;&lt;strong&gt;A)&lt;/strong&gt; stdout, stderr, and an exit code
-</code></pre>
-</div>
+<div class="mcq-question"><strong>Question:</strong> What does the execute tool return to the agent?</div>
+<div class="mcq-choices">
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '70606047')"><strong>A)</strong> stdout, stderr, and an exit code</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '70606047')"><strong>B)</strong> The script file contents</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '70606047')"><strong>C)</strong> A boolean success or failure</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '70606047')"><strong>D)</strong> stdout only</div>
-<pre><code>&lt;/div&gt;
-&lt;div id="mcq-answer-70606047" class="mcq-answer" style="display: none;"&gt;
-    &lt;div class="mcq-answer-header"&gt;&lt;strong&gt;Answer: A&lt;/strong&gt; ✅&lt;/div&gt;
-    &lt;div class="mcq-explanation"&gt;execute returns stdout, stderr, and an exit code as a tool result. The LLM sees all three on the next call, which lets it diagnose errors and retry.&lt;/div&gt;
-&lt;/div&gt;
-</code></pre>
+</div>
+<div class="mcq-answer" id="mcq-answer-70606047" style="display: none;">
+<div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
+<div class="mcq-explanation">execute returns stdout, stderr, and an exit code as a tool result. The LLM sees all three on the next call, which lets it diagnose errors and retry.</div>
+</div>
 </div>
 <div class="mcq-container" id="mcq-df396afc">
-    <div class="mcq-question">
-        <strong>Question:</strong> What does root_dir limit in LocalShellBackend?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'df396afc')"><strong>A)</strong> All shell commands executed via execute</div>
+<div class="mcq-question"><strong>Question:</strong> What does root_dir limit in LocalShellBackend?</div>
+<div class="mcq-choices">
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'df396afc')"><strong>A)</strong> All shell commands executed via execute</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, 'df396afc')"><strong>B)</strong> Filesystem tool access - ls, read_file, write_file, and similar</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'df396afc')"><strong>C)</strong> Network access from the agent</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'df396afc')"><strong>D)</strong> Which Python packages the agent can import</div>
-    </div>
-    <div id="mcq-answer-df396afc" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
-        <div class="mcq-explanation">root_dir scopes the filesystem tools only. The execute tool still runs with full host permissions regardless of root_dir - that's why LocalShellBackend is unsuitable for production.</div>
-    </div>
 </div>
-
+<div class="mcq-answer" id="mcq-answer-df396afc" style="display: none;">
+<div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+<div class="mcq-explanation">root_dir scopes the filesystem tools only. The execute tool still runs with full host permissions regardless of root_dir - that's why LocalShellBackend is unsuitable for production.</div>
+</div>
+</div>
 <div class="mcq-container" id="mcq-420f73f9">
-    <div class="mcq-question">
-        <strong>Question:</strong> Which sandbox model does this course use?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '420f73f9')"><strong>A)</strong> Agent in Sandbox - the agent runs inside the sandbox</div>
+<div class="mcq-question"><strong>Question:</strong> Which sandbox model does this course use?</div>
+<div class="mcq-choices">
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '420f73f9')"><strong>A)</strong> Agent in Sandbox - the agent runs inside the sandbox</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '420f73f9')"><strong>B)</strong> Both models equally</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '420f73f9')"><strong>C)</strong> Neither - the course uses LocalShellBackend</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '420f73f9')"><strong>D)</strong> Sandbox as a Tool - the agent runs outside and calls the sandbox via execute</div>
-    </div>
-    <div id="mcq-answer-420f73f9" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
-        <div class="mcq-explanation">This course uses the Sandbox as a Tool pattern: the agent runs on the host and calls the sandbox via execute and filesystem tools. API keys stay on the host and the agent code is easy to update.</div>
-    </div>
 </div>
-
+<div class="mcq-answer" id="mcq-answer-420f73f9" style="display: none;">
+<div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+<div class="mcq-explanation">This course uses the Sandbox as a Tool pattern: the agent runs on the host and calls the sandbox via execute and filesystem tools. API keys stay on the host and the agent code is easy to update.</div>
+</div>
+</div>
 <div class="mcq-container" id="mcq-638ff72b">
-    <div class="mcq-question">
-        <strong>Question:</strong> How do you make a local file available inside a LangSmith sandbox before the agent runs?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '638ff72b')"><strong>A)</strong> Pass the file path in the system prompt</div>
+<div class="mcq-question"><strong>Question:</strong> How do you make a local file available inside a LangSmith sandbox before the agent runs?</div>
+<div class="mcq-choices">
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '638ff72b')"><strong>A)</strong> Pass the file path in the system prompt</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '638ff72b')"><strong>B)</strong> The sandbox automatically syncs the local filesystem</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '638ff72b')"><strong>C)</strong> Call backend.upload_files() with the file contents before invoking the agent</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '638ff72b')"><strong>D)</strong> Write the file to /tmp - the sandbox reads it from there</div>
-    </div>
-    <div id="mcq-answer-638ff72b" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
-        <div class="mcq-explanation">upload_files() seeds the sandbox filesystem before the agent starts. Without it the sandbox starts empty - the agent has no access to local files unless you explicitly upload them.</div>
-    </div>
 </div>
-
+<div class="mcq-answer" id="mcq-answer-638ff72b" style="display: none;">
+<div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+<div class="mcq-explanation">upload_files() seeds the sandbox filesystem before the agent starts. Without it the sandbox starts empty - the agent has no access to local files unless you explicitly upload them.</div>
+</div>
+</div>
 </div>
 <script>
 (function () {
