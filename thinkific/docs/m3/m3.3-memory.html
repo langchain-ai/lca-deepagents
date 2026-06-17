@@ -136,7 +136,6 @@
         pre {
             background: #030710;
             padding: 0.5rem 1rem;
-            padding-top: 2.85rem;
             border-radius: 12px;
             overflow-x: auto;
             overflow-y: auto;
@@ -208,36 +207,25 @@
             padding-left: 5px;
         }
 
-        /* Code output blocks (non-copyable) */
-        pre.no-copy {
-            background: #0a0f1a;
-            border: 1px solid #1a2a3a;
-            opacity: 0.85;
-            padding-top: 0.75rem;
-        }
-
         pre .copy-button-inline {
             position: absolute;
             top: 0.5rem;
-            right: 0.5rem;
+            right: 1rem;
             padding: 0;
             border: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
-            background-position: center;
-            background-size: 16px;
-            background-repeat: no-repeat;
-            background-color: rgba(127, 200, 255, 0.14);
+            background: transparent url('symbols/copy.png') center/18px no-repeat;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s;
             width: 28px;
             height: 28px;
-            opacity: 0.85;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
         }
 
         pre .copy-button-inline:hover {
             opacity: 1;
-            background-color: rgba(127, 200, 255, 0.30);
+            filter: invert(1) brightness(1);
         }
 
         pre .copy-button-inline.copied {
@@ -446,25 +434,22 @@
         .copy-button {
             padding: 0;
             border: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
-            background-position: center;
-            background-size: 16px;
-            background-repeat: no-repeat;
-            background-color: rgba(127, 200, 255, 0.14);
+            background: transparent url('symbols/copy.png') center/20px no-repeat;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 32px;
             height: 32px;
-            opacity: 0.85;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
         }
 
         .copy-button:hover {
             opacity: 1;
-            background-color: rgba(127, 200, 255, 0.30);
+            filter: invert(1) brightness(1);
         }
 
         .copy-button.copied {
@@ -594,7 +579,7 @@
 </div>
 
 <div class="lt-panel active" id="p-mem" role="tabpanel">
-<h2 id="memory_1">Memory</h2>
+<h2 id="memory-always-present-context">Memory: Always-Present Context</h2>
 <p>Memory files are markdown files loaded at agent startup and injected into the system prompt on every LLM call. Unlike skills (which are loaded on demand when a task matches), memory is always present, every call.</p>
 <p><img src="images/m3.3-memory-scope.svg" alt="Two-panel diagram. Left: three user figures with converging arrows into one shared AGENTS.md file, labeled Agent Memory — shared across all users. Right: three user figures each with a separate memory file, labeled User Memory — per user, separate file each." style="width:100%;display:block;margin:1.25rem 0 0.5rem;" /></p>
 <p><strong>Agent memory</strong> is shared across all users. Deep Agents makes memory first-class: the agent reads and writes memory as files, and you control where those files are stored using backends.</p>
@@ -604,7 +589,7 @@
 <h3 id="the-memory-argument">The memory argument</h3>
 <p>The <code>memory</code> argument is how you attach memory files to your agent. Without it, <code>MemoryMiddleware</code> is not active and nothing persists. Pass a list of file paths:</p>
 <!-- code-highlight-0:3 -->
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python">agent = create_deep_agent(
+<pre><code class="language-python">agent = create_deep_agent(
     model=model,
     memory=[&quot;memories/AGENTS.md&quot;],
     backend=backend,
@@ -666,12 +651,12 @@ By convention, memory files live in a <code>memories/</code> directory and the m
 <hr />
 <h3 id="setup">Setup</h3>
 <p>Create the memories directory:</p>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">mkdir -p ~/Documents/Github/lca-deepagents/python/m3/memories
+<pre><code class="language-bash">mkdir -p ~/Documents/Github/lca-deepagents/python/m3/memories
 </code></pre>
 <hr />
 <h3 id="1-create-memoriesagentsmd">1. Create <code>memories/AGENTS.md</code></h3>
 <p>Create <code>python/m3/memories/AGENTS.md</code> with the following content:</p>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-markdown"># Project Guidelines
+<pre><code class="language-markdown"># Project Guidelines
 
 ## Code Style
 - All functions must have type annotations
@@ -688,7 +673,7 @@ By convention, memory files live in a <code>memories/</code> directory and the m
 <hr />
 <h3 id="2-create-m33_memory_agentpy">2. Create <code>m3.3_memory_agent.py</code></h3>
 <p>Create <code>python/m3/m3.3_memory_agent.py</code>:</p>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m3/m3.3_memory_agent.py
+<pre><code class="language-python"># python/m3/m3.3_memory_agent.py
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -723,7 +708,7 @@ print(result2[&quot;messages&quot;][-1].content)
 <p><code>FilesystemBackend</code> with <code>root_dir</code> pointing to <code>python/m3/</code> gives the agent read and write access to files in that directory. The memory path <code>memories/AGENTS.md</code> resolves relative to that root.</p>
 <hr />
 <h3 id="run-it">Run it</h3>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m3/m3.3_memory_agent.py
+<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m3/m3.3_memory_agent.py
 </code></pre>
 <p>After both invokes complete, open <code>python/m3/memories/AGENTS.md</code> and verify the ruff note was written in.</p>
 <hr />
@@ -738,6 +723,78 @@ print(result2[&quot;messages&quot;][-1].content)
 Memory content is visible in the system message of <em>every</em> LLM call in every run. Skills content only appears as a <code>read_file</code> tool call in the specific run where the skill was activated. If you see a large block in the system prompt that is always there, that is memory. If you see a <code>read_file</code> mid-run, that is a skill activation.
 </div>
 </div>
+<hr />
+<h2 id="check-your-understanding">Check your understanding</h2>
+<div class="mcq-container" id="mcq-0c76bbcc">
+    <div class="mcq-question">
+        <strong>Question:</strong> How does memory differ from skills in terms of when its content is available to the agent?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '0c76bbcc')"><strong>A)</strong> Memory is loaded on demand when a task matches; skills are always present</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '0c76bbcc')"><strong>B)</strong> Both memory and skills are always present in the system prompt</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '0c76bbcc')"><strong>C)</strong> Both memory and skills are loaded on demand when needed</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '0c76bbcc')"><strong>D)</strong> Memory is always injected into the system prompt on every call; skills are loaded on demand</div>
+    </div>
+    <div id="mcq-answer-0c76bbcc" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+        <div class="mcq-explanation">Memory is always present: MemoryMiddleware injects the contents of your memory files into the system prompt on every LLM call. Skills use progressive disclosure; only the name and description are always in context, and the full body is read on demand when a task activates the skill.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-13ec5dfd">
+    <div class="mcq-question">
+        <strong>Question:</strong> What is the difference between agent memory and user memory in Deep Agents?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '13ec5dfd')"><strong>A)</strong> Agent memory requires a checkpointer; user memory does not</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '13ec5dfd')"><strong>B)</strong> Agent memory is read-only; user memory can be written by the agent</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '13ec5dfd')"><strong>C)</strong> Agent memory is shared across all users; user memory gives each user their own separate file</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '13ec5dfd')"><strong>D)</strong> Agent memory persists across sessions; user memory is cleared after each session</div>
+    </div>
+    <div id="mcq-answer-13ec5dfd" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-explanation">The distinction is scope. Agent memory lives in a single shared file; all users see the same content. User memory uses per-user files so preferences and context stay isolated. Which scope applies depends on the backend and file paths you configure.</div>
+    </div>
+</div>
+
+<p><MCQ
+    question="When memory=[\"memories/AGENTS.md\"] is passed to create_deep_agent, what is created behind the scenes?"
+    choices='["A MemoryMiddleware that reads the file and injects its content into the system prompt on every call", "A FilesystemBackend rooted at memories/", "A checkpointer that snapshots the file\'s content between runs", "A SQLite database for storing and indexing the memory contents"]'
+    correctIndex={0}
+    explanation="Passing memory=[...] creates a MemoryMiddleware. On every LLM call the middleware reads each source file and wraps the combined content in an [agent_memory] block appended to the system prompt. Without this argument, MemoryMiddleware is not active and nothing persists."
+/></p>
+<div class="mcq-container" id="mcq-d7ec5d8f">
+    <div class="mcq-question">
+        <strong>Question:</strong> Where in a LangSmith trace can you confirm that memory is being injected correctly?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'd7ec5d8f')"><strong>A)</strong> As a separate Memory tab in the run details panel</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, 'd7ec5d8f')"><strong>B)</strong> In the [agent_memory] block at the bottom of the system message on every LLM call</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'd7ec5d8f')"><strong>C)</strong> As the first ToolMessage in every run</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'd7ec5d8f')"><strong>D)</strong> Only in runs where the agent explicitly reads the memory file</div>
+    </div>
+    <div id="mcq-answer-d7ec5d8f" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+        <div class="mcq-explanation">Open any run, expand the system message on the first LLM call, and scroll to the bottom. The [agent_memory] block contains the raw content of your memory files. It appears on every call regardless of what the user asked.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-b1d59917">
+    <div class="mcq-question">
+        <strong>Question:</strong> How does an agent persist new information to a memory file in Deep Agents?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'b1d59917')"><strong>A)</strong> By returning a special memory_update key in its final response</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'b1d59917')"><strong>B)</strong> By calling a dedicated save_memory() function from the SDK</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'b1d59917')"><strong>C)</strong> Memory files are read-only; new information requires creating an additional file</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, 'b1d59917')"><strong>D)</strong> By calling edit_file on one of the paths passed to memory=[...]</div>
+    </div>
+    <div id="mcq-answer-b1d59917" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+        <div class="mcq-explanation">When the agent should remember something (because a user said 'remember this' or provided context that should carry forward), it calls edit_file on one of the paths in memory=[...]. That write is visible in LangSmith as an edit_file tool call, and the updated content appears in [agent_memory] on all subsequent calls.</div>
+    </div>
+</div>
+
 <hr />
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />
@@ -876,47 +933,6 @@ Memory content is visible in the system message of <em>every</em> LLM call in ev
                 }
             });
         }
-    </script>
-
-    <script>
-    // Attach copy handlers to static .copy-button-inline buttons injected at build time.
-    // This runs synchronously so it fires before Babel compiles the text/babel script.
-    (function () {
-        function attachCopyHandler(button) {
-            if (button.dataset.copySetup) return;
-            button.dataset.copySetup = '1';
-            var pre = button.closest('pre');
-            var code = pre && pre.querySelector('code');
-            if (!code) return;
-            function showDone() {
-                button.textContent = '✓';
-                button.classList.add('copied');
-                setTimeout(function () {
-                    button.textContent = '';
-                    button.classList.remove('copied');
-                }, 2000);
-            }
-            function fallback(text) {
-                var ta = document.createElement('textarea');
-                ta.value = text;
-                ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
-                document.body.appendChild(ta);
-                ta.select();
-                try { document.execCommand('copy'); } catch (e) {}
-                document.body.removeChild(ta);
-                showDone();
-            }
-            button.addEventListener('click', function () {
-                var text = code.textContent;
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(text).then(showDone, function () { fallback(text); });
-                } else {
-                    fallback(text);
-                }
-            });
-        }
-        document.querySelectorAll('pre:not(.no-copy) .copy-button-inline').forEach(attachCopyHandler);
-    })();
     </script>
 
     <script type="text/babel">
@@ -1151,11 +1167,7 @@ Memory content is visible in the system message of <em>every</em> LLM call in ev
                                     right: '1rem',
                                     padding: '0',
                                     border: 'none',
-                                    backgroundImage: copied ? 'none' : 'url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23cfe8ff%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Crect x=%279%27 y=%279%27 width=%2713%27 height=%2713%27 rx=%272%27/%3E%3Cpath d=%27M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1%27/%3E%3C/svg%3E")',
-                                    backgroundColor: copied ? 'transparent' : 'rgba(127, 200, 255, 0.14)',
-                                    backgroundPosition: 'center',
-                                    backgroundSize: '16px',
-                                    backgroundRepeat: 'no-repeat',
+                                    background: copied ? 'none' : 'transparent url("symbols/copy.png") center/18px no-repeat',
                                     cursor: 'pointer',
                                     borderRadius: '4px',
                                     width: '28px',
@@ -1313,24 +1325,20 @@ Memory content is visible in the system message of <em>every</em> LLM call in ev
         // Add copy buttons to regular code blocks
         function addCopyButtonsToCodeBlocks() {
             // Find all pre blocks that aren't inside tabs-block containers
-            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre):not(.no-copy)');
+            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre)');
 
             preBlocks.forEach(pre => {
+                // Skip if already has a copy button
+                if (pre.querySelector('.copy-button-inline')) return;
+
                 const code = pre.querySelector('code');
                 if (!code) return;
 
-                // Use existing static button (injected at convert time) or create one
-                let button = pre.querySelector('.copy-button-inline');
-                if (!button) {
-                    button = document.createElement('button');
-                    button.className = 'copy-button-inline';
-                    button.setAttribute('aria-label', 'Copy code');
-                    button.setAttribute('title', 'Copy code');
-                    pre.appendChild(button);
-                } else if (button.dataset.copySetup) {
-                    return;
-                }
-                button.dataset.copySetup = '1';
+                // Create copy button
+                const button = document.createElement('button');
+                button.className = 'copy-button-inline';
+                button.setAttribute('aria-label', 'Copy code');
+                button.setAttribute('title', 'Copy code');
 
                 button.addEventListener('click', async () => {
                     const text = code.textContent;
@@ -1369,6 +1377,8 @@ Memory content is visible in the system message of <em>every</em> LLM call in ev
                         }
                     }
                 });
+
+                pre.appendChild(button);
             });
         }
 

@@ -136,7 +136,6 @@
         pre {
             background: #030710;
             padding: 0.5rem 1rem;
-            padding-top: 2.85rem;
             border-radius: 12px;
             overflow-x: auto;
             overflow-y: auto;
@@ -208,36 +207,25 @@
             padding-left: 5px;
         }
 
-        /* Code output blocks (non-copyable) */
-        pre.no-copy {
-            background: #0a0f1a;
-            border: 1px solid #1a2a3a;
-            opacity: 0.85;
-            padding-top: 0.75rem;
-        }
-
         pre .copy-button-inline {
             position: absolute;
             top: 0.5rem;
-            right: 0.5rem;
+            right: 1rem;
             padding: 0;
             border: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
-            background-position: center;
-            background-size: 16px;
-            background-repeat: no-repeat;
-            background-color: rgba(127, 200, 255, 0.14);
+            background: transparent url('symbols/copy.png') center/18px no-repeat;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s;
             width: 28px;
             height: 28px;
-            opacity: 0.85;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
         }
 
         pre .copy-button-inline:hover {
             opacity: 1;
-            background-color: rgba(127, 200, 255, 0.30);
+            filter: invert(1) brightness(1);
         }
 
         pre .copy-button-inline.copied {
@@ -446,25 +434,22 @@
         .copy-button {
             padding: 0;
             border: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
-            background-position: center;
-            background-size: 16px;
-            background-repeat: no-repeat;
-            background-color: rgba(127, 200, 255, 0.14);
+            background: transparent url('symbols/copy.png') center/20px no-repeat;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 32px;
             height: 32px;
-            opacity: 0.85;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
         }
 
         .copy-button:hover {
             opacity: 1;
-            background-color: rgba(127, 200, 255, 0.30);
+            filter: invert(1) brightness(1);
         }
 
         .copy-button.copied {
@@ -548,7 +533,18 @@
 <script>mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { background: '#F2FAFF', primaryColor: '#E5F4FF', primaryBorderColor: '#006DDD', primaryTextColor: '#030710', lineColor: '#2F4B68' } });</script>
 
 <h1 id="execution-environment">Execution Environment</h1>
-<p>Deep Agents expose a filesystem surface to the agent: tools like <code>ls</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code>, <code>glob</code>, and <code>grep</code>. These tools don't operate directly on disk. They go through a pluggable <strong>backend</strong> that you configure when you create the agent.</p>
+<details>
+<summary>🎥 Video Walk-through [click to expand]</summary>
+<p><br></p>
+<Video src="TODO" />
+</details>
+<p>A Deep Agent has an <strong>execution environment</strong> that provides three things:</p>
+<ul>
+<li>a <strong>filesystem</strong> to read and write files</li>
+<li>a <strong>shell</strong> to run commands (the <code>execute</code> tool)</li>
+<li>an <strong>interpreter</strong> to run code</li>
+</ul>
+<p>The first two run through a pluggable <strong>backend</strong> (below); the interpreter runs as a tool in the main loop.</p>
 <hr />
 <h2 id="the-backend-landscape">The backend landscape</h2>
 <div class="mermaid">
@@ -586,16 +582,19 @@ graph TB
     class Execute output
 </div>
 
+<p>Every filesystem and <code>execute</code> call passes through whichever backend you configure. The default keeps files in the agent's <strong>state</strong>; others persist them to local <strong>disk</strong> or a <strong>store</strong>, run them in an isolated <strong>sandbox</strong>, or send files to different backends by path prefix (a <strong>composite</strong>). Sandbox and local-shell backends also add the <code>execute</code> tool. The next two lessons cover each in detail.</p>
+<hr />
+<h2 id="the-interpreter">The interpreter</h2>
+<p>The interpreter lets the agent run code. Language models are unreliable at exact computation, so when a task needs a precise result — a calculation, a data transformation, a generated file — the agent writes code and the interpreter runs it, returning the actual output. It runs as a tool in the agent's main loop, alongside the agent's other tools. The final lesson of this module covers it in detail.</p>
 <hr />
 <h2 id="recap">Recap</h2>
 <ul>
-<li>The filesystem <strong>surface</strong> (the tools) is fixed: <code>ls</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code>, <code>glob</code>, <code>grep</code></li>
-<li>The <strong>backend</strong> is swappable; it controls where files are actually stored</li>
-<li>Sandbox and Local Shell backends add an <code>execute</code> tool for running shell commands</li>
-<li>Composite backend routes different paths to different backends</li>
+<li>The execution environment gives the agent three capabilities: a <strong>filesystem</strong>, a <strong>shell</strong> (<code>execute</code>), and an <strong>interpreter</strong></li>
+<li>The filesystem tools and <code>execute</code> all run through a swappable <strong>backend</strong> — swap it to change where files live and where commands run, without touching the agent</li>
+<li>The <strong>interpreter</strong> is the exception: it runs as a tool in the main loop, not through a backend</li>
 </ul>
 <h2 id="next">Next</h2>
-<p>The next lesson covers each backend in detail, starting with the default StateBackend.</p>
+<p>The next lesson covers the filesystem surface, followed by the backends behind it and, finally, the interpreter.</p>
 <hr />
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />
@@ -715,47 +714,6 @@ graph TB
                 }
             });
         }
-    </script>
-
-    <script>
-    // Attach copy handlers to static .copy-button-inline buttons injected at build time.
-    // This runs synchronously so it fires before Babel compiles the text/babel script.
-    (function () {
-        function attachCopyHandler(button) {
-            if (button.dataset.copySetup) return;
-            button.dataset.copySetup = '1';
-            var pre = button.closest('pre');
-            var code = pre && pre.querySelector('code');
-            if (!code) return;
-            function showDone() {
-                button.textContent = '✓';
-                button.classList.add('copied');
-                setTimeout(function () {
-                    button.textContent = '';
-                    button.classList.remove('copied');
-                }, 2000);
-            }
-            function fallback(text) {
-                var ta = document.createElement('textarea');
-                ta.value = text;
-                ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
-                document.body.appendChild(ta);
-                ta.select();
-                try { document.execCommand('copy'); } catch (e) {}
-                document.body.removeChild(ta);
-                showDone();
-            }
-            button.addEventListener('click', function () {
-                var text = code.textContent;
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(text).then(showDone, function () { fallback(text); });
-                } else {
-                    fallback(text);
-                }
-            });
-        }
-        document.querySelectorAll('pre:not(.no-copy) .copy-button-inline').forEach(attachCopyHandler);
-    })();
     </script>
 
     <script type="text/babel">
@@ -990,11 +948,7 @@ graph TB
                                     right: '1rem',
                                     padding: '0',
                                     border: 'none',
-                                    backgroundImage: copied ? 'none' : 'url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23cfe8ff%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Crect x=%279%27 y=%279%27 width=%2713%27 height=%2713%27 rx=%272%27/%3E%3Cpath d=%27M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1%27/%3E%3C/svg%3E")',
-                                    backgroundColor: copied ? 'transparent' : 'rgba(127, 200, 255, 0.14)',
-                                    backgroundPosition: 'center',
-                                    backgroundSize: '16px',
-                                    backgroundRepeat: 'no-repeat',
+                                    background: copied ? 'none' : 'transparent url("symbols/copy.png") center/18px no-repeat',
                                     cursor: 'pointer',
                                     borderRadius: '4px',
                                     width: '28px',
@@ -1152,24 +1106,20 @@ graph TB
         // Add copy buttons to regular code blocks
         function addCopyButtonsToCodeBlocks() {
             // Find all pre blocks that aren't inside tabs-block containers
-            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre):not(.no-copy)');
+            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre)');
 
             preBlocks.forEach(pre => {
+                // Skip if already has a copy button
+                if (pre.querySelector('.copy-button-inline')) return;
+
                 const code = pre.querySelector('code');
                 if (!code) return;
 
-                // Use existing static button (injected at convert time) or create one
-                let button = pre.querySelector('.copy-button-inline');
-                if (!button) {
-                    button = document.createElement('button');
-                    button.className = 'copy-button-inline';
-                    button.setAttribute('aria-label', 'Copy code');
-                    button.setAttribute('title', 'Copy code');
-                    pre.appendChild(button);
-                } else if (button.dataset.copySetup) {
-                    return;
-                }
-                button.dataset.copySetup = '1';
+                // Create copy button
+                const button = document.createElement('button');
+                button.className = 'copy-button-inline';
+                button.setAttribute('aria-label', 'Copy code');
+                button.setAttribute('title', 'Copy code');
 
                 button.addEventListener('click', async () => {
                     const text = code.textContent;
@@ -1208,6 +1158,8 @@ graph TB
                         }
                     }
                 });
+
+                pre.appendChild(button);
             });
         }
 

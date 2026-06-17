@@ -136,7 +136,6 @@
         pre {
             background: #030710;
             padding: 0.5rem 1rem;
-            padding-top: 2.85rem;
             border-radius: 12px;
             overflow-x: auto;
             overflow-y: auto;
@@ -208,36 +207,25 @@
             padding-left: 5px;
         }
 
-        /* Code output blocks (non-copyable) */
-        pre.no-copy {
-            background: #0a0f1a;
-            border: 1px solid #1a2a3a;
-            opacity: 0.85;
-            padding-top: 0.75rem;
-        }
-
         pre .copy-button-inline {
             position: absolute;
             top: 0.5rem;
-            right: 0.5rem;
+            right: 1rem;
             padding: 0;
             border: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
-            background-position: center;
-            background-size: 16px;
-            background-repeat: no-repeat;
-            background-color: rgba(127, 200, 255, 0.14);
+            background: transparent url('symbols/copy.png') center/18px no-repeat;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s;
             width: 28px;
             height: 28px;
-            opacity: 0.85;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
         }
 
         pre .copy-button-inline:hover {
             opacity: 1;
-            background-color: rgba(127, 200, 255, 0.30);
+            filter: invert(1) brightness(1);
         }
 
         pre .copy-button-inline.copied {
@@ -446,25 +434,22 @@
         .copy-button {
             padding: 0;
             border: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
-            background-position: center;
-            background-size: 16px;
-            background-repeat: no-repeat;
-            background-color: rgba(127, 200, 255, 0.14);
+            background: transparent url('symbols/copy.png') center/20px no-repeat;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 32px;
             height: 32px;
-            opacity: 0.85;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
         }
 
         .copy-button:hover {
             opacity: 1;
-            background-color: rgba(127, 200, 255, 0.30);
+            filter: invert(1) brightness(1);
         }
 
         .copy-button.copied {
@@ -592,7 +577,7 @@ document.addEventListener('DOMContentLoaded', function() { mermaid.run(); });</s
     <button class="lt-tab active" data-p="exec" role="tab" aria-selected="true">Execution</button>
   </div>
   <div class="lt-group lt-wrap">
-    <button class="lt-tab" data-p="lab1" role="tab" aria-selected="false">Lab 1</button>
+    <button class="lt-tab" data-p="lab1" role="tab" aria-selected="false">Lab</button>
   </div>
 </div>
 
@@ -734,7 +719,7 @@ graph TB
 <p>This lab uses <code>LangSmithSandbox</code>; commands run in an isolated LangSmith-managed environment, not on your local machine.</p>
 <hr />
 <p>Create <code>python/m2/sandbox_agent.py</code>:</p>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m2/sandbox_agent.py
+<pre><code class="language-python"># python/m2/sandbox_agent.py
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -774,7 +759,7 @@ try:
 finally:
     client.delete_sandbox(ls_sandbox.name)
 </code></pre>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">cd python
+<pre><code class="language-bash">cd python
 uv run ./m2/sandbox_agent.py
 </code></pre>
 <hr />
@@ -799,7 +784,7 @@ uv run ./m2/sandbox_agent.py
 <p>This lab introduces two new patterns: <strong>uploading files</strong> to a sandbox before the agent runs, and <strong>reading files</strong> back from the sandbox after it finishes.</p>
 <hr />
 <!-- code-highlight-2:13,14,16,17,55,56,57 -->
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m2/m2_3_sales_agent.py
+<pre><code class="language-python"># python/m2/m2_3_sales_agent.py
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -861,13 +846,13 @@ try:
 finally:
     client.delete_sandbox(ls_sandbox.name)
 </code></pre>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">cd python
+<pre><code class="language-bash">cd python
 uv run ./m2/m2_3_sales_agent.py
 open m2/genre_revenue.png
 </code></pre>
 <hr />
 <p><strong>Expected output:</strong></p>
-<pre style="max-height:260px;overflow-y:auto;background:#0d1117;color:#e6edf3;padding:16px;border-radius:6px;font-size:12px;font-family:'IBM Plex Mono',monospace;line-height:1.6;white-space:pre-wrap;"><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button>Sandbox: lca-deepagents-lab  (id: 510c7cfa-7809-4317-a272-715c05221a24)
+<pre style="max-height:260px;overflow-y:auto;background:#0d1117;color:#e6edf3;padding:16px;border-radius:6px;font-size:12px;font-family:'IBM Plex Mono',monospace;line-height:1.6;white-space:pre-wrap;">Sandbox: lca-deepagents-lab  (id: 510c7cfa-7809-4317-a272-715c05221a24)
 Done! I've successfully created your donut chart showing revenue by genre.
 
 Data Summary:
@@ -901,7 +886,7 @@ Chart saved to python/m2/genre_revenue.png</pre>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '70606047')"><strong>D)</strong> stdout only</div>
     </div>
     <div id="mcq-answer-70606047" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: A</strong> &#10003;</div>
+        <div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
         <div class="mcq-explanation">execute returns stdout, stderr, and an exit code as a tool result. The LLM sees all three on the next call, which lets it diagnose errors and retry.</div>
     </div>
 </div>
@@ -917,7 +902,7 @@ Chart saved to python/m2/genre_revenue.png</pre>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'df396afc')"><strong>D)</strong> Which Python packages the agent can import</div>
     </div>
     <div id="mcq-answer-df396afc" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: B</strong> &#10003;</div>
+        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
         <div class="mcq-explanation">root_dir scopes the filesystem tools only. The execute tool still runs with full host permissions regardless of root_dir — that's why LocalShellBackend is unsuitable for production.</div>
     </div>
 </div>
@@ -933,7 +918,7 @@ Chart saved to python/m2/genre_revenue.png</pre>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '420f73f9')"><strong>D)</strong> Sandbox as a Tool — the agent runs outside and calls the sandbox via execute</div>
     </div>
     <div id="mcq-answer-420f73f9" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: D</strong> &#10003;</div>
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
         <div class="mcq-explanation">This course uses the Sandbox as a Tool pattern: the agent runs on the host and calls the sandbox via execute and filesystem tools. API keys stay on the host and the agent code is easy to update.</div>
     </div>
 </div>
@@ -949,7 +934,7 @@ Chart saved to python/m2/genre_revenue.png</pre>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '638ff72b')"><strong>D)</strong> Write the file to /tmp — the sandbox reads it from there</div>
     </div>
     <div id="mcq-answer-638ff72b" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: C</strong> &#10003;</div>
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
         <div class="mcq-explanation">upload_files() seeds the sandbox filesystem before the agent starts. Without it the sandbox starts empty — the agent has no access to local files unless you explicitly upload them.</div>
     </div>
 </div>
@@ -1087,47 +1072,6 @@ Chart saved to python/m2/genre_revenue.png</pre>
                 }
             });
         }
-    </script>
-
-    <script>
-    // Attach copy handlers to static .copy-button-inline buttons injected at build time.
-    // This runs synchronously so it fires before Babel compiles the text/babel script.
-    (function () {
-        function attachCopyHandler(button) {
-            if (button.dataset.copySetup) return;
-            button.dataset.copySetup = '1';
-            var pre = button.closest('pre');
-            var code = pre && pre.querySelector('code');
-            if (!code) return;
-            function showDone() {
-                button.textContent = '✓';
-                button.classList.add('copied');
-                setTimeout(function () {
-                    button.textContent = '';
-                    button.classList.remove('copied');
-                }, 2000);
-            }
-            function fallback(text) {
-                var ta = document.createElement('textarea');
-                ta.value = text;
-                ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
-                document.body.appendChild(ta);
-                ta.select();
-                try { document.execCommand('copy'); } catch (e) {}
-                document.body.removeChild(ta);
-                showDone();
-            }
-            button.addEventListener('click', function () {
-                var text = code.textContent;
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(text).then(showDone, function () { fallback(text); });
-                } else {
-                    fallback(text);
-                }
-            });
-        }
-        document.querySelectorAll('pre:not(.no-copy) .copy-button-inline').forEach(attachCopyHandler);
-    })();
     </script>
 
     <script type="text/babel">
@@ -1362,11 +1306,7 @@ Chart saved to python/m2/genre_revenue.png</pre>
                                     right: '1rem',
                                     padding: '0',
                                     border: 'none',
-                                    backgroundImage: copied ? 'none' : 'url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23cfe8ff%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Crect x=%279%27 y=%279%27 width=%2713%27 height=%2713%27 rx=%272%27/%3E%3Cpath d=%27M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1%27/%3E%3C/svg%3E")',
-                                    backgroundColor: copied ? 'transparent' : 'rgba(127, 200, 255, 0.14)',
-                                    backgroundPosition: 'center',
-                                    backgroundSize: '16px',
-                                    backgroundRepeat: 'no-repeat',
+                                    background: copied ? 'none' : 'transparent url("symbols/copy.png") center/18px no-repeat',
                                     cursor: 'pointer',
                                     borderRadius: '4px',
                                     width: '28px',
@@ -1524,24 +1464,20 @@ Chart saved to python/m2/genre_revenue.png</pre>
         // Add copy buttons to regular code blocks
         function addCopyButtonsToCodeBlocks() {
             // Find all pre blocks that aren't inside tabs-block containers
-            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre):not(.no-copy)');
+            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre)');
 
             preBlocks.forEach(pre => {
+                // Skip if already has a copy button
+                if (pre.querySelector('.copy-button-inline')) return;
+
                 const code = pre.querySelector('code');
                 if (!code) return;
 
-                // Use existing static button (injected at convert time) or create one
-                let button = pre.querySelector('.copy-button-inline');
-                if (!button) {
-                    button = document.createElement('button');
-                    button.className = 'copy-button-inline';
-                    button.setAttribute('aria-label', 'Copy code');
-                    button.setAttribute('title', 'Copy code');
-                    pre.appendChild(button);
-                } else if (button.dataset.copySetup) {
-                    return;
-                }
-                button.dataset.copySetup = '1';
+                // Create copy button
+                const button = document.createElement('button');
+                button.className = 'copy-button-inline';
+                button.setAttribute('aria-label', 'Copy code');
+                button.setAttribute('title', 'Copy code');
 
                 button.addEventListener('click', async () => {
                     const text = code.textContent;
@@ -1580,6 +1516,8 @@ Chart saved to python/m2/genre_revenue.png</pre>
                         }
                     }
                 });
+
+                pre.appendChild(button);
             });
         }
 

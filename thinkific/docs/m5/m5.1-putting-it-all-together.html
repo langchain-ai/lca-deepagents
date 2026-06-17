@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>m1.4-system-prompt-quiz</title>
+    <title>m5.1-putting-it-all-together</title>
     <meta name="description" content="">
 
     <!-- Syntax highlighting -->
@@ -136,7 +136,6 @@
         pre {
             background: #030710;
             padding: 0.5rem 1rem;
-            padding-top: 2.85rem;
             border-radius: 12px;
             overflow-x: auto;
             overflow-y: auto;
@@ -208,36 +207,25 @@
             padding-left: 5px;
         }
 
-        /* Code output blocks (non-copyable) */
-        pre.no-copy {
-            background: #0a0f1a;
-            border: 1px solid #1a2a3a;
-            opacity: 0.85;
-            padding-top: 0.75rem;
-        }
-
         pre .copy-button-inline {
             position: absolute;
             top: 0.5rem;
-            right: 0.5rem;
+            right: 1rem;
             padding: 0;
             border: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
-            background-position: center;
-            background-size: 16px;
-            background-repeat: no-repeat;
-            background-color: rgba(127, 200, 255, 0.14);
+            background: transparent url('symbols/copy.png') center/18px no-repeat;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s;
             width: 28px;
             height: 28px;
-            opacity: 0.85;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
         }
 
         pre .copy-button-inline:hover {
             opacity: 1;
-            background-color: rgba(127, 200, 255, 0.30);
+            filter: invert(1) brightness(1);
         }
 
         pre .copy-button-inline.copied {
@@ -446,25 +434,22 @@
         .copy-button {
             padding: 0;
             border: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
-            background-position: center;
-            background-size: 16px;
-            background-repeat: no-repeat;
-            background-color: rgba(127, 200, 255, 0.14);
+            background: transparent url('symbols/copy.png') center/20px no-repeat;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 32px;
             height: 32px;
-            opacity: 0.85;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
         }
 
         .copy-button:hover {
             opacity: 1;
-            background-color: rgba(127, 200, 255, 0.30);
+            filter: invert(1) brightness(1);
         }
 
         .copy-button.copied {
@@ -541,71 +526,83 @@
     </style>
 </head>
 <body>
-    <p><a href="https://langchain-ai.github.io/lca-deepagents/m1/m1.4-system-prompt-quiz.html" target="_blank" rel="noopener noreferrer">↗ For translation, open lesson in new tab and use Chrome translate</a></p>
+    <p><a href="https://langchain-ai.github.io/lca-deepagents/m5/m5.1-putting-it-all-together.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
 <style>@import url('../shared/sd-components.css');</style>
 <script src="../shared/sd-components.js"></script>
 
-<h1 id="quiz-the-system-prompt">Quiz: The System Prompt</h1>
-<div class="mcq-container" id="mcq-16124331">
-    <div class="mcq-question">
-        <strong>Question:</strong> How many named parts does create_deep_agent assemble the system prompt from?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '16124331')"><strong>A)</strong> One: the BASE prompt only</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '16124331')"><strong>B)</strong> Two: USER and BASE</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '16124331')"><strong>C)</strong> Four: USER, BASE, SUFFIX, and a tool section</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '16124331')"><strong>D)</strong> Three: USER, BASE, and SUFFIX</div>
-    </div>
-    <div id="mcq-answer-16124331" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: D</strong> &#10003;</div>
-        <div class="mcq-explanation">The assembled prompt has three parts: USER (your system_prompt argument), BASE (the SDK's built-in BASE_AGENT_PROMPT), and SUFFIX (appended by a HarnessProfile for model-specific tuning). Only USER and BASE are directly relevant to this lesson; SUFFIX is optional and covered separately.</div>
-    </div>
+<h1 id="putting-it-all-together">Putting It All Together</h1>
+<details>
+<summary>🎥 Video Walk-through [click to expand]</summary>
+<p><br></p>
+<Video src="TODO" />
+</details>
+<p>Over the last four modules you met the pieces of Deep Agents one at a time — the model and tools, skills and <code>AGENTS.md</code>, the filesystem, the interpreter, the sandbox, human-in-the-loop, and subagents. This module is the capstone: a single, real project that uses <strong>all</strong> of them together.</p>
+<p>A key takeaway from this module: creating a deep agent requires very little code. Most of the agent's behavior is determined by <strong>text</strong> — the skills and the <code>AGENTS.md</code> file.</p>
+<div style="text-align: center;">
+<svg viewBox="0 0 720 296" width="680" role="img" aria-label="Two inputs feed a deep agent. On the left, a card labeled 'A little code' lists tools, subagents, and the create_deep_agent call. Below it, a card labeled 'Some text files' lists AGENTS.md and skills. Both flow right into a node labeled 'Your deep agent', which flows on to 'langgraph dev — served over HTTP'." xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="720" height="296" fill="#030710" rx="8"/>
+  <text x="360" y="34" text-anchor="middle" font-size="17" font-weight="300" fill="#F2FAFF">What it takes to build a deep agent</text>
+  <text x="360" y="56" text-anchor="middle" font-size="13" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">a little code + some text files</text>
+
+  <!-- Card: code -->
+  <rect x="36" y="80" width="262" height="100" rx="8" fill="#161F34" stroke="#40668D" stroke-width="1"/>
+  <text x="56" y="108" font-size="15" font-weight="600" fill="#7FC8FF">A little code</text>
+  <text x="56" y="131" font-size="13" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">• tools (plain functions)</text>
+  <text x="56" y="151" font-size="13" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">• subagents (small dicts)</text>
+  <text x="56" y="171" font-size="13" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">• the create_deep_agent() call</text>
+
+  <!-- Card: text files -->
+  <rect x="36" y="200" width="262" height="84" rx="8" fill="#161F34" stroke="#40668D" stroke-width="1"/>
+  <text x="56" y="228" font-size="15" font-weight="600" fill="#7FC8FF">Mostly text</text>
+  <text x="56" y="251" font-size="13" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">• AGENTS.md (operating manual)</text>
+  <text x="56" y="271" font-size="13" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">• skills/ (a playbook per task)</text>
+
+  <!-- arrows to agent -->
+  <line x1="298" y1="130" x2="448" y2="172" stroke="#40668D" stroke-width="1.5"/>
+  <line x1="298" y1="242" x2="448" y2="190" stroke="#40668D" stroke-width="1.5"/>
+
+  <!-- agent node -->
+  <rect x="450" y="142" width="232" height="80" rx="8" fill="#0D1322" stroke="#7FC8FF" stroke-width="1.5"/>
+  <text x="566" y="178" text-anchor="middle" font-size="16" font-weight="600" fill="#F2FAFF">Your deep agent</text>
+  <text x="566" y="200" text-anchor="middle" font-size="13" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">create_deep_agent(...)</text>
+
+  <!-- deploy -->
+  <line x1="566" y1="222" x2="566" y2="258" stroke="#40668D" stroke-width="1.5"/>
+  <text x="566" y="280" text-anchor="middle" font-size="13" fill="#7FC8FF" font-family="'IBM Plex Mono', ui-monospace, monospace">langgraph dev → served over HTTP</text>
+</svg>
+
+<p><em>A little code plus a few Markdown files, joined by one <code>create_deep_agent()</code> call.</em></p>
+
 </div>
 
-<div class="mcq-container" id="mcq-4a037246">
-    <div class="mcq-question">
-        <strong>Question:</strong> Where in the assembled prompt does the USER segment appear?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, true, '4a037246')"><strong>A)</strong> At the very front, before BASE and SUFFIX</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '4a037246')"><strong>B)</strong> At the very end, after the SUFFIX</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '4a037246')"><strong>C)</strong> After the BASE instructions</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '4a037246')"><strong>D)</strong> Interleaved with the BASE instructions</div>
-    </div>
-    <div id="mcq-answer-4a037246" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: A</strong> &#10003;</div>
-        <div class="mcq-explanation">The SDK slots the USER segment (your system_prompt) at the very front of the assembled prompt, ahead of the BASE instructions and any SUFFIX.</div>
-    </div>
-</div>
-
-<div class="mcq-container" id="mcq-9df17580">
-    <div class="mcq-question">
-        <strong>Question:</strong> You write SYSTEM_PROMPT = 'You are a pirate.' but the agent replies with no pirate tone. What is most likely wrong?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '9df17580')"><strong>A)</strong> The BASE prompt overrides all user-defined personas</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '9df17580')"><strong>B)</strong> The model requires a special flag to enable custom personas</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '9df17580')"><strong>C)</strong> SYSTEM_PROMPT was defined but not passed to create_deep_agent</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '9df17580')"><strong>D)</strong> The SUFFIX always overrides the USER segment</div>
-    </div>
-    <div id="mcq-answer-9df17580" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: C</strong> &#10003;</div>
-        <div class="mcq-explanation">Defining the string is not enough. It must be passed explicitly: create_deep_agent(model=model, system_prompt=SYSTEM_PROMPT). Without the argument, the agent never receives the USER segment and falls back to BASE behavior only.</div>
-    </div>
-</div>
-
-<p><MCQ
-    question="What is the BASE segment of the assembled prompt?"
-    choices='["The system_prompt string you pass to create_deep_agent", "The tool schemas appended by the SDK before each LLM call", "A model-specific tuning block provided by a HarnessProfile", "The SDK's built-in BASE_AGENT_PROMPT, the behavior guidance that is always present"]'
-    correctIndex={3}
-    explanation="The BASE segment is BASE_AGENT_PROMPT, built into the SDK. It carries the agent's core behavior guidance and is always present regardless of what you pass. The SUFFIX, from a HarnessProfile, is the model-specific part."
-/></p>
-<p><MCQ
-    question="You switch from a pirate persona to a cowboy persona by changing SYSTEM_PROMPT. What else in the assembled prompt changes?"
-    choices='["The BASE instructions adapt to match the new persona", "Nothing; only your USER segment changes", "The SUFFIX is regenerated based on the persona", "The tool schemas update to reflect the new persona\'s capabilities"]'
-    correctIndex={1}
-    explanation="Only your USER segment changes. The BASE instructions, SUFFIX, and tool schemas are identical across runs. The USER segment is the single lever you control; everything else stays put."
-/></p>
+<hr />
+<h2 id="the-project-a-sales-assistant-for-chinook">The project: a sales assistant for Chinook</h2>
+<p>The capstone we'll build is a <strong>sales assistant</strong> for <strong>Jane Peacock</strong>, a sales rep at <strong>Chinook</strong> — an online music distributor. It helps her work her "book of business": it reads quote requests from her <strong>Gmail</strong> inbox, looks up customers and prices in the <strong>Chinook sales database</strong>, drafts replies for her to approve, writes a weekly music newsletter, and reports on how her territory is doing.</p>
+<p>It's a single deep agent, but a complete, realistic application.</p>
+<hr />
+<h2 id="every-feature-and-where-this-project-uses-it">Every feature, and where this project uses it</h2>
+<p>Here's the whole toolkit from the course, mapped to where the sales assistant puts each one to work:</p>
+<ul>
+<li><strong>Subagents</strong> — <code>chinook-analyst</code> (owns the database), <code>inbox-manager</code> (owns Gmail), <code>quote-reviewer</code> (sanity-checks a quote), and <code>genre-researcher</code> (newsletter research). Each is a specialist with its own tools.</li>
+<li><strong>Parallel subagents</strong> — the newsletter fans out one <code>genre-researcher</code> per genre, all at once, then stitches the segments together.</li>
+<li><strong>Skills + <code>AGENTS.md</code></strong> — a plain-text operating manual plus one playbook per task (RFQ quote, newsletter, territory report).</li>
+<li><strong>Filesystem</strong> — the quotes ledger, the newsletter HTML page, and the territory report are written to disk.</li>
+<li><strong>Interpreter</strong> — exact quote math: line totals and the volume discount, computed rather than guessed.</li>
+<li><strong>Sandbox</strong> <em>(optional)</em> — chart generation for the territory report; without it, the report is numbers-only and everything else still works.</li>
+<li><strong>Human-in-the-loop</strong> — approval gates on the two consequential actions: saving a Gmail draft and adding a new customer.</li>
+<li><strong>MCP</strong> — Gmail access, through either a local mock server or real OAuth — the same tool surface either way.</li>
+<li><strong>Todo list</strong> — sequencing the multi-step RFQ task so the agent keeps its place.</li>
+</ul>
+<p>Over the rest of the module, you'll build this assistant and run it.</p>
+<hr />
+<h2 id="next">Next</h2>
+<p>Before building the assistant, the next lesson covers <strong>deploying</strong> an agent locally with <code>langgraph dev</code> — serving it over HTTP so a chat UI can talk to it.</p>
+<hr />
+<h2 id="references">References</h2>
+<p><strong>Documentation:</strong><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/overview" target="_blank" rel="noopener noreferrer">Deep Agents overview</a><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/skills" target="_blank" rel="noopener noreferrer">Skills (Deep Agents)</a><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/subagents" target="_blank" rel="noopener noreferrer">Subagents (Deep Agents)</a></p>
 
     <script>
         // Handle MCQ choice clicks
@@ -721,47 +718,6 @@
                 }
             });
         }
-    </script>
-
-    <script>
-    // Attach copy handlers to static .copy-button-inline buttons injected at build time.
-    // This runs synchronously so it fires before Babel compiles the text/babel script.
-    (function () {
-        function attachCopyHandler(button) {
-            if (button.dataset.copySetup) return;
-            button.dataset.copySetup = '1';
-            var pre = button.closest('pre');
-            var code = pre && pre.querySelector('code');
-            if (!code) return;
-            function showDone() {
-                button.textContent = '✓';
-                button.classList.add('copied');
-                setTimeout(function () {
-                    button.textContent = '';
-                    button.classList.remove('copied');
-                }, 2000);
-            }
-            function fallback(text) {
-                var ta = document.createElement('textarea');
-                ta.value = text;
-                ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
-                document.body.appendChild(ta);
-                ta.select();
-                try { document.execCommand('copy'); } catch (e) {}
-                document.body.removeChild(ta);
-                showDone();
-            }
-            button.addEventListener('click', function () {
-                var text = code.textContent;
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(text).then(showDone, function () { fallback(text); });
-                } else {
-                    fallback(text);
-                }
-            });
-        }
-        document.querySelectorAll('pre:not(.no-copy) .copy-button-inline').forEach(attachCopyHandler);
-    })();
     </script>
 
     <script type="text/babel">
@@ -996,11 +952,7 @@
                                     right: '1rem',
                                     padding: '0',
                                     border: 'none',
-                                    backgroundImage: copied ? 'none' : 'url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23cfe8ff%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Crect x=%279%27 y=%279%27 width=%2713%27 height=%2713%27 rx=%272%27/%3E%3Cpath d=%27M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1%27/%3E%3C/svg%3E")',
-                                    backgroundColor: copied ? 'transparent' : 'rgba(127, 200, 255, 0.14)',
-                                    backgroundPosition: 'center',
-                                    backgroundSize: '16px',
-                                    backgroundRepeat: 'no-repeat',
+                                    background: copied ? 'none' : 'transparent url("symbols/copy.png") center/18px no-repeat',
                                     cursor: 'pointer',
                                     borderRadius: '4px',
                                     width: '28px',
@@ -1158,24 +1110,20 @@
         // Add copy buttons to regular code blocks
         function addCopyButtonsToCodeBlocks() {
             // Find all pre blocks that aren't inside tabs-block containers
-            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre):not(.no-copy)');
+            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre)');
 
             preBlocks.forEach(pre => {
+                // Skip if already has a copy button
+                if (pre.querySelector('.copy-button-inline')) return;
+
                 const code = pre.querySelector('code');
                 if (!code) return;
 
-                // Use existing static button (injected at convert time) or create one
-                let button = pre.querySelector('.copy-button-inline');
-                if (!button) {
-                    button = document.createElement('button');
-                    button.className = 'copy-button-inline';
-                    button.setAttribute('aria-label', 'Copy code');
-                    button.setAttribute('title', 'Copy code');
-                    pre.appendChild(button);
-                } else if (button.dataset.copySetup) {
-                    return;
-                }
-                button.dataset.copySetup = '1';
+                // Create copy button
+                const button = document.createElement('button');
+                button.className = 'copy-button-inline';
+                button.setAttribute('aria-label', 'Copy code');
+                button.setAttribute('title', 'Copy code');
 
                 button.addEventListener('click', async () => {
                     const text = code.textContent;
@@ -1214,6 +1162,8 @@
                         }
                     }
                 });
+
+                pre.appendChild(button);
             });
         }
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>m3.2-skills-quiz</title>
+    <title>m5.3-the-sales-assistant</title>
     <meta name="description" content="">
 
     <!-- Syntax highlighting -->
@@ -136,7 +136,6 @@
         pre {
             background: #030710;
             padding: 0.5rem 1rem;
-            padding-top: 2.85rem;
             border-radius: 12px;
             overflow-x: auto;
             overflow-y: auto;
@@ -208,36 +207,25 @@
             padding-left: 5px;
         }
 
-        /* Code output blocks (non-copyable) */
-        pre.no-copy {
-            background: #0a0f1a;
-            border: 1px solid #1a2a3a;
-            opacity: 0.85;
-            padding-top: 0.75rem;
-        }
-
         pre .copy-button-inline {
             position: absolute;
             top: 0.5rem;
-            right: 0.5rem;
+            right: 1rem;
             padding: 0;
             border: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
-            background-position: center;
-            background-size: 16px;
-            background-repeat: no-repeat;
-            background-color: rgba(127, 200, 255, 0.14);
+            background: transparent url('symbols/copy.png') center/18px no-repeat;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s;
             width: 28px;
             height: 28px;
-            opacity: 0.85;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
         }
 
         pre .copy-button-inline:hover {
             opacity: 1;
-            background-color: rgba(127, 200, 255, 0.30);
+            filter: invert(1) brightness(1);
         }
 
         pre .copy-button-inline.copied {
@@ -446,25 +434,22 @@
         .copy-button {
             padding: 0;
             border: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
-            background-position: center;
-            background-size: 16px;
-            background-repeat: no-repeat;
-            background-color: rgba(127, 200, 255, 0.14);
+            background: transparent url('symbols/copy.png') center/20px no-repeat;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 32px;
             height: 32px;
-            opacity: 0.85;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
         }
 
         .copy-button:hover {
             opacity: 1;
-            background-color: rgba(127, 200, 255, 0.30);
+            filter: invert(1) brightness(1);
         }
 
         .copy-button.copied {
@@ -541,60 +526,341 @@
     </style>
 </head>
 <body>
-    <p><a href="https://langchain-ai.github.io/lca-deepagents/m3/m3.2-skills-quiz.html" target="_blank" rel="noopener noreferrer">↗ For translation, open lesson in new tab and use Chrome translate</a></p>
+    <p><a href="https://langchain-ai.github.io/lca-deepagents/m5/m5.3-the-sales-assistant.html" target="_blank" rel="noopener noreferrer">🔗 For translation, open lesson in new tab and use Chrome translate</a></p>
 <style>@import url('../shared/sd-components.css');</style>
 <script src="../shared/sd-components.js"></script>
 
-<h1 id="quiz-skills">Quiz: Skills</h1>
-<div class="mcq-container" id="mcq-71d7668c">
+<h1 id="the-sales-assistant">The Sales Assistant</h1>
+<details>
+<summary>🎥 Video Walk-through [click to expand]</summary>
+<p><br></p>
+<Video src="TODO" />
+</details>
+<p>In Lesson 1 you saw <em>what</em> the Chinook Sales Assistant is and which Deep Agents feature each part uses. In Lesson 2 you learned how to <em>serve</em> an agent with <code>langgraph dev</code>. Now we put it together: meet the finished assistant, see how little <em>new</em> code you write to assemble it, and run it locally.</p>
+<p>The assistant works for <strong>Jane Peacock</strong>, a Sales Support Agent at Chinook (an online music distributor). "Her book of business" means the customers whose support rep is Jane — <code>Customer.SupportRepId = 3</code> in the database. The assistant helps her answer quote requests, keep customer records current, research the market, and report on her territory.</p>
+<blockquote>
+<p><strong>Note:</strong> This lesson sets the assistant up and runs it. The three task sequences it can perform are demonstrated in the video walkthrough above.</p>
+</blockquote>
+<hr />
+<h2 id="how-it-fits-together">How it fits together</h2>
+<p>Like any deployed agent, the assistant runs <strong>inside <code>langgraph dev</code></strong> and is reached over HTTP by a chat UI. What's new here is everything the agent draws on: the <strong>Chinook database</strong>, its <strong>sales playbooks</strong>, and <strong>Gmail</strong>.</p>
+<div style="text-align: center;">
+<svg viewBox="0 0 760 380" width="720" role="img" aria-label="A box labeled 'Chat UI (Studio)' on the left connects by an arrow labeled HTTP to a dashed box labeled 'langgraph dev'. Inside that box is a node labeled 'Chinook Sales Assistant — create_deep_agent(...)' connected down to three tiles: 'Chinook DB (SQL data)', 'Sales playbooks (skills / AGENTS.md)', and 'Gmail (MCP — mock or real)'." xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="760" height="380" fill="#030710" rx="8"/>
+  <text x="380" y="36" text-anchor="middle" font-size="17" font-weight="300" fill="#F2FAFF">The sales assistant, running locally</text>
+
+  <!-- Chat UI client -->
+  <rect x="24" y="158" width="146" height="78" rx="8" fill="#161F34" stroke="#40668D" stroke-width="1"/>
+  <text x="97" y="192" text-anchor="middle" font-size="16" font-weight="600" fill="#7FC8FF">Chat UI</text>
+  <text x="97" y="214" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">Studio</text>
+
+  <!-- HTTP arrow -->
+  <line x1="170" y1="197" x2="206" y2="197" stroke="#40668D" stroke-width="1.5"/>
+  <polygon points="206,190 215,197 206,204" fill="#40668D"/>
+  <text x="190" y="185" text-anchor="middle" font-size="13" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">HTTP</text>
+
+  <!-- langgraph dev box -->
+  <rect x="216" y="72" width="520" height="292" rx="8" fill="#0D1322" stroke="#40668D" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="236" y="98" font-size="14" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">langgraph dev</text>
+
+  <!-- agent node -->
+  <rect x="358" y="116" width="236" height="60" rx="8" fill="#161F34" stroke="#7FC8FF" stroke-width="1.5"/>
+  <text x="476" y="142" text-anchor="middle" font-size="16" font-weight="600" fill="#F2FAFF">Chinook Sales Assistant</text>
+  <text x="476" y="163" text-anchor="middle" font-size="12" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">create_deep_agent(...)</text>
+
+  <!-- connectors -->
+  <line x1="476" y1="176" x2="317" y2="276" stroke="#40668D" stroke-width="1.5"/>
+  <line x1="476" y1="176" x2="480" y2="276" stroke="#40668D" stroke-width="1.5"/>
+  <line x1="476" y1="176" x2="643" y2="276" stroke="#40668D" stroke-width="1.5"/>
+
+  <!-- resource tiles -->
+  <rect x="242" y="276" width="150" height="72" rx="6" fill="#161F34" stroke="#40668D" stroke-width="1"/>
+  <text x="317" y="308" text-anchor="middle" font-size="14" font-weight="600" fill="#7FC8FF">Chinook DB</text>
+  <text x="317" y="330" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">SQL data</text>
+
+  <rect x="405" y="276" width="150" height="72" rx="6" fill="#161F34" stroke="#40668D" stroke-width="1"/>
+  <text x="480" y="308" text-anchor="middle" font-size="14" font-weight="600" fill="#7FC8FF">Sales playbooks</text>
+  <text x="480" y="330" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">skills / AGENTS.md</text>
+
+  <rect x="568" y="276" width="150" height="72" rx="6" fill="#161F34" stroke="#40668D" stroke-width="1"/>
+  <text x="643" y="308" text-anchor="middle" font-size="14" font-weight="600" fill="#7FC8FF">Gmail</text>
+  <text x="643" y="330" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">MCP — mock or real</text>
+</svg>
+
+<p><em>The agent runs inside <code>langgraph dev</code> and draws on the database, its playbooks, and Gmail. A chat UI reaches it over HTTP.</em></p>
+
+</div>
+
+<hr />
+<h2 id="how-little-of-it-is-new-code">How little of it is <em>new</em> code</h2>
+<p>Here is the project. There <em>is</em> real code here — the tools, the subagents, a mock mail server. But notice how much of the agent's <strong>behavior</strong> is set by plain-text files rather than by new code you write:</p>
+<pre><code class="language-text">sales_assistant/
+├── agent.py            # assembles the agent — the only &quot;wiring&quot; code
+├── langgraph.json      # tells langgraph dev which graph to serve
+├── AGENTS.md           # operating manual — plain text, describes behavior
+├── skills/             # one playbook per task — plain text, no code
+│   ├── rfq-quote/
+│   ├── weekly-newsletter/
+│   └── territory-report/
+├── subagents.py        # the four specialists
+├── tools/              # tool code, each given to the agent that needs it
+│   ├── sql.py          # → the chinook-analyst subagent
+│   └── html.py         # → the main agent (builds HTML deliverables)
+├── gmail_mcp.py        # discovers the Gmail tools (mock or real)
+├── mcp/                # the local mock Gmail server + a seed inbox
+└── data/
+    └── chinook.db      # the sales database (ships with the agent)
+</code></pre>
+<p><code>AGENTS.md</code> and everything under <code>skills/</code> are just <strong>natural language</strong> — read directly by the model, in any language it understands. The operating manual sets out who the agent works for and how to behave; each skill is a playbook for one task. For example, <code>AGENTS.md</code> states the approval rules in prose:</p>
+<pre><code class="language-text">## Approvals (human-in-the-loop)
+
+Two actions wait for Jane to approve, edit, or reject before they take effect:
+
+- Saving an email draft (inbox-manager) — drafts are never sent, only saved.
+- Adding a new customer (chinook-analyst) — no row is written without her ok.
+</code></pre>
+<p>That is Lesson 1's point: much of the work is describing behavior, not writing new code.</p>
+<h3 id="the-code-that-wires-it-together">The code that wires it together</h3>
+<p>You still write code — your tools (<code>tools/</code>) and the specialists (<code>subagents.py</code>). But the <em>assembly</em> is tiny: <code>agent.py</code> pulls those pieces together and hands the result to the server in a single <code>create_deep_agent(...)</code> call.</p>
+<p>Here is the file in full. It opens at <code>make_graph</code>, the factory that assembles the agent — scroll up for the imports and system prompt, down for the rest:</p>
+<div id="agentpy-scroll">
+<!-- code-highlight-2:59,74 -->
+<pre><code class="language-python"># python/m5/sales_assistant/agent.py
+&quot;&quot;&quot;The Chinook Sales Assistant — served as a graph for `langgraph dev`.
+
+This module is just the agent. The Gmail MCP plumbing lives in `gmail_mcp.py`;
+all this file does is assemble the agent around whatever tools that discovery
+returns.
+
+`langgraph.json` points at the async factory `make_graph`, which langgraph awaits
+once at startup. We use a factory (not a plain module-level `agent = ...`) for
+one reason: the Gmail tools come from an MCP server, and asking an MCP server for
+its tool list is an async call — so we discover the tools up front, then build
+the agent around whatever we found. If Gmail is unreachable, discovery returns no
+tools and the assistant simply comes up without them.
+&quot;&quot;&quot;
+
+from __future__ import annotations
+
+import logging
+import os
+import sys
+from pathlib import Path
+
+# Make the shared workshop model module importable (python/models.py). models.py
+# also calls load_dotenv, so env vars (API keys, GMAIL_BACKEND) are loaded.
+# parents[2] = python/ (this file is python/m5/sales_assistant/agent.py).
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from deepagents import create_deep_agent  # noqa: E402
+from deepagents.backends import FilesystemBackend  # noqa: E402
+from gmail_mcp import load_gmail_tools  # noqa: E402
+from langchain_quickjs import CodeInterpreterMiddleware  # noqa: E402
+from subagents import build_subagents  # noqa: E402
+from tools.html import markdown_to_html  # noqa: E402
+
+from models import strong_model  # noqa: E402
+
+logger = logging.getLogger(&quot;chinook-sales-assistant&quot;)
+
+HERE = Path(__file__).resolve().parent
+
+
+SYSTEM_PROMPT = (
+    &quot;You are a sales assistant for Jane Peacock, a Sales Support Agent at &quot;
+    &quot;Chinook, an online music distributor. Follow your operating manual (loaded &quot;
+    &quot;from your memory) and use the matching playbook from /skills/ for each task.&quot;
+)
+
+
+async def make_graph():
+    &quot;&quot;&quot;Async graph factory — built once by `langgraph dev` at startup.&quot;&quot;&quot;
+    # Real local disk under this module only (virtual_mode locks the agent to
+    # this directory: skills/, AGENTS.md, outputs/). Suitable for local dev;
+    # not for a multi-tenant web server.
+    backend = FilesystemBackend(root_dir=str(HERE), virtual_mode=True)
+
+    enable_search = bool(os.environ.get(&quot;TAVILY_API_KEY&quot;))
+    if not enable_search:
+        logger.info(&quot;TAVILY_API_KEY not set — newsletter research subagent disabled.&quot;)
+
+    gmail_tools = await load_gmail_tools()
+
+    # The main agent holds NO gated tools. Gmail (gmail_create_draft) lives on
+    # the inbox-manager subagent and SQL writes (add_customer) on chinook-analyst,
+    # each with its own approval gate — so the always-present general-purpose
+    # subagent, which inherits the main agent's tools, can never reach a write
+    # ungated. The main agent keeps only safe tools plus the interpreter.
+    tools = [markdown_to_html]
+
+    # Optional sandbox-backed chart tool (the course's optional feature).
+    if os.environ.get(&quot;ENABLE_SANDBOX&quot;):
+        from tools.chart import render_chart
+
+        tools.append(render_chart)
+
+    return create_deep_agent(
+        model=strong_model,
+        tools=tools,
+        system_prompt=SYSTEM_PROMPT,
+        subagents=build_subagents(
+            backend, enable_search=enable_search, gmail_tools=gmail_tools
+        ),
+        skills=[&quot;/skills&quot;],
+        memory=[&quot;/AGENTS.md&quot;],
+        backend=backend,
+        middleware=[CodeInterpreterMiddleware()],
+        name=&quot;chinook-sales-assistant&quot;,
+    )
+</code></pre>
+</div>
+<style>
+#agentpy-scroll pre { max-height: 32em; overflow: auto; }
+</style>
+
+<script>
+window.addEventListener('load', function () {
+  var box = document.querySelector('#agentpy-scroll pre');
+  if (!box) return;
+  // Open on make_graph (line 48 of 87), with a few lines of context above it.
+  box.scrollTop = (box.scrollHeight / 87) * (48 - 3);
+});
+</script>
+
+<p>Two things are worth pausing on:</p>
+<ul>
+<li><strong>We hand the server a <em>graph</em>, not a <code>main()</code>.</strong> Earlier modules ran an agent with <code>asyncio.run(main())</code>. Here we never run it ourselves — <code>langgraph.json</code> points at <code>make_graph</code>, and <code>langgraph dev</code> calls it. We <em>expose</em> the agent; the server runs it.</li>
+<li><strong>We discover the Gmail tools <em>before</em> building the agent.</strong> A model can only call a tool it has been told about, and an MCP server hands over its tool list through an async call. So we <code>await load_gmail_tools()</code> first, then build the agent around whatever came back. If the Gmail server is unreachable, discovery simply returns nothing and the assistant comes up without email — one bad server never stops it.</li>
+</ul>
+<p>And the <code>langgraph.json</code> that points at that factory (<code>python/m5/sales_assistant/langgraph.json</code>):</p>
+<pre><code class="language-json">{
+  &quot;dependencies&quot;: [&quot;.&quot;],
+  &quot;graphs&quot;: {
+    &quot;agent&quot;: &quot;./agent.py:make_graph&quot;
+  },
+  &quot;env&quot;: &quot;../../.env&quot;
+}
+</code></pre>
+<p>Compare this to Lesson 2's lab, where the graph was a plain variable (<code>"./agent.py:graph"</code>). Here it points at a <strong>function</strong> (<code>make_graph</code>) that the server awaits — that's how we get to run async tool discovery at startup.</p>
+<hr />
+<h2 id="run-it">Run it</h2>
+<p>Serve the assistant the same way you served the Lesson 2 agent — with one extra flag:</p>
+<pre><code class="language-bash">cd python/m5/sales_assistant
+uv run langgraph dev --allow-blocking
+</code></pre>
+<p>Why <code>--allow-blocking</code>? Discovering the mock Gmail server's tools launches a subprocess at startup — synchronous I/O that <code>langgraph dev</code>'s blocking-call detector would otherwise reject.</p>
+<p>This starts the server on <code>http://localhost:2024</code> and opens <strong>LangGraph Studio</strong>, where you can chat with the assistant and step through its graph — exactly as in Lesson 2. When the assistant goes to save an email draft or add a new customer, the run <strong>pauses for you to approve, edit, or reject</strong> before it continues.</p>
+<p>Studio is all you need for this lab. If you would like a cleaner, end-user-style chat — where those approvals render as inline cards — there is an optional hosted UI:</p>
+<details>
+<summary>Optional: a richer chat UI (hosted agent-chat-ui)</summary>
+<p><br></p>
+<p>LangChain hosts a ready-made chat interface called <strong>agent-chat-ui</strong> — no install required:</p>
+<ol>
+<li>Open the hosted UI at <strong><a href="https://agentchat.vercel.app" target="_blank" rel="noopener noreferrer">agentchat.vercel.app</a></strong>.</li>
+<li>Point it at your running server: <strong>Deployment URL</strong> <code>http://localhost:2024</code>, <strong>Assistant / Graph ID</strong> <code>agent</code>.</li>
+<li>Chat as normal. When the assistant saves an email draft or adds a customer, an <strong>approve / edit / reject</strong> card appears right in the conversation.</li>
+</ol>
+<p>You can also run it yourself with Node and <code>pnpm</code> from the <a href="https://github.com/langchain-ai/agent-chat-ui" target="_blank" rel="noopener noreferrer">agent-chat-ui repo</a>, but the hosted version needs no setup.</p>
+</details>
+<h3 id="optional-config-knobs">Optional config knobs</h3>
+<p>The assistant reads its options from the shared <code>python/.env</code>. With the standard course setup you need <strong>nothing extra</strong> — Gmail uses a local mock and the sandbox is off. The optional knobs:</p>
+<ul>
+<li><code>GMAIL_BACKEND</code> — <code>mock</code> (the default; offline, zero setup) or <code>real</code> (OAuth Gmail). Both expose the same tool surface, so the agent code never changes.</li>
+<li><code>ENABLE_SANDBOX</code> — add it (e.g. <code>ENABLE_SANDBOX=1</code>) to turn on the territory chart. Leave it out to run without — you still get a numeric report.</li>
+<li><code>TAVILY_API_KEY</code> — set during course setup; enables the newsletter's web research.</li>
+</ul>
+<hr />
+<h2 id="what-it-can-do">What it can do</h2>
+<p>With the assistant running, you can ask it to handle a sales rep's day-to-day work. The video walks through three <strong>task sequences</strong>, each showing off different Deep Agents features:</p>
+<ol>
+<li><strong>Process an incoming RFQ</strong> — read a quote request from the inbox, look up the customer and prices, compute the quote exactly with the interpreter, have a reviewer subagent check it, draft the reply for approval, and log it.</li>
+<li><strong>Write the weekly newsletter</strong> — fan out parallel research subagents (one per genre), then assemble an HTML newsletter on disk.</li>
+<li><strong>Report on the territory</strong> — pull metrics from the database and, with the sandbox enabled, render a chart.</li>
+</ol>
+<p>Try them yourself once the server is up.</p>
+<hr />
+<h2 id="recap">Recap</h2>
+<p>In this lesson you met and ran the capstone:</p>
+<ul>
+<li>The <strong>Chinook Sales Assistant</strong> runs inside <code>langgraph dev</code> and draws on the <strong>Chinook database</strong>, its <strong>sales playbooks</strong>, and <strong>Gmail</strong>.</li>
+<li>Much of the agent's behavior lives in <strong>plain text</strong> — <code>AGENTS.md</code> and the <code>skills/</code> playbooks, written in natural language. The code you write is small and focused (your tools and subagents), wired together by a single <code>create_deep_agent(...)</code> call.</li>
+<li>The agent is served as a <strong>graph</strong> (a <code>make_graph</code> factory), not run with <code>main()</code>, and it <strong>discovers its MCP tools up front</strong> — tolerating a down Gmail server.</li>
+<li>Run it with <code>uv run langgraph dev --allow-blocking</code> and talk to it in <strong>Studio</strong>; the <strong>two approval steps</strong> (saving a draft, adding a customer) pause for you to approve, edit, or reject. An optional hosted chat UI shows them as inline cards.</li>
+</ul>
+<h2 id="check-your-understanding">Check your understanding</h2>
+<div class="mcq-container" id="mcq-5159d664">
     <div class="mcq-question">
-        <strong>Question:</strong> What constraint links the skill directory name to its SKILL.md frontmatter?
+        <strong>Question:</strong> Why does agent.py use an async make_graph factory instead of a module-level agent = create_deep_agent(...)?
     </div>
     <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, true, '71d7668c')"><strong>A)</strong> The directory name must match the name field in the frontmatter</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '71d7668c')"><strong>B)</strong> The directory name must match the description field</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '71d7668c')"><strong>C)</strong> The directory name must be all uppercase</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '71d7668c')"><strong>D)</strong> There is no constraint; the two are independent</div>
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '5159d664')"><strong>A)</strong> To make the agent start faster</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '5159d664')"><strong>B)</strong> So the agent can be invoked with asyncio.run()</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '5159d664')"><strong>C)</strong> Because the Gmail tools come from an MCP server, and getting its tool list is an async call that must finish before the agent is built</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '5159d664')"><strong>D)</strong> Because langgraph dev cannot load module-level variables</div>
     </div>
-    <div id="mcq-answer-71d7668c" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: A</strong> &#10003;</div>
-        <div class="mcq-explanation">Each skill lives in its own named directory, and that directory name must match the name field in the SKILL.md frontmatter. Breaking this constraint means the SDK cannot resolve the skill correctly.</div>
+    <div id="mcq-answer-5159d664" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-explanation">A model can only call tools it has been told about. The Gmail tools come from an MCP server whose tool list arrives via an async call, so discovery must be awaited before the agent is assembled — hence an async factory.</div>
     </div>
 </div>
 
-<p><MCQ
-    question="At which stage does the agent call read_file on a skill's SKILL.md path?"
-    choices='["Discovery: when the SDK assembles the system prompt at startup", "Execution: once per tool call during the run", "All three stages; the file is read once and cached at startup", "Activation: when a task matches the skill\'s description"]'
-    correctIndex={3}
-    explanation="Activation is the stage where the agent calls read_file. At discovery, only the name and description are injected; the full body stays unread until a matching task triggers the read."
-/></p>
-<p><MCQ
-    question="What should the description field in a skill's frontmatter communicate?"
-    choices='["A summary of what the skill does internally, step by step", "The skill\'s author and version number", "In what situation the skill should be used", "The list of tools the skill is permitted to call"]'
-    correctIndex={2}
-    explanation="The description is the only text visible to the agent before it decides whether to activate a skill. Write it as a single, specific sentence describing when to use the skill, not what it does internally."
-/></p>
-<p><MCQ
-    question="Why does the SDK inject only the name and description into the system prompt rather than the full SKILL.md body?"
-    choices='["The full body is too long for any model\'s context window", "To keep the agent\'s context lean by loading skill details only when a task requires them", "The full body is compiled into a binary at deploy time and is not readable as text", "Injecting the full body would expose internal instructions to users"]'
-    correctIndex={1}
-    explanation="Progressive disclosure keeps the context lean. Only the compact name and description are always present. The full body (steps, output format, bundled files) loads only when the agent activates the skill for a matching task."
-/></p>
-<div class="mcq-container" id="mcq-9033a08c">
+<div class="mcq-container" id="mcq-772d41e8">
     <div class="mcq-question">
-        <strong>Question:</strong> Which two frontmatter fields in SKILL.md are required?
+        <strong>Question:</strong> What is the --allow-blocking flag on langgraph dev for?
     </div>
     <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '9033a08c')"><strong>A)</strong> name and allowed-tools</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '9033a08c')"><strong>B)</strong> name and compatibility</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '9033a08c')"><strong>C)</strong> description and metadata</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '9033a08c')"><strong>D)</strong> name and description</div>
+        <div class="mcq-choice" onclick="handleMcqClick(this, true, '772d41e8')"><strong>A)</strong> Discovering the MCP server tools does a little synchronous I/O at startup, which the blocking-call detector would otherwise flag</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '772d41e8')"><strong>B)</strong> It allows the agent to block on human approvals</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '772d41e8')"><strong>C)</strong> It enables blocking network calls to Gmail</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '772d41e8')"><strong>D)</strong> It is required for every langgraph dev server</div>
     </div>
-    <div id="mcq-answer-9033a08c" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: D</strong> &#10003;</div>
-        <div class="mcq-explanation">name and description are the only required fields. allowed-tools, compatibility, and metadata are all optional. name must be lowercase alphanumeric with hyphens and must match the directory name.</div>
+    <div id="mcq-answer-772d41e8" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
+        <div class="mcq-explanation">Launching the mock Gmail server to list its tools is synchronous I/O at startup. langgraph dev normally raises on blocking calls; the flag marks this expected one as allowed.</div>
     </div>
 </div>
+
+<div class="mcq-container" id="mcq-01934b2b">
+    <div class="mcq-question">
+        <strong>Question:</strong> The two human approvals (saving an email draft, adding a customer) are gated on specialist subagents rather than the main agent. Why?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '01934b2b')"><strong>A)</strong> To make the approval cards look nicer</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '01934b2b')"><strong>B)</strong> Subagents run faster than the main agent</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '01934b2b')"><strong>C)</strong> It is the only place interrupts are allowed</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '01934b2b')"><strong>D)</strong> The general-purpose subagent inherits the main agent tools, so a gated tool on the main agent could be reached ungated; keeping writes on gated specialists makes the design fail-closed</div>
+    </div>
+    <div id="mcq-answer-01934b2b" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+        <div class="mcq-explanation">The always-present general-purpose subagent inherits the main agent's tools. If a write lived on the main agent it could be reached ungated through delegation. Placing both writes on gated specialists means the only path to either write runs through its approval gate.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-026db22e">
+    <div class="mcq-question">
+        <strong>Question:</strong> In this project, what are AGENTS.md and the files under skills/?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '026db22e')"><strong>A)</strong> Compiled configuration generated at build time</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '026db22e')"><strong>B)</strong> Plain-text files that describe the agent behavior — an operating manual and one playbook per task</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '026db22e')"><strong>C)</strong> Python modules that define the subagents</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '026db22e')"><strong>D)</strong> Database fixtures for the Chinook data</div>
+    </div>
+    <div id="mcq-answer-026db22e" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+        <div class="mcq-explanation">AGENTS.md is the operating manual and each skill is a step-by-step playbook — all natural language describing what the agent should do, not code.</div>
+    </div>
+</div>
+
+<h2 id="next">Next</h2>
+<p>That is the capstone. You have now built and run a complete deep agent end to end — and seen that most of the effort is describing behavior in text, not writing code. From here, try extending it: add a task sequence, write a new skill, or wire in real Gmail.</p>
+<hr />
+<h2 id="references">References</h2>
+<p><strong>LangChain Academy Courses:</strong><br />
+- <a href="https://academy.langchain.com/courses/intro-to-deep-agents" target="_blank" rel="noopener noreferrer">Introduction to Deep Agents</a></p>
+<p><strong>Documentation:</strong><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/overview" target="_blank" rel="noopener noreferrer">Deep Agents overview</a><br />
+- <a href="https://docs.langchain.com/oss/python/langgraph/local-server" target="_blank" rel="noopener noreferrer">Run a local server (<code>langgraph dev</code>)</a><br />
+- <a href="https://github.com/langchain-ai/agent-chat-ui" target="_blank" rel="noopener noreferrer">agent-chat-ui</a></p>
 
     <script>
         // Handle MCQ choice clicks
@@ -710,47 +976,6 @@
                 }
             });
         }
-    </script>
-
-    <script>
-    // Attach copy handlers to static .copy-button-inline buttons injected at build time.
-    // This runs synchronously so it fires before Babel compiles the text/babel script.
-    (function () {
-        function attachCopyHandler(button) {
-            if (button.dataset.copySetup) return;
-            button.dataset.copySetup = '1';
-            var pre = button.closest('pre');
-            var code = pre && pre.querySelector('code');
-            if (!code) return;
-            function showDone() {
-                button.textContent = '✓';
-                button.classList.add('copied');
-                setTimeout(function () {
-                    button.textContent = '';
-                    button.classList.remove('copied');
-                }, 2000);
-            }
-            function fallback(text) {
-                var ta = document.createElement('textarea');
-                ta.value = text;
-                ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
-                document.body.appendChild(ta);
-                ta.select();
-                try { document.execCommand('copy'); } catch (e) {}
-                document.body.removeChild(ta);
-                showDone();
-            }
-            button.addEventListener('click', function () {
-                var text = code.textContent;
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(text).then(showDone, function () { fallback(text); });
-                } else {
-                    fallback(text);
-                }
-            });
-        }
-        document.querySelectorAll('pre:not(.no-copy) .copy-button-inline').forEach(attachCopyHandler);
-    })();
     </script>
 
     <script type="text/babel">
@@ -985,11 +1210,7 @@
                                     right: '1rem',
                                     padding: '0',
                                     border: 'none',
-                                    backgroundImage: copied ? 'none' : 'url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23cfe8ff%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Crect x=%279%27 y=%279%27 width=%2713%27 height=%2713%27 rx=%272%27/%3E%3Cpath d=%27M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1%27/%3E%3C/svg%3E")',
-                                    backgroundColor: copied ? 'transparent' : 'rgba(127, 200, 255, 0.14)',
-                                    backgroundPosition: 'center',
-                                    backgroundSize: '16px',
-                                    backgroundRepeat: 'no-repeat',
+                                    background: copied ? 'none' : 'transparent url("symbols/copy.png") center/18px no-repeat',
                                     cursor: 'pointer',
                                     borderRadius: '4px',
                                     width: '28px',
@@ -1147,24 +1368,20 @@
         // Add copy buttons to regular code blocks
         function addCopyButtonsToCodeBlocks() {
             // Find all pre blocks that aren't inside tabs-block containers
-            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre):not(.no-copy)');
+            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre)');
 
             preBlocks.forEach(pre => {
+                // Skip if already has a copy button
+                if (pre.querySelector('.copy-button-inline')) return;
+
                 const code = pre.querySelector('code');
                 if (!code) return;
 
-                // Use existing static button (injected at convert time) or create one
-                let button = pre.querySelector('.copy-button-inline');
-                if (!button) {
-                    button = document.createElement('button');
-                    button.className = 'copy-button-inline';
-                    button.setAttribute('aria-label', 'Copy code');
-                    button.setAttribute('title', 'Copy code');
-                    pre.appendChild(button);
-                } else if (button.dataset.copySetup) {
-                    return;
-                }
-                button.dataset.copySetup = '1';
+                // Create copy button
+                const button = document.createElement('button');
+                button.className = 'copy-button-inline';
+                button.setAttribute('aria-label', 'Copy code');
+                button.setAttribute('title', 'Copy code');
 
                 button.addEventListener('click', async () => {
                     const text = code.textContent;
@@ -1203,6 +1420,8 @@
                         }
                     }
                 });
+
+                pre.appendChild(button);
             });
         }
 

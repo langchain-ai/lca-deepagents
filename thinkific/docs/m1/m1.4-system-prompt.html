@@ -136,7 +136,6 @@
         pre {
             background: #030710;
             padding: 0.5rem 1rem;
-            padding-top: 2.85rem;
             border-radius: 12px;
             overflow-x: auto;
             overflow-y: auto;
@@ -208,36 +207,25 @@
             padding-left: 5px;
         }
 
-        /* Code output blocks (non-copyable) */
-        pre.no-copy {
-            background: #0a0f1a;
-            border: 1px solid #1a2a3a;
-            opacity: 0.85;
-            padding-top: 0.75rem;
-        }
-
         pre .copy-button-inline {
             position: absolute;
             top: 0.5rem;
-            right: 0.5rem;
+            right: 1rem;
             padding: 0;
             border: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
-            background-position: center;
-            background-size: 16px;
-            background-repeat: no-repeat;
-            background-color: rgba(127, 200, 255, 0.14);
+            background: transparent url('symbols/copy.png') center/18px no-repeat;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s;
             width: 28px;
             height: 28px;
-            opacity: 0.85;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
         }
 
         pre .copy-button-inline:hover {
             opacity: 1;
-            background-color: rgba(127, 200, 255, 0.30);
+            filter: invert(1) brightness(1);
         }
 
         pre .copy-button-inline.copied {
@@ -446,25 +434,22 @@
         .copy-button {
             padding: 0;
             border: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
-            background-position: center;
-            background-size: 16px;
-            background-repeat: no-repeat;
-            background-color: rgba(127, 200, 255, 0.14);
+            background: transparent url('symbols/copy.png') center/20px no-repeat;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 32px;
             height: 32px;
-            opacity: 0.85;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
         }
 
         .copy-button:hover {
             opacity: 1;
-            background-color: rgba(127, 200, 255, 0.30);
+            filter: invert(1) brightness(1);
         }
 
         .copy-button.copied {
@@ -594,7 +579,7 @@
 </div>
 
 <div class="lt-panel active" id="p-sys" role="tabpanel">
-<h2 id="the-system-prompt_1">The System Prompt</h2>
+<h2 id="the-system-prompt-structure-and-segments">The System Prompt: Structure and Segments</h2>
 <p>The system prompt <strong>guides the model and is part of every model call</strong>; it is<br />
 re-sent on every turn, ahead of the conversation. <code>create_deep_agent</code> assembles<br />
 it from three named parts; this lesson focuses on the first two, <strong>USER</strong> and <strong>BASE</strong>:</p>
@@ -623,8 +608,7 @@ it from three named parts; this lesson focuses on the first two, <strong>USER</s
 <p>The USER is the <code>system_prompt</code> argument you pass to <code>create_deep_agent</code>. It sits at the very front of the assembled prompt. This lesson focuses on <strong>USER</strong> and <strong>BASE</strong>: the two parts you interact with directly.</p>
 <p>Here is a live demo: the same "What is an LLM?" question, but with a posh British butler set as the <code>system_prompt</code>:</p>
 <!-- code-highlight-0:2,3,4,5,6,7 -->
-
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m1/m1.4_scratch_agent_butler.py
+<pre><code class="language-python"># python/m1/m1.4_scratch_agent_butler.py
 SYSTEM_PROMPT = (
     &quot;YOU ARE AN EXTREMELY POSH BRITISH BUTLER. You speak ONLY in the most &quot;
     &quot;refined, formal, over-the-top Victorian English. You say 'indeed', 'quite', &quot;
@@ -634,17 +618,12 @@ SYSTEM_PROMPT = (
 )
 </code></pre>
 <p>Then pass it to <code>create_deep_agent</code>:</p>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python">agent = create_deep_agent(model=model, system_prompt=SYSTEM_PROMPT)
+<pre><code class="language-python">agent = create_deep_agent(model=model, system_prompt=SYSTEM_PROMPT)
 </code></pre>
 <div style="margin:1.5rem 0;padding:1.25rem 1.5rem;border-radius:12px;border:1px solid #99d3ff;background-color:#e5f4ff;color:#1e4d7a;">
-In Lab 2, you'll add a **system prompt** for the first time by passing a persona (pirate, cowboy, Shakespeare) and see how that single line steers the agent's voice without touching anything else.
-
-<br><br>
-
-In this example, I've given it a posh British butler persona.
-
-[View LangSmith trace →](https://smith.langchain.com/public/019ece1a-002d-72b3-a2dd-c5343359b9c6/r)
-
+<p>In Lab 2, you'll add a <strong>system prompt</strong> for the first time by passing a persona (pirate, cowboy, Shakespeare) and see how that single line steers the agent's voice without touching anything else.</p>
+<p>In this example, I've given it a posh British butler persona.</p>
+<p><a href="https://smith.langchain.com/public/019ece1a-002d-72b3-a2dd-c5343359b9c6/r" target="_blank" rel="noopener noreferrer">View LangSmith trace →</a></p>
 <div class="video-container" style="max-width: 750px;">
     <div class="video-wrapper">
         <iframe
@@ -684,7 +663,7 @@ further?
 
 </div>
 <div class="lt-panel" id="p-lab2" role="tabpanel">
-<h2 id="the-system-prompt_2">The System Prompt</h2>
+<h2 id="lab-swapping-personas">Lab: Swapping Personas</h2>
 <p><strong>The discovery:</strong> <code>system_prompt</code> is free-form text; use it to set a persona, lay down constraints, or define the agent's domain. The SDK slots it in as the <strong>USER</strong> segment at the front of the assembled prompt, leaving the BASE segment untouched.</p>
 <p>Open <code>python/m1/m1.4_scratch_agent_butler.py</code>; the <code>SYSTEM_PROMPT</code> is already defined and passed to <code>create_deep_agent</code>. Run it to see the butler in action, then try swapping the <code>SYSTEM_PROMPT</code> for one of the personas below and run it again:</p>
 <div class="language-tabs-block" data-languages="{&quot;Python&quot;: [{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m1/m1.4_scratch_agent_butler.py\nSYSTEM_PROMPT = \&quot;You are a salty pirate captain...\&quot;  # \u2190 swap this\n\nfrom models import model\nfrom deepagents import create_deep_agent\nagent = create_deep_agent(model=model, system_prompt=SYSTEM_PROMPT)&quot;, &quot;highlights&quot;: [2, 3, 6], &quot;noHeader&quot;: true}]}"></div>
@@ -692,7 +671,7 @@ further?
 <summary>Persona ideas [click to expand]</summary>
 <p><br></p>
 <p>Pick one of these or write your own:</p>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m1/m1.4_scratch_agent_butler.py
+<pre><code class="language-python"># python/m1/m1.4_scratch_agent_butler.py
 # Pirate
 SYSTEM_PROMPT = (
     &quot;You are a salty pirate captain with decades at sea. Talk in 'arr' and nautical slang. &quot;
@@ -714,7 +693,7 @@ SYSTEM_PROMPT = (
 <p>Each one changes the agent's voice without touching anything else. That single<br />
 string is your USER segment.</p>
 </details>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/m1.4_scratch_agent_butler.py
+<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/m1.4_scratch_agent_butler.py
 </code></pre>
 <p>If you used the pirate persona, the reply should come back with 'arr' and nautical slang. That's the USER segment taking effect.</p>
 <h3 id="check-the-trace-in-langsmith">Check the trace in LangSmith</h3>
@@ -732,6 +711,68 @@ that this single string is all you touched to redirect the agent's behavior.</p>
 <li>Defining the <code>SYSTEM_PROMPT</code> string is not enough; it must be passed as <code>system_prompt=SYSTEM_PROMPT</code> to <code>create_deep_agent</code>; without it, the agent only sees the BASE instructions</li>
 <li>One string controls the agent's persona, domain, and constraints without touching tools, the model, or anything else</li>
 </ul>
+<hr />
+<h2 id="check-your-understanding">Check your understanding</h2>
+<div class="mcq-container" id="mcq-16124331">
+    <div class="mcq-question">
+        <strong>Question:</strong> How many named parts does create_deep_agent assemble the system prompt from?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '16124331')"><strong>A)</strong> One: the BASE prompt only</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '16124331')"><strong>B)</strong> Two: USER and BASE</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '16124331')"><strong>C)</strong> Four: USER, BASE, SUFFIX, and a tool section</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '16124331')"><strong>D)</strong> Three: USER, BASE, and SUFFIX</div>
+    </div>
+    <div id="mcq-answer-16124331" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+        <div class="mcq-explanation">The assembled prompt has three parts: USER (your system_prompt argument), BASE (the SDK's built-in BASE_AGENT_PROMPT), and SUFFIX (appended by a HarnessProfile for model-specific tuning). Only USER and BASE are directly relevant to this lesson; SUFFIX is optional and covered separately.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-4a037246">
+    <div class="mcq-question">
+        <strong>Question:</strong> Where in the assembled prompt does the USER segment appear?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, true, '4a037246')"><strong>A)</strong> At the very front, before BASE and SUFFIX</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '4a037246')"><strong>B)</strong> At the very end, after the SUFFIX</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '4a037246')"><strong>C)</strong> After the BASE instructions</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '4a037246')"><strong>D)</strong> Interleaved with the BASE instructions</div>
+    </div>
+    <div id="mcq-answer-4a037246" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
+        <div class="mcq-explanation">The SDK slots the USER segment (your system_prompt) at the very front of the assembled prompt, ahead of the BASE instructions and any SUFFIX.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-9df17580">
+    <div class="mcq-question">
+        <strong>Question:</strong> You write SYSTEM_PROMPT = 'You are a pirate.' but the agent replies with no pirate tone. What is most likely wrong?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '9df17580')"><strong>A)</strong> The BASE prompt overrides all user-defined personas</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '9df17580')"><strong>B)</strong> The model requires a special flag to enable custom personas</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '9df17580')"><strong>C)</strong> SYSTEM_PROMPT was defined but not passed to create_deep_agent</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '9df17580')"><strong>D)</strong> The SUFFIX always overrides the USER segment</div>
+    </div>
+    <div id="mcq-answer-9df17580" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-explanation">Defining the string is not enough. It must be passed explicitly: create_deep_agent(model=model, system_prompt=SYSTEM_PROMPT). Without the argument, the agent never receives the USER segment and falls back to BASE behavior only.</div>
+    </div>
+</div>
+
+<p><MCQ
+    question="What is the BASE segment of the assembled prompt?"
+    choices='["The system_prompt string you pass to create_deep_agent", "The tool schemas appended by the SDK before each LLM call", "A model-specific tuning block provided by a HarnessProfile", "The SDK's built-in BASE_AGENT_PROMPT, the behavior guidance that is always present"]'
+    correctIndex={3}
+    explanation="The BASE segment is BASE_AGENT_PROMPT, built into the SDK. It carries the agent's core behavior guidance and is always present regardless of what you pass. The SUFFIX, from a HarnessProfile, is the model-specific part."
+/></p>
+<p><MCQ
+    question="You switch from a pirate persona to a cowboy persona by changing SYSTEM_PROMPT. What else in the assembled prompt changes?"
+    choices='["The BASE instructions adapt to match the new persona", "Nothing; only your USER segment changes", "The SUFFIX is regenerated based on the persona", "The tool schemas update to reflect the new persona\'s capabilities"]'
+    correctIndex={1}
+    explanation="Only your USER segment changes. The BASE instructions, SUFFIX, and tool schemas are identical across runs. The USER segment is the single lever you control; everything else stays put."
+/></p>
 <hr />
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />
@@ -874,47 +915,6 @@ that this single string is all you touched to redirect the agent's behavior.</p>
                 }
             });
         }
-    </script>
-
-    <script>
-    // Attach copy handlers to static .copy-button-inline buttons injected at build time.
-    // This runs synchronously so it fires before Babel compiles the text/babel script.
-    (function () {
-        function attachCopyHandler(button) {
-            if (button.dataset.copySetup) return;
-            button.dataset.copySetup = '1';
-            var pre = button.closest('pre');
-            var code = pre && pre.querySelector('code');
-            if (!code) return;
-            function showDone() {
-                button.textContent = '✓';
-                button.classList.add('copied');
-                setTimeout(function () {
-                    button.textContent = '';
-                    button.classList.remove('copied');
-                }, 2000);
-            }
-            function fallback(text) {
-                var ta = document.createElement('textarea');
-                ta.value = text;
-                ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
-                document.body.appendChild(ta);
-                ta.select();
-                try { document.execCommand('copy'); } catch (e) {}
-                document.body.removeChild(ta);
-                showDone();
-            }
-            button.addEventListener('click', function () {
-                var text = code.textContent;
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(text).then(showDone, function () { fallback(text); });
-                } else {
-                    fallback(text);
-                }
-            });
-        }
-        document.querySelectorAll('pre:not(.no-copy) .copy-button-inline').forEach(attachCopyHandler);
-    })();
     </script>
 
     <script type="text/babel">
@@ -1149,11 +1149,7 @@ that this single string is all you touched to redirect the agent's behavior.</p>
                                     right: '1rem',
                                     padding: '0',
                                     border: 'none',
-                                    backgroundImage: copied ? 'none' : 'url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23cfe8ff%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Crect x=%279%27 y=%279%27 width=%2713%27 height=%2713%27 rx=%272%27/%3E%3Cpath d=%27M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1%27/%3E%3C/svg%3E")',
-                                    backgroundColor: copied ? 'transparent' : 'rgba(127, 200, 255, 0.14)',
-                                    backgroundPosition: 'center',
-                                    backgroundSize: '16px',
-                                    backgroundRepeat: 'no-repeat',
+                                    background: copied ? 'none' : 'transparent url("symbols/copy.png") center/18px no-repeat',
                                     cursor: 'pointer',
                                     borderRadius: '4px',
                                     width: '28px',
@@ -1311,24 +1307,20 @@ that this single string is all you touched to redirect the agent's behavior.</p>
         // Add copy buttons to regular code blocks
         function addCopyButtonsToCodeBlocks() {
             // Find all pre blocks that aren't inside tabs-block containers
-            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre):not(.no-copy)');
+            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre)');
 
             preBlocks.forEach(pre => {
+                // Skip if already has a copy button
+                if (pre.querySelector('.copy-button-inline')) return;
+
                 const code = pre.querySelector('code');
                 if (!code) return;
 
-                // Use existing static button (injected at convert time) or create one
-                let button = pre.querySelector('.copy-button-inline');
-                if (!button) {
-                    button = document.createElement('button');
-                    button.className = 'copy-button-inline';
-                    button.setAttribute('aria-label', 'Copy code');
-                    button.setAttribute('title', 'Copy code');
-                    pre.appendChild(button);
-                } else if (button.dataset.copySetup) {
-                    return;
-                }
-                button.dataset.copySetup = '1';
+                // Create copy button
+                const button = document.createElement('button');
+                button.className = 'copy-button-inline';
+                button.setAttribute('aria-label', 'Copy code');
+                button.setAttribute('title', 'Copy code');
 
                 button.addEventListener('click', async () => {
                     const text = code.textContent;
@@ -1367,6 +1359,8 @@ that this single string is all you touched to redirect the agent's behavior.</p>
                         }
                     }
                 });
+
+                pre.appendChild(button);
             });
         }
 

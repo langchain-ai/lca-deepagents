@@ -136,7 +136,6 @@
         pre {
             background: #030710;
             padding: 0.5rem 1rem;
-            padding-top: 2.85rem;
             border-radius: 12px;
             overflow-x: auto;
             overflow-y: auto;
@@ -208,36 +207,25 @@
             padding-left: 5px;
         }
 
-        /* Code output blocks (non-copyable) */
-        pre.no-copy {
-            background: #0a0f1a;
-            border: 1px solid #1a2a3a;
-            opacity: 0.85;
-            padding-top: 0.75rem;
-        }
-
         pre .copy-button-inline {
             position: absolute;
             top: 0.5rem;
-            right: 0.5rem;
+            right: 1rem;
             padding: 0;
             border: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
-            background-position: center;
-            background-size: 16px;
-            background-repeat: no-repeat;
-            background-color: rgba(127, 200, 255, 0.14);
+            background: transparent url('symbols/copy.png') center/18px no-repeat;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s;
             width: 28px;
             height: 28px;
-            opacity: 0.85;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
         }
 
         pre .copy-button-inline:hover {
             opacity: 1;
-            background-color: rgba(127, 200, 255, 0.30);
+            filter: invert(1) brightness(1);
         }
 
         pre .copy-button-inline.copied {
@@ -446,25 +434,22 @@
         .copy-button {
             padding: 0;
             border: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
-            background-position: center;
-            background-size: 16px;
-            background-repeat: no-repeat;
-            background-color: rgba(127, 200, 255, 0.14);
+            background: transparent url('symbols/copy.png') center/20px no-repeat;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 32px;
             height: 32px;
-            opacity: 0.85;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
         }
 
         .copy-button:hover {
             opacity: 1;
-            background-color: rgba(127, 200, 255, 0.30);
+            filter: invert(1) brightness(1);
         }
 
         .copy-button.copied {
@@ -607,7 +592,7 @@ The lab for this lesson originally used a Gmail MCP server, but OAuth authentica
 <p>deepagents discovers MCP servers from <code>.mcp.json</code> in your project root (or <code>~/.deepagents/.mcp.json</code> for user-level config). The project repo already includes a config pointing at the LangChain documentation server:</p>
 <iframe src="images/m1.6-mcp-slides-config.html" style="width:100%;height:380px;border:none;border-radius:12px;display:block;margin:1.25rem 0 1.5rem;" title=".mcp.json configuration diagram"></iframe>
 <p>Load those tools in Python with <code>get_mcp_tools</code>:</p>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m1/m1.6_scratch_agent_mcp.py
+<pre><code class="language-python"># python/m1/m1.6_scratch_agent_mcp.py
 from deepagents_code.mcp_tools import get_mcp_tools
 
 tools, session_manager, server_infos = await get_mcp_tools(&quot;.mcp.json&quot;)
@@ -629,7 +614,7 @@ tools, session_manager, server_infos = await get_mcp_tools(&quot;.mcp.json&quot;
 <p>Some MCP servers require the user to authenticate before the agent can call their tools.</p>
 <iframe src="images/m1.6-mcp-slides-auth.html" style="width:100%;height:442px;border:none;border-radius:12px;display:block;margin:1.25rem 0 1.5rem;" title="Authorization walkthrough; use arrow keys or Prev/Next to navigate"></iframe>
 <p>Add <code>"auth": "oauth"</code> to the server entry in <code>.mcp.json</code>:</p>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-json">// .mcp.json
+<pre><code class="language-json">// .mcp.json
 {
   &quot;mcpServers&quot;: {
     &quot;gmail&quot;: {
@@ -646,7 +631,7 @@ tools, session_manager, server_infos = await get_mcp_tools(&quot;.mcp.json&quot;
 <h3 id="human-in-the-loop-hitl">Human-in-the-Loop (HITL)</h3>
 <p>Even after authorization, you may want a human to confirm before the agent reads or writes data. Pass <code>interrupt_on</code> to <code>create_deep_agent</code> with a mapping of tool names to approval settings:</p>
 <iframe src="images/m1.6-mcp-slides-hitl.html" style="width:100%;height:470px;border:none;border-radius:12px;display:block;margin:1.25rem 0 1.5rem;" title="HITL walkthrough; use arrow keys or Prev/Next to navigate"></iframe>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m1/m1.6_scratch_agent_mcp.py
+<pre><code class="language-python"># python/m1/m1.6_scratch_agent_mcp.py
 from deepagents import create_deep_agent
 from langgraph.checkpoint.memory import MemorySaver
 
@@ -673,7 +658,7 @@ agent = create_deep_agent(
 <p>Open <code>python/m1/m1.6_scratch_agent_mcp.py</code>, already in the repo and connects to the LangChain docs server. Here's a walkthrough of what it does.</p>
 <p>The first thing <code>main()</code> does is load the MCP tools and print each tool's name and description so you can see what the server is offering:</p>
 <!-- code-highlight-3:12,13,14,15,16,17,18,19,20,21,25,26,27,28,29,30,31 -->
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m1/m1.6_scratch_agent_mcp.py
+<pre><code class="language-python"># python/m1/m1.6_scratch_agent_mcp.py
 import sys
 import asyncio
 import json
@@ -708,10 +693,10 @@ async def main():
 
 asyncio.run(main())
 </code></pre>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/m1.6_scratch_agent_mcp.py
+<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/m1.6_scratch_agent_mcp.py
 </code></pre>
 <p><strong>Example output:</strong></p>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code>docs-langchain (http): 2 tool(s)
+<pre><code>docs-langchain (http): 2 tool(s)
   docs-langchain_search_docs_by_lang_chain
   Search across the Docs by LangChain knowledge base to find relevant...
   docs-langchain_query_docs_filesystem_docs_by_lang_chain
@@ -721,7 +706,7 @@ asyncio.run(main())
 <h3 id="step-2-ask-a-question">Step 2: Ask a question</h3>
 <p>The agent is already wired up in <code>main()</code>; after printing the tools, it invokes the agent and prints the response:</p>
 <!-- code-highlight-5:33,34,35,36,37,38,39,40,41 -->
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m1/m1.6_scratch_agent_mcp.py
+<pre><code class="language-python"># python/m1/m1.6_scratch_agent_mcp.py
 import sys
 import asyncio
 import json
@@ -766,13 +751,13 @@ async def main():
 
 asyncio.run(main())
 </code></pre>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/m1.6_scratch_agent_mcp.py
+<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/m1.6_scratch_agent_mcp.py
 </code></pre>
 <p>Open LangSmith. The agent calls <code>docs-langchain_search_docs_by_lang_chain</code> one or more times, reads the results, and synthesizes an answer. The trace looks identical to a locally-defined tool; the agent cannot tell the difference.</p>
 <h3 id="step-3-restrict-with-allowedtools">Step 3: Restrict with <code>allowedTools</code></h3>
 <p><code>allowedTools</code> is already set in <code>m1.6_scratch_agent_mcp.py</code>, restricting the server to the search tool only. Here's that config:</p>
 <!-- code-highlight-7:6 -->
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python">MCP_CONFIG.write_text(json.dumps({
+<pre><code class="language-python">MCP_CONFIG.write_text(json.dumps({
     &quot;mcpServers&quot;: {
         &quot;docs-langchain&quot;: {
             &quot;type&quot;: &quot;http&quot;,
@@ -798,6 +783,88 @@ asyncio.run(main())
 <li><code>auth: "oauth"</code> triggers a one-time browser authorization on first run; tokens are cached in <code>~/.deepagents/.state/mcp-tokens/</code> and reused automatically</li>
 <li><code>interrupt_on</code> pauses the agent before a named tool call for human approval; like HITL with custom tools, it requires a checkpointer</li>
 </ul>
+<hr />
+<h2 id="check-your-understanding">Check your understanding</h2>
+<div class="mcq-container" id="mcq-a42d0a43">
+    <div class="mcq-question">
+        <strong>Question:</strong> How does langchain-mcp-adapters expose MCP server tools to the agent?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'a42d0a43')"><strong>A)</strong> As a special MCP tool type the agent calls differently from normal tools</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'a42d0a43')"><strong>B)</strong> As raw JSON schemas the agent parses on each call</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'a42d0a43')"><strong>C)</strong> As a separate tool registry the agent queries at startup</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, 'a42d0a43')"><strong>D)</strong> As standard LangChain BaseTool objects; the agent cannot tell them apart from locally-defined tools</div>
+    </div>
+    <div id="mcq-answer-a42d0a43" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+        <div class="mcq-explanation">langchain-mcp-adapters wraps each MCP server tool as a standard BaseTool. The agent sees MCP tools identically to any locally-defined tool; results come back as ToolMessages in the conversation history, and the model decides what to do next exactly as it would with a regular tool call.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-1482b380">
+    <div class="mcq-question">
+        <strong>Question:</strong> Which MCP transport type keeps a persistent connection open and supports streaming results?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, true, '1482b380')"><strong>A)</strong> SSE (Server-Sent Events): opens a persistent connection the server can push events over</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '1482b380')"><strong>B)</strong> stdio: runs the server as a local subprocess</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '1482b380')"><strong>C)</strong> HTTP: sends a new request for each tool call</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '1482b380')"><strong>D)</strong> All three transports support persistent connections</div>
+    </div>
+    <div id="mcq-answer-1482b380" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
+        <div class="mcq-explanation">SSE (Server-Sent Events) opens a persistent HTTP connection. The server can push events back over that connection in real time, which is useful for long-running tools or streaming results. stdio is local subprocess only; HTTP opens a new connection per call.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-90ce7dcd">
+    <div class="mcq-question">
+        <strong>Question:</strong> What does the allowedTools field in .mcp.json do?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '90ce7dcd')"><strong>A)</strong> Grants the agent permission to execute those tools without human approval</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '90ce7dcd')"><strong>B)</strong> Specifies the tool schemas to use instead of fetching them from the server</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '90ce7dcd')"><strong>C)</strong> Restricts which tools from that server the agent can see</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '90ce7dcd')"><strong>D)</strong> Sets a rate limit on how often each tool can be called</div>
+    </div>
+    <div id="mcq-answer-90ce7dcd" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-explanation">allowedTools lets you restrict which tools from a server the agent can see. This is useful when a server exposes many tools but you only need a subset; the agent never learns about the others.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-69682098">
+    <div class="mcq-question">
+        <strong>Question:</strong> When deepagents encounters auth: 'oauth' in .mcp.json for the first time, what happens?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '69682098')"><strong>A)</strong> The agent attempts to call the server anonymously and retries with credentials on failure</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '69682098')"><strong>B)</strong> An error is thrown until the user manually adds a token to .mcp.json</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '69682098')"><strong>C)</strong> The server is skipped and its tools are marked unavailable</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '69682098')"><strong>D)</strong> deepagents pauses and opens a browser window for the user to authorize; tokens are saved and reused on subsequent runs</div>
+    </div>
+    <div id="mcq-answer-69682098" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+        <div class="mcq-explanation">When deepagents detects auth: 'oauth', it pauses and opens a browser window for the user to log in. Tokens are stored in ~/.deepagents/.state/mcp-tokens/ and reused on subsequent runs, so the browser prompt only appears once.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-cd400c71">
+    <div class="mcq-question">
+        <strong>Question:</strong> You add interrupt_on to create_deep_agent for an MCP tool but forget to pass a checkpointer. What happens?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'cd400c71')"><strong>A)</strong> The agent runs normally and ignores the interrupt_on setting</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, 'cd400c71')"><strong>B)</strong> An error is raised at invocation time because interrupt_on requires a checkpointer to save and restore state</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'cd400c71')"><strong>C)</strong> The agent pauses but cannot resume; graph state is lost</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'cd400c71')"><strong>D)</strong> The interrupt fires once, then is automatically disabled for that session</div>
+    </div>
+    <div id="mcq-answer-cd400c71" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+        <div class="mcq-explanation">interrupt_on requires a checkpointer. When the agent pauses for human approval, it needs to save its current state so execution can resume from exactly the same point. Without a checkpointer, that save-and-restore is impossible and an error is raised.</div>
+    </div>
+</div>
+
 <hr />
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />
@@ -938,47 +1005,6 @@ asyncio.run(main())
                 }
             });
         }
-    </script>
-
-    <script>
-    // Attach copy handlers to static .copy-button-inline buttons injected at build time.
-    // This runs synchronously so it fires before Babel compiles the text/babel script.
-    (function () {
-        function attachCopyHandler(button) {
-            if (button.dataset.copySetup) return;
-            button.dataset.copySetup = '1';
-            var pre = button.closest('pre');
-            var code = pre && pre.querySelector('code');
-            if (!code) return;
-            function showDone() {
-                button.textContent = '✓';
-                button.classList.add('copied');
-                setTimeout(function () {
-                    button.textContent = '';
-                    button.classList.remove('copied');
-                }, 2000);
-            }
-            function fallback(text) {
-                var ta = document.createElement('textarea');
-                ta.value = text;
-                ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
-                document.body.appendChild(ta);
-                ta.select();
-                try { document.execCommand('copy'); } catch (e) {}
-                document.body.removeChild(ta);
-                showDone();
-            }
-            button.addEventListener('click', function () {
-                var text = code.textContent;
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(text).then(showDone, function () { fallback(text); });
-                } else {
-                    fallback(text);
-                }
-            });
-        }
-        document.querySelectorAll('pre:not(.no-copy) .copy-button-inline').forEach(attachCopyHandler);
-    })();
     </script>
 
     <script type="text/babel">
@@ -1213,11 +1239,7 @@ asyncio.run(main())
                                     right: '1rem',
                                     padding: '0',
                                     border: 'none',
-                                    backgroundImage: copied ? 'none' : 'url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23cfe8ff%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Crect x=%279%27 y=%279%27 width=%2713%27 height=%2713%27 rx=%272%27/%3E%3Cpath d=%27M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1%27/%3E%3C/svg%3E")',
-                                    backgroundColor: copied ? 'transparent' : 'rgba(127, 200, 255, 0.14)',
-                                    backgroundPosition: 'center',
-                                    backgroundSize: '16px',
-                                    backgroundRepeat: 'no-repeat',
+                                    background: copied ? 'none' : 'transparent url("symbols/copy.png") center/18px no-repeat',
                                     cursor: 'pointer',
                                     borderRadius: '4px',
                                     width: '28px',
@@ -1375,24 +1397,20 @@ asyncio.run(main())
         // Add copy buttons to regular code blocks
         function addCopyButtonsToCodeBlocks() {
             // Find all pre blocks that aren't inside tabs-block containers
-            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre):not(.no-copy)');
+            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre)');
 
             preBlocks.forEach(pre => {
+                // Skip if already has a copy button
+                if (pre.querySelector('.copy-button-inline')) return;
+
                 const code = pre.querySelector('code');
                 if (!code) return;
 
-                // Use existing static button (injected at convert time) or create one
-                let button = pre.querySelector('.copy-button-inline');
-                if (!button) {
-                    button = document.createElement('button');
-                    button.className = 'copy-button-inline';
-                    button.setAttribute('aria-label', 'Copy code');
-                    button.setAttribute('title', 'Copy code');
-                    pre.appendChild(button);
-                } else if (button.dataset.copySetup) {
-                    return;
-                }
-                button.dataset.copySetup = '1';
+                // Create copy button
+                const button = document.createElement('button');
+                button.className = 'copy-button-inline';
+                button.setAttribute('aria-label', 'Copy code');
+                button.setAttribute('title', 'Copy code');
 
                 button.addEventListener('click', async () => {
                     const text = code.textContent;
@@ -1431,6 +1449,8 @@ asyncio.run(main())
                         }
                     }
                 });
+
+                pre.appendChild(button);
             });
         }
 

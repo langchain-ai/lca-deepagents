@@ -136,7 +136,6 @@
         pre {
             background: #030710;
             padding: 0.5rem 1rem;
-            padding-top: 2.85rem;
             border-radius: 12px;
             overflow-x: auto;
             overflow-y: auto;
@@ -208,36 +207,25 @@
             padding-left: 5px;
         }
 
-        /* Code output blocks (non-copyable) */
-        pre.no-copy {
-            background: #0a0f1a;
-            border: 1px solid #1a2a3a;
-            opacity: 0.85;
-            padding-top: 0.75rem;
-        }
-
         pre .copy-button-inline {
             position: absolute;
             top: 0.5rem;
-            right: 0.5rem;
+            right: 1rem;
             padding: 0;
             border: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
-            background-position: center;
-            background-size: 16px;
-            background-repeat: no-repeat;
-            background-color: rgba(127, 200, 255, 0.14);
+            background: transparent url('symbols/copy.png') center/18px no-repeat;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s;
             width: 28px;
             height: 28px;
-            opacity: 0.85;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
         }
 
         pre .copy-button-inline:hover {
             opacity: 1;
-            background-color: rgba(127, 200, 255, 0.30);
+            filter: invert(1) brightness(1);
         }
 
         pre .copy-button-inline.copied {
@@ -446,25 +434,22 @@
         .copy-button {
             padding: 0;
             border: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
-            background-position: center;
-            background-size: 16px;
-            background-repeat: no-repeat;
-            background-color: rgba(127, 200, 255, 0.14);
+            background: transparent url('symbols/copy.png') center/20px no-repeat;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 32px;
             height: 32px;
-            opacity: 0.85;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
         }
 
         .copy-button:hover {
             opacity: 1;
-            background-color: rgba(127, 200, 255, 0.30);
+            filter: invert(1) brightness(1);
         }
 
         .copy-button.copied {
@@ -605,10 +590,10 @@
 <hr />
 <h2 id="the-eval-tool">The eval tool</h2>
 <p>When <code>CodeInterpreterMiddleware</code> is added to an agent, it provides a single new tool: <strong><code>eval</code></strong>. The agent calls it with a string of JavaScript to execute.</p>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code>eval(code=&quot;...&quot;)
+<pre><code>eval(code=&quot;...&quot;)
 </code></pre>
 <p>The middleware runs the code in a <a href="https://bellard.org/quickjs/" target="_blank" rel="noopener noreferrer">QuickJS</a> runtime — a lightweight JavaScript engine designed for embedded execution. The result of the last expression, plus any <code>console.log</code> output, comes back as the tool result.</p>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-javascript">// The agent writes JavaScript like this:
+<pre><code class="language-javascript">// The agent writes JavaScript like this:
 const prices = [0.99, 1.29, 0.99, 1.99, 0.99];
 const avg = prices.reduce((a, b) =&gt; a + b, 0) / prices.length;
 `Average price: $${avg.toFixed(2)}`
@@ -634,7 +619,7 @@ const avg = prices.reduce((a, b) =&gt; a + b, 0) / prices.length;
 <p>There are three patterns where interpreters shine.</p>
 <h3 id="1-data-transformation">1. Data transformation</h3>
 <p>When the agent has data in context and needs to compute something — sort, group, aggregate, reformat — <code>eval</code> is faster and more reliable than asking the LLM to do arithmetic in prose.</p>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-javascript">const invoices = [
+<pre><code class="language-javascript">const invoices = [
   {month: &quot;2024-01&quot;, total: 42.50},
   {month: &quot;2024-02&quot;, total: 38.75},
   {month: &quot;2024-03&quot;, total: 61.20},
@@ -644,7 +629,7 @@ const best = invoices.reduce((a, b) =&gt; a.total &gt; b.total ? a : b);
 </code></pre>
 <h3 id="2-programmatic-tool-calling-ptc">2. Programmatic Tool Calling (PTC)</h3>
 <p>This is the most powerful pattern. When PTC is enabled, the JavaScript code can call the agent's tools directly — without those intermediate results ever entering the LLM's context window.</p>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-javascript">// JavaScript drives multiple tool calls in a single eval()
+<pre><code class="language-javascript">// JavaScript drives multiple tool calls in a single eval()
 const rows = JSON.parse(await tools.queryChinook({
     sql: &quot;SELECT Genre.Name, SUM(InvoiceLine.UnitPrice * InvoiceLine.Quantity) AS revenue FROM InvoiceLine JOIN Track ON InvoiceLine.TrackId = Track.TrackId JOIN Genre ON Track.GenreId = Genre.GenreId GROUP BY Genre.GenreId&quot;
 }));
@@ -713,7 +698,7 @@ rows.sort((a, b) =&gt; b.revenue - a.revenue)
 <hr />
 <h2 id="configuring-the-interpreter">Configuring the interpreter</h2>
 <p>Add <code>CodeInterpreterMiddleware</code> to any agent via <code>middleware=</code>. Enable PTC by passing a list of tool names to <code>ptc=</code>.</p>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m2/m2_4_interpreter_agent.py
+<pre><code class="language-python"># python/m2/m2_4_interpreter_agent.py
 from langchain_quickjs import CodeInterpreterMiddleware
 from deepagents import create_deep_agent
 
@@ -746,7 +731,7 @@ agent = create_deep_agent(
 <p>The same task as Lab 1 in the previous lesson — compute the first 15 Fibonacci numbers — but using the interpreter instead of a sandbox. No cloud environment, no <code>execute</code> tool, no infrastructure. Just <code>eval</code>.</p>
 <hr />
 <!-- code-highlight-4:10 -->
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m2/m2_4_eval_agent.py
+<pre><code class="language-python"># python/m2/m2_4_eval_agent.py
 import sys
 from pathlib import Path
 
@@ -773,12 +758,12 @@ result = agent.invoke(
 
 print(result[&quot;messages&quot;][-1].content)
 </code></pre>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">cd python
+<pre><code class="language-bash">cd python
 uv run ./m2/m2_4_eval_agent.py
 </code></pre>
 <p>Compare this to the sandbox version in lesson 2.3: the agent still calls a tool and gets back output, but there's no sandbox to spin up, no <code>write_file</code> → <code>execute</code> sequence, and no Python runtime involved. One middleware line is all it takes.</p>
 <p><strong>Expected output:</strong></p>
-<pre style="max-height:160px;overflow-y:auto;background:#0d1117;color:#e6edf3;padding:16px;border-radius:6px;font-size:12px;font-family:'IBM Plex Mono',monospace;line-height:1.6;white-space:pre-wrap;"><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button>The first 15 Fibonacci numbers are: **[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377]**</pre>
+<pre style="max-height:160px;overflow-y:auto;background:#0d1117;color:#e6edf3;padding:16px;border-radius:6px;font-size:12px;font-family:'IBM Plex Mono',monospace;line-height:1.6;white-space:pre-wrap;">The first 15 Fibonacci numbers are: **[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377]**</pre>
 </div>
 <div class="lt-panel" id="p-lab2" role="tabpanel">
 <h2 id="lab-2-programmatic-tool-calling-with-chinook">Lab 2: Programmatic Tool Calling with Chinook</h2>
@@ -786,7 +771,7 @@ uv run ./m2/m2_4_eval_agent.py
 <p><img width="760" alt="PTC flow diagram — 6 queries, 1 LLM tool call" src="../m2/images/m2.4-ptc-flow.svg" /></p>
 <hr />
 <!-- code-highlight-6:16,17,18,19,20,21,22,23,29,30,31,32,51,52,53,54,55,56,57,58 -->
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m2/m2_4_interpreter_agent.py
+<pre><code class="language-python"># python/m2/m2_4_interpreter_agent.py
 import sys
 import json
 import sqlite3
@@ -850,11 +835,11 @@ result = agent.invoke(
 
 print(result[&quot;messages&quot;][-1].content)
 </code></pre>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">cd python
+<pre><code class="language-bash">cd python
 uv run ./m2/m2_4_interpreter_agent.py
 </code></pre>
 <p><strong>Expected output:</strong></p>
-<pre style="max-height:200px;overflow-y:auto;background:#0d1117;color:#e6edf3;padding:16px;border-radius:6px;font-size:12px;font-family:'IBM Plex Mono',monospace;line-height:1.6;white-space:pre-wrap;"><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button>1. Rock — $826.65 → Top track: "Balls to the Wall" ($1.98)
+<pre style="max-height:200px;overflow-y:auto;background:#0d1117;color:#e6edf3;padding:16px;border-radius:6px;font-size:12px;font-family:'IBM Plex Mono',monospace;line-height:1.6;white-space:pre-wrap;">1. Rock — $826.65 → Top track: "Balls to the Wall" ($1.98)
 2. Latin — $382.14 → Top track: "Meditação" ($1.98)
 3. Metal — $261.36 → Top track: "Welcome Home (Sanitarium)" ($1.98)
 4. Alternative &amp; Punk — $241.56 → Top track: "Bowels Of The Devil" ($1.98)
@@ -874,7 +859,7 @@ uv run ./m2/m2_4_interpreter_agent.py
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '46082622')"><strong>D)</strong> The LLM can see all tool results at once</div>
     </div>
     <div id="mcq-answer-46082622" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: B</strong> &#10003;</div>
+        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
         <div class="mcq-explanation">With PTC, JavaScript drives the tool calls and processes the results entirely inside the interpreter. Only the final computed value is returned to the LLM — the intermediate results never become LLM messages.</div>
     </div>
 </div>
@@ -890,7 +875,7 @@ uv run ./m2/m2_4_interpreter_agent.py
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '3c1a26fa')"><strong>D)</strong> JavaScript</div>
     </div>
     <div id="mcq-answer-3c1a26fa" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: D</strong> &#10003;</div>
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
         <div class="mcq-explanation">The eval tool runs code in a QuickJS JavaScript runtime. The model writes JavaScript — not Python — as the code argument to eval().</div>
     </div>
 </div>
@@ -906,7 +891,7 @@ uv run ./m2/m2_4_interpreter_agent.py
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '782ba8e2')"><strong>D)</strong> npm packages via import</div>
     </div>
     <div id="mcq-answer-782ba8e2" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: C</strong> &#10003;</div>
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
         <div class="mcq-explanation">QuickJS provides the JavaScript standard library: array methods, Map, Set, JSON, Math, Promise, and console.log. There is no filesystem, network, clock, or package manager access.</div>
     </div>
 </div>
@@ -922,7 +907,7 @@ uv run ./m2/m2_4_interpreter_agent.py
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '7d5868f2')"><strong>D)</strong> The agent can share interpreter state with other agents</div>
     </div>
     <div id="mcq-answer-7d5868f2" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: A</strong> &#10003;</div>
+        <div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
         <div class="mcq-explanation">The QuickJS context lives for the duration of a thread. Variables defined in one eval() call remain in scope for subsequent eval() calls in the same thread — like a persistent REPL session. Between separate agent.invoke() calls, state is also preserved as long as the same thread_id is used. Switch to a different thread_id and the interpreter starts fresh.</div>
     </div>
 </div>
@@ -1060,47 +1045,6 @@ uv run ./m2/m2_4_interpreter_agent.py
                 }
             });
         }
-    </script>
-
-    <script>
-    // Attach copy handlers to static .copy-button-inline buttons injected at build time.
-    // This runs synchronously so it fires before Babel compiles the text/babel script.
-    (function () {
-        function attachCopyHandler(button) {
-            if (button.dataset.copySetup) return;
-            button.dataset.copySetup = '1';
-            var pre = button.closest('pre');
-            var code = pre && pre.querySelector('code');
-            if (!code) return;
-            function showDone() {
-                button.textContent = '✓';
-                button.classList.add('copied');
-                setTimeout(function () {
-                    button.textContent = '';
-                    button.classList.remove('copied');
-                }, 2000);
-            }
-            function fallback(text) {
-                var ta = document.createElement('textarea');
-                ta.value = text;
-                ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
-                document.body.appendChild(ta);
-                ta.select();
-                try { document.execCommand('copy'); } catch (e) {}
-                document.body.removeChild(ta);
-                showDone();
-            }
-            button.addEventListener('click', function () {
-                var text = code.textContent;
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(text).then(showDone, function () { fallback(text); });
-                } else {
-                    fallback(text);
-                }
-            });
-        }
-        document.querySelectorAll('pre:not(.no-copy) .copy-button-inline').forEach(attachCopyHandler);
-    })();
     </script>
 
     <script type="text/babel">
@@ -1335,11 +1279,7 @@ uv run ./m2/m2_4_interpreter_agent.py
                                     right: '1rem',
                                     padding: '0',
                                     border: 'none',
-                                    backgroundImage: copied ? 'none' : 'url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23cfe8ff%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Crect x=%279%27 y=%279%27 width=%2713%27 height=%2713%27 rx=%272%27/%3E%3Cpath d=%27M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1%27/%3E%3C/svg%3E")',
-                                    backgroundColor: copied ? 'transparent' : 'rgba(127, 200, 255, 0.14)',
-                                    backgroundPosition: 'center',
-                                    backgroundSize: '16px',
-                                    backgroundRepeat: 'no-repeat',
+                                    background: copied ? 'none' : 'transparent url("symbols/copy.png") center/18px no-repeat',
                                     cursor: 'pointer',
                                     borderRadius: '4px',
                                     width: '28px',
@@ -1497,24 +1437,20 @@ uv run ./m2/m2_4_interpreter_agent.py
         // Add copy buttons to regular code blocks
         function addCopyButtonsToCodeBlocks() {
             // Find all pre blocks that aren't inside tabs-block containers
-            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre):not(.no-copy)');
+            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre)');
 
             preBlocks.forEach(pre => {
+                // Skip if already has a copy button
+                if (pre.querySelector('.copy-button-inline')) return;
+
                 const code = pre.querySelector('code');
                 if (!code) return;
 
-                // Use existing static button (injected at convert time) or create one
-                let button = pre.querySelector('.copy-button-inline');
-                if (!button) {
-                    button = document.createElement('button');
-                    button.className = 'copy-button-inline';
-                    button.setAttribute('aria-label', 'Copy code');
-                    button.setAttribute('title', 'Copy code');
-                    pre.appendChild(button);
-                } else if (button.dataset.copySetup) {
-                    return;
-                }
-                button.dataset.copySetup = '1';
+                // Create copy button
+                const button = document.createElement('button');
+                button.className = 'copy-button-inline';
+                button.setAttribute('aria-label', 'Copy code');
+                button.setAttribute('title', 'Copy code');
 
                 button.addEventListener('click', async () => {
                     const text = code.textContent;
@@ -1553,6 +1489,8 @@ uv run ./m2/m2_4_interpreter_agent.py
                         }
                     }
                 });
+
+                pre.appendChild(button);
             });
         }
 
