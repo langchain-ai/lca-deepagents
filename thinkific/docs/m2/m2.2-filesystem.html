@@ -627,6 +627,18 @@ graph TB
 <p><strong>Context Hub</strong>: files are injected directly into the model's context window, without an explicit read call. Useful for reference material, the agent should always have in view. Learn more about the LangSmith Context Hub <a href="https://docs.langchain.com/langsmith/context-hub" target="_blank" rel="noopener noreferrer">here</a>.</p>
 <p><strong>Composite</strong>: routes different path prefixes to different backends. Lets you mix different backends in a single agent (e.g. <code>/memories/</code> → Store, <code>/skills/</code> → Store, everything else → State).</p>
 <p><strong>Custom</strong>: implement the backend interface yourself to plug in any storage system.</p>
+<details class="video-walkthrough">
+<summary>Video Walk-through [click to expand] — script available, video later</summary>
+<p><br></p>
+<p><strong>Script (will be recorded):</strong> [Scroll to Single backend]</p>
+<p>The simplest setup is just to pass one backend directly to <code>create_deep_agent</code>. The example here uses <code>StoreBackend</code>, which persists files across threads. The namespace lambda is worth noting: it uses the caller's user ID to keep each user's files isolated in the store.</p>
+<p>[Scroll to Composite backend]</p>
+<p>Composite is for when different files have different requirements. You define routes by path prefix and anything that doesn't match a route falls through to the default. Here <code>/memories/</code> and <code>/skills/</code> both go to the durable store, while everything else stays ephemeral in State. The agent never sees any of this - it just calls <code>read_file</code> and the routing happens transparently.</p>
+<p>[Scroll to Permissions]</p>
+<p>Permissions are a separate layer on top. You pass a list of <code>FilesystemPermission</code> rules and they're evaluated in order; first match wins, and if nothing matches the operation is allowed. Each rule has three fields: which operations it covers, which paths it applies to using glob patterns, and the mode. The default mode is allow, but you can also deny outright or use interrupt - which pauses for human approval instead of blocking silently, the same pattern we saw with HITL.</p>
+<p>[Point to the bottom note]</p>
+<p>A common combination: route <code>/skills/</code> to Store so files persist, but deny writes to it so only your application code can modify skills, not the agent. <code>/memories/</code> stays fully read/write.</p>
+</details>
 <hr />
 <h2 id="single-backend">Single backend</h2>
 <p>Pass any backend directly to <code>create_deep_agent</code>. Here the agent stores all files in the LangGraph store, persisted across threads.</p>
