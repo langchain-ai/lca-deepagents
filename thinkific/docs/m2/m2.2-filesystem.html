@@ -632,7 +632,7 @@ graph TB
 <div style="flex:1;">
 <p style="text-align:center;font-weight:600;font-size:13px;color:#40668D;margin:0 0 8px;">Single backend</p>
 <div class="mermaid">
-graph LR
+graph TB
     A1[Agent] --&gt; SB[StoreBackend]
     SB --&gt; D1[Store]
 
@@ -648,7 +648,7 @@ graph LR
 <div style="flex:1;">
 <p style="text-align:center;font-weight:600;font-size:13px;color:#40668D;margin:0 0 8px;">Composite backend</p>
 <div class="mermaid">
-graph LR
+graph TB
     A2[Agent] --&gt; CB[CompositeBackend]
     CB --&gt;|"/memories/, /skills/"| D2[Store]
     CB --&gt;|"everything else"| ST[State]
