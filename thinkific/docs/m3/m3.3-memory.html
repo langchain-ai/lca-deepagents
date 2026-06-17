@@ -736,6 +736,28 @@ By convention, memory files live in a <code>memories/</code> directory and the m
 <div class="lt-panel" id="p-lab" role="tabpanel">
 <h2 id="lab-coding-assistant-with-memory">Lab: Coding Assistant with Memory</h2>
 <p>Both files are already in the repo: <code>python/m3/memory_agent.py</code> and <code>python/m3/memories/AGENTS.md</code>. Open them to see how they're wired up, then run the agent directly. The first invoke answers a question using the file's content; the second triggers a memory write. You can also swap in your own <code>AGENTS.md</code> content, or use a coding agent to explore and extend the setup.</p>
+<details class="video-walkthrough">
+<summary>Video Walk-through [click to expand] — script available, video later</summary>
+<p><br></p>
+<p><strong>Script (will be recorded):</strong> [Open m3.3_memory_agent.py in VS Code]</p>
+<p>This lab has two invokes that demonstrate the two sides of memory: reading and writing.</p>
+<p>[Highlight the memories_dir and agents_md block]</p>
+<p>This block just creates the memories/ directory and the initial AGENTS.md if they don't exist yet, so the script is self-contained and works on a fresh clone.</p>
+<p>[Open AGENTS.md]</p>
+<p>Here's what's in it: code style rules, workflow conventions. Things the base model has no way of knowing because they're specific to this project. This is the kind of content memory is designed for.</p>
+<p>[Back to the Python file, highlight FilesystemBackend]</p>
+<p>FilesystemBackend roots the agent's filesystem at the m3/ directory, which is what allows the agent to read and write files there. The virtual_mode=True flag means writes are tracked in memory rather than immediately hitting disk (useful for demos and testing).</p>
+<p>[Highlight create_deep_agent and the memory= line]</p>
+<p>Passing memory=["memories/AGENTS.md"] is what activates MemoryMiddleware. That path resolves relative to the backend root, so it maps to m3/memories/AGENTS.md. From this point on, the file's content is injected into the system prompt on every call.</p>
+<p>[Highlight the first agent.invoke]</p>
+<p>The first question asks what tool to use for file paths. The agent answers correctly, because AGENTS.md says to use pathlib.Path and that content is in the system prompt.</p>
+<p>[Highlight the second agent.invoke]</p>
+<p>The second message tells the agent to remember that the team switched to ruff for linting. Because the middleware injects guidelines about when to write, the agent knows to call edit_file on memories/AGENTS.md to persist this. That's the memory write.</p>
+<p>[Highlight the final print block]</p>
+<p>After both invokes, the script prints the updated file so you can see the change directly in the terminal.</p>
+<p>[Run it in terminal]</p>
+<p>Let's run it. Once it finishes, open both runs in LangSmith. In the first run you'll see the [agent_memory] block in the system prompt containing the original file content, and in the second you'll find the edit_file tool call where the linting section was added.</p>
+</details>
 <hr />
 <h3 id="run-it">Run it</h3>
 <pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m3/memory_agent.py
