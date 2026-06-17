@@ -1,48 +1,48 @@
 <svg width="820" height="420" xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-  <rect width="820" height="420" fill="#030710" rx="8"/>
-  <text x="410" y="34" text-anchor="middle" font-size="17" font-weight="400" fill="#F2FAFF">What is inside SKILL.md?</text>
-  <text x="410" y="54" text-anchor="middle" font-size="12.5" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">YAML frontmatter at the top, markdown instructions below</text>
+  <rect width="820" height="420" fill="#F2FAFF" rx="8"/>
+  <text x="410" y="34" text-anchor="middle" font-size="17" font-weight="400" fill="#030710">What is inside SKILL.md?</text>
+  <text x="410" y="54" text-anchor="middle" font-size="12.5" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">YAML frontmatter at the top, markdown instructions below</text>
 
   <!-- editor window (widened to give BANT text right breathing room) -->
-  <rect x="35" y="66" width="380" height="310" rx="8" fill="#0D1322" stroke="#2F4B68" stroke-width="1.5"/>
-  <rect x="35" y="66" width="380" height="26" rx="8" fill="#1E3A5F"/>
-  <rect x="35" y="84" width="380" height="8" fill="#1E3A5F"/>
-  <circle cx="51" cy="79" r="4" fill="#441E33"/>
-  <circle cx="65" cy="79" r="4" fill="#634643"/>
-  <circle cx="79" cy="79" r="4" fill="#2E3900"/>
-  <text x="95" y="83" font-size="9" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">SKILL.md</text>
+  <rect x="35" y="66" width="380" height="310" rx="8" fill="#FFFFFF" stroke="#CCE9FF" stroke-width="1.5"/>
+  <rect x="35" y="66" width="380" height="26" rx="8" fill="#E5F4FF"/>
+  <rect x="35" y="84" width="380" height="8" fill="#E5F4FF"/>
+  <circle cx="51" cy="79" r="4" fill="#FF5F57"/>
+  <circle cx="65" cy="79" r="4" fill="#FEBC2E"/>
+  <circle cx="79" cy="79" r="4" fill="#28C840"/>
+  <text x="95" y="83" font-size="9" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">SKILL.md</text>
 
   <!-- highlight: frontmatter block -->
-  <rect x="36" y="107" width="378" height="120" rx="3" fill="#2E3900" stroke="#6E8900" stroke-width="1.5"/>
+  <rect x="36" y="107" width="378" height="120" rx="3" fill="#F0FFD6" stroke="#6E8900" stroke-width="1.5"/>
   <!-- highlight: instructions block -->
-  <rect x="36" y="258" width="378" height="98" rx="3" fill="#161F34" stroke="#7FC8FF" stroke-width="1.5"/>
+  <rect x="36" y="258" width="378" height="98" rx="3" fill="#E5F4FF" stroke="#006DDD" stroke-width="1.5"/>
 
   <!-- code: 13px font, 23px line spacing -->
   <g font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" xml:space="preserve">
-    <text x="52" y="123" fill="#99D3FF">---</text>
-    <text x="52" y="146"><tspan fill="#99D3FF">name: </tspan><tspan fill="#E3FF8F">qualify-lead</tspan></text>
-    <text x="52" y="169"><tspan fill="#99D3FF">description: </tspan><tspan fill="#E3FF8F">Use when qualifying a lead.</tspan></text>
-    <text x="52" y="192"><tspan fill="#99D3FF">allowed-tools: </tspan><tspan fill="#E3FF8F">read_file write_file</tspan></text>
-    <text x="52" y="215" fill="#99D3FF">---</text>
-    <text x="52" y="273" fill="#7FC8FF"># Qualify a Lead</text>
-    <text x="52" y="305" fill="#B2DEFF">Use the BANT framework to qualify the</text>
-    <text x="52" y="328" fill="#B2DEFF">prospect: budget, authority, need, timeline.</text>
+    <text x="52" y="123" fill="#40668D">---</text>
+    <text x="52" y="146"><tspan fill="#40668D">name: </tspan><tspan fill="#6E8900">qualify-lead</tspan></text>
+    <text x="52" y="169"><tspan fill="#40668D">description: </tspan><tspan fill="#6E8900">Use when qualifying a lead.</tspan></text>
+    <text x="52" y="192"><tspan fill="#40668D">allowed-tools: </tspan><tspan fill="#6E8900">read_file write_file</tspan></text>
+    <text x="52" y="215" fill="#40668D">---</text>
+    <text x="52" y="273" fill="#006DDD"># Qualify a Lead</text>
+    <text x="52" y="305" fill="#030710">Use the BANT framework to qualify the</text>
+    <text x="52" y="328" fill="#030710">prospect: budget, authority, need, timeline.</text>
   </g>
 
   <!-- connector: frontmatter (longer, horizontal) -->
   <line x1="415" y1="167" x2="470" y2="167" stroke="#6E8900" stroke-width="1.5"/>
   <!-- annotation box: frontmatter -->
-  <rect x="470" y="107" width="330" height="120" rx="6" fill="#0D1322" stroke="#6E8900" stroke-width="1.5"/>
-  <text x="484" y="133" font-size="17" font-weight="500" fill="#E3FF8F">YAML FRONTMATTER</text>
-  <text x="484" y="158" font-size="14" fill="#B2DEFF"><tspan fill="#6E8900">– </tspan>name, description, allowed-tools</text>
-  <text x="484" y="180" font-size="14" fill="#B2DEFF"><tspan fill="#6E8900">– </tspan>always in context at discovery</text>
-  <text x="484" y="202" font-size="14" fill="#B2DEFF"><tspan fill="#6E8900">– </tspan>read on every LLM call</text>
+  <rect x="470" y="107" width="330" height="120" rx="6" fill="#FFFFFF" stroke="#6E8900" stroke-width="1.5"/>
+  <text x="484" y="133" font-size="17" font-weight="500" fill="#6E8900">YAML FRONTMATTER</text>
+  <text x="484" y="158" font-size="14" fill="#030710"><tspan fill="#6E8900">– </tspan>name, description, allowed-tools</text>
+  <text x="484" y="180" font-size="14" fill="#030710"><tspan fill="#6E8900">– </tspan>always in context at discovery</text>
+  <text x="484" y="202" font-size="14" fill="#030710"><tspan fill="#6E8900">– </tspan>read on every LLM call</text>
 
   <!-- connector: instructions (longer, horizontal) -->
-  <line x1="415" y1="307" x2="470" y2="307" stroke="#7FC8FF" stroke-width="1.5"/>
+  <line x1="415" y1="307" x2="470" y2="307" stroke="#006DDD" stroke-width="1.5"/>
   <!-- annotation box: instructions -->
-  <rect x="470" y="258" width="330" height="100" rx="6" fill="#0D1322" stroke="#7FC8FF" stroke-width="1.5"/>
-  <text x="484" y="284" font-size="17" font-weight="500" fill="#7FC8FF">SKILL INSTRUCTIONS</text>
-  <text x="484" y="309" font-size="14" fill="#B2DEFF"><tspan fill="#40668D">– </tspan>markdown steps the agent follows</text>
-  <text x="484" y="331" font-size="14" fill="#B2DEFF"><tspan fill="#40668D">– </tspan>loaded on demand via read_file</text>
+  <rect x="470" y="258" width="330" height="100" rx="6" fill="#FFFFFF" stroke="#006DDD" stroke-width="1.5"/>
+  <text x="484" y="284" font-size="17" font-weight="500" fill="#006DDD">SKILL INSTRUCTIONS</text>
+  <text x="484" y="309" font-size="14" fill="#030710"><tspan fill="#40668D">– </tspan>markdown steps the agent follows</text>
+  <text x="484" y="331" font-size="14" fill="#030710"><tspan fill="#40668D">– </tspan>loaded on demand via read_file</text>
 </svg>

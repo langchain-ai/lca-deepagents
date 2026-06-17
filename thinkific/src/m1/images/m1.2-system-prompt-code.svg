@@ -1,46 +1,46 @@
 <svg width="740" height="372" xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-  <rect width="740" height="372" fill="#030710" rx="8"/>
-  <text x="370" y="30" text-anchor="middle" font-size="15" font-weight="300" fill="#F2FAFF">What exactly is a system prompt?</text>
-  <text x="370" y="49" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Two arguments in the code you write: one is the model, one is the system prompt</text>
+  <rect width="740" height="372" fill="#F2FAFF" rx="8"/>
+  <text x="370" y="30" text-anchor="middle" font-size="15" font-weight="300" fill="#030710">What exactly is a system prompt?</text>
+  <text x="370" y="49" text-anchor="middle" font-size="11" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Two arguments in the code you write: one is the model, one is the system prompt</text>
 
   <!-- editor window -->
-  <rect x="48" y="62" width="442" height="244" rx="8" fill="#0D1322" stroke="#2F4B68" stroke-width="1.5"/>
-  <rect x="48" y="62" width="442" height="26" rx="8" fill="#1E3A5F"/>
-  <rect x="48" y="80" width="442" height="8" fill="#1E3A5F"/>
-  <circle cx="64" cy="75" r="4" fill="#441E33"/>
-  <circle cx="78" cy="75" r="4" fill="#634643"/>
-  <circle cx="92" cy="75" r="4" fill="#2E3900"/>
-  <text x="110" y="79" font-size="9" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">agent.py</text>
+  <rect x="48" y="62" width="442" height="244" rx="8" fill="#FFFFFF" stroke="#CCE9FF" stroke-width="1.5"/>
+  <rect x="48" y="62" width="442" height="26" rx="8" fill="#E5F4FF"/>
+  <rect x="48" y="80" width="442" height="8" fill="#E5F4FF"/>
+  <circle cx="64" cy="75" r="4" fill="#FF5F57"/>
+  <circle cx="78" cy="75" r="4" fill="#FEBC2E"/>
+  <circle cx="92" cy="75" r="4" fill="#28C840"/>
+  <text x="110" y="79" font-size="9" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">agent.py</text>
 
   <!-- highlight bars -->
-  <rect x="52" y="182" width="434" height="22" rx="3" fill="#2E3900" stroke="#6E8900" stroke-width="1.5"/>
-  <rect x="52" y="206" width="434" height="22" rx="3" fill="#161F34" stroke="#7FC8FF" stroke-width="1.5"/>
+  <rect x="52" y="182" width="434" height="22" rx="3" fill="#F0FFD6" stroke="#6E8900" stroke-width="1.5"/>
+  <rect x="52" y="206" width="434" height="22" rx="3" fill="#E5F4FF" stroke="#006DDD" stroke-width="1.5"/>
 
   <!-- code -->
   <g font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" xml:space="preserve">
     <text x="64" y="118" fill="#40668D">from deepagents import create_deep_agent</text>
     <text x="64" y="140" fill="#40668D">from models import model</text>
     <text x="64" y="174" fill="#40668D">agent = create_deep_agent(</text>
-    <text x="64" y="197" fill="#E3FF8F" font-weight="400">    model=model,</text>
-    <text x="64" y="221" fill="#7FC8FF" font-weight="400">    system_prompt="You are a drawling cowboy.",</text>
+    <text x="64" y="197" fill="#5B7A00" font-weight="400">    model=model,</text>
+    <text x="64" y="221" fill="#006DDD" font-weight="400">    system_prompt="You are a drawling cowboy.",</text>
     <text x="64" y="250" fill="#40668D">)</text>
     <text x="64" y="284" fill="#40668D">agent.invoke({"messages": "Round up the herd."})</text>
   </g>
 
   <!-- connector: model -->
   <line x1="486" y1="193" x2="504" y2="188" stroke="#6E8900" stroke-width="1.5"/>
-  <rect x="504" y="170" width="214" height="36" rx="6" fill="#0D1322" stroke="#6E8900" stroke-width="1.5"/>
-  <text x="514" y="186" font-size="10" font-weight="400" fill="#E3FF8F">THE MODEL</text>
-  <text x="514" y="199" font-size="8.5" fill="#B2DEFF">the LLM engine; swap it freely</text>
+  <rect x="504" y="170" width="214" height="36" rx="6" fill="#FFFFFF" stroke="#6E8900" stroke-width="1.5"/>
+  <text x="514" y="186" font-size="10" font-weight="400" fill="#5B7A00">THE MODEL</text>
+  <text x="514" y="199" font-size="8.5" fill="#030710">the LLM engine; swap it freely</text>
 
   <!-- connector: system prompt -->
-  <line x1="486" y1="217" x2="504" y2="231" stroke="#7FC8FF" stroke-width="1.5"/>
-  <rect x="504" y="212" width="214" height="44" rx="6" fill="#0D1322" stroke="#7FC8FF" stroke-width="1.5"/>
-  <text x="514" y="229" font-size="10" font-weight="400" fill="#7FC8FF">THE SYSTEM PROMPT</text>
-  <text x="514" y="242" font-size="8.5" fill="#B2DEFF">text the model reads on every</text>
-  <text x="514" y="253" font-size="8.5" fill="#B2DEFF">call (this is the USER part)</text>
+  <line x1="486" y1="217" x2="504" y2="231" stroke="#006DDD" stroke-width="1.5"/>
+  <rect x="504" y="212" width="214" height="44" rx="6" fill="#FFFFFF" stroke="#006DDD" stroke-width="1.5"/>
+  <text x="514" y="229" font-size="10" font-weight="400" fill="#006DDD">THE SYSTEM PROMPT</text>
+  <text x="514" y="242" font-size="8.5" fill="#030710">text the model reads on every</text>
+  <text x="514" y="253" font-size="8.5" fill="#030710">call (this is the USER part)</text>
 
   <!-- footer -->
-  <text x="370" y="332" text-anchor="middle" font-size="10" fill="#B2DEFF">The model is the engine; the system prompt is the text that steers it, identical on every call.</text>
-  <text x="370" y="350" text-anchor="middle" font-size="9" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Your system_prompt is only the USER part; the SDK wraps its BASE instructions (and any SUFFIX) around it.</text>
+  <text x="370" y="332" text-anchor="middle" font-size="10" fill="#030710">The model is the engine; the system prompt is the text that steers it, identical on every call.</text>
+  <text x="370" y="350" text-anchor="middle" font-size="9" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Your system_prompt is only the USER part; the SDK wraps its BASE instructions (and any SUFFIX) around it.</text>
 </svg>

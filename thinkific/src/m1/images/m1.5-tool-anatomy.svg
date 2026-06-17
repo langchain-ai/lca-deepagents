@@ -1,57 +1,57 @@
 <svg width="800" height="440" xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-  <rect width="800" height="440" fill="#030710" rx="8"/>
+  <rect width="800" height="440" fill="#F2FAFF" rx="8"/>
 
-  <text x="390" y="32" text-anchor="middle" font-size="15" font-weight="300" fill="#F2FAFF">Anatomy of a @tool</text>
-  <text x="390" y="52" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Three things the model reads when deciding whether and how to call a tool</text>
+  <text x="390" y="32" text-anchor="middle" font-size="15" font-weight="300" fill="#030710">Anatomy of a @tool</text>
+  <text x="390" y="52" text-anchor="middle" font-size="11" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Three things the model reads when deciding whether and how to call a tool</text>
 
   <!-- editor window: narrowed to give annotation boxes more room -->
-  <rect x="36" y="65" width="320" height="248" rx="8" fill="#0D1322" stroke="#2F4B68" stroke-width="1.5"/>
-  <rect x="36" y="65" width="320" height="26" rx="8" fill="#1E3A5F"/>
-  <rect x="36" y="83" width="320" height="8" fill="#1E3A5F"/>
-  <circle cx="52" cy="78" r="4" fill="#441E33"/>
-  <circle cx="66" cy="78" r="4" fill="#634643"/>
-  <circle cx="80" cy="78" r="4" fill="#2E3900"/>
-  <text x="96" y="82" font-size="9" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">agent.py</text>
+  <rect x="36" y="65" width="320" height="248" rx="8" fill="#FFFFFF" stroke="#CCE9FF" stroke-width="1.5"/>
+  <rect x="36" y="65" width="320" height="26" rx="8" fill="#E5F4FF"/>
+  <rect x="36" y="83" width="320" height="8" fill="#E5F4FF"/>
+  <circle cx="52" cy="78" r="4" fill="#FF5F57"/>
+  <circle cx="66" cy="78" r="4" fill="#FEBC2E"/>
+  <circle cx="80" cy="78" r="4" fill="#28C840"/>
+  <text x="96" y="82" font-size="9" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">agent.py</text>
 
   <!-- highlight rects -->
-  <rect x="40" y="148" width="312" height="22" rx="3" fill="#2E3900" stroke="#6E8900" stroke-width="1.5"/>
-  <rect x="40" y="188" width="312" height="22" rx="3" fill="#161F34" stroke="#7FC8FF" stroke-width="1.5"/>
-  <rect x="40" y="228" width="312" height="22" rx="3" fill="#161F34" stroke="#C78EAD" stroke-width="1.5"/>
+  <rect x="40" y="148" width="312" height="22" rx="3" fill="#F0FFD6" stroke="#6E8900" stroke-width="1.5"/>
+  <rect x="40" y="188" width="312" height="22" rx="3" fill="#E5F4FF" stroke="#006DDD" stroke-width="1.5"/>
+  <rect x="40" y="228" width="312" height="22" rx="3" fill="#F5E8F6" stroke="#C78EAD" stroke-width="1.5"/>
 
   <!-- code -->
   <g font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" xml:space="preserve">
     <text x="64" y="118" fill="#40668D">from langchain_core.tools import tool</text>
-    <text x="64" y="163" fill="#E3FF8F" font-weight="400">@tool</text>
-    <text x="64" y="203" fill="#7FC8FF" font-weight="400">def tool_name(param: type) -> str:</text>
-    <text x="64" y="243" fill="#EBD0F0" font-weight="400">    """Describe what this tool does."""</text>
+    <text x="64" y="163" fill="#5B7A00" font-weight="400">@tool</text>
+    <text x="64" y="203" fill="#006DDD" font-weight="400">def tool_name(param: type) -> str:</text>
+    <text x="64" y="243" fill="#9B3D7E" font-weight="400">    """Describe what this tool does."""</text>
     <text x="64" y="278" fill="#40668D">    ...  # your implementation</text>
   </g>
 
   <!-- connectors from code lines to annotation boxes -->
   <line x1="352" y1="159" x2="372" y2="149" stroke="#6E8900" stroke-width="1.5"/>
-  <line x1="352" y1="199" x2="372" y2="222" stroke="#7FC8FF" stroke-width="1.5"/>
+  <line x1="352" y1="199" x2="372" y2="222" stroke="#006DDD" stroke-width="1.5"/>
   <line x1="352" y1="239" x2="372" y2="317" stroke="#C78EAD" stroke-width="1.5"/>
 
   <!-- annotation box: decorator -->
-  <rect x="372" y="130" width="408" height="62" rx="6" fill="#0D1322" stroke="#6E8900" stroke-width="1.5"/>
-  <text x="383" y="149" font-size="13" font-weight="400" fill="#E3FF8F">THE DECORATOR</text>
-  <text x="383" y="168" font-size="12" fill="#B2DEFF">registers the function as a LangChain tool</text>
+  <rect x="372" y="130" width="408" height="62" rx="6" fill="#FFFFFF" stroke="#6E8900" stroke-width="1.5"/>
+  <text x="383" y="149" font-size="13" font-weight="400" fill="#5B7A00">THE DECORATOR</text>
+  <text x="383" y="168" font-size="12" fill="#030710">registers the function as a LangChain tool</text>
 
   <!-- annotation box: name & schema -->
-  <rect x="372" y="204" width="408" height="82" rx="6" fill="#0D1322" stroke="#7FC8FF" stroke-width="1.5"/>
-  <text x="383" y="223" font-size="13" font-weight="400" fill="#7FC8FF">THE NAME &amp; SCHEMA</text>
-  <text x="383" y="242" font-size="12" fill="#5BADDF">name</text>
-  <text x="420" y="242" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#F2FAFF">get_stock_price</text>
-  <text x="383" y="260" font-size="12" fill="#5BADDF">schema</text>
-  <text x="430" y="260" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#F2FAFF">ticker: str</text>
+  <rect x="372" y="204" width="408" height="82" rx="6" fill="#FFFFFF" stroke="#006DDD" stroke-width="1.5"/>
+  <text x="383" y="223" font-size="13" font-weight="400" fill="#006DDD">THE NAME &amp; SCHEMA</text>
+  <text x="383" y="242" font-size="12" fill="#0056A0">name</text>
+  <text x="420" y="242" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#030710">get_stock_price</text>
+  <text x="383" y="260" font-size="12" fill="#0056A0">schema</text>
+  <text x="430" y="260" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#030710">ticker: str</text>
 
   <!-- annotation box: description (extends below code panel — right side has space) -->
-  <rect x="372" y="298" width="408" height="82" rx="6" fill="#0D1322" stroke="#C78EAD" stroke-width="1.5"/>
-  <text x="383" y="317" font-size="13" font-weight="400" fill="#C78EAD">THE DESCRIPTION</text>
-  <text x="383" y="336" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#EBD0F0">"Return the latest closing price..."</text>
-  <text x="383" y="354" font-size="12" fill="#B2DEFF">the only signal for when to call the tool</text>
+  <rect x="372" y="298" width="408" height="82" rx="6" fill="#FFFFFF" stroke="#C78EAD" stroke-width="1.5"/>
+  <text x="383" y="317" font-size="13" font-weight="400" fill="#9B3D7E">THE DESCRIPTION</text>
+  <text x="383" y="336" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#9B3D7E">"Return the latest closing price..."</text>
+  <text x="383" y="354" font-size="12" fill="#030710">the only signal for when to call the tool</text>
 
   <!-- footer -->
-  <text x="400" y="408" text-anchor="middle" font-size="10" fill="#B2DEFF">The description is the most important: it is the only signal the model has for deciding when to reach for this tool.</text>
-  <text x="400" y="426" text-anchor="middle" font-size="9" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Write it as a clear, specific sentence describing what the tool does and when to use it.</text>
+  <text x="400" y="408" text-anchor="middle" font-size="10" fill="#030710">The description is the most important: it is the only signal the model has for deciding when to reach for this tool.</text>
+  <text x="400" y="426" text-anchor="middle" font-size="9" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Write it as a clear, specific sentence describing what the tool does and when to use it.</text>
 </svg>

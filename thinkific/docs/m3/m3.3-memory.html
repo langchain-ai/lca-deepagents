@@ -686,9 +686,9 @@ By convention, memory files live in a <code>memories/</code> directory and the m
 </code></pre>
 <p>This is content the base model cannot know: it is specific to your project. The agent will answer questions about it using only what it reads from the file.</p>
 <hr />
-<h3 id="2-create-memory_agentpy">2. Create <code>memory_agent.py</code></h3>
-<p>Create <code>python/m3/memory_agent.py</code>:</p>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m3/memory_agent.py
+<h3 id="2-create-m33_memory_agentpy">2. Create <code>m3.3_memory_agent.py</code></h3>
+<p>Create <code>python/m3/m3.3_memory_agent.py</code>:</p>
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-python"># python/m3/m3.3_memory_agent.py
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -723,7 +723,7 @@ print(result2[&quot;messages&quot;][-1].content)
 <p><code>FilesystemBackend</code> with <code>root_dir</code> pointing to <code>python/m3/</code> gives the agent read and write access to files in that directory. The memory path <code>memories/AGENTS.md</code> resolves relative to that root.</p>
 <hr />
 <h3 id="run-it">Run it</h3>
-<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m3/memory_agent.py
+<pre><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m3/m3.3_memory_agent.py
 </code></pre>
 <p>After both invokes complete, open <code>python/m3/memories/AGENTS.md</code> and verify the ruff note was written in.</p>
 <hr />
@@ -738,6 +738,7 @@ print(result2[&quot;messages&quot;][-1].content)
 Memory content is visible in the system message of <em>every</em> LLM call in every run. Skills content only appears as a <code>read_file</code> tool call in the specific run where the skill was activated. If you see a large block in the system prompt that is always there, that is memory. If you see a <code>read_file</code> mid-run, that is a skill activation.
 </div>
 </div>
+<hr />
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />
 - <a href="https://docs.langchain.com/oss/python/deepagents/memory" target="_blank" rel="noopener noreferrer">Memory (Deep Agents)</a><br />

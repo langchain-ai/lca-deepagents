@@ -1,94 +1,91 @@
-<svg width="740" height="490" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-  <rect width="740" height="490" fill="#F2FAFF" rx="8"/>
-  <text x="370" y="36" text-anchor="middle" font-size="15" font-weight="700" fill="#1E3A5F">Message History Compaction (2nd Event)</text>
-  <text x="370" y="55" text-anchor="middle" font-size="11" fill="#6A8EB0">The prior summary + new old messages are replaced with a new, larger summary</text>
+<svg width="900" height="560" xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="900" height="560" fill="#030710" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" font-size="18" font-weight="700" fill="#F2FAFF">Message History Compaction (2nd Event)</text>
+  <text x="450" y="61" text-anchor="middle" font-size="12" fill="#7FC8FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace">Prior summary + new old messages are folded into a new combined summary</text>
 
   <!-- ═══ BEFORE (2nd event) ═══ -->
-  <text x="168" y="78" text-anchor="middle" font-size="13" font-weight="600" fill="#1E3A5F">Before (2nd event)</text>
-  <rect x="65" y="86" width="192" height="336" rx="6" fill="white" stroke="#1E3A5F" stroke-width="2"/>
-  <text x="161" y="103" text-anchor="middle" font-size="9" fill="#9AB0C8" letter-spacing="0.8">CONTEXT WINDOW</text>
+  <text x="164" y="82" text-anchor="middle" font-size="14" font-weight="600" fill="#F2FAFF">Before (2nd event)</text>
+  <rect x="30" y="90" width="268" height="390" rx="6" fill="#0D1322" stroke="#40668D" stroke-width="1.5"/>
+  <text x="164" y="109" text-anchor="middle" font-size="10" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace" letter-spacing="1">CONTEXT WINDOW</text>
 
-  <!-- Recent messages (newest at top, blue) -->
-  <rect x="77" y="108" width="168" height="23" rx="3" fill="#CCE5FF" stroke="#3A74D4" stroke-width="1"/>
-  <text x="161" y="123" text-anchor="middle" font-size="10" fill="#1A3A7A">Human: What else about me?</text>
-  <rect x="77" y="135" width="168" height="23" rx="3" fill="#D8ECFF" stroke="#3A74D4" stroke-width="1"/>
-  <text x="161" y="150" text-anchor="middle" font-size="10" fill="#1A3A7A">AI: 3 months at Acme Corp.</text>
-  <rect x="77" y="162" width="168" height="23" rx="3" fill="#CCE5FF" stroke="#3A74D4" stroke-width="1"/>
-  <text x="161" y="177" text-anchor="middle" font-size="10" fill="#1A3A7A">Human: What do you know?</text>
+  <!-- Recent messages (blue) -->
+  <rect x="42" y="116" width="244" height="32" rx="3" fill="#0D1B33" stroke="#7FC8FF" stroke-width="1"/>
+  <text x="164" y="137" text-anchor="middle" font-size="12" fill="#B2DEFF">Human: What else about me?</text>
+  <rect x="42" y="152" width="244" height="32" rx="3" fill="#0A1520" stroke="#7FC8FF" stroke-width="1"/>
+  <text x="164" y="173" text-anchor="middle" font-size="12" fill="#B2DEFF">AI: 3 months at Acme Corp.</text>
+  <rect x="42" y="188" width="244" height="32" rx="3" fill="#0D1B33" stroke="#7FC8FF" stroke-width="1"/>
+  <text x="164" y="209" text-anchor="middle" font-size="12" fill="#B2DEFF">Human: What do you know?</text>
 
-  <!-- Keep cutoff line -->
-  <line x1="65" y1="196" x2="257" y2="196" stroke="#6A6A8A" stroke-width="1.5" stroke-dasharray="5,3"/>
-  <text x="259" y="200" font-size="8" fill="#6A6A8A">keep cutoff</text>
+  <!-- Keep cutoff -->
+  <text x="164" y="229" text-anchor="middle" font-size="10" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace">keep cutoff</text>
+  <line x1="30" y1="235" x2="298" y2="235" stroke="#40668D" stroke-width="1.5" stroke-dasharray="5,3"/>
 
-  <!-- Old messages below cutoff (amber, 4 messages) -->
-  <rect x="77" y="202" width="168" height="23" rx="3" fill="#FFE8CC" stroke="#D4834A" stroke-width="1"/>
-  <text x="161" y="217" text-anchor="middle" font-size="10" fill="#7A3A10">AI: Caching is complex work.</text>
-  <rect x="77" y="229" width="168" height="23" rx="3" fill="#FFE0B8" stroke="#D4834A" stroke-width="1"/>
-  <text x="161" y="244" text-anchor="middle" font-size="10" fill="#7A3A10">Human: Tell me about caching.</text>
-  <rect x="77" y="256" width="168" height="23" rx="3" fill="#FFE8CC" stroke="#D4834A" stroke-width="1"/>
-  <text x="161" y="271" text-anchor="middle" font-size="10" fill="#7A3A10">AI: The cache has 3 nodes.</text>
-  <rect x="77" y="283" width="168" height="23" rx="3" fill="#FFE0B8" stroke="#D4834A" stroke-width="1"/>
-  <text x="161" y="298" text-anchor="middle" font-size="10" fill="#7A3A10">Human: How is the cache going?</text>
+  <!-- Old messages (amber, 3 rows to make room for prior summary) -->
+  <rect x="42" y="242" width="244" height="32" rx="3" fill="#1E0B00" stroke="#D4834A" stroke-width="1"/>
+  <text x="164" y="263" text-anchor="middle" font-size="12" fill="#E8A870">AI: Caching is complex work.</text>
+  <rect x="42" y="278" width="244" height="32" rx="3" fill="#261200" stroke="#D4834A" stroke-width="1"/>
+  <text x="164" y="299" text-anchor="middle" font-size="12" fill="#E8A870">Human: Tell me about caching.</text>
+  <rect x="42" y="314" width="244" height="32" rx="3" fill="#1E0B00" stroke="#D4834A" stroke-width="1"/>
+  <text x="164" y="335" text-anchor="middle" font-size="12" fill="#E8A870">AI: The cache has 3 nodes.</text>
 
-  <!-- Green summary block from 1st event (at the bottom) -->
-  <rect x="77" y="315" width="168" height="95" rx="4" fill="#D4F2E0" stroke="#2A9A5A" stroke-width="1.5" stroke-dasharray="5,3"/>
-  <text x="161" y="337" text-anchor="middle" font-size="12" font-weight="700" fill="#1A6A3A">&#x2211; Summary (turn 1&#x2013;5)</text>
-  <line x1="92" y1="343" x2="230" y2="343" stroke="#3AB860" stroke-width="0.8"/>
-  <text x="161" y="359" text-anchor="middle" font-size="9" fill="#2A7A4A">Session intent &#xb7; key facts</text>
-  <text x="161" y="374" text-anchor="middle" font-size="9" fill="#2A7A4A">decisions &#xb7; next steps</text>
-  <text x="161" y="391" text-anchor="middle" font-size="9" fill="#4A9A6A" font-style="italic">from 1st compaction event</text>
+  <!-- Prior summary from 1st event -->
+  <rect x="42" y="354" width="244" height="100" rx="4" fill="#061A0E" stroke="#3AB860" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="164" y="378" text-anchor="middle" font-size="12" font-weight="700" fill="#3AB860">&#x2211; Summary (turn 1&#x2013;5)</text>
+  <line x1="57" y1="386" x2="271" y2="386" stroke="#2A7A4A" stroke-width="1"/>
+  <text x="164" y="403" text-anchor="middle" font-size="11" fill="#7FD4A0">Session intent &#xb7; key facts</text>
+  <text x="164" y="420" text-anchor="middle" font-size="10" font-style="italic" fill="#3AB860">from 1st compaction event</text>
 
-  <!-- Thermometer (Before, ~85% full, red) -->
-  <rect x="308" y="86" width="16" height="336" rx="8" fill="#EAF0F8" stroke="#9AB0C8" stroke-width="1.5"/>
-  <rect x="309" y="136" width="14" height="286" rx="7" fill="#DC5050"/>
-  <line x1="305" y1="136" x2="327" y2="136" stroke="#DC3545" stroke-width="2"/>
-  <text x="316" y="129" text-anchor="middle" font-size="8" fill="#DC3545">85%</text>
-  <text x="316" y="436" text-anchor="middle" font-size="8" fill="#9AB0C8">tokens</text>
+  <!-- Thermometer: Before (85% red) -->
+  <rect x="312" y="90" width="18" height="390" rx="9" fill="#0D1322" stroke="#40668D" stroke-width="1.5"/>
+  <rect x="313" y="149" width="16" height="331" rx="8" fill="#DC4040"/>
+  <line x1="308" y1="149" x2="332" y2="149" stroke="#DC3545" stroke-width="1.5"/>
+  <text x="321" y="143" text-anchor="middle" font-size="10" fill="#DC3545">85%</text>
+  <text x="321" y="492" text-anchor="middle" font-size="10" fill="#40668D">tokens</text>
 
-  <!-- ═══ ARROW ═══ -->
-  <line x1="332" y1="260" x2="395" y2="260" stroke="#1E3A5F" stroke-width="2"/>
-  <polygon points="395,254 408,260 395,266" fill="#1E3A5F"/>
-  <text x="368" y="278" text-anchor="middle" font-size="10" fill="#5A7A9F">summarize</text>
+  <!-- Arrow -->
+  <line x1="342" y1="300" x2="410" y2="300" stroke="#7FC8FF" stroke-width="2"/>
+  <polygon points="410,293 424,300 410,307" fill="#7FC8FF"/>
+  <text x="383" y="318" text-anchor="middle" font-size="11" fill="#40668D">summarize</text>
 
   <!-- ═══ AFTER (2nd event) ═══ -->
-  <text x="572" y="78" text-anchor="middle" font-size="13" font-weight="600" fill="#1E3A5F">After (2nd event)</text>
-  <rect x="403" y="86" width="192" height="336" rx="6" fill="white" stroke="#1E3A5F" stroke-width="2"/>
-  <text x="499" y="103" text-anchor="middle" font-size="9" fill="#9AB0C8" letter-spacing="0.8">CONTEXT WINDOW</text>
+  <text x="570" y="82" text-anchor="middle" font-size="14" font-weight="600" fill="#F2FAFF">After (2nd event)</text>
+  <rect x="436" y="90" width="268" height="390" rx="6" fill="#0D1322" stroke="#40668D" stroke-width="1.5"/>
+  <text x="570" y="109" text-anchor="middle" font-size="10" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace" letter-spacing="1">CONTEXT WINDOW</text>
 
-  <!-- Recent messages (same, kept at top) -->
-  <rect x="415" y="108" width="168" height="23" rx="3" fill="#CCE5FF" stroke="#3A74D4" stroke-width="1"/>
-  <text x="499" y="123" text-anchor="middle" font-size="10" fill="#1A3A7A">Human: What else about me?</text>
-  <rect x="415" y="135" width="168" height="23" rx="3" fill="#D8ECFF" stroke="#3A74D4" stroke-width="1"/>
-  <text x="499" y="150" text-anchor="middle" font-size="10" fill="#1A3A7A">AI: 3 months at Acme Corp.</text>
-  <rect x="415" y="162" width="168" height="23" rx="3" fill="#CCE5FF" stroke="#3A74D4" stroke-width="1"/>
-  <text x="499" y="177" text-anchor="middle" font-size="10" fill="#1A3A7A">Human: What do you know?</text>
+  <!-- Recent messages (kept) -->
+  <rect x="448" y="116" width="244" height="32" rx="3" fill="#0D1B33" stroke="#7FC8FF" stroke-width="1"/>
+  <text x="570" y="137" text-anchor="middle" font-size="12" fill="#B2DEFF">Human: What else about me?</text>
+  <rect x="448" y="152" width="244" height="32" rx="3" fill="#0A1520" stroke="#7FC8FF" stroke-width="1"/>
+  <text x="570" y="173" text-anchor="middle" font-size="12" fill="#B2DEFF">AI: 3 months at Acme Corp.</text>
+  <rect x="448" y="188" width="244" height="32" rx="3" fill="#0D1B33" stroke="#7FC8FF" stroke-width="1"/>
+  <text x="570" y="209" text-anchor="middle" font-size="12" fill="#B2DEFF">Human: What do you know?</text>
 
-  <!-- Keep cutoff line (same y) -->
-  <line x1="403" y1="196" x2="595" y2="196" stroke="#6A6A8A" stroke-width="1.5" stroke-dasharray="5,3"/>
-  <text x="597" y="200" font-size="8" fill="#6A6A8A">keep cutoff</text>
+  <!-- Keep cutoff -->
+  <text x="570" y="229" text-anchor="middle" font-size="10" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace">keep cutoff</text>
+  <line x1="436" y1="235" x2="704" y2="235" stroke="#40668D" stroke-width="1.5" stroke-dasharray="5,3"/>
 
-  <!-- New combined summary block (slightly darker green) right against cutoff -->
-  <rect x="415" y="202" width="168" height="95" rx="4" fill="#B8E8C8" stroke="#1A7A3A" stroke-width="1.5" stroke-dasharray="5,3"/>
-  <text x="499" y="224" text-anchor="middle" font-size="12" font-weight="700" fill="#1A6A3A">&#x2211; Summary</text>
-  <line x1="430" y1="230" x2="568" y2="230" stroke="#3AB860" stroke-width="0.8"/>
-  <text x="499" y="246" text-anchor="middle" font-size="9" fill="#2A7A4A">Session intent &#xb7; key facts</text>
-  <text x="499" y="261" text-anchor="middle" font-size="9" fill="#2A7A4A">decisions &#xb7; next steps</text>
-  <text x="499" y="278" text-anchor="middle" font-size="9" fill="#4A9A6A" font-style="italic">&#x2190; replaced 7 messages + prior summary</text>
+  <!-- New combined summary (darker green, larger) -->
+  <rect x="448" y="242" width="244" height="130" rx="4" fill="#041208" stroke="#1A7A3A" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="570" y="268" text-anchor="middle" font-size="14" font-weight="700" fill="#2A9A5A">&#x2211; Summary</text>
+  <line x1="463" y1="276" x2="677" y2="276" stroke="#1A7A3A" stroke-width="1"/>
+  <text x="570" y="293" text-anchor="middle" font-size="12" fill="#5AC080">Session intent &#xb7; key facts</text>
+  <text x="570" y="311" text-anchor="middle" font-size="12" fill="#5AC080">decisions &#xb7; next steps</text>
+  <text x="570" y="346" text-anchor="middle" font-size="10" font-style="italic" fill="#2A9A5A">&#x2190; replaced 7 messages + prior summary</text>
 
-  <!-- Empty space below (freed context); visually just the white container -->
-
-  <!-- Thermometer (After, ~30% full, green) -->
-  <rect x="611" y="86" width="16" height="336" rx="8" fill="#EAF0F8" stroke="#9AB0C8" stroke-width="1.5"/>
-  <rect x="612" y="321" width="14" height="101" rx="7" fill="#2A9A5A"/>
-  <line x1="608" y1="136" x2="630" y2="136" stroke="#DC3545" stroke-width="2"/>
-  <text x="619" y="129" text-anchor="middle" font-size="8" fill="#DC3545">85%</text>
-  <text x="619" y="436" text-anchor="middle" font-size="8" fill="#9AB0C8">tokens</text>
+  <!-- Thermometer: After (~25% green) -->
+  <rect x="718" y="90" width="18" height="390" rx="9" fill="#0D1322" stroke="#40668D" stroke-width="1.5"/>
+  <rect x="719" y="383" width="16" height="97" rx="8" fill="#2A9A5A"/>
+  <line x1="715" y1="149" x2="739" y2="149" stroke="#DC3545" stroke-width="1.5"/>
+  <text x="727" y="143" text-anchor="middle" font-size="10" fill="#DC3545">85%</text>
+  <text x="727" y="492" text-anchor="middle" font-size="10" fill="#40668D">tokens</text>
 
   <!-- Legend -->
-  <rect x="80" y="456" width="12" height="12" rx="2" fill="#CCE5FF" stroke="#3A74D4" stroke-width="1"/>
-  <text x="97" y="467" font-size="10" fill="#5A7A9F">Recent messages (kept)</text>
-  <rect x="260" y="456" width="12" height="12" rx="2" fill="#FFE0B8" stroke="#D4834A" stroke-width="1"/>
-  <text x="277" y="467" font-size="10" fill="#5A7A9F">Old messages (summarized)</text>
-  <rect x="455" y="456" width="12" height="12" rx="2" fill="#B8E8C8" stroke="#1A7A3A" stroke-width="1.5"/>
-  <text x="472" y="467" font-size="10" fill="#5A7A9F">New summary (absorbed prior + 4 messages)</text>
+  <rect x="30" y="508" width="14" height="14" rx="2" fill="#0D1B33" stroke="#7FC8FF" stroke-width="1"/>
+  <text x="50" y="520" font-size="11" fill="#B2DEFF">Recent messages (kept)</text>
+  <rect x="258" y="508" width="14" height="14" rx="2" fill="#261200" stroke="#D4834A" stroke-width="1"/>
+  <text x="278" y="520" font-size="11" fill="#B2DEFF">Old messages (summarized)</text>
+  <rect x="510" y="508" width="14" height="14" rx="2" fill="#041208" stroke="#1A7A3A" stroke-width="1.5"/>
+  <text x="530" y="520" font-size="11" fill="#B2DEFF">New combined summary</text>
 </svg>
