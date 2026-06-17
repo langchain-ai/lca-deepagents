@@ -7,13 +7,13 @@
 
   <!-- ═══ BEFORE ═══ -->
   <text x="164" y="82" text-anchor="middle" font-size="14" font-weight="600" fill="#030710">Before</text>
-  <rect x="30" y="90" width="268" height="390" rx="6" fill="#FFFFFF" stroke="#40668D" stroke-width="1.5"/>
+  <rect x="30" y="90" width="268" height="390" rx="6" fill="#FFFFFF" stroke="#CCE9FF" stroke-width="1.5"/>
   <text x="164" y="109" text-anchor="middle" font-size="10" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace" letter-spacing="1">CONTEXT WINDOW</text>
 
-  <!-- Recent messages (blue) -->
+  <!-- Recent messages (kept — light blue) -->
   <rect x="42" y="116" width="244" height="32" rx="3" fill="#E5F4FF" stroke="#006DDD" stroke-width="1"/>
   <text x="164" y="137" text-anchor="middle" font-size="12" fill="#030710">Human: What do you remember?</text>
-  <rect x="42" y="152" width="244" height="32" rx="3" fill="#CCE9FF" stroke="#006DDD" stroke-width="1"/>
+  <rect x="42" y="152" width="244" height="32" rx="3" fill="#E5F4FF" stroke="#006DDD" stroke-width="1"/>
   <text x="164" y="173" text-anchor="middle" font-size="12" fill="#030710">AI: The capital is Paris.</text>
   <rect x="42" y="188" width="244" height="32" rx="3" fill="#E5F4FF" stroke="#006DDD" stroke-width="1"/>
   <text x="164" y="209" text-anchor="middle" font-size="12" fill="#030710">Human: Capital of France?</text>
@@ -22,21 +22,21 @@
   <text x="164" y="229" text-anchor="middle" font-size="10" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace">keep cutoff</text>
   <line x1="30" y1="235" x2="298" y2="235" stroke="#40668D" stroke-width="1.5" stroke-dasharray="5,3"/>
 
-  <!-- Old messages (amber) -->
-  <rect x="42" y="242" width="244" height="32" rx="3" fill="#FFF3E0" stroke="#D4834A" stroke-width="1"/>
-  <text x="164" y="263" text-anchor="middle" font-size="12" fill="#8B4513">AI: 4</text>
-  <rect x="42" y="278" width="244" height="32" rx="3" fill="#FFF8F0" stroke="#D4834A" stroke-width="1"/>
-  <text x="164" y="299" text-anchor="middle" font-size="12" fill="#8B4513">Human: I've built a cache...</text>
-  <rect x="42" y="314" width="244" height="32" rx="3" fill="#FFF3E0" stroke="#D4834A" stroke-width="1"/>
-  <text x="164" y="335" text-anchor="middle" font-size="12" fill="#8B4513">AI: Nice to meet you, Alex!</text>
-  <rect x="42" y="350" width="244" height="32" rx="3" fill="#FFF8F0" stroke="#D4834A" stroke-width="1"/>
-  <text x="164" y="371" text-anchor="middle" font-size="12" fill="#8B4513">Human: I'm Alex, at Acme...</text>
+  <!-- Old messages (archived — dark) -->
+  <rect x="42" y="242" width="244" height="32" rx="3" fill="#0D1322" stroke="#40668D" stroke-width="1"/>
+  <text x="164" y="263" text-anchor="middle" font-size="12" fill="#7FC8FF">AI: 4</text>
+  <rect x="42" y="278" width="244" height="32" rx="3" fill="#0D1322" stroke="#40668D" stroke-width="1"/>
+  <text x="164" y="299" text-anchor="middle" font-size="12" fill="#7FC8FF">Human: I've built a cache...</text>
+  <rect x="42" y="314" width="244" height="32" rx="3" fill="#0D1322" stroke="#40668D" stroke-width="1"/>
+  <text x="164" y="335" text-anchor="middle" font-size="12" fill="#7FC8FF">AI: Nice to meet you, Alex!</text>
+  <rect x="42" y="350" width="244" height="32" rx="3" fill="#0D1322" stroke="#40668D" stroke-width="1"/>
+  <text x="164" y="371" text-anchor="middle" font-size="12" fill="#7FC8FF">Human: I'm Alex, at Acme...</text>
 
-  <!-- Thermometer: Before (85% red) -->
-  <rect x="312" y="90" width="18" height="390" rx="9" fill="#FFFFFF" stroke="#40668D" stroke-width="1.5"/>
-  <rect x="313" y="149" width="16" height="331" rx="8" fill="#DC4040"/>
-  <line x1="308" y1="149" x2="332" y2="149" stroke="#DC3545" stroke-width="1.5"/>
-  <text x="321" y="143" text-anchor="middle" font-size="10" fill="#DC3545">85%</text>
+  <!-- Thermometer: Before (85% full) -->
+  <rect x="312" y="90" width="18" height="390" rx="9" fill="#FFFFFF" stroke="#CCE9FF" stroke-width="1.5"/>
+  <rect x="313" y="149" width="16" height="331" rx="8" fill="#006DDD"/>
+  <line x1="308" y1="149" x2="332" y2="149" stroke="#006DDD" stroke-width="1.5"/>
+  <text x="321" y="143" text-anchor="middle" font-size="10" fill="#006DDD">85%</text>
   <text x="321" y="492" text-anchor="middle" font-size="10" fill="#40668D">tokens</text>
 
   <!-- Arrow -->
@@ -46,13 +46,13 @@
 
   <!-- ═══ AFTER ═══ -->
   <text x="570" y="82" text-anchor="middle" font-size="14" font-weight="600" fill="#030710">After</text>
-  <rect x="436" y="90" width="268" height="390" rx="6" fill="#FFFFFF" stroke="#40668D" stroke-width="1.5"/>
+  <rect x="436" y="90" width="268" height="390" rx="6" fill="#FFFFFF" stroke="#CCE9FF" stroke-width="1.5"/>
   <text x="570" y="109" text-anchor="middle" font-size="10" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace" letter-spacing="1">CONTEXT WINDOW</text>
 
   <!-- Recent messages (kept) -->
   <rect x="448" y="116" width="244" height="32" rx="3" fill="#E5F4FF" stroke="#006DDD" stroke-width="1"/>
   <text x="570" y="137" text-anchor="middle" font-size="12" fill="#030710">Human: What do you remember?</text>
-  <rect x="448" y="152" width="244" height="32" rx="3" fill="#CCE9FF" stroke="#006DDD" stroke-width="1"/>
+  <rect x="448" y="152" width="244" height="32" rx="3" fill="#E5F4FF" stroke="#006DDD" stroke-width="1"/>
   <text x="570" y="173" text-anchor="middle" font-size="12" fill="#030710">AI: The capital is Paris.</text>
   <rect x="448" y="188" width="244" height="32" rx="3" fill="#E5F4FF" stroke="#006DDD" stroke-width="1"/>
   <text x="570" y="209" text-anchor="middle" font-size="12" fill="#030710">Human: Capital of France?</text>
@@ -62,25 +62,25 @@
   <line x1="436" y1="235" x2="704" y2="235" stroke="#40668D" stroke-width="1.5" stroke-dasharray="5,3"/>
 
   <!-- Summary block -->
-  <rect x="448" y="242" width="244" height="120" rx="4" fill="#E8F8ED" stroke="#2A7A4A" stroke-width="1.5" stroke-dasharray="6,3"/>
-  <text x="570" y="267" text-anchor="middle" font-size="14" font-weight="700" fill="#1A6B35">&#x2211; Summary</text>
-  <line x1="463" y1="275" x2="677" y2="275" stroke="#2A7A4A" stroke-width="1"/>
-  <text x="570" y="292" text-anchor="middle" font-size="12" fill="#1A5C30">Session intent &#xb7; key facts</text>
-  <text x="570" y="310" text-anchor="middle" font-size="12" fill="#1A5C30">decisions &#xb7; next steps</text>
-  <text x="570" y="334" text-anchor="middle" font-size="11" font-style="italic" fill="#1A6B35">&#x2190; replaced 5 old messages</text>
+  <rect x="448" y="242" width="244" height="120" rx="4" fill="#CCE9FF" stroke="#006DDD" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="570" y="267" text-anchor="middle" font-size="14" font-weight="700" fill="#006DDD">&#x2211; Summary</text>
+  <line x1="463" y1="275" x2="677" y2="275" stroke="#7FC8FF" stroke-width="1"/>
+  <text x="570" y="292" text-anchor="middle" font-size="12" fill="#030710">Session intent &#xb7; key facts</text>
+  <text x="570" y="310" text-anchor="middle" font-size="12" fill="#030710">decisions &#xb7; next steps</text>
+  <text x="570" y="334" text-anchor="middle" font-size="11" font-style="italic" fill="#40668D">&#x2190; replaced 5 old messages</text>
 
-  <!-- Thermometer: After (~30% green) -->
-  <rect x="718" y="90" width="18" height="390" rx="9" fill="#FFFFFF" stroke="#40668D" stroke-width="1.5"/>
-  <rect x="719" y="363" width="16" height="117" rx="8" fill="#2A9A5A"/>
-  <line x1="715" y1="149" x2="739" y2="149" stroke="#DC3545" stroke-width="1.5"/>
-  <text x="727" y="143" text-anchor="middle" font-size="10" fill="#DC3545">85%</text>
+  <!-- Thermometer: After (~30% full) -->
+  <rect x="718" y="90" width="18" height="390" rx="9" fill="#FFFFFF" stroke="#CCE9FF" stroke-width="1.5"/>
+  <rect x="719" y="363" width="16" height="117" rx="8" fill="#006DDD"/>
+  <line x1="715" y1="149" x2="739" y2="149" stroke="#40668D" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="727" y="143" text-anchor="middle" font-size="10" fill="#40668D">85%</text>
   <text x="727" y="492" text-anchor="middle" font-size="10" fill="#40668D">tokens</text>
 
   <!-- Legend -->
   <rect x="30" y="508" width="14" height="14" rx="2" fill="#E5F4FF" stroke="#006DDD" stroke-width="1"/>
   <text x="50" y="520" font-size="11" fill="#030710">Recent messages (kept)</text>
-  <rect x="258" y="508" width="14" height="14" rx="2" fill="#FFF3E0" stroke="#D4834A" stroke-width="1"/>
+  <rect x="258" y="508" width="14" height="14" rx="2" fill="#0D1322" stroke="#40668D" stroke-width="1"/>
   <text x="278" y="520" font-size="11" fill="#030710">Old messages (summarized)</text>
-  <rect x="510" y="508" width="14" height="14" rx="2" fill="#E8F8ED" stroke="#2A7A4A" stroke-width="1.5"/>
+  <rect x="510" y="508" width="14" height="14" rx="2" fill="#CCE9FF" stroke="#006DDD" stroke-width="1.5"/>
   <text x="530" y="520" font-size="11" fill="#030710">Summary (injected in their place)</text>
 </svg>
