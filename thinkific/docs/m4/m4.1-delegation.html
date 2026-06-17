@@ -538,24 +538,24 @@
 </details>
 <p>The Deep Agents harness has two capabilities that let it complete long-running tasks: <strong>planning</strong> and <strong>subagents</strong>.</p>
 <p align="center">
-  <img src="images/m4.1-two-capabilities.svg" alt="A two-panel drawing. Left: a to-do list with checkboxes — two checked, one in progress, one pending — labeled Planning. Right: a small robot supervisor connected to three robot subagents, labeled Subagents." width="620">
+  <img src="images/m4.1-two-capabilities.svg" alt="A two-panel drawing. Left: a to-do list with checkboxes - two checked, one in progress, one pending - labeled Planning. Right: a small robot supervisor connected to three robot subagents, labeled Subagents." width="620">
 </p>
 
 <ul>
-<li><strong>Planning</strong> — LLMs have long been able to lay out complex, multi-step plans; the hard part is sticking to them. Deep Agents adds a to-do list that tracks tasks over time.</li>
-<li><strong>Subagents</strong> — like people, agents can break a big task into smaller, more manageable chunks and hand each one to a subagent.</li>
+<li><strong>Planning</strong>: LLMs have long been able to lay out complex, multi-step plans; the hard part is sticking to them. Deep Agents adds a to-do list that tracks tasks over time.</li>
+<li><strong>Subagents</strong>: like people, agents can break a big task into smaller, more manageable chunks and hand each one to a subagent.</li>
 </ul>
 <p>This lesson covers the idea behind both, and the next lesson is a hands-on lab where you build a subagent team. Before we look at how people tackle a big project, let's start with planning and the to-do list.</p>
 <hr />
 <h2 id="planning-the-to-do-list">Planning: the to-do list</h2>
-<p>A capable model can draft a solid plan for a multi-step job. The hard part is follow-through: as the conversation grows and the agent juggles tool calls and intermediate results, it tends to drift — losing track of what's already done and what's still left.</p>
+<p>A capable model can draft a solid plan for a multi-step job. The hard part is follow-through: as the conversation grows and the agent juggles tool calls and intermediate results, it tends to drift - losing track of what's already done and what's still left.</p>
 <p>Deep Agents addresses this with a built-in <strong><code>write_todos</code></strong> tool. The agent writes its plan out as a structured to-do list and updates each item's status as it works:</p>
 <ul>
-<li><strong><code>pending</code></strong> — not started yet</li>
-<li><strong><code>in_progress</code></strong> — being worked on now</li>
-<li><strong><code>completed</code></strong> — done</li>
+<li><strong><code>pending</code></strong>: not started yet</li>
+<li><strong><code>in_progress</code></strong>: being worked on now</li>
+<li><strong><code>completed</code></strong>: done</li>
 </ul>
-<p>The list is saved in the agent's state, so it persists from one turn to the next. On a long task the agent always has an explicit, up-to-date plan to check against instead of trying to hold the whole thing in its head — the agent's version of writing the steps on a whiteboard and ticking them off as it goes.</p>
+<p>The list is saved in the agent's state, so it persists from one turn to the next. On a long task the agent always has an explicit, up-to-date plan to check against instead of trying to hold the whole thing in its head - the agent's version of writing the steps on a whiteboard and ticking them off as it goes.</p>
 <hr />
 <h2 id="how-people-tackle-a-big-project">How people tackle a big project</h2>
 <p>When a project is too big for one person, we bring in a team.</p>
@@ -607,7 +607,7 @@
 <li><strong>A supervisor splits the work and pulls it back together.</strong> They break the project into subtasks, hand each one out, and combine what comes back.</li>
 <li><strong>Each person brings their own expertise.</strong> A researcher, a writer, and a designer each see the problem differently and carry their own tools.</li>
 <li><strong>People work in parallel.</strong> Three people working at once finish in roughly a third of the time.</li>
-<li><strong>Each person focuses on their piece, not the whole project.</strong> The writer doesn't need to hold the entire plan in their head — just their assignment.</li>
+<li><strong>Each person focuses on their piece, not the whole project.</strong> The writer doesn't need to hold the entire plan in their head: just their assignment.</li>
 </ul>
 <hr />
 <h2 id="subagents-give-an-agent-the-same-capability">Subagents give an agent the same capability</h2>
@@ -617,13 +617,13 @@
 </p>
 
 <ul>
-<li><strong>The main agent splits work and aggregates results.</strong> Say the job is <em>"write a newsletter summarizing this week's news on a topic."</em> The main agent can hand each sub-topic to a different subagent. Each one searches, summarizes what it finds, and passes back only the summary — which the main agent stitches into the final newsletter.</li>
+<li><strong>The main agent splits work and aggregates results.</strong> Say the job is <em>"write a newsletter summarizing this week's news on a topic."</em> The main agent can hand each sub-topic to a different subagent. Each one searches, summarizes what it finds, and passes back only the summary: which the main agent stitches into the final newsletter.</li>
 <li><strong>Each subagent is a full agent in its own right.</strong> It can have its own system prompt, its own skills, its own tools, and it can even run on a different model than the main agent.</li>
 <li><strong>Subagents run in parallel.</strong> In Deep Agents, a subagent is invoked like a tool, so the main agent can fire off as many as it needs at the same time.</li>
-<li><strong>Each subagent focuses on its own task — and its own context.</strong> This is the part that makes subagents a context-engineering tool, and it's worth slowing down on.</li>
+<li><strong>Each subagent focuses on its own task: and its own context.</strong> This is the part that makes subagents a context-engineering tool, and it's worth slowing down on.</li>
 </ul>
 <blockquote>
-<p><strong>Subagent-as-tool.</strong> Deep Agents exposes subagents through a built-in <code>task</code> tool. To the main agent, delegating looks just like calling any other tool: it calls <code>task</code> with an assignment and gets a result back — picking which subagent to use from each one's description, the same way it decides to call any other tool.</p>
+<p><strong>Subagent-as-tool.</strong> Deep Agents exposes subagents through a built-in <code>task</code> tool. To the main agent, delegating looks just like calling any other tool: it calls <code>task</code> with an assignment and gets a result back - picking which subagent to use from each one's description, the same way it decides to call any other tool.</p>
 </blockquote>
 <hr />
 <h2 id="context-isolation">Context isolation</h2>
@@ -634,10 +634,10 @@
 <p>This is what makes subagents a context-engineering tool. A subagent does its work without cluttering the main agent's context:</p>
 <ul>
 <li>A subagent receives <strong>one message</strong> from the main agent describing its task. Importantly, it does <strong>not</strong> inherit the main agent's message history.</li>
-<li>It runs autonomously until the task is done, then returns <strong>one message</strong> back — its final result. Subagents are stateless: they can't carry on a back-and-forth with the main agent.</li>
-<li>A subagent defines <strong>its own tool set</strong>. Consider a database expert with dozens of specialized tools. Putting those behind a subagent keeps every one of those tool descriptions <em>out</em> of the main agent's context. All the main agent has to know is "this needs database expertise" — it hands off the task and gets back an answer.</li>
+<li>It runs autonomously until the task is done, then returns <strong>one message</strong> back: its final result. Subagents are stateless: they can't carry on a back-and-forth with the main agent.</li>
+<li>A subagent defines <strong>its own tool set</strong>. Consider a database expert with dozens of specialized tools. Putting those behind a subagent keeps every one of those tool descriptions <em>out</em> of the main agent's context. All the main agent has to know is "this needs database expertise": it hands off the task and gets back an answer.</li>
 </ul>
-<p>The payoff: a large, messy subtask gets compressed into a single clean result — as long as the subagent is told to return a concise summary. The main agent's context stays focused on coordination, even as the work piles up behind the scenes.</p>
+<p>The payoff: a large, messy subtask gets compressed into a single clean result - as long as the subagent is told to return a concise summary. The main agent's context stays focused on coordination, even as the work piles up behind the scenes.</p>
 <hr />
 <h2 id="synchronous-vs-asynchronous">Synchronous vs. asynchronous</h2>
 <p>Subagents can run in two modes. The choice comes down to one question: <strong>does the main agent need the result before it can keep going?</strong></p>
@@ -646,7 +646,7 @@
 </p>
 
 <ul>
-<li><strong>Synchronous</strong> subagents complete their task within the step. The main agent blocks — the step isn't finished until the longest-running subagent returns. It's the simplest model, but the conversation pauses while the work happens.</li>
+<li><strong>Synchronous</strong> subagents complete their task within the step. The main agent blocks: the step isn't finished until the longest-running subagent returns. It's the simplest model, but the conversation pauses while the work happens.</li>
 <li><strong>Asynchronous</strong> subagents run in the background. The main agent launches the job, stays responsive, and checks on it later, collecting the result once it's ready. It's more responsive but has more moving parts.</li>
 </ul>
 <p>We'll work with synchronous subagents in the next lesson and come back to asynchronous ones later.</p>
@@ -654,20 +654,20 @@
 <h2 id="when-to-reach-for-a-subagent">When to reach for a subagent</h2>
 <div class="tip"><p><strong>Use a subagent when:</strong><br />
 - A multi-step task would otherwise clutter the main agent's context<br />
-- The work needs a specialized domain — custom instructions or its own tools<br />
+- The work needs a specialized domain: custom instructions or its own tools<br />
 - A subtask is better served by a different model<br />
 - You want the main agent to stay focused on high-level coordination</p>
 <p><strong>Skip the subagent when:</strong><br />
-- The task is simple and single-step — the overhead isn't worth it<br />
+- The task is simple and single-step: the overhead isn't worth it<br />
 - You need to keep the intermediate context, not just the final result</p></div>
 
 <hr />
 <h2 id="recap">Recap</h2>
 <p>In this lesson you learned what delegation is and why it matters:</p>
 <ul>
-<li><strong>Delegation lets the main agent split a big job into pieces, run them in parallel, and stay focused on coordination</strong> — the same way a supervisor works with a team.</li>
+<li><strong>Delegation lets the main agent split a big job into pieces, run them in parallel, and stay focused on coordination</strong>: the same way a supervisor works with a team.</li>
 <li>It has <strong>two parts</strong>: the <strong><code>write_todos</code></strong> planning tool for tracking multi-step work, and <strong>subagents</strong> for executing isolated subtasks.</li>
-<li>A subagent is <strong>a full agent in its own right</strong> — always its own prompt and isolated context, and optionally its own tools and model — invoked through the built-in <strong><code>task</code></strong> tool.</li>
+<li>A subagent is <strong>a full agent in its own right</strong>: always its own prompt and isolated context, and optionally its own tools and model: invoked through the built-in <strong><code>task</code></strong> tool.</li>
 <li>Subagents are a <strong>context-engineering</strong> tool: at the hand-off boundary, a subagent gets <strong>one task in</strong> and returns <strong>one final result back</strong> (internally it may take many steps), keeping its work and its tool descriptions out of the main agent's context.</li>
 <li>Subagents run <strong>synchronously</strong> (the main agent blocks until they finish) or <strong>asynchronously</strong> (they run in the background while the main agent stays responsive).</li>
 </ul>
@@ -696,7 +696,7 @@
         <div class="mcq-choice" onclick="handleMcqClick(this, false, '316d52c9')"><strong>A)</strong> By editing the subagent’s source code at runtime</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '316d52c9')"><strong>B)</strong> By forwarding its entire message history to the subagent</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '316d52c9')"><strong>C)</strong> Subagents cannot be invoked; they run automatically every turn</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '316d52c9')"><strong>D)</strong> Through a built-in task tool — it calls the subagent like any other tool, and can fire off several at once</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '316d52c9')"><strong>D)</strong> Through a built-in task tool - it calls the subagent like any other tool, and can fire off several at once</div>
     </div>
     <div id="mcq-answer-316d52c9" class="mcq-answer" style="display: none;">
         <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
@@ -716,7 +716,7 @@
     </div>
     <div id="mcq-answer-3fdd2589" class="mcq-answer" style="display: none;">
         <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
-        <div class="mcq-explanation">A subagent runs in an isolated context. It receives one task — not the main agent’s history — and returns one final result. Internally it may take many steps, but only the result crosses the boundary, keeping the subagent’s work and tools out of the main agent’s context.</div>
+        <div class="mcq-explanation">A subagent runs in an isolated context. It receives one task - not the main agent’s history - and returns one final result. Internally it may take many steps, but only the result crosses the boundary, keeping the subagent’s work and tools out of the main agent’s context.</div>
     </div>
 </div>
 

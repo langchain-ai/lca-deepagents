@@ -596,12 +596,12 @@ buildSlideshow({
     {
       src: 'images/m3.x-compaction.svg',
       tag: 'Slide 1 of 2',
-      caption: `When the context window hits 85% capacity, the middleware fires. Messages below the keep cutoff (amber) are replaced by a single summary block (green), right at the boundary. The recent messages at the top are untouched. The thermometer drops back down; room to grow again.`
+      caption: `When the context window hits 85% capacity, the middleware fires. Messages below the keep cutoff are replaced by a single summary block (light blue), right at the boundary. The old messages above that line (dark) are gone from the model's view. The recent messages at the top are untouched. The thermometer drops back down; room to grow again.`
     },
     {
       src: 'images/m3.x-compaction2.svg',
       tag: 'Slide 2 of 2',
-      caption: `When the window fills a second time, the same process runs, but now the previous summary sits at the bottom of the history alongside new old messages. Both get folded into a new combined summary (darker green). The recent messages are still untouched. This rolling compaction continues indefinitely.`
+      caption: `When the window fills a second time, the same process runs, but now the previous summary sits at the bottom of the history alongside new old messages. Both get folded into a new combined summary (slightly deeper blue). The recent messages are still untouched. This rolling compaction continues indefinitely.`
     },
   ]
 });
@@ -624,7 +624,7 @@ buildSlideshow({
 <p><strong>Expected output:</strong></p>
 <pre style="max-height:260px;overflow-y:auto;background:#0d1117;color:#e6edf3;padding:16px;border-radius:6px;font-size:12px;font-family:'IBM Plex Mono',monospace;line-height:1.6;white-space:pre-wrap;">──────────────────────────────────────────────────
 Turn 1  User:  My name is Alex. I work at Acme Corp.
-Turn 1  Agent: Hello Alex, it's nice to meet you — welcome from Acme Corp!
+Turn 1  Agent: Hello Alex, it's nice to meet you - welcome from Acme Corp!
   stored : 2 message(s) (raw history, never trimmed)
 
 ──────────────────────────────────────────────────
@@ -634,7 +634,7 @@ Turn 2  Agent: 2 + 2 equals 4.
 
 ──────────────────────────────────────────────────
 Turn 3  User:  I have been building a distributed cache for three months.
-Turn 3  Agent: That sounds like a substantial project — distributed caches are complex but rewarding to build!
+Turn 3  Agent: That sounds like a substantial project - distributed caches are complex but rewarding to build!
   stored : 6 message(s) (raw history, never trimmed)
   model saw : summary + messages[4:]  [SUMMARIZED]
 
@@ -654,6 +654,35 @@ Turn 5  Agent: You mentioned your name is Alex, you work at Acme Corp, and you'v
 </div>
 <p>When summarization fires, a private <code>_summarization_event</code> key appears in the agent's state. The <code>state["messages"]</code> list itself is never modified; the summarization happens only on what gets <em>sent</em> to the model each turn.</p>
 <hr />
+<h2 id="tool-result-offloading">Tool result offloading</h2>
+<p>Summarization deals with messages that accumulate over many turns. A different problem is a single tool call that returns an enormous result - a full database export, hundreds of search matches, or a long code generation output. Storing the full result inline would spike the token count in one shot.</p>
+<p><strong>FilesystemMiddleware</strong> handles this automatically with tool result eviction. When a tool returns a result that exceeds roughly <strong>20,000 tokens</strong>, the middleware:</p>
+<ol>
+<li>Writes the full result to <code>/large_tool_results/&lt;tool_call_id&gt;</code> on the agent's filesystem</li>
+<li>Replaces the inline <code>ToolMessage</code> with a short preview (first and last 5 lines) and a file reference</li>
+</ol>
+<p>The message the model actually sees looks like this:</p>
+<pre><code>Tool result too large, the result of this tool call &lt;id&gt; was saved in the
+filesystem at this path: /large_tool_results/&lt;tool_call_id&gt;
+
+You can read the result from the filesystem by using the read_file tool,
+but make sure to only read part of the result at a time.
+
+Here is a preview showing the head and tail of the result:
+
+     1  | SELECT id, name, email FROM users WHERE ...
+     2  | 1, Alice, alice@example.com
+     3  | 2, Bob, bob@example.com
+     4  | 3, Carol, carol@example.com
+     5  | 4, Dave, dave@example.com
+... [1 823 lines truncated] ...
+  1828  | 1827, Zara, zara@example.com
+  1829  | 1828, Zoe, zoe@example.com
+  1830  | 1829, ...
+</code></pre>
+<p>The agent can then call <code>read_file</code> with <code>offset</code> and <code>limit</code> to page through the full result on demand - reading only the portion that is relevant rather than loading everything into context at once.</p>
+<p>The tools <code>ls</code>, <code>glob</code>, <code>grep</code>, <code>read_file</code>, <code>edit_file</code>, and <code>write_file</code> are excluded from eviction. They either have their own built-in truncation, return minimal confirmation text, or (for <code>read_file</code>) re-reading a truncated file would not help.</p>
+<hr />
 <h2 id="recap">Recap</h2>
 <ul>
 <li><strong>SummarizationMiddleware</strong> intercepts every LLM request via <code>wrap_model_call</code>; it runs before the model sees any messages</li>
@@ -661,9 +690,10 @@ Turn 5  Agent: You mentioned your name is Alex, you work at Acme Corp, and you'v
 <li>The summary is generated by a separate LLM call using the same model as the agent</li>
 <li><code>state["messages"]</code> is never mutated; summarization is tracked in a private <code>_summarization_event</code> field</li>
 <li>Passing <code>model.profile["max_input_tokens"]</code> overrides the threshold, making it practical to demo</li>
+<li><strong>FilesystemMiddleware</strong> also evicts individual tool results that exceed ~20k tokens, offloading them to <code>/large_tool_results/</code> and replacing them with a preview + file reference</li>
 </ul>
 <h2 id="next">Next</h2>
-<p>In the next lesson we look at how tools interact with message history and how the middleware handles large tool call arguments before context fills up.</p>
+<p>In the next lesson we cover skills: how to package reusable agent behaviours so the model can load them on demand.</p>
 </div>
 <div class="lt-panel" id="p-quiz" role="tabpanel">
 <h2 id="check-your-understanding">Check your understanding</h2>
@@ -726,6 +756,22 @@ Turn 5  Agent: You mentioned your name is Alex, you work at Acme Corp, and you'v
     <div id="mcq-answer-07ae7f94" class="mcq-answer" style="display: none;">
         <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
         <div class="mcq-explanation">When you pass the model ID string, create_deep_agent re-initializes the model from scratch, which ignores any profile changes you made on the object. Passing the already-configured model object is the only way to ensure the overridden max_input_tokens reaches the middleware.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-796d72d7">
+    <div class="mcq-question">
+        <strong>Question:</strong> When FilesystemMiddleware evicts a large tool result, what does the agent see in its message history?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '796d72d7')"><strong>A)</strong> The tool result is silently dropped and the agent continues without it</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '796d72d7')"><strong>B)</strong> A short head-and-tail preview of the result plus a file path the agent can read_file to retrieve the full content</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '796d72d7')"><strong>C)</strong> The full result compressed into a single summary message by a separate LLM call</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '796d72d7')"><strong>D)</strong> An error message asking the agent to call the tool again with a smaller query</div>
+    </div>
+    <div id="mcq-answer-796d72d7" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+        <div class="mcq-explanation">FilesystemMiddleware writes the full result to /large_tool_results/<tool_call_id> on the filesystem, then replaces the inline ToolMessage with a preview showing the first and last 5 lines plus the file path. The agent can then use read_file with offset and limit to page through the full content on demand.</div>
     </div>
 </div>
 

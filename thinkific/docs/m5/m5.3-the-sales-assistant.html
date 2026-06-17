@@ -537,7 +537,7 @@
 <Video src="TODO" />
 </details>
 <p>In Lesson 1 you saw <em>what</em> the Chinook Sales Assistant is and which Deep Agents feature each part uses. In Lesson 2 you learned how to <em>serve</em> an agent with <code>langgraph dev</code>. Now we put it together: meet the finished assistant, see how little <em>new</em> code you write to assemble it, and run it locally.</p>
-<p>The assistant works for <strong>Jane Peacock</strong>, a Sales Support Agent at Chinook (an online music distributor). "Her book of business" means the customers whose support rep is Jane — <code>Customer.SupportRepId = 3</code> in the database. The assistant helps her answer quote requests, keep customer records current, research the market, and report on her territory.</p>
+<p>The assistant works for <strong>Jane Peacock</strong>, a Sales Support Agent at Chinook (an online music distributor). "Her book of business" means the customers whose support rep is Jane - <code>Customer.SupportRepId = 3</code> in the database. The assistant helps her answer quote requests, keep customer records current, research the market, and report on her territory.</p>
 <blockquote>
 <p><strong>Note:</strong> This lesson sets the assistant up and runs it. The three task sequences it can perform are demonstrated in the video walkthrough above.</p>
 </blockquote>
@@ -545,7 +545,7 @@
 <h2 id="how-it-fits-together">How it fits together</h2>
 <p>Like any deployed agent, the assistant runs <strong>inside <code>langgraph dev</code></strong> and is reached over HTTP by a chat UI. What's new here is everything the agent draws on: the <strong>Chinook database</strong>, its <strong>sales playbooks</strong>, and <strong>Gmail</strong>.</p>
 <div style="text-align: center;">
-<svg viewBox="0 0 760 380" width="720" role="img" aria-label="A box labeled 'Chat UI (Studio)' on the left connects by an arrow labeled HTTP to a dashed box labeled 'langgraph dev'. Inside that box is a node labeled 'Chinook Sales Assistant — create_deep_agent(...)' connected down to three tiles: 'Chinook DB (SQL data)', 'Sales playbooks (skills / AGENTS.md)', and 'Gmail (MCP — mock or real)'." xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+<svg viewBox="0 0 760 380" width="720" role="img" aria-label="A box labeled 'Chat UI (Studio)' on the left connects by an arrow labeled HTTP to a dashed box labeled 'langgraph dev'. Inside that box is a node labeled 'Chinook Sales Assistant - create_deep_agent(...)' connected down to three tiles: 'Chinook DB (SQL data)', 'Sales playbooks (skills / AGENTS.md)', and 'Gmail (MCP - mock or real)'." xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
   <rect width="760" height="380" fill="#030710" rx="8"/>
   <text x="380" y="36" text-anchor="middle" font-size="17" font-weight="300" fill="#F2FAFF">The sales assistant, running locally</text>
 
@@ -584,7 +584,7 @@
 
   <rect x="568" y="276" width="150" height="72" rx="6" fill="#161F34" stroke="#40668D" stroke-width="1"/>
   <text x="643" y="308" text-anchor="middle" font-size="14" font-weight="600" fill="#7FC8FF">Gmail</text>
-  <text x="643" y="330" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">MCP — mock or real</text>
+  <text x="643" y="330" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">MCP - mock or real</text>
 </svg>
 
 <p><em>The agent runs inside <code>langgraph dev</code> and draws on the database, its playbooks, and Gmail. A chat UI reaches it over HTTP.</em></p>
@@ -593,12 +593,12 @@
 
 <hr />
 <h2 id="how-little-of-it-is-new-code">How little of it is <em>new</em> code</h2>
-<p>Here is the project. There <em>is</em> real code here — the tools, the subagents, a mock mail server. But notice how much of the agent's <strong>behavior</strong> is set by plain-text files rather than by new code you write:</p>
+<p>Here is the project. There <em>is</em> real code here - the tools, the subagents, a mock mail server. But notice how much of the agent's <strong>behavior</strong> is set by plain-text files rather than by new code you write:</p>
 <pre><code class="language-text">sales_assistant/
-├── agent.py            # assembles the agent — the only &quot;wiring&quot; code
+├── agent.py            # assembles the agent - the only &quot;wiring&quot; code
 ├── langgraph.json      # tells langgraph dev which graph to serve
-├── AGENTS.md           # operating manual — plain text, describes behavior
-├── skills/             # one playbook per task — plain text, no code
+├── AGENTS.md           # operating manual - plain text, describes behavior
+├── skills/             # one playbook per task - plain text, no code
 │   ├── rfq-quote/
 │   ├── weekly-newsletter/
 │   └── territory-report/
@@ -611,22 +611,22 @@
 └── data/
     └── chinook.db      # the sales database (ships with the agent)
 </code></pre>
-<p><code>AGENTS.md</code> and everything under <code>skills/</code> are just <strong>natural language</strong> — read directly by the model, in any language it understands. The operating manual sets out who the agent works for and how to behave; each skill is a playbook for one task. For example, <code>AGENTS.md</code> states the approval rules in prose:</p>
+<p><code>AGENTS.md</code> and everything under <code>skills/</code> are just <strong>natural language</strong> - read directly by the model, in any language it understands. The operating manual sets out who the agent works for and how to behave; each skill is a playbook for one task. For example, <code>AGENTS.md</code> states the approval rules in prose:</p>
 <pre><code class="language-text">## Approvals (human-in-the-loop)
 
 Two actions wait for Jane to approve, edit, or reject before they take effect:
 
-- Saving an email draft (inbox-manager) — drafts are never sent, only saved.
-- Adding a new customer (chinook-analyst) — no row is written without her ok.
+- Saving an email draft (inbox-manager): drafts are never sent, only saved.
+- Adding a new customer (chinook-analyst): no row is written without her ok.
 </code></pre>
 <p>That is Lesson 1's point: much of the work is describing behavior, not writing new code.</p>
 <h3 id="the-code-that-wires-it-together">The code that wires it together</h3>
-<p>You still write code — your tools (<code>tools/</code>) and the specialists (<code>subagents.py</code>). But the <em>assembly</em> is tiny: <code>agent.py</code> pulls those pieces together and hands the result to the server in a single <code>create_deep_agent(...)</code> call.</p>
-<p>Here is the file in full. It opens at <code>make_graph</code>, the factory that assembles the agent — scroll up for the imports and system prompt, down for the rest:</p>
+<p>You still write code - your tools (<code>tools/</code>) and the specialists (<code>subagents.py</code>). But the <em>assembly</em> is tiny: <code>agent.py</code> pulls those pieces together and hands the result to the server in a single <code>create_deep_agent(...)</code> call.</p>
+<p>Here is the file in full. It opens at <code>make_graph</code>, the factory that assembles the agent - scroll up for the imports and system prompt, down for the rest:</p>
 <div id="agentpy-scroll">
 <!-- code-highlight-2:59,74 -->
 <pre><code class="language-python"># python/m5/sales_assistant/agent.py
-&quot;&quot;&quot;The Chinook Sales Assistant — served as a graph for `langgraph dev`.
+&quot;&quot;&quot;The Chinook Sales Assistant - served as a graph for `langgraph dev`.
 
 This module is just the agent. The Gmail MCP plumbing lives in `gmail_mcp.py`;
 all this file does is assemble the agent around whatever tools that discovery
@@ -635,7 +635,7 @@ returns.
 `langgraph.json` points at the async factory `make_graph`, which langgraph awaits
 once at startup. We use a factory (not a plain module-level `agent = ...`) for
 one reason: the Gmail tools come from an MCP server, and asking an MCP server for
-its tool list is an async call — so we discover the tools up front, then build
+its tool list is an async call - so we discover the tools up front, then build
 the agent around whatever we found. If Gmail is unreachable, discovery returns no
 tools and the assistant simply comes up without them.
 &quot;&quot;&quot;
@@ -673,7 +673,7 @@ SYSTEM_PROMPT = (
 
 
 async def make_graph():
-    &quot;&quot;&quot;Async graph factory — built once by `langgraph dev` at startup.&quot;&quot;&quot;
+    &quot;&quot;&quot;Async graph factory - built once by `langgraph dev` at startup.&quot;&quot;&quot;
     # Real local disk under this module only (virtual_mode locks the agent to
     # this directory: skills/, AGENTS.md, outputs/). Suitable for local dev;
     # not for a multi-tenant web server.
@@ -681,13 +681,13 @@ async def make_graph():
 
     enable_search = bool(os.environ.get(&quot;TAVILY_API_KEY&quot;))
     if not enable_search:
-        logger.info(&quot;TAVILY_API_KEY not set — newsletter research subagent disabled.&quot;)
+        logger.info(&quot;TAVILY_API_KEY not set - newsletter research subagent disabled.&quot;)
 
     gmail_tools = await load_gmail_tools()
 
     # The main agent holds NO gated tools. Gmail (gmail_create_draft) lives on
     # the inbox-manager subagent and SQL writes (add_customer) on chinook-analyst,
-    # each with its own approval gate — so the always-present general-purpose
+    # each with its own approval gate - so the always-present general-purpose
     # subagent, which inherits the main agent's tools, can never reach a write
     # ungated. The main agent keeps only safe tools plus the interpreter.
     tools = [markdown_to_html]
@@ -728,8 +728,8 @@ window.addEventListener('load', function () {
 
 <p>Two things are worth pausing on:</p>
 <ul>
-<li><strong>We hand the server a <em>graph</em>, not a <code>main()</code>.</strong> Earlier modules ran an agent with <code>asyncio.run(main())</code>. Here we never run it ourselves — <code>langgraph.json</code> points at <code>make_graph</code>, and <code>langgraph dev</code> calls it. We <em>expose</em> the agent; the server runs it.</li>
-<li><strong>We discover the Gmail tools <em>before</em> building the agent.</strong> A model can only call a tool it has been told about, and an MCP server hands over its tool list through an async call. So we <code>await load_gmail_tools()</code> first, then build the agent around whatever came back. If the Gmail server is unreachable, discovery simply returns nothing and the assistant comes up without email — one bad server never stops it.</li>
+<li><strong>We hand the server a <em>graph</em>, not a <code>main()</code>.</strong> Earlier modules ran an agent with <code>asyncio.run(main())</code>. Here we never run it ourselves: <code>langgraph.json</code> points at <code>make_graph</code>, and <code>langgraph dev</code> calls it. We <em>expose</em> the agent; the server runs it.</li>
+<li><strong>We discover the Gmail tools <em>before</em> building the agent.</strong> A model can only call a tool it has been told about, and an MCP server hands over its tool list through an async call. So we <code>await load_gmail_tools()</code> first, then build the agent around whatever came back. If the Gmail server is unreachable, discovery simply returns nothing and the assistant comes up without email: one bad server never stops it.</li>
 </ul>
 <p>And the <code>langgraph.json</code> that points at that factory (<code>python/m5/sales_assistant/langgraph.json</code>):</p>
 <pre><code class="language-json">{
@@ -740,20 +740,20 @@ window.addEventListener('load', function () {
   &quot;env&quot;: &quot;../../.env&quot;
 }
 </code></pre>
-<p>Compare this to Lesson 2's lab, where the graph was a plain variable (<code>"./agent.py:graph"</code>). Here it points at a <strong>function</strong> (<code>make_graph</code>) that the server awaits — that's how we get to run async tool discovery at startup.</p>
+<p>Compare this to Lesson 2's lab, where the graph was a plain variable (<code>"./agent.py:graph"</code>). Here it points at a <strong>function</strong> (<code>make_graph</code>) that the server awaits - that's how we get to run async tool discovery at startup.</p>
 <hr />
 <h2 id="run-it">Run it</h2>
-<p>Serve the assistant the same way you served the Lesson 2 agent — with one extra flag:</p>
+<p>Serve the assistant the same way you served the Lesson 2 agent - with one extra flag:</p>
 <pre><code class="language-bash">cd python/m5/sales_assistant
 uv run langgraph dev --allow-blocking
 </code></pre>
-<p>Why <code>--allow-blocking</code>? Discovering the mock Gmail server's tools launches a subprocess at startup — synchronous I/O that <code>langgraph dev</code>'s blocking-call detector would otherwise reject.</p>
-<p>This starts the server on <code>http://localhost:2024</code> and opens <strong>LangGraph Studio</strong>, where you can chat with the assistant and step through its graph — exactly as in Lesson 2. When the assistant goes to save an email draft or add a new customer, the run <strong>pauses for you to approve, edit, or reject</strong> before it continues.</p>
-<p>Studio is all you need for this lab. If you would like a cleaner, end-user-style chat — where those approvals render as inline cards — there is an optional hosted UI:</p>
+<p>Why <code>--allow-blocking</code>? Discovering the mock Gmail server's tools launches a subprocess at startup - synchronous I/O that <code>langgraph dev</code>'s blocking-call detector would otherwise reject.</p>
+<p>This starts the server on <code>http://localhost:2024</code> and opens <strong>LangGraph Studio</strong>, where you can chat with the assistant and step through its graph - exactly as in Lesson 2. When the assistant goes to save an email draft or add a new customer, the run <strong>pauses for you to approve, edit, or reject</strong> before it continues.</p>
+<p>Studio is all you need for this lab. If you would like a cleaner, end-user-style chat - where those approvals render as inline cards - there is an optional hosted UI:</p>
 <details>
 <summary>Optional: a richer chat UI (hosted agent-chat-ui)</summary>
 <p><br></p>
-<p>LangChain hosts a ready-made chat interface called <strong>agent-chat-ui</strong> — no install required:</p>
+<p>LangChain hosts a ready-made chat interface called <strong>agent-chat-ui</strong> - no install required:</p>
 <ol>
 <li>Open the hosted UI at <strong><a href="https://agentchat.vercel.app" target="_blank" rel="noopener noreferrer">agentchat.vercel.app</a></strong>.</li>
 <li>Point it at your running server: <strong>Deployment URL</strong> <code>http://localhost:2024</code>, <strong>Assistant / Graph ID</strong> <code>agent</code>.</li>
@@ -762,19 +762,19 @@ uv run langgraph dev --allow-blocking
 <p>You can also run it yourself with Node and <code>pnpm</code> from the <a href="https://github.com/langchain-ai/agent-chat-ui" target="_blank" rel="noopener noreferrer">agent-chat-ui repo</a>, but the hosted version needs no setup.</p>
 </details>
 <h3 id="optional-config-knobs">Optional config knobs</h3>
-<p>The assistant reads its options from the shared <code>python/.env</code>. With the standard course setup you need <strong>nothing extra</strong> — Gmail uses a local mock and the sandbox is off. The optional knobs:</p>
+<p>The assistant reads its options from the shared <code>python/.env</code>. With the standard course setup you need <strong>nothing extra</strong> - Gmail uses a local mock and the sandbox is off. The optional knobs:</p>
 <ul>
-<li><code>GMAIL_BACKEND</code> — <code>mock</code> (the default; offline, zero setup) or <code>real</code> (OAuth Gmail). Both expose the same tool surface, so the agent code never changes.</li>
-<li><code>ENABLE_SANDBOX</code> — add it (e.g. <code>ENABLE_SANDBOX=1</code>) to turn on the territory chart. Leave it out to run without — you still get a numeric report.</li>
-<li><code>TAVILY_API_KEY</code> — set during course setup; enables the newsletter's web research.</li>
+<li><code>GMAIL_BACKEND</code>: <code>mock</code> (the default; offline, zero setup) or <code>real</code> (OAuth Gmail). Both expose the same tool surface, so the agent code never changes.</li>
+<li><code>ENABLE_SANDBOX</code>: add it (e.g. <code>ENABLE_SANDBOX=1</code>) to turn on the territory chart. Leave it out to run without: you still get a numeric report.</li>
+<li><code>TAVILY_API_KEY</code>: set during course setup; enables the newsletter's web research.</li>
 </ul>
 <hr />
 <h2 id="what-it-can-do">What it can do</h2>
 <p>With the assistant running, you can ask it to handle a sales rep's day-to-day work. The video walks through three <strong>task sequences</strong>, each showing off different Deep Agents features:</p>
 <ol>
-<li><strong>Process an incoming RFQ</strong> — read a quote request from the inbox, look up the customer and prices, compute the quote exactly with the interpreter, have a reviewer subagent check it, draft the reply for approval, and log it.</li>
-<li><strong>Write the weekly newsletter</strong> — fan out parallel research subagents (one per genre), then assemble an HTML newsletter on disk.</li>
-<li><strong>Report on the territory</strong> — pull metrics from the database and, with the sandbox enabled, render a chart.</li>
+<li><strong>Process an incoming RFQ</strong>: read a quote request from the inbox, look up the customer and prices, compute the quote exactly with the interpreter, have a reviewer subagent check it, draft the reply for approval, and log it.</li>
+<li><strong>Write the weekly newsletter</strong>: fan out parallel research subagents (one per genre), then assemble an HTML newsletter on disk.</li>
+<li><strong>Report on the territory</strong>: pull metrics from the database and, with the sandbox enabled, render a chart.</li>
 </ol>
 <p>Try them yourself once the server is up.</p>
 <hr />
@@ -782,8 +782,8 @@ uv run langgraph dev --allow-blocking
 <p>In this lesson you met and ran the capstone:</p>
 <ul>
 <li>The <strong>Chinook Sales Assistant</strong> runs inside <code>langgraph dev</code> and draws on the <strong>Chinook database</strong>, its <strong>sales playbooks</strong>, and <strong>Gmail</strong>.</li>
-<li>Much of the agent's behavior lives in <strong>plain text</strong> — <code>AGENTS.md</code> and the <code>skills/</code> playbooks, written in natural language. The code you write is small and focused (your tools and subagents), wired together by a single <code>create_deep_agent(...)</code> call.</li>
-<li>The agent is served as a <strong>graph</strong> (a <code>make_graph</code> factory), not run with <code>main()</code>, and it <strong>discovers its MCP tools up front</strong> — tolerating a down Gmail server.</li>
+<li>Much of the agent's behavior lives in <strong>plain text</strong>: <code>AGENTS.md</code> and the <code>skills/</code> playbooks, written in natural language. The code you write is small and focused (your tools and subagents), wired together by a single <code>create_deep_agent(...)</code> call.</li>
+<li>The agent is served as a <strong>graph</strong> (a <code>make_graph</code> factory), not run with <code>main()</code>, and it <strong>discovers its MCP tools up front</strong>: tolerating a down Gmail server.</li>
 <li>Run it with <code>uv run langgraph dev --allow-blocking</code> and talk to it in <strong>Studio</strong>; the <strong>two approval steps</strong> (saving a draft, adding a customer) pause for you to approve, edit, or reject. An optional hosted chat UI shows them as inline cards.</li>
 </ul>
 <h2 id="check-your-understanding">Check your understanding</h2>
@@ -799,7 +799,7 @@ uv run langgraph dev --allow-blocking
     </div>
     <div id="mcq-answer-5159d664" class="mcq-answer" style="display: none;">
         <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
-        <div class="mcq-explanation">A model can only call tools it has been told about. The Gmail tools come from an MCP server whose tool list arrives via an async call, so discovery must be awaited before the agent is assembled — hence an async factory.</div>
+        <div class="mcq-explanation">A model can only call tools it has been told about. The Gmail tools come from an MCP server whose tool list arrives via an async call, so discovery must be awaited before the agent is assembled - hence an async factory.</div>
     </div>
 </div>
 
@@ -841,18 +841,18 @@ uv run langgraph dev --allow-blocking
     </div>
     <div class="mcq-choices">
         <div class="mcq-choice" onclick="handleMcqClick(this, false, '026db22e')"><strong>A)</strong> Compiled configuration generated at build time</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '026db22e')"><strong>B)</strong> Plain-text files that describe the agent behavior — an operating manual and one playbook per task</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '026db22e')"><strong>B)</strong> Plain-text files that describe the agent behavior - an operating manual and one playbook per task</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '026db22e')"><strong>C)</strong> Python modules that define the subagents</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '026db22e')"><strong>D)</strong> Database fixtures for the Chinook data</div>
     </div>
     <div id="mcq-answer-026db22e" class="mcq-answer" style="display: none;">
         <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
-        <div class="mcq-explanation">AGENTS.md is the operating manual and each skill is a step-by-step playbook — all natural language describing what the agent should do, not code.</div>
+        <div class="mcq-explanation">AGENTS.md is the operating manual and each skill is a step-by-step playbook - all natural language describing what the agent should do, not code.</div>
     </div>
 </div>
 
 <h2 id="next">Next</h2>
-<p>That is the capstone. You have now built and run a complete deep agent end to end — and seen that most of the effort is describing behavior in text, not writing code. From here, try extending it: add a task sequence, write a new skill, or wire in real Gmail.</p>
+<p>That is the capstone. You have now built and run a complete deep agent end to end - and seen that most of the effort is describing behavior in text, not writing code. From here, try extending it: add a task sequence, write a new skill, or wire in real Gmail.</p>
 <hr />
 <h2 id="references">References</h2>
 <p><strong>LangChain Academy Courses:</strong><br />

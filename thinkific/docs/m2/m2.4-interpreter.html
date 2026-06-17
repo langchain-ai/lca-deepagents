@@ -584,15 +584,15 @@
 <p><br></p>
 <Video src="TODO" />
 </details>
-<p>Code execution is a powerful capability for agents. The previous lesson introduced sandboxes — isolated cloud environments where agents run arbitrary scripts, install packages, and access files. Sandboxes are the right tool when an agent needs Python libraries, a real filesystem, or persistent state across steps.</p>
-<p><strong>Interpreters are a lighter-weight alternative.</strong> They embed a JavaScript runtime directly in the agent process — no cloud infrastructure, no API calls to spin up an environment. The tradeoff is a narrower capability set: the JavaScript standard library only, no external packages, no filesystem, no network.</p>
+<p>Code execution is a powerful capability for agents. The previous lesson introduced sandboxes - isolated cloud environments where agents run arbitrary scripts, install packages, and access files. Sandboxes are the right tool when an agent needs Python libraries, a real filesystem, or persistent state across steps.</p>
+<p><strong>Interpreters are a lighter-weight alternative.</strong> They embed a JavaScript runtime directly in the agent process - no cloud infrastructure, no API calls to spin up an environment. The tradeoff is a narrower capability set: the JavaScript standard library only, no external packages, no filesystem, no network.</p>
 <p>Unlike the other execution backends, the interpreter is not a backend service. It operates "in the loop" like other tools.</p>
 <hr />
 <h2 id="the-eval-tool">The eval tool</h2>
 <p>When <code>CodeInterpreterMiddleware</code> is added to an agent, it provides a single new tool: <strong><code>eval</code></strong>. The agent calls it with a string of JavaScript to execute.</p>
 <pre><code>eval(code=&quot;...&quot;)
 </code></pre>
-<p>The middleware runs the code in a <a href="https://bellard.org/quickjs/" target="_blank" rel="noopener noreferrer">QuickJS</a> runtime — a lightweight JavaScript engine designed for embedded execution. The result of the last expression, plus any <code>console.log</code> output, comes back as the tool result.</p>
+<p>The middleware runs the code in a <a href="https://bellard.org/quickjs/" target="_blank" rel="noopener noreferrer">QuickJS</a> runtime - a lightweight JavaScript engine designed for embedded execution. The result of the last expression, plus any <code>console.log</code> output, comes back as the tool result.</p>
 <pre><code class="language-javascript">// The agent writes JavaScript like this:
 const prices = [0.99, 1.29, 0.99, 1.99, 0.99];
 const avg = prices.reduce((a, b) =&gt; a + b, 0) / prices.length;
@@ -601,7 +601,7 @@ const avg = prices.reduce((a, b) =&gt; a + b, 0) / prices.length;
 <p>The string <code>"Average price: $1.25"</code> comes back as the tool result on the next LLM call.</p>
 <hr />
 <h2 id="the-quickjs-runtime">The QuickJS runtime</h2>
-<p>QuickJS exposes the JavaScript standard library — and nothing else.</p>
+<p>QuickJS exposes the JavaScript standard library - and nothing else.</p>
 <p><strong>Available:</strong><br />
 - Array methods: <code>map</code>, <code>filter</code>, <code>reduce</code>, <code>sort</code>, <code>flat</code>, <code>find</code><br />
 - <code>Map</code>, <code>Set</code>, <code>JSON</code>, <code>Math</code>, <code>Promise</code><br />
@@ -618,7 +618,7 @@ const avg = prices.reduce((a, b) =&gt; a + b, 0) / prices.length;
 <h2 id="use-cases">Use cases</h2>
 <p>There are three patterns where interpreters shine.</p>
 <h3 id="1-data-transformation">1. Data transformation</h3>
-<p>When the agent has data in context and needs to compute something — sort, group, aggregate, reformat — <code>eval</code> is faster and more reliable than asking the LLM to do arithmetic in prose.</p>
+<p>When the agent has data in context and needs to compute something - sort, group, aggregate, reformat - <code>eval</code> is faster and more reliable than asking the LLM to do arithmetic in prose.</p>
 <pre><code class="language-javascript">const invoices = [
   {month: &quot;2024-01&quot;, total: 42.50},
   {month: &quot;2024-02&quot;, total: 38.75},
@@ -628,7 +628,7 @@ const best = invoices.reduce((a, b) =&gt; a.total &gt; b.total ? a : b);
 `Best month: ${best.month} ($${best.total})`
 </code></pre>
 <h3 id="2-programmatic-tool-calling-ptc">2. Programmatic Tool Calling (PTC)</h3>
-<p>This is the most powerful pattern. When PTC is enabled, the JavaScript code can call the agent's tools directly — without those intermediate results ever entering the LLM's context window.</p>
+<p>This is the most powerful pattern. When PTC is enabled, the JavaScript code can call the agent's tools directly - without those intermediate results ever entering the LLM's context window.</p>
 <pre><code class="language-javascript">// JavaScript drives multiple tool calls in a single eval()
 const rows = JSON.parse(await tools.queryChinook({
     sql: &quot;SELECT Genre.Name, SUM(InvoiceLine.UnitPrice * InvoiceLine.Quantity) AS revenue FROM InvoiceLine JOIN Track ON InvoiceLine.TrackId = Track.TrackId JOIN Genre ON Track.GenreId = Genre.GenreId GROUP BY Genre.GenreId&quot;
@@ -638,13 +638,13 @@ rows.sort((a, b) =&gt; b.revenue - a.revenue)
     .map(r =&gt; `${r.Name}: ${(r.revenue / total * 100).toFixed(1)}%`)
     .join(&quot;\n&quot;);
 </code></pre>
-<p>The model writes the JavaScript once. The interpreter executes it — calling the Python <code>query_chinook</code> tool on the host, receiving the JSON result, processing it — and returns only the final formatted string to the LLM. The raw database rows never touch the context window.</p>
+<p>The model writes the JavaScript once. The interpreter executes it - calling the Python <code>query_chinook</code> tool on the host, receiving the JSON result, processing it - and returns only the final formatted string to the LLM. The raw database rows never touch the context window.</p>
 <p>Tools are exposed as <code>tools.&lt;camelCaseName&gt;(input)</code> async functions. Results come back as strings; use <code>JSON.parse()</code> when the tool returns JSON.</p>
 <blockquote>
 <p><strong>Note:</strong> Only tools explicitly listed in the <code>ptc=</code> allowlist are callable from JavaScript.</p>
 </blockquote>
 <h3 id="3-subagent-orchestration-with-the-task-tool">3. Subagent orchestration with the <code>task</code> tool</h3>
-<p>When <code>"task"</code> is included in the PTC allowlist, JavaScript code can invoke subagents — combining their responses before returning a single result to the main agent. This enables patterns like fan-out research or parallel summarization without each subagent response becoming a separate LLM turn.</p>
+<p>When <code>"task"</code> is included in the PTC allowlist, JavaScript code can invoke subagents - combining their responses before returning a single result to the main agent. This enables patterns like fan-out research or parallel summarization without each subagent response becoming a separate LLM turn.</p>
 <p>This is an advanced pattern covered separately.</p>
 <hr />
 <h2 id="interpreter-vs-sandbox">Interpreter vs Sandbox</h2>
@@ -679,7 +679,7 @@ rows.sort((a, b) =&gt; b.revenue - a.revenue)
 </tr>
 <tr>
 <td>Infrastructure</td>
-<td>None — runs in-process</td>
+<td>None - runs in-process</td>
 <td>Cloud sandbox (SandboxClient)</td>
 </tr>
 <tr>
@@ -713,12 +713,12 @@ agent = create_deep_agent(
 <h2 id="recap">Recap</h2>
 <ul>
 <li><code>CodeInterpreterMiddleware</code> adds an <code>eval</code> tool that runs JavaScript in an embedded QuickJS runtime</li>
-<li>QuickJS provides the JS standard library only — no packages, no filesystem, no network</li>
+<li>QuickJS provides the JS standard library only: no packages, no filesystem, no network</li>
 <li>Programmatic Tool Calling (PTC) lets JavaScript code call Python tools on the host; intermediate results stay in the interpreter and never enter the LLM context window</li>
 <li>Use an interpreter for computation and PTC orchestration; use a sandbox when you need Python libraries or file I/O</li>
 </ul>
 <h2 id="next">Next</h2>
-<p>The next lesson covers context engineering — how to manage what the agent sees as conversations grow long.</p>
+<p>The next lesson covers context engineering - how to manage what the agent sees as conversations grow long.</p>
 <hr />
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />
@@ -728,7 +728,7 @@ agent = create_deep_agent(
 </div>
 <div class="lt-panel" id="p-lab1" role="tabpanel">
 <h2 id="lab-1-fibonacci-with-eval">Lab 1: Fibonacci with eval</h2>
-<p>The same task as Lab 1 in the previous lesson — compute the first 15 Fibonacci numbers — but using the interpreter instead of a sandbox. No cloud environment, no <code>execute</code> tool, no infrastructure. Just <code>eval</code>.</p>
+<p>The same task as Lab 1 in the previous lesson - compute the first 15 Fibonacci numbers - but using the interpreter instead of a sandbox. No cloud environment, no <code>execute</code> tool, no infrastructure. Just <code>eval</code>.</p>
 <hr />
 <!-- code-highlight-4:10 -->
 <pre><code class="language-python"># python/m2/m2_4_eval_agent.py
@@ -767,8 +767,8 @@ uv run ./m2/m2_4_eval_agent.py
 </div>
 <div class="lt-panel" id="p-lab2" role="tabpanel">
 <h2 id="lab-2-programmatic-tool-calling-with-chinook">Lab 2: Programmatic Tool Calling with Chinook</h2>
-<p>The JavaScript inside a single <code>eval()</code> call makes two rounds of queries: first to get the top 5 genres, then — driven by those results — five parallel queries to find the top track in each genre. Six SQL queries total; the LLM sees one tool call.</p>
-<p><img width="760" alt="PTC flow diagram — 6 queries, 1 LLM tool call" src="../m2/images/m2.4-ptc-flow.svg" /></p>
+<p>The JavaScript inside a single <code>eval()</code> call makes two rounds of queries: first to get the top 5 genres, then - driven by those results - five parallel queries to find the top track in each genre. Six SQL queries total; the LLM sees one tool call.</p>
+<p><img width="760" alt="PTC flow diagram - 6 queries, 1 LLM tool call" src="../m2/images/m2.4-ptc-flow.svg" /></p>
 <hr />
 <!-- code-highlight-6:16,17,18,19,20,21,22,23,29,30,31,32,51,52,53,54,55,56,57,58 -->
 <pre><code class="language-python"># python/m2/m2_4_interpreter_agent.py
@@ -822,7 +822,7 @@ result = agent.invoke(
                     &quot;First query the top 5 genres by total revenue. &quot;
                     &quot;Then, for each of those genres, make a second query to find the &quot;
                     &quot;top-selling track in that genre. &quot;
-                    &quot;The second set of queries should be driven by the results of the first — &quot;
+                    &quot;The second set of queries should be driven by the results of the first - &quot;
                     &quot;use Promise.all so they run in parallel. &quot;
                     &quot;Return a formatted list showing each genre, its total revenue, &quot;
                     &quot;and its top track.&quot;
@@ -839,11 +839,11 @@ print(result[&quot;messages&quot;][-1].content)
 uv run ./m2/m2_4_interpreter_agent.py
 </code></pre>
 <p><strong>Expected output:</strong></p>
-<pre style="max-height:200px;overflow-y:auto;background:#0d1117;color:#e6edf3;padding:16px;border-radius:6px;font-size:12px;font-family:'IBM Plex Mono',monospace;line-height:1.6;white-space:pre-wrap;">1. Rock — $826.65 → Top track: "Balls to the Wall" ($1.98)
-2. Latin — $382.14 → Top track: "Meditação" ($1.98)
-3. Metal — $261.36 → Top track: "Welcome Home (Sanitarium)" ($1.98)
-4. Alternative &amp; Punk — $241.56 → Top track: "Bowels Of The Devil" ($1.98)
-5. TV Shows — $93.53 → Top track: "Walkabout" ($3.98)</pre>
+<pre style="max-height:200px;overflow-y:auto;background:#0d1117;color:#e6edf3;padding:16px;border-radius:6px;font-size:12px;font-family:'IBM Plex Mono',monospace;line-height:1.6;white-space:pre-wrap;">1. Rock - $826.65 → Top track: "Balls to the Wall" ($1.98)
+2. Latin: $382.14 → Top track: "Meditação" ($1.98)
+3. Metal: $261.36 → Top track: "Welcome Home (Sanitarium)" ($1.98)
+4. Alternative &amp; Punk: $241.56 → Top track: "Bowels Of The Devil" ($1.98)
+5. TV Shows: $93.53 → Top track: "Walkabout" ($3.98)</pre>
 <p><strong>What to watch for in LangSmith:</strong> One <code>eval</code> tool call in the trace. Inside it, the PTC bridge fires <code>query_chinook</code> once for genres, then five times in parallel for top tracks. None of those six result sets appear in the LLM message history.</p>
 </div>
 <hr />
@@ -860,7 +860,7 @@ uv run ./m2/m2_4_interpreter_agent.py
     </div>
     <div id="mcq-answer-46082622" class="mcq-answer" style="display: none;">
         <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
-        <div class="mcq-explanation">With PTC, JavaScript drives the tool calls and processes the results entirely inside the interpreter. Only the final computed value is returned to the LLM — the intermediate results never become LLM messages.</div>
+        <div class="mcq-explanation">With PTC, JavaScript drives the tool calls and processes the results entirely inside the interpreter. Only the final computed value is returned to the LLM - the intermediate results never become LLM messages.</div>
     </div>
 </div>
 
@@ -876,7 +876,7 @@ uv run ./m2/m2_4_interpreter_agent.py
     </div>
     <div id="mcq-answer-3c1a26fa" class="mcq-answer" style="display: none;">
         <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
-        <div class="mcq-explanation">The eval tool runs code in a QuickJS JavaScript runtime. The model writes JavaScript — not Python — as the code argument to eval().</div>
+        <div class="mcq-explanation">The eval tool runs code in a QuickJS JavaScript runtime. The model writes JavaScript - not Python - as the code argument to eval().</div>
     </div>
 </div>
 
@@ -908,7 +908,7 @@ uv run ./m2/m2_4_interpreter_agent.py
     </div>
     <div id="mcq-answer-7d5868f2" class="mcq-answer" style="display: none;">
         <div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
-        <div class="mcq-explanation">The QuickJS context lives for the duration of a thread. Variables defined in one eval() call remain in scope for subsequent eval() calls in the same thread — like a persistent REPL session. Between separate agent.invoke() calls, state is also preserved as long as the same thread_id is used. Switch to a different thread_id and the interpreter starts fresh.</div>
+        <div class="mcq-explanation">The QuickJS context lives for the duration of a thread. Variables defined in one eval() call remain in scope for subsequent eval() calls in the same thread - like a persistent REPL session. Between separate agent.invoke() calls, state is also preserved as long as the same thread_id is used. Switch to a different thread_id and the interpreter starts fresh.</div>
     </div>
 </div>
 

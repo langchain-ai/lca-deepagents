@@ -536,8 +536,8 @@
 <p><br></p>
 <Video src="TODO" />
 </details>
-<p>In the previous lesson you learned about <strong>delegation</strong> — splitting a big job into pieces, handing each to a subagent, and stitching the results back together. In this lesson you'll build it: an <strong>editorial agent</strong> that puts out a weekly music newsletter for an online distributor.</p>
-<p>The main agent is the <strong>editor</strong>. It knows the distributor's top four genres — <strong>Rock, Latin, Metal, and Alternative &amp; Punk</strong> — and kicks off a research subagent for each one, all at once. Each researcher goes off and looks up what's new in its genre, then hands back a short, polished segment. The editor collects the four segments, assembles them into one newsletter, and renders it as a styled HTML page.</p>
+<p>In the previous lesson you learned about <strong>delegation</strong> - splitting a big job into pieces, handing each to a subagent, and stitching the results back together. In this lesson you'll build it: an <strong>editorial agent</strong> that puts out a weekly music newsletter for an online distributor.</p>
+<p>The main agent is the <strong>editor</strong>. It knows the distributor's top four genres - <strong>Rock, Latin, Metal, and Alternative &amp; Punk</strong> - and kicks off a research subagent for each one, all at once. Each researcher goes off and looks up what's new in its genre, then hands back a short, polished segment. The editor collects the four segments, assembles them into one newsletter, and renders it as a styled HTML page.</p>
 <p>This is a hands-on tour of the subagent model: how a subagent gets its task, what it inherits from the main agent and what it overrides, how it keeps its messy research out of the editor's context, and how a sandboxed agent hands a finished file back to your code.</p>
 <p align="center">
   <img src="images/m4.2-newsletter-fanout.svg" alt="An editor robot labeled 'main agent · editor, Sonnet 4.6' fans out to four subagent robots labeled Rock, Latin, Metal, and Alternative & Punk. A 'task' arrow points down and a 'segment' arrow points back up. Each researcher has a private /research/<genre>/ file folder; the editor assembles a newsletter.html file." width="660">
@@ -545,18 +545,18 @@
 
 <hr />
 <h2 id="one-subagent-type-four-assignments">One subagent type, four assignments</h2>
-<p>Notice there's only <strong>one kind</strong> of researcher. We don't write a separate Rock subagent and a separate Metal subagent — they'd all do the same thing. Instead we define a single <strong><code>genre-researcher</code></strong> subagent type and the editor delegates to it four times, once per genre. The genre is just the task it's handed.</p>
-<p>A subagent is defined as a plain dictionary. Here's the research subagent — the anatomy of every field is called out below.</p>
+<p>Notice there's only <strong>one kind</strong> of researcher. We don't write a separate Rock subagent and a separate Metal subagent - they'd all do the same thing. Instead we define a single <strong><code>genre-researcher</code></strong> subagent type and the editor delegates to it four times, once per genre. The genre is just the task it's handed.</p>
+<p>A subagent is defined as a plain dictionary. Here's the research subagent - the anatomy of every field is called out below.</p>
 <p align="center">
-  <img src="images/m4.2-subagent-anatomy.svg" alt="Anatomy of a subagent. A code panel shows the genre_researcher dictionary with six fields called out: name (the handle the main agent calls), description (how the main agent chooses it), system_prompt (its own brain, never inherited), tools (override, replaces the inherited set — Tavily search only), model (override, the cheaper Haiku), and permissions (override, scoped write access to /research/**)." width="720">
+  <img src="images/m4.2-subagent-anatomy.svg" alt="Anatomy of a subagent. A code panel shows the genre_researcher dictionary with six fields called out: name (the handle the main agent calls), description (how the main agent chooses it), system_prompt (its own brain, never inherited), tools (override, replaces the inherited set - Tavily search only), model (override, the cheaper Haiku), and permissions (override, scoped write access to /research/**)." width="720">
 </p>
 
-<div class="tabs-block" data-tabs="[{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m4/m4_2_newsletter_agent.py\nGENRE_PROMPT = \&quot;\&quot;\&quot;You are a music journalist researching one genre for an\nonline music distributor&#x27;s weekly newsletter.\n\nYou will be given a single genre and a private research folder to work in.\n\nHow to work:\n1. Use internet_search to find recent, noteworthy developments in that genre.\n   Run a few searches.\n2. Save the COMPLETE, verbatim output of ALL your searches to a single file:\n   write_file(\&quot;/research/&lt;genre&gt;/sources.md\&quot;, ...). Paste it exactly as the\n   tool returned it \u2014 do NOT summarize or trim. This raw archive stays here so\n   it never clutters the editor&#x27;s context.\n3. Only then, from what you found, write one tight newsletter segment.\n\nReturn ONLY the finished segment as your reply:\n- A markdown section: a \&quot;## &lt;Genre&gt;\&quot; heading followed by ~120-180 words.\n- Lively but factual newsletter tone; name specific artists and releases.\n- Do NOT paste raw search results into your reply \u2014 those live in your files.\&quot;\&quot;\&quot;\n\ngenre_researcher = {\n    \&quot;name\&quot;: \&quot;genre-researcher\&quot;,\n    \&quot;description\&quot;: (\n        \&quot;Research one music genre and write a short newsletter segment about \&quot;\n        \&quot;what&#x27;s new in it. Delegate one genre per call.\&quot;\n    ),\n    \&quot;system_prompt\&quot;: GENRE_PROMPT,         # its own brain \u2014 never inherited\n    \&quot;tools\&quot;: [internet_search],            # override \u2014 replaces the inherited set\n    \&quot;model\&quot;: model,                        # override \u2014 the cheaper Haiku 4.5\n    \&quot;permissions\&quot;: research_permissions,   # override \u2014 scoped write access\n}&quot;, &quot;highlights&quot;: []}]"></div>
+<div class="tabs-block" data-tabs="[{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m4/m4_2_newsletter_agent.py\nGENRE_PROMPT = \&quot;\&quot;\&quot;You are a music journalist researching one genre for an\nonline music distributor&#x27;s weekly newsletter.\n\nYou will be given a single genre and a private research folder to work in.\n\nHow to work:\n1. Use internet_search to find recent, noteworthy developments in that genre.\n   Run a few searches.\n2. Save the COMPLETE, verbatim output of ALL your searches to a single file:\n   write_file(\&quot;/research/&lt;genre&gt;/sources.md\&quot;, ...). Paste it exactly as the\n   tool returned it - do NOT summarize or trim. This raw archive stays here so\n   it never clutters the editor&#x27;s context.\n3. Only then, from what you found, write one tight newsletter segment.\n\nReturn ONLY the finished segment as your reply:\n- A markdown section: a \&quot;## &lt;Genre&gt;\&quot; heading followed by ~120-180 words.\n- Lively but factual newsletter tone; name specific artists and releases.\n- Do NOT paste raw search results into your reply: those live in your files.\&quot;\&quot;\&quot;\n\ngenre_researcher = {\n    \&quot;name\&quot;: \&quot;genre-researcher\&quot;,\n    \&quot;description\&quot;: (\n        \&quot;Research one music genre and write a short newsletter segment about \&quot;\n        \&quot;what&#x27;s new in it. Delegate one genre per call.\&quot;\n    ),\n    \&quot;system_prompt\&quot;: GENRE_PROMPT,         # its own brain - never inherited\n    \&quot;tools\&quot;: [internet_search],            # override - replaces the inherited set\n    \&quot;model\&quot;: model,                        # override - the cheaper Haiku 4.5\n    \&quot;permissions\&quot;: research_permissions,   # override - scoped write access\n}&quot;, &quot;highlights&quot;: []}]"></div>
 
-<p>One subtlety the diagram doesn't capture: since <code>tools</code> <em>replaces</em> the inherited set, listing only <code>[internet_search]</code> would seem to leave the researcher unable to write files. But the built-in filesystem tools (<code>write_file</code>, <code>read_file</code>, and friends) are always provided by the harness — they survive the override — which is why the researcher can still save its notes.</p>
+<p>One subtlety the diagram doesn't capture: since <code>tools</code> <em>replaces</em> the inherited set, listing only <code>[internet_search]</code> would seem to leave the researcher unable to write files. But the built-in filesystem tools (<code>write_file</code>, <code>read_file</code>, and friends) are always provided by the harness - they survive the override - which is why the researcher can still save its notes.</p>
 <hr />
 <h2 id="private-research-files">Private research files</h2>
-<p>Each researcher gets a private folder named for its genre — <code>/research/Rock/</code>, <code>/research/Metal/</code>, and so on — to use as scratch space. It writes its raw search results there and can read them back while drafting its segment. The editor is given <strong>read-only</strong> access to <code>/research/**</code>: it can glance at a researcher's notes but can't write into them.</p>
+<p>Each researcher gets a private folder named for its genre - <code>/research/Rock/</code>, <code>/research/Metal/</code>, and so on - to use as scratch space. It writes its raw search results there and can read them back while drafting its segment. The editor is given <strong>read-only</strong> access to <code>/research/**</code>: it can glance at a researcher's notes but can't write into them.</p>
 <p>We set that up with filesystem <strong>permissions</strong>:</p>
 <div class="tabs-block" data-tabs="[{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m4/m4_2_newsletter_agent.py\n# Researchers may read/write ONLY their research scratch space; nothing else.\nresearch_permissions = [\n    FilesystemPermission(operations=[\&quot;read\&quot;, \&quot;write\&quot;], paths=[\&quot;/research/**\&quot;], mode=\&quot;allow\&quot;),\n    FilesystemPermission(operations=[\&quot;write\&quot;], paths=[\&quot;/**\&quot;], mode=\&quot;deny\&quot;),\n]\n\n# The editor may read the research area, but must not write into it.\neditor_permissions = [\n    FilesystemPermission(operations=[\&quot;write\&quot;], paths=[\&quot;/research/**\&quot;], mode=\&quot;deny\&quot;),\n]&quot;, &quot;highlights&quot;: []}]"></div>
 
@@ -564,10 +564,10 @@
 <hr />
 <h2 id="the-editor">The editor</h2>
 <p>The editor is a normal Deep Agent. It gets the stronger model, a single tool (<code>markdown_to_html</code>, which the researchers don't have), and the <code>genre-researcher</code> subagent.</p>
-<div class="tabs-block" data-tabs="[{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m4/m4_2_newsletter_agent.py\nEDITOR_PROMPT = f\&quot;\&quot;\&quot;You are the editor of an online music distributor&#x27;s weekly\nnewsletter. This week you are featuring the distributor&#x27;s top genres:\n{\&quot;, \&quot;.join(TOP_GENRES)}.\n\nYour job:\n1. For EACH genre, delegate to the genre-researcher subagent using the task\n   tool \u2014 fire them off in parallel. Tell each one which genre to cover and\n   which private folder to use (/research/&lt;genre&gt;/), and ask for one segment.\n2. Collect the four returned segments. Do NOT research genres yourself.\n3. Assemble them into one Markdown newsletter: a top-level \&quot;# This Week in\n   Music\&quot; title, a one-sentence intro, then the four \&quot;## &lt;Genre&gt;\&quot; sections.\n4. Call markdown_to_html on the assembled Markdown, then write_file the\n   returned HTML to /output/newsletter.html.\&quot;\&quot;\&quot;\n\n# The editor gets the stronger shared model; the researcher overrode to the\n# cheaper `model` (Haiku 4.5) above. Both are defined in python/models.py.\nagent = create_deep_agent(\n    model=strong_model,\n    tools=[markdown_to_html],\n    system_prompt=EDITOR_PROMPT,\n    subagents=[genre_researcher],\n    permissions=editor_permissions,\n)&quot;, &quot;highlights&quot;: []}]"></div>
+<div class="tabs-block" data-tabs="[{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m4/m4_2_newsletter_agent.py\nEDITOR_PROMPT = f\&quot;\&quot;\&quot;You are the editor of an online music distributor&#x27;s weekly\nnewsletter. This week you are featuring the distributor&#x27;s top genres:\n{\&quot;, \&quot;.join(TOP_GENRES)}.\n\nYour job:\n1. For EACH genre, delegate to the genre-researcher subagent using the task\n   tool - fire them off in parallel. Tell each one which genre to cover and\n   which private folder to use (/research/&lt;genre&gt;/), and ask for one segment.\n2. Collect the four returned segments. Do NOT research genres yourself.\n3. Assemble them into one Markdown newsletter: a top-level \&quot;# This Week in\n   Music\&quot; title, a one-sentence intro, then the four \&quot;## &lt;Genre&gt;\&quot; sections.\n4. Call markdown_to_html on the assembled Markdown, then write_file the\n   returned HTML to /output/newsletter.html.\&quot;\&quot;\&quot;\n\n# The editor gets the stronger shared model; the researcher overrode to the\n# cheaper `model` (Haiku 4.5) above. Both are defined in python/models.py.\nagent = create_deep_agent(\n    model=strong_model,\n    tools=[markdown_to_html],\n    system_prompt=EDITOR_PROMPT,\n    subagents=[genre_researcher],\n    permissions=editor_permissions,\n)&quot;, &quot;highlights&quot;: []}]"></div>
 
-<p>Because a subagent is invoked like a tool, the editor can call <code>task("genre-researcher", …)</code> four times in a single step — all four researchers run <strong>in parallel</strong>, and the editor blocks until the slowest one returns. (These are <strong>synchronous</strong> subagents, from the previous lesson.)</p>
-<p>The <code>markdown_to_html</code> tool is pure Python — it drops the assembled Markdown into a fixed, styled HTML template and returns the page as a string:</p>
+<p>Because a subagent is invoked like a tool, the editor can call <code>task("genre-researcher", …)</code> four times in a single step - all four researchers run <strong>in parallel</strong>, and the editor blocks until the slowest one returns. (These are <strong>synchronous</strong> subagents, from the previous lesson.)</p>
+<p>The <code>markdown_to_html</code> tool is pure Python - it drops the assembled Markdown into a fixed, styled HTML template and returns the page as a string:</p>
 <div class="tabs-block" data-tabs="[{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m4/m4_2_newsletter_agent.py\n@tool\ndef markdown_to_html(markdown_text: str, title: str = \&quot;This Week in Music\&quot;) -&gt; str:\n    \&quot;\&quot;\&quot;Convert a Markdown newsletter into a complete, styled HTML page.\n    Returns the full HTML document as a string.\&quot;\&quot;\&quot;\n    body = md.markdown(markdown_text, extensions=[\&quot;tables\&quot;, \&quot;fenced_code\&quot;])\n    # Good practice: the newsletter text is derived from untrusted web search,\n    # so allowlist-sanitize it (strips &lt;script&gt;, onerror=, etc.) before it goes\n    # into the page. We clean only the body; the template itself is trusted.\n    body = nh3.clean(body)\n    return _HTML_TEMPLATE.format(title=title, body=body)&quot;, &quot;highlights&quot;: []}]"></div>
 
 <hr />
@@ -576,7 +576,7 @@
 uv run python m4/m4_2_run_newsletter.py
 </code></pre>
 <p>Watch the editor fire off four researchers, then assemble their segments. When it finishes, open <code>python/m4/output/newsletter.html</code> in your browser to read this week's issue.</p>
-<p>Everything the agent produced runs on a sandboxed <code>StateBackend</code>, so the script mirrors it out of agent state and onto disk under <code>python/m4/output/</code> — the finished newsletter alongside each researcher's raw <code>/research/&lt;genre&gt;/</code> archive:</p>
+<p>Everything the agent produced runs on a sandboxed <code>StateBackend</code>, so the script mirrors it out of agent state and onto disk under <code>python/m4/output/</code> - the finished newsletter alongside each researcher's raw <code>/research/&lt;genre&gt;/</code> archive:</p>
 <pre><code class="language-text">Writing agent files to disk:
   /output/newsletter.html                  -&gt;  newsletter.html                          (6,422 chars)
   /research/Alternative &amp; Punk/sources.md  -&gt;  research/Alternative &amp; Punk/sources.md   (18,867 chars)
@@ -584,22 +584,22 @@ uv run python m4/m4_2_run_newsletter.py
   /research/Metal/sources.md               -&gt;  research/Metal/sources.md                (28,213 chars)
   /research/Rock/sources.md                -&gt;  research/Rock/sources.md                 (29,258 chars)
 </code></pre>
-<p>Open one of those <code>sources.md</code> files and you'll see the point: tens of kilobytes of raw, link-heavy search results. None of that crossed back to the editor — only each researcher's tight ~150-word segment did. That's the context quarantine: the bulky, untrusted material stays isolated in the research area while the editor's context stays clean.</p>
+<p>Open one of those <code>sources.md</code> files and you'll see the point: tens of kilobytes of raw, link-heavy search results. None of that crossed back to the editor - only each researcher's tight ~150-word segment did. That's the context quarantine: the bulky, untrusted material stays isolated in the research area while the editor's context stays clean.</p>
 <div class="tip"><p><strong><a href="https://smith.langchain.com/public/ecaa227f-3971-4096-a8ff-7626cb2adb7d/r" target="_blank" rel="noopener noreferrer">View this run here in LangSmith.</a></strong> Notice the use of the <code>write_todo</code> tool and the parallel subagent calls.</p></div>
 
 <hr />
 <h2 id="a-note-on-the-general-purpose-subagent">A note on the general-purpose subagent</h2>
-<p>You defined one subagent type. But every Deep Agent also ships with a built-in <strong><code>general-purpose</code></strong> subagent for free — a subagent with the <em>same tools and model as the main agent</em> and a generic prompt. It's the agent's escape hatch: when a task doesn't match any subagent you defined, the main agent can still delegate it to <code>general-purpose</code> to get context isolation, rather than doing the work inline.</p>
+<p>You defined one subagent type. But every Deep Agent also ships with a built-in <strong><code>general-purpose</code></strong> subagent for free - a subagent with the <em>same tools and model as the main agent</em> and a generic prompt. It's the agent's escape hatch: when a task doesn't match any subagent you defined, the main agent can still delegate it to <code>general-purpose</code> to get context isolation, rather than doing the work inline.</p>
 <p>It's the one subagent that also inherits the main agent's <strong>skills</strong>. You won't call it explicitly in this lab, but it's worth knowing it's always there.</p>
 <hr />
 <h2 id="recap">Recap</h2>
 <p>In this lesson you built a working subagent team:</p>
 <ul>
-<li><strong>One subagent type, many assignments.</strong> A single <code>genre-researcher</code> is delegated to once per genre — the genre is just the task it's handed.</li>
-<li><strong>Subagents inherit by default and override by exception.</strong> Setting <code>tools</code>, <code>model</code>, or <code>permissions</code> <strong>replaces</strong> the inherited value — it is not additive. <code>system_prompt</code> is the one field you must always provide.</li>
+<li><strong>One subagent type, many assignments.</strong> A single <code>genre-researcher</code> is delegated to once per genre: the genre is just the task it's handed.</li>
+<li><strong>Subagents inherit by default and override by exception.</strong> Setting <code>tools</code>, <code>model</code>, or <code>permissions</code> <strong>replaces</strong> the inherited value: it is not additive. <code>system_prompt</code> is the one field you must always provide.</li>
 <li><strong>Task in, result out.</strong> A subagent receives one task message and returns one result message. The editor never sees a researcher's conversation, only its final segment.</li>
 <li><strong>Private files for raw work.</strong> Each researcher stashes its raw search results in its own <code>/research/&lt;genre&gt;/</code> folder and reads them back while drafting; <strong>permissions</strong> scope a researcher to its scratch space and give the editor read-only access there.</li>
-<li><strong>Sandboxed by default.</strong> On the <code>StateBackend</code> the agent never touches your disk — trusted host code reads the finished file out of <code>result["files"]</code>.</li>
+<li><strong>Sandboxed by default.</strong> On the <code>StateBackend</code> the agent never touches your disk: trusted host code reads the finished file out of <code>result["files"]</code>.</li>
 <li>Every agent also has a built-in <strong><code>general-purpose</code></strong> subagent as a fallback.</li>
 </ul>
 <h2 id="check-your-understanding">Check your understanding</h2>
@@ -609,7 +609,7 @@ uv run python m4/m4_2_run_newsletter.py
     </div>
     <div class="mcq-choices">
         <div class="mcq-choice" onclick="handleMcqClick(this, false, 'fd6dad9e')"><strong>A)</strong> Deep Agents only allows one subagent type per main agent</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, 'fd6dad9e')"><strong>B)</strong> All four researchers do the same job — the genre is just the task each one is handed</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, 'fd6dad9e')"><strong>B)</strong> All four researchers do the same job - the genre is just the task each one is handed</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'fd6dad9e')"><strong>C)</strong> Separate subagents cannot run in parallel</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'fd6dad9e')"><strong>D)</strong> It is the only way to share a filesystem between them</div>
     </div>
@@ -626,7 +626,7 @@ uv run python m4/m4_2_run_newsletter.py
     <div class="mcq-choices">
         <div class="mcq-choice" onclick="handleMcqClick(this, false, 'fd52268f')"><strong>A)</strong> internet_search added on top of all the main agent’s tools</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'fd52268f')"><strong>B)</strong> Every tool except internet_search</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, 'fd52268f')"><strong>C)</strong> Only internet_search (plus the always-available built-in filesystem tools) — the inherited set is replaced</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, 'fd52268f')"><strong>C)</strong> Only internet_search (plus the always-available built-in filesystem tools) - the inherited set is replaced</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'fd52268f')"><strong>D)</strong> No tools at all, because tools cannot be set on a subagent</div>
     </div>
     <div id="mcq-answer-fd52268f" class="mcq-answer" style="display: none;">
@@ -647,7 +647,7 @@ uv run python m4/m4_2_run_newsletter.py
     </div>
     <div id="mcq-answer-884caa6b" class="mcq-answer" style="display: none;">
         <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
-        <div class="mcq-explanation">A subagent returns one message to the editor. Returning only the polished segment — not the bulky raw results — is what keeps the editor's context clean. The private file is simply where the researcher keeps the material it needs while drafting.</div>
+        <div class="mcq-explanation">A subagent returns one message to the editor. Returning only the polished segment - not the bulky raw results - is what keeps the editor's context clean. The private file is simply where the researcher keeps the material it needs while drafting.</div>
     </div>
 </div>
 
@@ -657,18 +657,18 @@ uv run python m4/m4_2_run_newsletter.py
     </div>
     <div class="mcq-choices">
         <div class="mcq-choice" onclick="handleMcqClick(this, false, '54d629a2')"><strong>A)</strong> StateBackend writes directly to your local filesystem</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '54d629a2')"><strong>B)</strong> It doesn’t — the file is only ever in the agent’s chat history</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '54d629a2')"><strong>B)</strong> It doesn’t - the file is only ever in the agent’s chat history</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '54d629a2')"><strong>C)</strong> The agent requests OS permission to write to disk</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '54d629a2')"><strong>D)</strong> It doesn’t write to disk itself; host code reads the saved file from agent state after invoke and writes it out</div>
     </div>
     <div id="mcq-answer-54d629a2" class="mcq-answer" style="display: none;">
         <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
-        <div class="mcq-explanation">StateBackend is an ephemeral, in-state filesystem — the agent has no real disk access. After invoke returns, trusted host code reads the file from result['files'] and writes it to disk, keeping the agent sandboxed.</div>
+        <div class="mcq-explanation">StateBackend is an ephemeral, in-state filesystem - the agent has no real disk access. After invoke returns, trusted host code reads the file from result['files'] and writes it to disk, keeping the agent sandboxed.</div>
     </div>
 </div>
 
 <h2 id="next">Next</h2>
-<p>In the next lesson you'll compare two ways to do the same fan-out — plain tool calls versus subagents — and see in the traces exactly what each approach costs the main agent's context.</p>
+<p>In the next lesson you'll compare two ways to do the same fan-out - plain tool calls versus subagents - and see in the traces exactly what each approach costs the main agent's context.</p>
 <hr />
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />

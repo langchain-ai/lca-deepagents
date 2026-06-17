@@ -897,13 +897,13 @@ Chart saved to python/m2/genre_revenue.png</pre>
     </div>
     <div class="mcq-choices">
         <div class="mcq-choice" onclick="handleMcqClick(this, false, 'df396afc')"><strong>A)</strong> All shell commands executed via execute</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, 'df396afc')"><strong>B)</strong> Filesystem tool access — ls, read_file, write_file, and similar</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, 'df396afc')"><strong>B)</strong> Filesystem tool access - ls, read_file, write_file, and similar</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'df396afc')"><strong>C)</strong> Network access from the agent</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'df396afc')"><strong>D)</strong> Which Python packages the agent can import</div>
     </div>
     <div id="mcq-answer-df396afc" class="mcq-answer" style="display: none;">
         <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
-        <div class="mcq-explanation">root_dir scopes the filesystem tools only. The execute tool still runs with full host permissions regardless of root_dir — that's why LocalShellBackend is unsuitable for production.</div>
+        <div class="mcq-explanation">root_dir scopes the filesystem tools only. The execute tool still runs with full host permissions regardless of root_dir - that's why LocalShellBackend is unsuitable for production.</div>
     </div>
 </div>
 
@@ -912,10 +912,10 @@ Chart saved to python/m2/genre_revenue.png</pre>
         <strong>Question:</strong> Which sandbox model does this course use?
     </div>
     <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '420f73f9')"><strong>A)</strong> Agent in Sandbox — the agent runs inside the sandbox</div>
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '420f73f9')"><strong>A)</strong> Agent in Sandbox - the agent runs inside the sandbox</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '420f73f9')"><strong>B)</strong> Both models equally</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '420f73f9')"><strong>C)</strong> Neither — the course uses LocalShellBackend</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '420f73f9')"><strong>D)</strong> Sandbox as a Tool — the agent runs outside and calls the sandbox via execute</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '420f73f9')"><strong>C)</strong> Neither - the course uses LocalShellBackend</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '420f73f9')"><strong>D)</strong> Sandbox as a Tool - the agent runs outside and calls the sandbox via execute</div>
     </div>
     <div id="mcq-answer-420f73f9" class="mcq-answer" style="display: none;">
         <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
@@ -931,11 +931,11 @@ Chart saved to python/m2/genre_revenue.png</pre>
         <div class="mcq-choice" onclick="handleMcqClick(this, false, '638ff72b')"><strong>A)</strong> Pass the file path in the system prompt</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '638ff72b')"><strong>B)</strong> The sandbox automatically syncs the local filesystem</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '638ff72b')"><strong>C)</strong> Call backend.upload_files() with the file contents before invoking the agent</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '638ff72b')"><strong>D)</strong> Write the file to /tmp — the sandbox reads it from there</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '638ff72b')"><strong>D)</strong> Write the file to /tmp - the sandbox reads it from there</div>
     </div>
     <div id="mcq-answer-638ff72b" class="mcq-answer" style="display: none;">
         <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
-        <div class="mcq-explanation">upload_files() seeds the sandbox filesystem before the agent starts. Without it the sandbox starts empty — the agent has no access to local files unless you explicitly upload them.</div>
+        <div class="mcq-explanation">upload_files() seeds the sandbox filesystem before the agent starts. Without it the sandbox starts empty - the agent has no access to local files unless you explicitly upload them.</div>
     </div>
 </div>
 

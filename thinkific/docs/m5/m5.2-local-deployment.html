@@ -598,7 +598,7 @@
   <text x="360" y="112" text-anchor="middle" font-size="14" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">HTTP</text>
 </svg>
 
-<p><em>The agent runs behind a web API — not inside your Python script.</em></p>
+<p><em>The agent runs behind a web API - not inside your Python script.</em></p>
 </div>
 <hr />
 <h2 id="from-a-script-to-a-service">From a script to a service</h2>
@@ -663,16 +663,16 @@
   <text x="630" y="254" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">runs</text>
 </svg>
 
-<p><em>You write the agent; <code>langgraph dev</code> wraps it in an HTTP API — with persistence, memory, and a task queue — and a client like Studio talks to it over HTTP.</em></p>
+<p><em>You write the agent; <code>langgraph dev</code> wraps it in an HTTP API - with persistence, memory, and a task queue - and a client like Studio talks to it over HTTP.</em></p>
 </div>
 <h3 id="studio-a-client-for-that-api">Studio: a client for that API</h3>
 <p><code>langgraph dev</code> includes a chat and debugging interface called "Studio". As shown in the diagram, Studio uses the API endpoints provided by <code>langgraph dev</code> to allow you to converse with your agent via chat as well as examine and control the underlying agentic loop via a graphical debugger.</p>
 <hr />
 <h2 id="the-agents-api">The agent's API</h2>
-<p>Every agent served by <code>langgraph dev</code> exposes the same <strong>Agent Server API</strong> — the <a href="https://docs.langchain.com/langsmith/server-api-ref" target="_blank" rel="noopener noreferrer">full reference is here</a>. And because it's a running web service, the dev server documents <em>itself</em>: once it's up, open <strong><code>http://localhost:2024/docs</code></strong> in your browser to see the live, interactive API for <em>your</em> agent.</p>
+<p>Every agent served by <code>langgraph dev</code> exposes the same <strong>Agent Server API</strong> - the <a href="https://docs.langchain.com/langsmith/server-api-ref" target="_blank" rel="noopener noreferrer">full reference is here</a>. And because it's a running web service, the dev server documents <em>itself</em>: once it's up, open <strong><code>http://localhost:2024/docs</code></strong> in your browser to see the live, interactive API for <em>your</em> agent.</p>
 <p>The endpoints group into a handful of categories. Here are the ones you'll use most, with the advanced ones grouped below.</p>
 <details>
-<summary><strong>Assistants</strong> — a configured instance of a graph</summary>
+<summary><strong>Assistants</strong> - a configured instance of a graph</summary>
 <p><br></p>
 <p>The deployable unit: a graph plus its configuration.</p>
 <ul>
@@ -683,9 +683,9 @@
 </ul>
 </details>
 <details>
-<summary><strong>Threads</strong> — the accumulated state of a conversation</summary>
+<summary><strong>Threads</strong> - the accumulated state of a conversation</summary>
 <p><br></p>
-<p>A thread holds the accumulated outputs of a group of runs — the persistent conversation.</p>
+<p>A thread holds the accumulated outputs of a group of runs - the persistent conversation.</p>
 <ul>
 <li><code>POST /threads</code></li>
 <li><code>GET /threads/{id}/state</code></li>
@@ -694,7 +694,7 @@
 </ul>
 </details>
 <details>
-<summary><strong>Thread Runs</strong> — one invocation of the agent on a thread</summary>
+<summary><strong>Thread Runs</strong> - one invocation of the agent on a thread</summary>
 <p><br></p>
 <p>A run invokes the graph on a thread and updates its state.</p>
 <ul>
@@ -705,7 +705,7 @@
 </ul>
 </details>
 <details>
-<summary><strong>Store</strong> — long-term key-value memory</summary>
+<summary><strong>Store</strong> - long-term key-value memory</summary>
 <p><br></p>
 <p>A persistent key-value store (long-term memory) available from any thread.</p>
 <ul>
@@ -716,32 +716,32 @@
 </ul>
 </details>
 <details>
-<summary>Advanced — Stateless Runs, Crons, Streaming, A2A, MCP, System</summary>
+<summary>Advanced - Stateless Runs, Crons, Streaming, A2A, MCP, System</summary>
 <p><br></p>
 <ul>
-<li><strong>Stateless Runs</strong> — a run with no state or memory persistence: <code>POST /runs</code>, <code>POST /runs/stream</code>, <code>POST /runs/wait</code>, <code>POST /runs/batch</code></li>
-<li><strong>Crons</strong> — a periodic run on a schedule: <code>POST /runs/crons</code>, <code>POST /threads/{id}/runs/crons</code></li>
-<li><strong>Streaming</strong> — thread-centric streaming over SSE+HTTP (WebSocket also supported): <code>POST /threads/{id}/stream</code>, <code>/threads/{id}/stream/events</code></li>
-<li><strong>A2A</strong> — expose an assistant as an Agent-to-Agent–compliant agent: <code>POST /a2a/{assistant_id}</code></li>
-<li><strong>MCP</strong> — expose the agent as an MCP server: <code>/mcp/</code></li>
-<li><strong>System</strong> — health, metrics, server info: <code>GET /ok</code>, <code>GET /info</code>, <code>GET /metrics</code>, <code>GET /docs</code></li>
+<li><strong>Stateless Runs</strong>: a run with no state or memory persistence: <code>POST /runs</code>, <code>POST /runs/stream</code>, <code>POST /runs/wait</code>, <code>POST /runs/batch</code></li>
+<li><strong>Crons</strong>: a periodic run on a schedule: <code>POST /runs/crons</code>, <code>POST /threads/{id}/runs/crons</code></li>
+<li><strong>Streaming</strong>: thread-centric streaming over SSE+HTTP (WebSocket also supported): <code>POST /threads/{id}/stream</code>, <code>/threads/{id}/stream/events</code></li>
+<li><strong>A2A</strong>: expose an assistant as an Agent-to-Agent–compliant agent: <code>POST /a2a/{assistant_id}</code></li>
+<li><strong>MCP</strong>: expose the agent as an MCP server: <code>/mcp/</code></li>
+<li><strong>System</strong>: health, metrics, server info: <code>GET /ok</code>, <code>GET /info</code>, <code>GET /metrics</code>, <code>GET /docs</code></li>
 </ul>
 </details>
 <hr />
 <h2 id="beyond-local-deployment">Beyond local deployment</h2>
-<p><code>langgraph dev</code> is intended for local development. Deploying an agent to production — as a managed Cloud service, a standalone server, or a fully self-hosted platform — introduces additional infrastructure and operational considerations beyond the scope of this lesson. The following resources cover those options in more detail:</p>
+<p><code>langgraph dev</code> is intended for local development. Deploying an agent to production - as a managed Cloud service, a standalone server, or a fully self-hosted platform - introduces additional infrastructure and operational considerations beyond the scope of this lesson. The following resources cover those options in more detail:</p>
 <ul>
-<li><a href="https://docs.langchain.com/langsmith/deployment" target="_blank" rel="noopener noreferrer"><strong>Deployment options</strong></a> — the docs overview of the available hosting models (Cloud, standalone server, and self-hosted) and what each one manages for you.</li>
-<li><a href="https://academy.langchain.com/courses/langsmith-deployment" target="_blank" rel="noopener noreferrer"><strong>LangSmith Deployment</strong></a> — a LangChain Academy course on deploying, managing, and controlling your agents in production.</li>
+<li><a href="https://docs.langchain.com/langsmith/deployment" target="_blank" rel="noopener noreferrer"><strong>Deployment options</strong></a>: the docs overview of the available hosting models (Cloud, standalone server, and self-hosted) and what each one manages for you.</li>
+<li><a href="https://academy.langchain.com/courses/langsmith-deployment" target="_blank" rel="noopener noreferrer"><strong>LangSmith Deployment</strong></a>: a LangChain Academy course on deploying, managing, and controlling your agents in production.</li>
 </ul>
 <hr />
 <h2 id="recap">Recap</h2>
 <p>In this lesson you saw what it means to <em>deploy</em> an agent locally:</p>
 <ul>
 <li>A deployed agent runs as a <strong>service reached over HTTP</strong>, not a script you <code>invoke()</code> in Python.</li>
-<li><strong><code>langgraph dev</code></strong> hosts your agent and exposes it as an <strong>API</strong> — declared by a small <strong><code>langgraph.json</code></strong> that points at your graph.</li>
+<li><strong><code>langgraph dev</code></strong> hosts your agent and exposes it as an <strong>API</strong>: declared by a small <strong><code>langgraph.json</code></strong> that points at your graph.</li>
 <li>The <strong>Agent Server API</strong> is the same for every agent: <strong>Assistants</strong>, <strong>Threads</strong>, <strong>Thread Runs</strong>, and <strong>Store</strong>, plus advanced endpoints. The running server documents itself at <strong><code>localhost:2024/docs</code></strong>.</li>
-<li><strong><code>langgraph dev</code> ships a client</strong> for that API — <strong>LangGraph Studio</strong>, a combined <strong>chat + debug</strong> interface — and any other chat UI talks to the agent the same way, over HTTP.</li>
+<li><strong><code>langgraph dev</code> ships a client</strong> for that API: <strong>LangGraph Studio</strong>, a combined <strong>chat + debug</strong> interface: and any other chat UI talks to the agent the same way, over HTTP.</li>
 </ul>
 <p>Try it yourself in the <strong>Lab</strong> tab above.</p>
 <h2 id="check-your-understanding">Check your understanding</h2>
@@ -787,7 +787,7 @@
         <div class="mcq-choice" onclick="handleMcqClick(this, false, '12b793a2')"><strong>A)</strong> A single invocation of a graph on a thread</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '12b793a2')"><strong>B)</strong> The accumulated state of a conversation</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '12b793a2')"><strong>C)</strong> A long-term key-value memory store</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '12b793a2')"><strong>D)</strong> A configured instance of a graph — a graph plus its configuration</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '12b793a2')"><strong>D)</strong> A configured instance of a graph - a graph plus its configuration</div>
     </div>
     <div id="mcq-answer-12b793a2" class="mcq-answer" style="display: none;">
         <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
@@ -801,13 +801,13 @@
     </div>
     <div class="mcq-choices">
         <div class="mcq-choice" onclick="handleMcqClick(this, false, '686d8266')"><strong>A)</strong> A separate runtime that replaces langgraph dev in production</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '686d8266')"><strong>B)</strong> A client for the Agent Server API — a combined chat and graphical debugging interface that talks to the agent over HTTP</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '686d8266')"><strong>B)</strong> A client for the Agent Server API - a combined chat and graphical debugging interface that talks to the agent over HTTP</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '686d8266')"><strong>C)</strong> A command-line tool for editing langgraph.json</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '686d8266')"><strong>D)</strong> A hosted cloud service that deploys your agent</div>
     </div>
     <div id="mcq-answer-686d8266" class="mcq-answer" style="display: none;">
         <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
-        <div class="mcq-explanation">Studio is a client of the same Agent Server API. It provides both a chat interface and a graphical debugger, and it reaches the agent over HTTP — exactly as any other chat UI would.</div>
+        <div class="mcq-explanation">Studio is a client of the same Agent Server API. It provides both a chat interface and a graphical debugger, and it reaches the agent over HTTP - exactly as any other chat UI would.</div>
     </div>
 </div>
 
@@ -823,7 +823,7 @@
 <div class="lt-panel" id="p-lab" role="tabpanel">
 <h2 id="lab-deploy-a-basic-agent">Lab: deploy a basic agent</h2>
 <p>You'll build a simple agent.</p>
-<p>The agent itself is a single <code>create_deep_agent</code> call. It pulls <code>model</code> from the course's shared <code>models.py</code> — so the agent uses whatever provider you configured during setup — and is exposed as a module-level <code>graph</code> so the server can find it:</p>
+<p>The agent itself is a single <code>create_deep_agent</code> call. It pulls <code>model</code> from the course's shared <code>models.py</code> - so the agent uses whatever provider you configured during setup - and is exposed as a module-level <code>graph</code> so the server can find it:</p>
 <pre><code class="language-python"># python/m5/hello/agent.py
 import sys
 from pathlib import Path
@@ -853,8 +853,8 @@ uv run langgraph dev
 </code></pre>
 <p>The server starts on <code>http://localhost:2024</code> and <strong>opens LangGraph Studio in your browser</strong> automatically. In Studio you can:</p>
 <ul>
-<li><strong>Chat with the agent</strong> in the conversation panel — type a message and watch it reply.</li>
-<li><strong>Walk through the state machine</strong> — the graph view shows each node; step through a run to see state change as the agent works.</li>
+<li><strong>Chat with the agent</strong> in the conversation panel: type a message and watch it reply.</li>
+<li><strong>Walk through the state machine</strong>: the graph view shows each node; step through a run to see state change as the agent works.</li>
 </ul>
 </div>
 <script>
