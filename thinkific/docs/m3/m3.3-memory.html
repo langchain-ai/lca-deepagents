@@ -735,68 +735,10 @@ By convention, memory files live in a <code>memories/</code> directory and the m
 </div>
 <div class="lt-panel" id="p-lab" role="tabpanel">
 <h2 id="lab-coding-assistant-with-memory">Lab: Coding Assistant with Memory</h2>
-<p>You'll build a coding assistant backed by a project guidelines file. The first invoke answers a question using the file's content; the second triggers a memory write. In LangSmith you can confirm both: the <code>[agent_memory]</code> block on every call, and the <code>edit_file</code> on the write.</p>
-<hr />
-<h3 id="setup">Setup</h3>
-<p>Create the memories directory:</p>
-<pre><code class="language-bash">mkdir -p ~/Documents/Github/lca-deepagents/python/m3/memories
-</code></pre>
-<hr />
-<h3 id="1-create-memoriesagentsmd">1. Create <code>memories/AGENTS.md</code></h3>
-<p>Create <code>python/m3/memories/AGENTS.md</code> with the following content:</p>
-<pre><code class="language-markdown"># Project Guidelines
-
-## Code Style
-- All functions must have type annotations
-- Use f-strings for string formatting
-- Maximum line length is 88 characters
-- Use `pathlib.Path` for file operations, not `os.path`
-
-## Workflow
-- Run tests with: `uv run pytest`
-- The CI pipeline runs on every push to `main`
-- Open a draft PR early so reviewers can follow along
-</code></pre>
-<p>This is content the base model cannot know: it is specific to your project. The agent will answer questions about it using only what it reads from the file.</p>
-<hr />
-<h3 id="2-create-m33_memory_agentpy">2. Create <code>m3.3_memory_agent.py</code></h3>
-<p>Create <code>python/m3/m3.3_memory_agent.py</code>:</p>
-<pre><code class="language-python"># python/m3/m3.3_memory_agent.py
-import sys
-from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from models import model
-from deepagents import create_deep_agent
-from deepagents.backends.filesystem import FilesystemBackend
-
-m3_dir = Path(__file__).parent
-backend = FilesystemBackend(root_dir=str(m3_dir))
-
-agent = create_deep_agent(
-    model=model,
-    backend=backend,
-    memory=[&quot;memories/AGENTS.md&quot;],
-    system_prompt=&quot;You are a helpful coding assistant for this project.&quot;,
-)
-
-# First invoke: agent answers using memory content
-result = agent.invoke({
-    &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What tool should I use for file paths in this project?&quot;}]
-})
-print(&quot;--- Question 1 ---&quot;)
-print(result[&quot;messages&quot;][-1].content)
-
-# Second invoke: agent writes to memory
-result2 = agent.invoke({
-    &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Remember: the team switched to ruff for linting. Update your memory.&quot;}]
-})
-print(&quot;\n--- Question 2 ---&quot;)
-print(result2[&quot;messages&quot;][-1].content)
-</code></pre>
-<p><code>FilesystemBackend</code> with <code>root_dir</code> pointing to <code>python/m3/</code> gives the agent read and write access to files in that directory. The memory path <code>memories/AGENTS.md</code> resolves relative to that root.</p>
+<p>Both files are already in the repo: <code>python/m3/memory_agent.py</code> and <code>python/m3/memories/AGENTS.md</code>. Open them to see how they're wired up, then run the agent directly. The first invoke answers a question using the file's content; the second triggers a memory write. You can also swap in your own <code>AGENTS.md</code> content, or use a coding agent to explore and extend the setup.</p>
 <hr />
 <h3 id="run-it">Run it</h3>
-<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m3/m3.3_memory_agent.py
+<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m3/memory_agent.py
 </code></pre>
 <p>After both invokes complete, open <code>python/m3/memories/AGENTS.md</code> and verify the ruff note was written in.</p>
 <hr />
