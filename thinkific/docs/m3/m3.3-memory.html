@@ -573,6 +573,9 @@
   <div class="lt-group lt-mem">
     <button class="lt-tab active" data-p="mem" role="tab" aria-selected="true">Memory</button>
   </div>
+  <div class="lt-group lt-quiz">
+    <button class="lt-tab" data-p="quiz" role="tab" aria-selected="false">Quiz</button>
+  </div>
   <div class="lt-group lt-wrap">
     <button class="lt-tab" data-p="lab" role="tab" aria-selected="false">Lab</button>
   </div>
@@ -643,6 +646,81 @@ By convention, memory files live in a <code>memories/</code> directory and the m
 </ul>
 </div>
 </details>
+
+</div>
+<div class="lt-panel" id="p-quiz" role="tabpanel">
+<h2 id="check-your-understanding">Check your understanding</h2>
+<div class="mcq-container" id="mcq-0c76bbcc">
+    <div class="mcq-question">
+        <strong>Question:</strong> How does memory differ from skills in terms of when its content is available to the agent?
+    </div>
+<pre><code>&lt;div class="mcq-choices"&gt;
+    &lt;div class="mcq-choice" onclick="handleMcqClick(this, false, '0c76bbcc')"&gt;&lt;strong&gt;A)&lt;/strong&gt; Memory is loaded on demand when a task matches; skills are always present
+</code></pre>
+</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '0c76bbcc')"><strong>B)</strong> Both memory and skills are always present in the system prompt</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '0c76bbcc')"><strong>C)</strong> Both memory and skills are loaded on demand when needed</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '0c76bbcc')"><strong>D)</strong> Memory is always injected into the system prompt on every call; skills are loaded on demand</div>
+<pre><code>&lt;/div&gt;
+&lt;div id="mcq-answer-0c76bbcc" class="mcq-answer" style="display: none;"&gt;
+    &lt;div class="mcq-answer-header"&gt;&lt;strong&gt;Answer: D&lt;/strong&gt; ✅&lt;/div&gt;
+    &lt;div class="mcq-explanation"&gt;Memory is always present: MemoryMiddleware injects the contents of your memory files into the system prompt on every LLM call. Skills use progressive disclosure; only the name and description are always in context, and the full body is read on demand when a task activates the skill.&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+</div>
+<div class="mcq-container" id="mcq-13ec5dfd">
+    <div class="mcq-question">
+        <strong>Question:</strong> What is the difference between agent memory and user memory in Deep Agents?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '13ec5dfd')"><strong>A)</strong> Agent memory requires a checkpointer; user memory does not</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '13ec5dfd')"><strong>B)</strong> Agent memory is read-only; user memory can be written by the agent</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '13ec5dfd')"><strong>C)</strong> Agent memory is shared across all users; user memory gives each user their own separate file</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '13ec5dfd')"><strong>D)</strong> Agent memory persists across sessions; user memory is cleared after each session</div>
+    </div>
+    <div id="mcq-answer-13ec5dfd" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-explanation">The distinction is scope. Agent memory lives in a single shared file; all users see the same content. User memory uses per-user files so preferences and context stay isolated. Which scope applies depends on the backend and file paths you configure.</div>
+    </div>
+</div>
+
+<p><MCQ
+    question="When memory=[\"memories/AGENTS.md\"] is passed to create_deep_agent, what is created behind the scenes?"
+    choices='["A MemoryMiddleware that reads the file and injects its content into the system prompt on every call", "A FilesystemBackend rooted at memories/", "A checkpointer that snapshots the file\'s content between runs", "A SQLite database for storing and indexing the memory contents"]'
+    correctIndex={0}
+    explanation="Passing memory=[...] creates a MemoryMiddleware. On every LLM call the middleware reads each source file and wraps the combined content in an [agent_memory] block appended to the system prompt. Without this argument, MemoryMiddleware is not active and nothing persists."
+/></p>
+<div class="mcq-container" id="mcq-d7ec5d8f">
+    <div class="mcq-question">
+        <strong>Question:</strong> Where in a LangSmith trace can you confirm that memory is being injected correctly?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'd7ec5d8f')"><strong>A)</strong> As a separate Memory tab in the run details panel</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, 'd7ec5d8f')"><strong>B)</strong> In the [agent_memory] block at the bottom of the system message on every LLM call</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'd7ec5d8f')"><strong>C)</strong> As the first ToolMessage in every run</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'd7ec5d8f')"><strong>D)</strong> Only in runs where the agent explicitly reads the memory file</div>
+    </div>
+    <div id="mcq-answer-d7ec5d8f" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+        <div class="mcq-explanation">Open any run, expand the system message on the first LLM call, and scroll to the bottom. The [agent_memory] block contains the raw content of your memory files. It appears on every call regardless of what the user asked.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-b1d59917">
+    <div class="mcq-question">
+        <strong>Question:</strong> How does an agent persist new information to a memory file in Deep Agents?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'b1d59917')"><strong>A)</strong> By returning a special memory_update key in its final response</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'b1d59917')"><strong>B)</strong> By calling a dedicated save_memory() function from the SDK</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'b1d59917')"><strong>C)</strong> Memory files are read-only; new information requires creating an additional file</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, 'b1d59917')"><strong>D)</strong> By calling edit_file on one of the paths passed to memory=[...]</div>
+    </div>
+    <div id="mcq-answer-b1d59917" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+        <div class="mcq-explanation">When the agent should remember something (because a user said 'remember this' or provided context that should carry forward), it calls edit_file on one of the paths in memory=[...]. That write is visible in LangSmith as an edit_file tool call, and the updated content appears in [agent_memory] on all subsequent calls.</div>
+    </div>
+</div>
 
 </div>
 <div class="lt-panel" id="p-lab" role="tabpanel">
@@ -723,78 +801,6 @@ print(result2[&quot;messages&quot;][-1].content)
 Memory content is visible in the system message of <em>every</em> LLM call in every run. Skills content only appears as a <code>read_file</code> tool call in the specific run where the skill was activated. If you see a large block in the system prompt that is always there, that is memory. If you see a <code>read_file</code> mid-run, that is a skill activation.
 </div>
 </div>
-<hr />
-<h2 id="check-your-understanding">Check your understanding</h2>
-<div class="mcq-container" id="mcq-0c76bbcc">
-    <div class="mcq-question">
-        <strong>Question:</strong> How does memory differ from skills in terms of when its content is available to the agent?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '0c76bbcc')"><strong>A)</strong> Memory is loaded on demand when a task matches; skills are always present</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '0c76bbcc')"><strong>B)</strong> Both memory and skills are always present in the system prompt</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '0c76bbcc')"><strong>C)</strong> Both memory and skills are loaded on demand when needed</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '0c76bbcc')"><strong>D)</strong> Memory is always injected into the system prompt on every call; skills are loaded on demand</div>
-    </div>
-    <div id="mcq-answer-0c76bbcc" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
-        <div class="mcq-explanation">Memory is always present: MemoryMiddleware injects the contents of your memory files into the system prompt on every LLM call. Skills use progressive disclosure; only the name and description are always in context, and the full body is read on demand when a task activates the skill.</div>
-    </div>
-</div>
-
-<div class="mcq-container" id="mcq-13ec5dfd">
-    <div class="mcq-question">
-        <strong>Question:</strong> What is the difference between agent memory and user memory in Deep Agents?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '13ec5dfd')"><strong>A)</strong> Agent memory requires a checkpointer; user memory does not</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '13ec5dfd')"><strong>B)</strong> Agent memory is read-only; user memory can be written by the agent</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '13ec5dfd')"><strong>C)</strong> Agent memory is shared across all users; user memory gives each user their own separate file</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '13ec5dfd')"><strong>D)</strong> Agent memory persists across sessions; user memory is cleared after each session</div>
-    </div>
-    <div id="mcq-answer-13ec5dfd" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
-        <div class="mcq-explanation">The distinction is scope. Agent memory lives in a single shared file; all users see the same content. User memory uses per-user files so preferences and context stay isolated. Which scope applies depends on the backend and file paths you configure.</div>
-    </div>
-</div>
-
-<p><MCQ
-    question="When memory=[\"memories/AGENTS.md\"] is passed to create_deep_agent, what is created behind the scenes?"
-    choices='["A MemoryMiddleware that reads the file and injects its content into the system prompt on every call", "A FilesystemBackend rooted at memories/", "A checkpointer that snapshots the file\'s content between runs", "A SQLite database for storing and indexing the memory contents"]'
-    correctIndex={0}
-    explanation="Passing memory=[...] creates a MemoryMiddleware. On every LLM call the middleware reads each source file and wraps the combined content in an [agent_memory] block appended to the system prompt. Without this argument, MemoryMiddleware is not active and nothing persists."
-/></p>
-<div class="mcq-container" id="mcq-d7ec5d8f">
-    <div class="mcq-question">
-        <strong>Question:</strong> Where in a LangSmith trace can you confirm that memory is being injected correctly?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'd7ec5d8f')"><strong>A)</strong> As a separate Memory tab in the run details panel</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, 'd7ec5d8f')"><strong>B)</strong> In the [agent_memory] block at the bottom of the system message on every LLM call</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'd7ec5d8f')"><strong>C)</strong> As the first ToolMessage in every run</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'd7ec5d8f')"><strong>D)</strong> Only in runs where the agent explicitly reads the memory file</div>
-    </div>
-    <div id="mcq-answer-d7ec5d8f" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
-        <div class="mcq-explanation">Open any run, expand the system message on the first LLM call, and scroll to the bottom. The [agent_memory] block contains the raw content of your memory files. It appears on every call regardless of what the user asked.</div>
-    </div>
-</div>
-
-<div class="mcq-container" id="mcq-b1d59917">
-    <div class="mcq-question">
-        <strong>Question:</strong> How does an agent persist new information to a memory file in Deep Agents?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'b1d59917')"><strong>A)</strong> By returning a special memory_update key in its final response</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'b1d59917')"><strong>B)</strong> By calling a dedicated save_memory() function from the SDK</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'b1d59917')"><strong>C)</strong> Memory files are read-only; new information requires creating an additional file</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, 'b1d59917')"><strong>D)</strong> By calling edit_file on one of the paths passed to memory=[...]</div>
-    </div>
-    <div id="mcq-answer-b1d59917" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
-        <div class="mcq-explanation">When the agent should remember something (because a user said 'remember this' or provided context that should carry forward), it calls edit_file on one of the paths in memory=[...]. That write is visible in LangSmith as an edit_file tool call, and the updated content appears in [agent_memory] on all subsequent calls.</div>
-    </div>
-</div>
-
 <hr />
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />

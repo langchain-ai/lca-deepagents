@@ -578,6 +578,9 @@ The lab for this lesson originally used a Gmail MCP server, but OAuth authentica
   <div class="lt-group lt-mcp">
     <button class="lt-tab active" data-p="mcp" role="tab" aria-selected="true">MCP</button>
   </div>
+  <div class="lt-group lt-quiz">
+    <button class="lt-tab" data-p="quiz" role="tab" aria-selected="false">Quiz</button>
+  </div>
   <div class="lt-group lt-wrap">
     <button class="lt-tab" data-p="lab" role="tab" aria-selected="false">Lab</button>
   </div>
@@ -650,6 +653,91 @@ agent = create_deep_agent(
 <strong>interrupt_on requires a checkpointer</strong>
 <p style="margin:0.5rem 0 0;">When the agent pauses for human approval, it needs to save its current state so execution can resume from exactly the same point after a decision is made. A checkpointer handles that save-and-restore. <code>MemorySaver</code> keeps state in memory and is fine for development; use a persistent checkpointer in production.</p>
 </div>
+</div>
+<div class="lt-panel" id="p-quiz" role="tabpanel">
+<h2 id="check-your-understanding">Check your understanding</h2>
+<div class="mcq-container" id="mcq-a42d0a43">
+    <div class="mcq-question">
+        <strong>Question:</strong> How does langchain-mcp-adapters expose MCP server tools to the agent?
+    </div>
+<pre><code>&lt;div class="mcq-choices"&gt;
+    &lt;div class="mcq-choice" onclick="handleMcqClick(this, false, 'a42d0a43')"&gt;&lt;strong&gt;A)&lt;/strong&gt; As a special MCP tool type the agent calls differently from normal tools
+</code></pre>
+</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'a42d0a43')"><strong>B)</strong> As raw JSON schemas the agent parses on each call</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'a42d0a43')"><strong>C)</strong> As a separate tool registry the agent queries at startup</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, 'a42d0a43')"><strong>D)</strong> As standard LangChain BaseTool objects; the agent cannot tell them apart from locally-defined tools</div>
+<pre><code>&lt;/div&gt;
+&lt;div id="mcq-answer-a42d0a43" class="mcq-answer" style="display: none;"&gt;
+    &lt;div class="mcq-answer-header"&gt;&lt;strong&gt;Answer: D&lt;/strong&gt; ✅&lt;/div&gt;
+    &lt;div class="mcq-explanation"&gt;langchain-mcp-adapters wraps each MCP server tool as a standard BaseTool. The agent sees MCP tools identically to any locally-defined tool; results come back as ToolMessages in the conversation history, and the model decides what to do next exactly as it would with a regular tool call.&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+</div>
+<div class="mcq-container" id="mcq-1482b380">
+    <div class="mcq-question">
+        <strong>Question:</strong> Which MCP transport type keeps a persistent connection open and supports streaming results?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, true, '1482b380')"><strong>A)</strong> SSE (Server-Sent Events): opens a persistent connection the server can push events over</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '1482b380')"><strong>B)</strong> stdio: runs the server as a local subprocess</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '1482b380')"><strong>C)</strong> HTTP: sends a new request for each tool call</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '1482b380')"><strong>D)</strong> All three transports support persistent connections</div>
+    </div>
+    <div id="mcq-answer-1482b380" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
+        <div class="mcq-explanation">SSE (Server-Sent Events) opens a persistent HTTP connection. The server can push events back over that connection in real time, which is useful for long-running tools or streaming results. stdio is local subprocess only; HTTP opens a new connection per call.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-90ce7dcd">
+    <div class="mcq-question">
+        <strong>Question:</strong> What does the allowedTools field in .mcp.json do?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '90ce7dcd')"><strong>A)</strong> Grants the agent permission to execute those tools without human approval</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '90ce7dcd')"><strong>B)</strong> Specifies the tool schemas to use instead of fetching them from the server</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '90ce7dcd')"><strong>C)</strong> Restricts which tools from that server the agent can see</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '90ce7dcd')"><strong>D)</strong> Sets a rate limit on how often each tool can be called</div>
+    </div>
+    <div id="mcq-answer-90ce7dcd" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-explanation">allowedTools lets you restrict which tools from a server the agent can see. This is useful when a server exposes many tools but you only need a subset; the agent never learns about the others.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-69682098">
+    <div class="mcq-question">
+        <strong>Question:</strong> When deepagents encounters auth: 'oauth' in .mcp.json for the first time, what happens?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '69682098')"><strong>A)</strong> The agent attempts to call the server anonymously and retries with credentials on failure</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '69682098')"><strong>B)</strong> An error is thrown until the user manually adds a token to .mcp.json</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '69682098')"><strong>C)</strong> The server is skipped and its tools are marked unavailable</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '69682098')"><strong>D)</strong> deepagents pauses and opens a browser window for the user to authorize; tokens are saved and reused on subsequent runs</div>
+    </div>
+    <div id="mcq-answer-69682098" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+        <div class="mcq-explanation">When deepagents detects auth: 'oauth', it pauses and opens a browser window for the user to log in. Tokens are stored in ~/.deepagents/.state/mcp-tokens/ and reused on subsequent runs, so the browser prompt only appears once.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-cd400c71">
+    <div class="mcq-question">
+        <strong>Question:</strong> You add interrupt_on to create_deep_agent for an MCP tool but forget to pass a checkpointer. What happens?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'cd400c71')"><strong>A)</strong> The agent runs normally and ignores the interrupt_on setting</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, 'cd400c71')"><strong>B)</strong> An error is raised at invocation time because interrupt_on requires a checkpointer to save and restore state</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'cd400c71')"><strong>C)</strong> The agent pauses but cannot resume; graph state is lost</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'cd400c71')"><strong>D)</strong> The interrupt fires once, then is automatically disabled for that session</div>
+    </div>
+    <div id="mcq-answer-cd400c71" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+        <div class="mcq-explanation">interrupt_on requires a checkpointer. When the agent pauses for human approval, it needs to save its current state so execution can resume from exactly the same point. Without a checkpointer, that save-and-restore is impossible and an error is raised.</div>
+    </div>
+</div>
+
 </div>
 <div class="lt-panel" id="p-lab" role="tabpanel">
 <h2 id="connecting-to-a-docs-server">Connecting to a Docs Server</h2>
@@ -783,88 +871,6 @@ asyncio.run(main())
 <li><code>auth: "oauth"</code> triggers a one-time browser authorization on first run; tokens are cached in <code>~/.deepagents/.state/mcp-tokens/</code> and reused automatically</li>
 <li><code>interrupt_on</code> pauses the agent before a named tool call for human approval; like HITL with custom tools, it requires a checkpointer</li>
 </ul>
-<hr />
-<h2 id="check-your-understanding">Check your understanding</h2>
-<div class="mcq-container" id="mcq-a42d0a43">
-    <div class="mcq-question">
-        <strong>Question:</strong> How does langchain-mcp-adapters expose MCP server tools to the agent?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'a42d0a43')"><strong>A)</strong> As a special MCP tool type the agent calls differently from normal tools</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'a42d0a43')"><strong>B)</strong> As raw JSON schemas the agent parses on each call</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'a42d0a43')"><strong>C)</strong> As a separate tool registry the agent queries at startup</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, 'a42d0a43')"><strong>D)</strong> As standard LangChain BaseTool objects; the agent cannot tell them apart from locally-defined tools</div>
-    </div>
-    <div id="mcq-answer-a42d0a43" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
-        <div class="mcq-explanation">langchain-mcp-adapters wraps each MCP server tool as a standard BaseTool. The agent sees MCP tools identically to any locally-defined tool; results come back as ToolMessages in the conversation history, and the model decides what to do next exactly as it would with a regular tool call.</div>
-    </div>
-</div>
-
-<div class="mcq-container" id="mcq-1482b380">
-    <div class="mcq-question">
-        <strong>Question:</strong> Which MCP transport type keeps a persistent connection open and supports streaming results?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, true, '1482b380')"><strong>A)</strong> SSE (Server-Sent Events): opens a persistent connection the server can push events over</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '1482b380')"><strong>B)</strong> stdio: runs the server as a local subprocess</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '1482b380')"><strong>C)</strong> HTTP: sends a new request for each tool call</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '1482b380')"><strong>D)</strong> All three transports support persistent connections</div>
-    </div>
-    <div id="mcq-answer-1482b380" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
-        <div class="mcq-explanation">SSE (Server-Sent Events) opens a persistent HTTP connection. The server can push events back over that connection in real time, which is useful for long-running tools or streaming results. stdio is local subprocess only; HTTP opens a new connection per call.</div>
-    </div>
-</div>
-
-<div class="mcq-container" id="mcq-90ce7dcd">
-    <div class="mcq-question">
-        <strong>Question:</strong> What does the allowedTools field in .mcp.json do?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '90ce7dcd')"><strong>A)</strong> Grants the agent permission to execute those tools without human approval</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '90ce7dcd')"><strong>B)</strong> Specifies the tool schemas to use instead of fetching them from the server</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '90ce7dcd')"><strong>C)</strong> Restricts which tools from that server the agent can see</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '90ce7dcd')"><strong>D)</strong> Sets a rate limit on how often each tool can be called</div>
-    </div>
-    <div id="mcq-answer-90ce7dcd" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
-        <div class="mcq-explanation">allowedTools lets you restrict which tools from a server the agent can see. This is useful when a server exposes many tools but you only need a subset; the agent never learns about the others.</div>
-    </div>
-</div>
-
-<div class="mcq-container" id="mcq-69682098">
-    <div class="mcq-question">
-        <strong>Question:</strong> When deepagents encounters auth: 'oauth' in .mcp.json for the first time, what happens?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '69682098')"><strong>A)</strong> The agent attempts to call the server anonymously and retries with credentials on failure</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '69682098')"><strong>B)</strong> An error is thrown until the user manually adds a token to .mcp.json</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '69682098')"><strong>C)</strong> The server is skipped and its tools are marked unavailable</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '69682098')"><strong>D)</strong> deepagents pauses and opens a browser window for the user to authorize; tokens are saved and reused on subsequent runs</div>
-    </div>
-    <div id="mcq-answer-69682098" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
-        <div class="mcq-explanation">When deepagents detects auth: 'oauth', it pauses and opens a browser window for the user to log in. Tokens are stored in ~/.deepagents/.state/mcp-tokens/ and reused on subsequent runs, so the browser prompt only appears once.</div>
-    </div>
-</div>
-
-<div class="mcq-container" id="mcq-cd400c71">
-    <div class="mcq-question">
-        <strong>Question:</strong> You add interrupt_on to create_deep_agent for an MCP tool but forget to pass a checkpointer. What happens?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'cd400c71')"><strong>A)</strong> The agent runs normally and ignores the interrupt_on setting</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, 'cd400c71')"><strong>B)</strong> An error is raised at invocation time because interrupt_on requires a checkpointer to save and restore state</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'cd400c71')"><strong>C)</strong> The agent pauses but cannot resume; graph state is lost</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'cd400c71')"><strong>D)</strong> The interrupt fires once, then is automatically disabled for that session</div>
-    </div>
-    <div id="mcq-answer-cd400c71" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
-        <div class="mcq-explanation">interrupt_on requires a checkpointer. When the agent pauses for human approval, it needs to save its current state so execution can resume from exactly the same point. Without a checkpointer, that save-and-restore is impossible and an error is raised.</div>
-    </div>
-</div>
-
 <hr />
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />

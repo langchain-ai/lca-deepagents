@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>m3.x-summarization</title>
+    <title>m3.1-summarization</title>
     <meta name="description" content="">
 
     <!-- Syntax highlighting -->
@@ -136,7 +136,6 @@
         pre {
             background: #030710;
             padding: 0.5rem 1rem;
-            padding-top: 2.85rem;
             border-radius: 12px;
             overflow-x: auto;
             overflow-y: auto;
@@ -208,36 +207,25 @@
             padding-left: 5px;
         }
 
-        /* Code output blocks (non-copyable) */
-        pre.no-copy {
-            background: #0a0f1a;
-            border: 1px solid #1a2a3a;
-            opacity: 0.85;
-            padding-top: 0.75rem;
-        }
-
         pre .copy-button-inline {
             position: absolute;
             top: 0.5rem;
-            right: 0.5rem;
+            right: 1rem;
             padding: 0;
             border: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
-            background-position: center;
-            background-size: 16px;
-            background-repeat: no-repeat;
-            background-color: rgba(127, 200, 255, 0.14);
+            background: transparent url('symbols/copy.png') center/18px no-repeat;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s;
             width: 28px;
             height: 28px;
-            opacity: 0.85;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
         }
 
         pre .copy-button-inline:hover {
             opacity: 1;
-            background-color: rgba(127, 200, 255, 0.30);
+            filter: invert(1) brightness(1);
         }
 
         pre .copy-button-inline.copied {
@@ -446,25 +434,22 @@
         .copy-button {
             padding: 0;
             border: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cfe8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
-            background-position: center;
-            background-size: 16px;
-            background-repeat: no-repeat;
-            background-color: rgba(127, 200, 255, 0.14);
+            background: transparent url('symbols/copy.png') center/20px no-repeat;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 32px;
             height: 32px;
-            opacity: 0.85;
+            opacity: 0.7;
+            filter: invert(1) brightness(1);
         }
 
         .copy-button:hover {
             opacity: 1;
-            background-color: rgba(127, 200, 255, 0.30);
+            filter: invert(1) brightness(1);
         }
 
         .copy-button.copied {
@@ -546,6 +531,54 @@
 <script src="../shared/sd-components.js"></script>
 
 <h1 id="message-history-summarization">Message History &amp; Summarization</h1>
+<style>
+.lt-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 28px 0 0;
+  border-bottom: 2px solid #CCE9FF;
+}
+.lt-group { display: flex; gap: 3px; }
+.lt-quiz  { --c: #7C3AED; }
+.lt-summ  { --c: #0369A1; }
+.lt-tab {
+  font: 500 14px 'IBM Plex Mono', monospace;
+  padding: 9px 14px;
+  border: none;
+  background: transparent;
+  color: #40668D;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  border-radius: 6px 6px 0 0;
+  transition: background .15s, color .15s, border-color .15s;
+  white-space: nowrap;
+}
+.lt-tab:hover { background: #F2FAFF; color: #030710; }
+.lt-tab.active {
+  color: var(--c);
+  border-bottom-color: var(--c);
+  background: #fff;
+}
+.lt-panel { display: none; padding-top: 24px; }
+.lt-panel.active { display: block; }
+@media (max-width: 600px) {
+  .lt-bar { flex-wrap: nowrap; overflow-x: auto; gap: 12px; }
+  .lt-tab { padding: 8px 10px; font-size: 13px; }
+}
+</style>
+
+<div class="lt-bar" role="tablist" aria-label="Lesson sections">
+  <div class="lt-group lt-summ">
+    <button class="lt-tab active" data-p="summ" role="tab" aria-selected="true">Summarization</button>
+  </div>
+  <div class="lt-group lt-quiz">
+    <button class="lt-tab" data-p="quiz" role="tab" aria-selected="false">Quiz</button>
+  </div>
+</div>
+
+<div class="lt-panel active" id="p-summ" role="tabpanel">
 <details>
 <summary>🎥 Video Walk-through [click to expand]</summary>
 <p><br></p>
@@ -556,7 +589,6 @@
 <h2 id="how-the-context-window-fills-up">How the context window fills up</h2>
 <p>Think of the context window like a thermometer. Every new message adds tokens and the level rises. When it crosses <strong>85%</strong> of the model's limit, the middleware fires.</p>
 <div class="sd-wrap" id="ss-compaction"></div>
-
 <script>
 buildSlideshow({
   id: 'ss-compaction',
@@ -574,7 +606,6 @@ buildSlideshow({
   ]
 });
 </script>
-
 <hr />
 <h2 id="what-the-summary-contains">What the summary contains</h2>
 <p>The middleware makes a separate LLM call to generate the summary. It uses a structured prompt that asks the model to extract:</p>
@@ -589,11 +620,9 @@ buildSlideshow({
 <h2 id="seeing-it-in-action">Seeing it in action</h2>
 <p>The default trigger is 85% of the model's real context window: 170,000 tokens for Claude Haiku 4.5. To observe it in a demo we set <code>model.profile["max_input_tokens"]</code> to a small value so the threshold is hit after a few turns:</p>
 <div class="tabs-block" data-tabs="[{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m3/m3.x_summarization.py\nfrom models import model\n\n# Lower the reported context window so summarization fires at ~595 tokens\n# (85% of 700) instead of the real threshold. Must pass model object, not string.\nmodel.profile = {**model.profile, \&quot;max_input_tokens\&quot;: 700}\n\nagent = create_deep_agent(\n    model=model,\n    checkpointer=MemorySaver(),\n    system_prompt=\&quot;You are a helpful assistant. Keep every response to one sentence.\&quot;,\n)&quot;, &quot;highlights&quot;: []}]"></div>
-
 <div class="language-tabs-block" data-languages="{&quot;Python&quot;: [{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;bash&quot;, &quot;code&quot;: &quot;cd python\nuv run python m3/m3.x_summarization.py&quot;, &quot;highlights&quot;: [], &quot;noHeader&quot;: true}]}"></div>
-
 <p><strong>Expected output:</strong></p>
-<pre style="max-height:260px;overflow-y:auto;background:#0d1117;color:#e6edf3;padding:16px;border-radius:6px;font-size:12px;font-family:'IBM Plex Mono',monospace;line-height:1.6;white-space:pre-wrap;"><button class="copy-button-inline" aria-label="Copy code" title="Copy code"></button>──────────────────────────────────────────────────
+<pre style="max-height:260px;overflow-y:auto;background:#0d1117;color:#e6edf3;padding:16px;border-radius:6px;font-size:12px;font-family:'IBM Plex Mono',monospace;line-height:1.6;white-space:pre-wrap;">──────────────────────────────────────────────────
 Turn 1  User:  My name is Alex. I work at Acme Corp.
 Turn 1  Agent: Hello Alex, it's nice to meet you — welcome from Acme Corp!
   stored : 2 message(s) (raw history, never trimmed)
@@ -620,9 +649,9 @@ Turn 5  User:  What do you remember about me?
 Turn 5  Agent: You mentioned your name is Alex, you work at Acme Corp, and you've been building a distributed cache for three months.
   stored : 10 message(s) (raw history, never trimmed)
   model saw : summary + messages[4:]  [SUMMARIZED]</pre>
-
-<div class="tip"><p><strong>Passing <code>model</code> not <code>MODEL</code>.</strong> Notice <code>create_deep_agent(model=model, ...)</code> receives the model <em>object</em>, not the string <code>"anthropic:claude-haiku-4-5"</code>. Passing the string would re-initialize the model internally and ignore the <code>profile</code> override.</p></div>
-
+<div class="tip">
+<p><strong>Passing <code>model</code> not <code>MODEL</code>.</strong> Notice <code>create_deep_agent(model=model, ...)</code> receives the model <em>object</em>, not the string <code>"anthropic:claude-haiku-4-5"</code>. Passing the string would re-initialize the model internally and ignore the <code>profile</code> override.</p>
+</div>
 <p>When summarization fires, a private <code>_summarization_event</code> key appears in the agent's state. The <code>state["messages"]</code> list itself is never modified; the summarization happens only on what gets <em>sent</em> to the model each turn.</p>
 <hr />
 <h2 id="recap">Recap</h2>
@@ -635,11 +664,95 @@ Turn 5  Agent: You mentioned your name is Alex, you work at Acme Corp, and you'v
 </ul>
 <h2 id="next">Next</h2>
 <p>In the next lesson we look at how tools interact with message history and how the middleware handles large tool call arguments before context fills up.</p>
+</div>
+<div class="lt-panel" id="p-quiz" role="tabpanel">
+<h2 id="check-your-understanding">Check your understanding</h2>
+<p><MCQ
+    question="At what threshold does SummarizationMiddleware fire by default?"
+    choices='["85% of the model\'s max_input_tokens", "50% of the model\'s max_input_tokens", "When the context window is completely full", "After a fixed count of 20 messages"]'
+    correctIndex={0}
+    explanation="SummarizationMiddleware fires when total tokens exceed 85% of max_input_tokens. For Claude Haiku 4.5 that is 170,000 tokens. You can lower the threshold for demos by overriding model.profile[\"max_input_tokens\"]."
+/></p>
+<div class="mcq-container" id="mcq-bb682f59">
+    <div class="mcq-question">
+        <strong>Question:</strong> How is the summary itself generated when SummarizationMiddleware fires?
+    </div>
+<pre><code>&lt;div class="mcq-choices"&gt;
+    &lt;div class="mcq-choice" onclick="handleMcqClick(this, false, 'bb682f59')"&gt;&lt;strong&gt;A)&lt;/strong&gt; By truncating the oldest messages until the token count drops below the limit
+</code></pre>
+</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'bb682f59')"><strong>B)</strong> By a fixed template that extracts the first sentence of each message</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, 'bb682f59')"><strong>C)</strong> By a separate LLM call using the same model as the agent</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'bb682f59')"><strong>D)</strong> By the agent model as part of generating its next response</div>
+<pre><code>&lt;/div&gt;
+&lt;div id="mcq-answer-bb682f59" class="mcq-answer" style="display: none;"&gt;
+    &lt;div class="mcq-answer-header"&gt;&lt;strong&gt;Answer: C&lt;/strong&gt; ✅&lt;/div&gt;
+    &lt;div class="mcq-explanation"&gt;The middleware makes its own dedicated LLM call, separate from the agent's response turn, using the same underlying model. It sends the old messages to that call with a structured prompt to extract session intent, key facts, artifacts, and next steps.&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+</div>
+<div class="mcq-container" id="mcq-054f884f">
+    <div class="mcq-question">
+        <strong>Question:</strong> Where in the message list does the generated summary appear?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '054f884f')"><strong>A)</strong> Appended to the system prompt as an additional instruction block</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '054f884f')"><strong>B)</strong> As the very first message in state["messages"]</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '054f884f')"><strong>C)</strong> As a ToolMessage returned by a built-in summarize tool</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '054f884f')"><strong>D)</strong> As a HumanMessage injected at the top of the preserved recent messages</div>
+    </div>
+    <div id="mcq-answer-054f884f" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+        <div class="mcq-explanation">The summary text is injected as a single HumanMessage placed at the top of the recent messages that were kept. The model receives the summary followed by the recent history, and picks up the conversation as if it had been there the whole time.</div>
+    </div>
+</div>
+
+<p><MCQ
+    question="What happens to state[\"messages\"] when summarization fires?"
+    choices='["Older messages are deleted in place and replaced by the summary message", "state[\"messages\"] is never mutated; summarization only affects what is sent to the model each turn", "state[\"messages\"] is cleared and rebuilt from the summary on every subsequent turn", "A new summarized state replaces the original, and the old state is discarded"]'
+    correctIndex={1}
+    explanation="state[\"messages\"] is never modified. The full message history is always stored intact. Summarization happens only at the send layer: the middleware intercepts what gets forwarded to the model each turn, not the stored list."
+/></p>
+<div class="mcq-container" id="mcq-07ae7f94">
+    <div class="mcq-question">
+        <strong>Question:</strong> Why must you pass the model object to create_deep_agent when using a profile override, rather than the model ID string?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '07ae7f94')"><strong>A)</strong> The string form does not support multimodal inputs required for summarization</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '07ae7f94')"><strong>B)</strong> String initialization disables SummarizationMiddleware entirely</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '07ae7f94')"><strong>C)</strong> Passing the string re-initializes the model internally and discards the profile override</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '07ae7f94')"><strong>D)</strong> The profile attribute only exists on string-initialized models, not objects</div>
+    </div>
+    <div id="mcq-answer-07ae7f94" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-explanation">When you pass the model ID string, create_deep_agent re-initializes the model from scratch, which ignores any profile changes you made on the object. Passing the already-configured model object is the only way to ensure the overridden max_input_tokens reaches the middleware.</div>
+    </div>
+</div>
+
+</div>
 <hr />
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />
 - <a href="https://docs.langchain.com/oss/python/deepagents/context-engineering" target="_blank" rel="noopener noreferrer">SummarizationMiddleware: Deep Agents</a><br />
 - <a href="https://docs.langchain.com/oss/python/deepagents/context-engineering" target="_blank" rel="noopener noreferrer">Context Engineering overview</a></p>
+<script>
+(function () {
+  var tabs = document.querySelectorAll('.lt-tab');
+  function show(p) {
+    tabs.forEach(function (t) {
+      var on = t.getAttribute('data-p') === p;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    document.querySelectorAll('.lt-panel').forEach(function (panel) {
+      panel.classList.toggle('active', panel.id === 'p-' + p);
+    });
+  }
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () { show(t.getAttribute('data-p')); });
+  });
+})();
+</script>
 
     <script>
         // Handle MCQ choice clicks
@@ -755,47 +868,6 @@ Turn 5  Agent: You mentioned your name is Alex, you work at Acme Corp, and you'v
                 }
             });
         }
-    </script>
-
-    <script>
-    // Attach copy handlers to static .copy-button-inline buttons injected at build time.
-    // This runs synchronously so it fires before Babel compiles the text/babel script.
-    (function () {
-        function attachCopyHandler(button) {
-            if (button.dataset.copySetup) return;
-            button.dataset.copySetup = '1';
-            var pre = button.closest('pre');
-            var code = pre && pre.querySelector('code');
-            if (!code) return;
-            function showDone() {
-                button.textContent = '✓';
-                button.classList.add('copied');
-                setTimeout(function () {
-                    button.textContent = '';
-                    button.classList.remove('copied');
-                }, 2000);
-            }
-            function fallback(text) {
-                var ta = document.createElement('textarea');
-                ta.value = text;
-                ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
-                document.body.appendChild(ta);
-                ta.select();
-                try { document.execCommand('copy'); } catch (e) {}
-                document.body.removeChild(ta);
-                showDone();
-            }
-            button.addEventListener('click', function () {
-                var text = code.textContent;
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(text).then(showDone, function () { fallback(text); });
-                } else {
-                    fallback(text);
-                }
-            });
-        }
-        document.querySelectorAll('pre:not(.no-copy) .copy-button-inline').forEach(attachCopyHandler);
-    })();
     </script>
 
     <script type="text/babel">
@@ -1030,11 +1102,7 @@ Turn 5  Agent: You mentioned your name is Alex, you work at Acme Corp, and you'v
                                     right: '1rem',
                                     padding: '0',
                                     border: 'none',
-                                    backgroundImage: copied ? 'none' : 'url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%23cfe8ff%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Crect x=%279%27 y=%279%27 width=%2713%27 height=%2713%27 rx=%272%27/%3E%3Cpath d=%27M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1%27/%3E%3C/svg%3E")',
-                                    backgroundColor: copied ? 'transparent' : 'rgba(127, 200, 255, 0.14)',
-                                    backgroundPosition: 'center',
-                                    backgroundSize: '16px',
-                                    backgroundRepeat: 'no-repeat',
+                                    background: copied ? 'none' : 'transparent url("symbols/copy.png") center/18px no-repeat',
                                     cursor: 'pointer',
                                     borderRadius: '4px',
                                     width: '28px',
@@ -1192,24 +1260,20 @@ Turn 5  Agent: You mentioned your name is Alex, you work at Acme Corp, and you'v
         // Add copy buttons to regular code blocks
         function addCopyButtonsToCodeBlocks() {
             // Find all pre blocks that aren't inside tabs-block containers
-            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre):not(.no-copy)');
+            const preBlocks = document.querySelectorAll('pre:not(.code-block-content pre)');
 
             preBlocks.forEach(pre => {
+                // Skip if already has a copy button
+                if (pre.querySelector('.copy-button-inline')) return;
+
                 const code = pre.querySelector('code');
                 if (!code) return;
 
-                // Use existing static button (injected at convert time) or create one
-                let button = pre.querySelector('.copy-button-inline');
-                if (!button) {
-                    button = document.createElement('button');
-                    button.className = 'copy-button-inline';
-                    button.setAttribute('aria-label', 'Copy code');
-                    button.setAttribute('title', 'Copy code');
-                    pre.appendChild(button);
-                } else if (button.dataset.copySetup) {
-                    return;
-                }
-                button.dataset.copySetup = '1';
+                // Create copy button
+                const button = document.createElement('button');
+                button.className = 'copy-button-inline';
+                button.setAttribute('aria-label', 'Copy code');
+                button.setAttribute('title', 'Copy code');
 
                 button.addEventListener('click', async () => {
                     const text = code.textContent;
@@ -1248,6 +1312,8 @@ Turn 5  Agent: You mentioned your name is Alex, you work at Acme Corp, and you'v
                         }
                     }
                 });
+
+                pre.appendChild(button);
             });
         }
 

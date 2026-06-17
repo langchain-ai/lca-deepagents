@@ -540,6 +540,7 @@
   border-bottom: 2px solid #CCE9FF;
 }
 .lt-group { display: flex; gap: 3px; }
+.lt-quiz  { --c: #7C3AED; }
 .lt-tools { --c: #0369A1; }
 .lt-wrap  { --c: #B45309; }
 .lt-tab {
@@ -572,6 +573,9 @@
 <div class="lt-bar" role="tablist" aria-label="Lesson sections">
   <div class="lt-group lt-tools">
     <button class="lt-tab active" data-p="tools" role="tab" aria-selected="true">Tools</button>
+  </div>
+  <div class="lt-group lt-quiz">
+    <button class="lt-tab" data-p="quiz" role="tab" aria-selected="false">Quiz</button>
   </div>
   <div class="lt-group lt-wrap">
     <button class="lt-tab" data-p="lab3" role="tab" aria-selected="false">Lab</button>
@@ -739,6 +743,81 @@ def get_stock_price(ticker: str) -&gt; str:
 <p><strong>Human-in-the-Loop (HITL)</strong> is a pattern where agent execution pauses at a critical step and waits for a human to approve, modify, or cancel before continuing. It is important because agents can take irreversible actions: writing to a database, sending a message, deleting a file. HITL gives you a checkpoint before those actions happen.</p>
 </blockquote>
 <div class="sd-wrap" id="dg-hitl"></div>
+</div>
+<div class="lt-panel" id="p-quiz" role="tabpanel">
+<h2 id="check-your-understanding">Check your understanding</h2>
+<div class="mcq-container" id="mcq-e6c89cc3">
+    <div class="mcq-question">
+        <strong>Question:</strong> You pass tools=[my_tool] to create_deep_agent. What happens to the built-in tools like read_file and write_todos?
+    </div>
+<pre><code>&lt;div class="mcq-choices"&gt;
+    &lt;div class="mcq-choice" onclick="handleMcqClick(this, true, 'e6c89cc3')"&gt;&lt;strong&gt;A)&lt;/strong&gt; They are merged with my_tool; both are available
+</code></pre>
+</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'e6c89cc3')"><strong>B)</strong> They are replaced by my_tool</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'e6c89cc3')"><strong>C)</strong> They are disabled until re-added explicitly</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'e6c89cc3')"><strong>D)</strong> They move to a separate tool list the agent accesses on request</div>
+<pre><code>&lt;/div&gt;
+&lt;div id="mcq-answer-e6c89cc3" class="mcq-answer" style="display: none;"&gt;
+    &lt;div class="mcq-answer-header"&gt;&lt;strong&gt;Answer: A&lt;/strong&gt; ✅&lt;/div&gt;
+    &lt;div class="mcq-explanation"&gt;The tools parameter is additive. Whatever you pass is merged with the SDK's built-in tool suite. Passing your own tools never removes read_file, write_todos, or any other built-in.&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+</div>
+<div class="mcq-container" id="mcq-503492c1">
+    <div class="mcq-question">
+        <strong>Question:</strong> When an LLM decides it needs to call a tool, what does it actually produce?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '503492c1')"><strong>A)</strong> It calls the Python function directly</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '503492c1')"><strong>B)</strong> A ToolMessage with the result already included</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '503492c1')"><strong>C)</strong> A plain text description of what it would do</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '503492c1')"><strong>D)</strong> An AIMessage with a tool_calls list specifying the name and arguments</div>
+    </div>
+    <div id="mcq-answer-503492c1" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+        <div class="mcq-explanation">The LLM never executes code. It outputs an AIMessage containing a tool_calls list with the tool name and arguments. The Tool Node inside the deep agent reads that list and performs the actual execution.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-c63d2624">
+    <div class="mcq-question">
+        <strong>Question:</strong> Which part of a @tool definition does the model read to decide when to reach for that tool?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'c63d2624')"><strong>A)</strong> The function name</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, 'c63d2624')"><strong>B)</strong> The docstring</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'c63d2624')"><strong>C)</strong> The type annotations on the parameters</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'c63d2624')"><strong>D)</strong> The return type annotation</div>
+    </div>
+    <div id="mcq-answer-c63d2624" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+        <div class="mcq-explanation">The docstring is the description the model uses to decide when to call a tool versus another. It is the most important of the three parts. Write it as a clear, specific sentence describing when the tool should be used.</div>
+    </div>
+</div>
+
+<p><MCQ
+    question="Why does Human-in-the-Loop require a checkpointer?"
+    choices='["To save graph state so execution can pause and resume from the same point after a human decision", "To log tool call arguments to a file for audit purposes", "To validate that the human\'s approval matches the tool schema", "To prevent the LLM from calling the tool more than once"]'
+    correctIndex={0}
+    explanation="When interrupt() fires, the graph suspends and must save its current state so it can resume from exactly the same point once the human responds. A checkpointer handles that save-and-restore. Without one, the graph has no way to pause mid-run."
+/></p>
+<div class="mcq-container" id="mcq-997604bc">
+    <div class="mcq-question">
+        <strong>Question:</strong> In the SQL lab, write_sql calls interrupt() before db.run(). At that moment, has the database been modified?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '997604bc')"><strong>A)</strong> Yes: the write runs first, then waits for approval to commit</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '997604bc')"><strong>B)</strong> It depends on the checkpointer used</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '997604bc')"><strong>C)</strong> No: interrupt() fires before db.run(), so nothing has been written yet</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '997604bc')"><strong>D)</strong> Yes: a draft write is created and rolled back on rejection</div>
+    </div>
+    <div id="mcq-answer-997604bc" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-explanation">interrupt() fires before db.run(). The graph pauses and the pending SQL surfaces to your script. The database is untouched until you approve; only then does db.run() execute. If you reject, write_sql returns 'Write cancelled.' and db.run() is never called.</div>
+    </div>
+</div>
+
 </div>
 <div class="lt-panel" id="p-lab3" role="tabpanel">
 <h2 id="two-sql-tools-with-human-in-the-loop">Two SQL Tools with Human-in-the-Loop</h2>
@@ -1023,78 +1102,6 @@ The agent calls <code>read_sql</code> to inspect the genres table, then calls <c
 <li>Human-in-the-Loop uses <code>interrupt()</code> inside a tool to pause the graph before a risky action; <code>Command(resume=...)</code> restores execution after a human decision</li>
 <li>HITL requires a checkpointer (<code>MemorySaver</code> for development) so the graph can save state on pause and resume from exactly the same point</li>
 </ul>
-<hr />
-<h2 id="check-your-understanding">Check your understanding</h2>
-<div class="mcq-container" id="mcq-e6c89cc3">
-    <div class="mcq-question">
-        <strong>Question:</strong> You pass tools=[my_tool] to create_deep_agent. What happens to the built-in tools like read_file and write_todos?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, true, 'e6c89cc3')"><strong>A)</strong> They are merged with my_tool; both are available</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'e6c89cc3')"><strong>B)</strong> They are replaced by my_tool</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'e6c89cc3')"><strong>C)</strong> They are disabled until re-added explicitly</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'e6c89cc3')"><strong>D)</strong> They move to a separate tool list the agent accesses on request</div>
-    </div>
-    <div id="mcq-answer-e6c89cc3" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
-        <div class="mcq-explanation">The tools parameter is additive. Whatever you pass is merged with the SDK's built-in tool suite. Passing your own tools never removes read_file, write_todos, or any other built-in.</div>
-    </div>
-</div>
-
-<div class="mcq-container" id="mcq-503492c1">
-    <div class="mcq-question">
-        <strong>Question:</strong> When an LLM decides it needs to call a tool, what does it actually produce?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '503492c1')"><strong>A)</strong> It calls the Python function directly</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '503492c1')"><strong>B)</strong> A ToolMessage with the result already included</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '503492c1')"><strong>C)</strong> A plain text description of what it would do</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '503492c1')"><strong>D)</strong> An AIMessage with a tool_calls list specifying the name and arguments</div>
-    </div>
-    <div id="mcq-answer-503492c1" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
-        <div class="mcq-explanation">The LLM never executes code. It outputs an AIMessage containing a tool_calls list with the tool name and arguments. The Tool Node inside the deep agent reads that list and performs the actual execution.</div>
-    </div>
-</div>
-
-<div class="mcq-container" id="mcq-c63d2624">
-    <div class="mcq-question">
-        <strong>Question:</strong> Which part of a @tool definition does the model read to decide when to reach for that tool?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'c63d2624')"><strong>A)</strong> The function name</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, 'c63d2624')"><strong>B)</strong> The docstring</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'c63d2624')"><strong>C)</strong> The type annotations on the parameters</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'c63d2624')"><strong>D)</strong> The return type annotation</div>
-    </div>
-    <div id="mcq-answer-c63d2624" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
-        <div class="mcq-explanation">The docstring is the description the model uses to decide when to call a tool versus another. It is the most important of the three parts. Write it as a clear, specific sentence describing when the tool should be used.</div>
-    </div>
-</div>
-
-<p><MCQ
-    question="Why does Human-in-the-Loop require a checkpointer?"
-    choices='["To save graph state so execution can pause and resume from the same point after a human decision", "To log tool call arguments to a file for audit purposes", "To validate that the human\'s approval matches the tool schema", "To prevent the LLM from calling the tool more than once"]'
-    correctIndex={0}
-    explanation="When interrupt() fires, the graph suspends and must save its current state so it can resume from exactly the same point once the human responds. A checkpointer handles that save-and-restore. Without one, the graph has no way to pause mid-run."
-/></p>
-<div class="mcq-container" id="mcq-997604bc">
-    <div class="mcq-question">
-        <strong>Question:</strong> In the SQL lab, write_sql calls interrupt() before db.run(). At that moment, has the database been modified?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '997604bc')"><strong>A)</strong> Yes: the write runs first, then waits for approval to commit</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '997604bc')"><strong>B)</strong> It depends on the checkpointer used</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '997604bc')"><strong>C)</strong> No: interrupt() fires before db.run(), so nothing has been written yet</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '997604bc')"><strong>D)</strong> Yes: a draft write is created and rolled back on rejection</div>
-    </div>
-    <div id="mcq-answer-997604bc" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
-        <div class="mcq-explanation">interrupt() fires before db.run(). The graph pauses and the pending SQL surfaces to your script. The database is untouched until you approve; only then does db.run() execute. If you reject, write_sql returns 'Write cancelled.' and db.run() is never called.</div>
-    </div>
-</div>
-
 <hr />
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />
