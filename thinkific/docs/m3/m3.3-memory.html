@@ -634,6 +634,19 @@
         </iframe>
     </div>
 </div>
+<details class="video-walkthrough">
+<summary>Video Walk-through [click to expand] — script available, video later</summary>
+<p><br></p>
+<p><strong>Script (will be recorded):</strong> Under the hood, MemoryMiddleware reads the file on every LLM call and wraps the content in an [agent_memory] block appended to the system prompt.</p>
+<p>[Open LangSmith]</p>
+<p>[Expand the system message on the first LLM call]</p>
+<p>Scroll to the bottom of the system prompt. There's the [agent_memory] block: the raw content of AGENTS.md. It's there on every call, regardless of what the user asked.</p>
+<p>[Open the second run, find the edit_file tool call]</p>
+<p>Memory isn't read-only either. The middleware also injects guidelines telling the agent when to write. When a user says "remember this" or provides context that should carry forward, the agent calls edit_file on the memory file to persist it. You can see that here: the edit_file call targeting memories/AGENTS.md. That's the moment the new information is written in.</p>
+<p>[Open a subsequent run, scroll to [agent_memory]]</p>
+<p>And on the very next call, the updated content is already there in the [agent_memory] block.</p>
+<p>Head over to the lab to try this yourself. The first invoke reads from memory, and the second triggers a write.</p>
+</details>
 <p>Open any run, expand the system message on the first LLM call, and scroll to the bottom of the system prompt. The <code>[agent_memory]</code> block contains the raw content of your memory files. It is there on every call, regardless of what the user asked.</p>
 <hr />
 <h3 id="updating-memories">Updating memories</h3>
