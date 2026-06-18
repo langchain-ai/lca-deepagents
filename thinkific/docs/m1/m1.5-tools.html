@@ -768,7 +768,7 @@ def get_stock_price(ticker: str) -&gt; str:
 <p>The return value should be a string (or anything JSON-serializable). It comes back to the model as the tool result and is visible in the conversation.</p>
 <h3 id="human-in-the-loop">Human-in-the-Loop</h3>
 <blockquote>
-<p><strong>Human-in-the-Loop (HITL)</strong> is a pattern where agent execution pauses at a critical step and waits for a human to approve, modify, or cancel before continuing. It is important because agents can take irreversible actions: writing to a database, sending a message, deleting a file. HITL gives you a checkpoint before those actions happen.</p>
+<p><strong>Human-in-the-Loop (HITL)</strong> is a pattern where agent execution pauses at a critical step and waits for a human to approve, modify, or cancel before continuing. Deep agents support this via the <code>interrupt_on</code> argument to <code>create_deep_agent</code>, which intercepts named tool calls before they execute and presents them for review. It is important because agents can take irreversible actions: writing to a database, sending a message, deleting a file. HITL gives you a checkpoint before those actions happen.</p>
 </blockquote>
 <details class="video-walkthrough">
 <summary>Video Walk-through [click to expand] — script available, video later</summary>
@@ -859,8 +859,8 @@ def get_stock_price(ticker: str) -&gt; str:
     '<rect x="22" y="224" width="136" height="52" rx="4" fill="#161F34" stroke="#2F4B68" stroke-width="1.5"/>',
     '<text x="90" y="254" text-anchor="middle" fill="#E5F4FF" font-size="16" font-weight="500">Agent</text>',
     '<polygon points="416,172 494,250 416,328 338,250" fill="#161F34" stroke="#2F4B68" stroke-width="1.5"/>',
-    '<text x="416" y="244" text-anchor="middle" fill="#E5F4FF" font-size="15">interrupt</text>',
-    '<text x="416" y="262" text-anchor="middle" fill="#E5F4FF" font-size="15">( )</text>',
+    '<text x="416" y="244" text-anchor="middle" fill="#E5F4FF" font-size="13">HITL</text>',
+    '<text x="416" y="262" text-anchor="middle" fill="#E5F4FF" font-size="13">Middleware</text>',
     '<polygon points="676,172 754,250 676,328 598,250" fill="#161F34" stroke="#2F4B68" stroke-width="1.5"/>',
     '<text x="676" y="254" text-anchor="middle" fill="#E5F4FF" font-size="16" font-weight="500">Human</text>',
     '<rect x="875" y="120" width="148" height="52" rx="4" fill="#161F34" stroke="#2F4B68" stroke-width="1.5"/>',
@@ -893,17 +893,17 @@ def get_stock_price(ticker: str) -&gt; str:
 
   var STEPS = [
     { tag: 'Step 1 of 7 · Agent calls write_sql',
-      caption: 'The agent decides to write to the database and calls write_sql with the query as an argument. The query has not executed yet.' },
-    { tag: 'Step 2 of 7 · interrupt() fires, graph pauses',
-      caption: 'Inside write_sql, interrupt() fires before db.run(). The graph suspends and saves state. The pending SQL surfaces to your script, which prints it and waits for your input.' },
+      caption: 'The agent decides to write to the database and issues a write_sql tool_call. The query has not executed yet.' },
+    { tag: 'Step 2 of 7 · HITL middleware intercepts, graph pauses',
+      caption: 'The HITL middleware (configured via interrupt_on) detects the write_sql call before the Tool Node runs and pauses the graph. The pending action surfaces to your script, which prints it and waits for your input.' },
     { tag: 'Step 3 of 7 · Human approves',
-      caption: 'You type "yes". Command(resume="yes") resumes the graph. The approve decision is passed back into write_sql.' },
-    { tag: 'Step 4 of 7 · Execute runs, result returned to Agent',
-      caption: 'db.run() executes the query. The result is returned to the agent as a tool message and the agent continues.' },
+      caption: 'You type "yes". Command(resume={"decisions": [{"type": "approve"}]}) resumes the graph and the middleware forwards the call to the Tool Node.' },
+    { tag: 'Step 4 of 7 · Tool Node executes, result returned to Agent',
+      caption: 'The Tool Node runs write_sql and db.run() executes the query. The result is returned to the agent as a tool message and the agent continues.' },
     { tag: 'Step 5 of 7 · Human rejects',
-      caption: 'Alternatively, if you type "no", the reject decision is passed back. write_sql returns "Write cancelled." without calling db.run().' },
+      caption: 'Alternatively, if you type "no", Command(resume={"decisions": [{"type": "reject"}]}) is sent. The middleware short-circuits and returns a rejection message without calling the Tool Node.' },
     { tag: 'Step 6 of 7 · Write cancelled, Agent notified',
-      caption: 'The agent receives "Write cancelled." as its tool result. The database is untouched. The agent continues with the cancellation in context.' },
+      caption: 'The agent receives a rejection message as its tool result. The database is untouched and write_sql never ran. The agent continues with the cancellation in context.' },
     { tag: 'Step 7 of 7 · Full flow',
       caption: 'The complete HITL flow: the approve path (Human to Execute to Agent) and the reject path (Human to Cancel to Agent) shown together.' }
   ];
@@ -1041,7 +1041,7 @@ from pathlib import Path
 from langchain_community.utilities import SQLDatabase
 from langchain_core.tools import tool
 from langgraph.checkpoint.memory import MemorySaver
-from langgraph.types import interrupt, Command
+from langgraph.types import Command
 from deepagents import create_deep_agent
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from models import model
@@ -1065,7 +1065,7 @@ Rules:
 </code></pre>
 <hr />
 <h3 id="3-define-read_sql-and-write_sql">3. Define <code>read_sql</code> and <code>write_sql</code></h3>
-<p><code>read_sql</code> executes and returns immediately. <code>write_sql</code> calls <code>interrupt()</code> before touching the database. When the graph hits <code>interrupt()</code>, execution pauses and the pending value surfaces to the caller. The script reads it, prompts you for approval, then resumes with your response via <code>Command(resume=...)</code>.</p>
+<p><code>read_sql</code> executes and returns immediately. <code>write_sql</code> is a plain tool with no HITL logic — the interrupt is handled by the <code>interrupt_on</code> argument to <code>create_deep_agent</code>, which intercepts the call before the Tool Node runs it.</p>
 <pre><code class="language-python">@tool
 def read_sql(query: str) -&gt; str:
     &quot;&quot;&quot;Run a read-only SELECT query against the Chinook music store database.&quot;&quot;&quot;
@@ -1078,9 +1078,6 @@ def read_sql(query: str) -&gt; str:
 def write_sql(query: str) -&gt; str:
     &quot;&quot;&quot;Execute a write operation (INSERT, UPDATE, DELETE, ALTER) against the Chinook database.
     Requires human approval before executing.&quot;&quot;&quot;
-    approval = interrupt({&quot;question&quot;: f&quot;Approve this write?\n\n{query}&quot;})
-    if str(approval).strip().lower() not in (&quot;yes&quot;, &quot;y&quot;):
-        return &quot;Write cancelled.&quot;
     try:
         return db.run(query)
     except Exception as e:
@@ -1088,7 +1085,7 @@ def write_sql(query: str) -&gt; str:
 </code></pre>
 <hr />
 <h3 id="4-wire-it-up">4. Wire it up</h3>
-<p>Pass both tools and the checkpointer. The <code>while</code> loop handles the approval prompt and resumes the graph with your response:</p>
+<p>Pass both tools, the checkpointer, and <code>interrupt_on</code>. The <code>while</code> loop handles the approval prompt and resumes the graph with your decision:</p>
 <pre><code class="language-python">checkpointer = MemorySaver()
 
 agent = create_deep_agent(
@@ -1096,6 +1093,7 @@ agent = create_deep_agent(
     tools=[read_sql, write_sql],
     system_prompt=SYSTEM_PROMPT,
     checkpointer=checkpointer,
+    interrupt_on={&quot;write_sql&quot;: True},
 )
 
 config = {&quot;configurable&quot;: {&quot;thread_id&quot;: &quot;lab3&quot;}}
@@ -1107,9 +1105,13 @@ result = agent.invoke(
 
 while result.get(&quot;__interrupt__&quot;):
     pending = result[&quot;__interrupt__&quot;][0].value
-    print(f&quot;\nApproval required:\n{pending['question']}&quot;)
-    approval = input(&quot;\nApprove? (yes/no): &quot;).strip()
-    result = agent.invoke(Command(resume=approval), config=config)
+    for req in pending[&quot;action_requests&quot;]:
+        print(f&quot;\nApproval required for {req['name']}:&quot;)
+        print(f&quot;  {req['args']}&quot;)
+    approval = input(&quot;\nApprove? (yes/no): &quot;).strip().lower()
+    decision = &quot;approve&quot; if approval in (&quot;yes&quot;, &quot;y&quot;) else &quot;reject&quot;
+    decisions = [{&quot;type&quot;: decision} for _ in pending[&quot;action_requests&quot;]]
+    result = agent.invoke(Command(resume={&quot;decisions&quot;: decisions}), config=config)
 
 print(result[&quot;messages&quot;][-1].content)
 </code></pre>
@@ -1133,7 +1135,7 @@ descending total.
 <p>The agent reads the genres first, then proposes an INSERT. The terminal pauses and prints the SQL. Type <code>yes</code> to approve or <code>no</code> to cancel, then note the result: the agent's final message will confirm whether the genre was added.</p>
 <div class="callout">
 <strong>What is happening</strong><br>
-The agent calls <code>read_sql</code> to inspect the genres table, then calls <code>write_sql</code> with an INSERT. At that point, the graph hits <code>interrupt()</code> and suspends: no write has happened yet. Your script surfaces the pending SQL, waits for input, and passes your response back via <code>Command(resume=...)</code>. The graph resumes inside <code>write_sql</code>, checks the response, and either commits the write or cancels. Open the run in <strong>LangSmith</strong> to see the pause and resume as distinct steps in the trace.
+The agent calls <code>read_sql</code> to inspect the genres table, then issues a <code>write_sql</code> tool_call. Before the Tool Node runs it, the HITL middleware (configured via <code>interrupt_on</code>) intercepts and suspends the graph: no write has happened yet. Your script surfaces the pending action, waits for input, and passes your decision back via <code>Command(resume={"decisions": [...]})</code>. On approve the Tool Node runs <code>write_sql</code> normally; on reject the middleware returns a cancellation message and the tool never executes. Open the run in <strong>LangSmith</strong> to see the pause and resume as distinct steps in the trace.
 </div>
 <h3 id="take-it-further-build-your-own-tools">Take it further: build your own tools</h3>
 <p>The same <code>@tool</code> pattern works for anything Python can do. Describe what you want to your coding agent and let it write the implementation, then drop it into <code>create_deep_agent(tools=[...])</code>.</p>
@@ -1150,7 +1152,7 @@ The agent calls <code>read_sql</code> to inspect the genres table, then calls <c
 <li>The <code>tools=</code> parameter is additive; your tools merge with the built-in suite (<code>write_todos</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code>, <code>glob</code>, <code>grep</code>, <code>task</code>) ; nothing is replaced</li>
 <li>The <code>@tool</code> decorator turns a Python function into a callable tool; the docstring is the description the model reads to decide when to use it</li>
 <li>The LLM never executes tools directly; it outputs an <code>AIMessage</code> with a <code>tool_calls</code> list; the Tool Node reads that and runs the function</li>
-<li>Human-in-the-Loop uses <code>interrupt()</code> inside a tool to pause the graph before a risky action; <code>Command(resume=...)</code> restores execution after a human decision</li>
+<li>Human-in-the-Loop uses <code>interrupt_on</code> on <code>create_deep_agent</code> to intercept named tool calls before they execute; <code>Command(resume={"decisions": [...]})</code> restores execution after a human decision</li>
 <li>HITL requires a checkpointer (<code>MemorySaver</code> for development) so the graph can save state on pause and resume from exactly the same point</li>
 </ul>
 <hr />

@@ -5,7 +5,7 @@ from pathlib import Path
 from langchain_community.utilities import SQLDatabase
 from langchain_core.tools import tool
 from langgraph.checkpoint.memory import MemorySaver
-from langgraph.types import interrupt, Command
+from langgraph.types import Command
 from deepagents import create_deep_agent
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from models import model
@@ -35,9 +35,6 @@ def read_sql(query: str) -> str:
 def write_sql(query: str) -> str:
     """Execute a write operation (INSERT, UPDATE, DELETE, ALTER) against the Chinook database.
     Requires human approval before executing."""
-    approval = interrupt({"question": f"Approve this write?\n\n{query}"})
-    if str(approval).strip().lower() not in ("yes", "y"):
-        return "Write cancelled."
     try:
         return db.run(query)
     except Exception as e:
@@ -50,6 +47,7 @@ agent = create_deep_agent(
     tools=[read_sql, write_sql],
     system_prompt=SYSTEM_PROMPT,
     checkpointer=checkpointer,
+    interrupt_on={"write_sql": True},
 )
 
 config = {"configurable": {"thread_id": "lab3"}}
@@ -61,8 +59,12 @@ result = agent.invoke(
 
 while result.get("__interrupt__"):
     pending = result["__interrupt__"][0].value
-    print(f"\nApproval required:\n{pending['question']}")
-    approval = input("\nApprove? (yes/no): ").strip()
-    result = agent.invoke(Command(resume=approval), config=config)
+    for req in pending["action_requests"]:
+        print(f"\nApproval required for {req['name']}:")
+        print(f"  {req['args']}")
+    approval = input("\nApprove? (yes/no): ").strip().lower()
+    decision = "approve" if approval in ("yes", "y") else "reject"
+    decisions = [{"type": decision} for _ in pending["action_requests"]]
+    result = agent.invoke(Command(resume={"decisions": decisions}), config=config)
 
 print(result["messages"][-1].content)
