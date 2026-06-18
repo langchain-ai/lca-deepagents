@@ -542,6 +542,7 @@
 .lt-group { display: flex; gap: 3px; }
 .lt-sys    { --c: #7A5AF8; }
 .lt-wrap   { --c: #B45309; }
+.lt-quiz   { --c: #7C3AED; }
 .lt-tab {
   font: 500 14px 'IBM Plex Mono', monospace;
   padding: 9px 14px;
@@ -572,6 +573,9 @@
 <div class="lt-bar" role="tablist" aria-label="Lesson sections">
   <div class="lt-group lt-sys">
     <button class="lt-tab active" data-p="sys" role="tab" aria-selected="true">System Prompt</button>
+  </div>
+  <div class="lt-group lt-quiz">
+    <button class="lt-tab" data-p="quiz" role="tab" aria-selected="false">Quiz</button>
   </div>
   <div class="lt-group lt-wrap">
     <button class="lt-tab" data-p="lab2" role="tab" aria-selected="false">Lab</button>
@@ -726,6 +730,60 @@ message. Your <code>system_prompt</code> shows up verbatim as the <strong>USER</
 rest of the message is the same assembled prompt structure you saw in Lab 1. Switch personas,<br />
 re-run, and you'll see only your line change while everything else stays put, proof<br />
 that this single string is all you touched to redirect the agent's behavior.</p>
+</div>
+<div class="lt-panel" id="p-quiz" role="tabpanel">
+<h2 id="check-your-understanding">Check your understanding</h2>
+<div class="mcq-container" id="mcq-16124331">
+<div class="mcq-question"><strong>Question:</strong> How many named parts does create_deep_agent assemble the system prompt from?</div>
+<div class="mcq-choices">
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '16124331')"><strong>A)</strong> One: the BASE prompt only</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '16124331')"><strong>B)</strong> Two: USER and BASE</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '16124331')"><strong>C)</strong> Two: USER and SUFFIX</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '16124331')"><strong>D)</strong> Three: USER, BASE, and SUFFIX</div>
+</div>
+<div class="mcq-answer" id="mcq-answer-16124331" style="display: none;">
+<div class="mcq-answer-header"><strong>Answer: D</strong> &#10003;</div>
+<div class="mcq-explanation">The assembled prompt has three parts: USER (your system_prompt argument), BASE (the SDK's built-in BASE_AGENT_PROMPT), and SUFFIX (appended by a HarnessProfile for model-specific tuning).</div>
+</div>
+</div>
+<div class="mcq-container" id="mcq-4a037246">
+<div class="mcq-question"><strong>Question:</strong> Where in the assembled prompt does the USER segment appear?</div>
+<div class="mcq-choices">
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '4a037246')"><strong>A)</strong> At the very front, before BASE and SUFFIX</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '4a037246')"><strong>B)</strong> At the very end, after the SUFFIX</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '4a037246')"><strong>C)</strong> After the BASE instructions</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '4a037246')"><strong>D)</strong> Interleaved with the BASE instructions</div>
+</div>
+<div class="mcq-answer" id="mcq-answer-4a037246" style="display: none;">
+<div class="mcq-answer-header"><strong>Answer: A</strong> &#10003;</div>
+<div class="mcq-explanation">The SDK slots the USER segment at the very front of the assembled prompt, ahead of the BASE instructions and any SUFFIX.</div>
+</div>
+</div>
+<div class="mcq-container" id="mcq-9df17580">
+<div class="mcq-question"><strong>Question:</strong> You write SYSTEM_PROMPT = 'You are a pirate.' but the agent replies with no pirate tone. What is most likely wrong?</div>
+<div class="mcq-choices">
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '9df17580')"><strong>A)</strong> The BASE prompt overrides all user-defined personas</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '9df17580')"><strong>B)</strong> The model requires a special flag to enable custom personas</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '9df17580')"><strong>C)</strong> SYSTEM_PROMPT was defined but not passed to create_deep_agent</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '9df17580')"><strong>D)</strong> The SUFFIX always overrides the USER segment</div>
+</div>
+<div class="mcq-answer" id="mcq-answer-9df17580" style="display: none;">
+<div class="mcq-answer-header"><strong>Answer: C</strong> &#10003;</div>
+<div class="mcq-explanation">Defining the string is not enough. It must be passed explicitly: create_deep_agent(model=model, system_prompt=SYSTEM_PROMPT).</div>
+</div>
+</div>
+<p><MCQ
+    question="What is the BASE segment of the assembled prompt?"
+    choices='["The system_prompt string you pass to create_deep_agent", "The tool schemas appended by the SDK before each LLM call", "A model-specific tuning block provided by a HarnessProfile", "The SDK\'s built-in BASE_AGENT_PROMPT, the behavior guidance that is always present"]'
+    correctIndex={3}
+    explanation="BASE is the SDK's built-in BASE_AGENT_PROMPT. It contains behavior guidance that is always present, regardless of what you pass as system_prompt."
+/></p>
+<p><MCQ
+    question="You switch from a pirate persona to a cowboy persona by changing SYSTEM_PROMPT. What else in the assembled prompt changes?"
+    choices='["The BASE instructions adapt to match the new persona", "Nothing; only your USER segment changes", "The SUFFIX is regenerated based on the persona", "The tool schemas update to reflect the new persona\'s capabilities"]'
+    correctIndex={1}
+    explanation="Only your USER segment changes. Everything else stays put — BASE and SUFFIX are fixed. That single string is all you touched to redirect the agent's behavior."
+/></p>
 </div>
 <hr />
 <h2 id="recap">Recap</h2>

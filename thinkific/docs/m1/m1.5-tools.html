@@ -796,7 +796,7 @@ def get_stock_price(ticker: str) -&gt; str:
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'e6c89cc3')"><strong>D)</strong> They move to a separate tool list the agent accesses on request</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-e6c89cc3" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: A</strong> &#10003;</div>
 <div class="mcq-explanation">The tools parameter is additive. Whatever you pass is merged with the SDK's built-in tool suite. Passing your own tools never removes read_file, write_todos, or any other built-in.</div>
 </div>
 </div>
@@ -809,7 +809,7 @@ def get_stock_price(ticker: str) -&gt; str:
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '503492c1')"><strong>D)</strong> An AIMessage with a tool_calls list specifying the name and arguments</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-503492c1" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: D</strong> &#10003;</div>
 <div class="mcq-explanation">The LLM never executes code. It outputs an AIMessage containing a tool_calls list with the tool name and arguments. The Tool Node inside the deep agent reads that list and performs the actual execution.</div>
 </div>
 </div>
@@ -822,7 +822,7 @@ def get_stock_price(ticker: str) -&gt; str:
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'c63d2624')"><strong>D)</strong> The return type annotation</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-c63d2624" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: B</strong> &#10003;</div>
 <div class="mcq-explanation">The docstring is the description the model uses to decide when to call a tool versus another. It is the most important of the three parts. Write it as a clear, specific sentence describing when the tool should be used.</div>
 </div>
 </div>
@@ -841,7 +841,7 @@ def get_stock_price(ticker: str) -&gt; str:
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '997604bc')"><strong>D)</strong> Yes: a draft write is created and rolled back on rejection</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-997604bc" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: C</strong> &#10003;</div>
 <div class="mcq-explanation">interrupt() fires before db.run(). The graph pauses and the pending SQL surfaces to your script. The database is untouched until you approve; only then does db.run() execute. If you reject, write_sql returns 'Write cancelled.' and db.run() is never called.</div>
 </div>
 </div>

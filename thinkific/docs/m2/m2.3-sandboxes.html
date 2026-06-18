@@ -904,7 +904,7 @@ Chart saved to python/m2/genre_revenue.png</pre>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '70606047')"><strong>D)</strong> stdout only</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-70606047" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: A</strong> &#10003;</div>
 <div class="mcq-explanation">execute returns stdout, stderr, and an exit code as a tool result. The LLM sees all three on the next call, which lets it diagnose errors and retry.</div>
 </div>
 </div>
@@ -917,7 +917,7 @@ Chart saved to python/m2/genre_revenue.png</pre>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'df396afc')"><strong>D)</strong> Which Python packages the agent can import</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-df396afc" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: B</strong> &#10003;</div>
 <div class="mcq-explanation">root_dir scopes the filesystem tools only. The execute tool still runs with full host permissions regardless of root_dir - that's why LocalShellBackend is unsuitable for production.</div>
 </div>
 </div>
@@ -930,7 +930,7 @@ Chart saved to python/m2/genre_revenue.png</pre>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '420f73f9')"><strong>D)</strong> Sandbox as a Tool - the agent runs outside and calls the sandbox via execute</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-420f73f9" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: D</strong> &#10003;</div>
 <div class="mcq-explanation">This course uses the Sandbox as a Tool pattern: the agent runs on the host and calls the sandbox via execute and filesystem tools. API keys stay on the host and the agent code is easy to update.</div>
 </div>
 </div>
@@ -943,7 +943,7 @@ Chart saved to python/m2/genre_revenue.png</pre>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '638ff72b')"><strong>D)</strong> Write the file to /tmp - the sandbox reads it from there</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-638ff72b" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: C</strong> &#10003;</div>
 <div class="mcq-explanation">upload_files() seeds the sandbox filesystem before the agent starts. Without it the sandbox starts empty - the agent has no access to local files unless you explicitly upload them.</div>
 </div>
 </div>

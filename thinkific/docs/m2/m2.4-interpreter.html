@@ -855,7 +855,7 @@ uv run ./m2/m2.4_interpreter_agent.py
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '46082622')"><strong>D)</strong> The LLM can see all tool results at once</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-46082622" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: B</strong> &#10003;</div>
 <div class="mcq-explanation">With PTC, JavaScript drives the tool calls and processes the results entirely inside the interpreter. Only the final computed value is returned to the LLM - the intermediate results never become LLM messages.</div>
 </div>
 </div>
@@ -868,7 +868,7 @@ uv run ./m2/m2.4_interpreter_agent.py
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '3c1a26fa')"><strong>D)</strong> JavaScript</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-3c1a26fa" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: D</strong> &#10003;</div>
 <div class="mcq-explanation">The eval tool runs code in a QuickJS JavaScript runtime. The model writes JavaScript - not Python - as the code argument to eval().</div>
 </div>
 </div>
@@ -881,7 +881,7 @@ uv run ./m2/m2.4_interpreter_agent.py
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '782ba8e2')"><strong>D)</strong> npm packages via import</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-782ba8e2" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: C</strong> &#10003;</div>
 <div class="mcq-explanation">QuickJS provides the JavaScript standard library: array methods, Map, Set, JSON, Math, Promise, and console.log. There is no filesystem, network, clock, or package manager access.</div>
 </div>
 </div>
@@ -894,7 +894,7 @@ uv run ./m2/m2.4_interpreter_agent.py
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '7d5868f2')"><strong>D)</strong> The agent can share interpreter state with other agents</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-7d5868f2" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: A</strong> &#10003;</div>
 <div class="mcq-explanation">The QuickJS context lives for the duration of a thread. Variables defined in one eval() call remain in scope for subsequent eval() calls in the same thread - like a persistent REPL session. Between separate agent.invoke() calls, state is also preserved as long as the same thread_id is used. Switch to a different thread_id and the interpreter starts fresh.</div>
 </div>
 </div>

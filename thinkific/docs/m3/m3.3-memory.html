@@ -683,7 +683,7 @@ By convention, memory files live in a <code>memories/</code> directory and the m
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '0c76bbcc')"><strong>D)</strong> Memory is always injected into the system prompt on every call; skills are loaded on demand</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-0c76bbcc" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: D</strong> &#10003;</div>
 <div class="mcq-explanation">Memory is always present: MemoryMiddleware injects the contents of your memory files into the system prompt on every LLM call. Skills use progressive disclosure; only the name and description are always in context, and the full body is read on demand when a task activates the skill.</div>
 </div>
 </div>
@@ -696,7 +696,7 @@ By convention, memory files live in a <code>memories/</code> directory and the m
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '13ec5dfd')"><strong>D)</strong> Agent memory persists across sessions; user memory is cleared after each session</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-13ec5dfd" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: C</strong> &#10003;</div>
 <div class="mcq-explanation">The distinction is scope. Agent memory lives in a single shared file; all users see the same content. User memory uses per-user files so preferences and context stay isolated. Which scope applies depends on the backend and file paths you configure.</div>
 </div>
 </div>
@@ -715,7 +715,7 @@ By convention, memory files live in a <code>memories/</code> directory and the m
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'd7ec5d8f')"><strong>D)</strong> Only in runs where the agent explicitly reads the memory file</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-d7ec5d8f" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: B</strong> &#10003;</div>
 <div class="mcq-explanation">Open any run, expand the system message on the first LLM call, and scroll to the bottom. The [agent_memory] block contains the raw content of your memory files. It appears on every call regardless of what the user asked.</div>
 </div>
 </div>
@@ -728,7 +728,7 @@ By convention, memory files live in a <code>memories/</code> directory and the m
 <div class="mcq-choice" onclick="handleMcqClick(this, true, 'b1d59917')"><strong>D)</strong> By calling edit_file on one of the paths passed to memory=[...]</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-b1d59917" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: D</strong> &#10003;</div>
 <div class="mcq-explanation">When the agent should remember something (because a user said 'remember this' or provided context that should carry forward), it calls edit_file on one of the paths in memory=[...]. That write is visible in LangSmith as an edit_file tool call, and the updated content appears in [agent_memory] on all subsequent calls.</div>
 </div>
 </div>

@@ -657,7 +657,7 @@ uv run python m4/m4.2_run_newsletter.py
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'fd6dad9e')"><strong>D)</strong> It is the only way to share a filesystem between them</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-fd6dad9e" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: B</strong> &#10003;</div>
 <div class="mcq-explanation">The four researchers are identical in behavior; only their assignment differs. So we define one genre-researcher type and the editor delegates to it once per genre, passing the genre as the task.</div>
 </div>
 </div>
@@ -670,7 +670,7 @@ uv run python m4/m4.2_run_newsletter.py
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'fd52268f')"><strong>D)</strong> No tools at all, because tools cannot be set on a subagent</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-fd52268f" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: C</strong> &#10003;</div>
 <div class="mcq-explanation">Setting tools replaces the inherited set rather than adding to it, so the researcher gets internet_search only. The built-in filesystem tools (write_file, read_file, …) are always provided by the harness, which is why it can still write its notes.</div>
 </div>
 </div>
@@ -683,7 +683,7 @@ uv run python m4/m4.2_run_newsletter.py
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '884caa6b')"><strong>D)</strong> So the editor can rewrite the researchers’ notes before publishing</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-884caa6b" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: B</strong> &#10003;</div>
 <div class="mcq-explanation">A subagent returns one message to the editor. Returning only the polished segment - not the bulky raw results - is what keeps the editor's context clean. The private file is simply where the researcher keeps the material it needs while drafting.</div>
 </div>
 </div>
@@ -696,7 +696,7 @@ uv run python m4/m4.2_run_newsletter.py
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '54d629a2')"><strong>D)</strong> It doesn’t write to disk itself; host code reads the saved file from agent state after invoke and writes it out</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-54d629a2" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: D</strong> &#10003;</div>
 <div class="mcq-explanation">StateBackend is an ephemeral, in-state filesystem - the agent has no real disk access. After invoke returns, trusted host code reads the file from result['files'] and writes it to disk, keeping the agent sandboxed.</div>
 </div>
 </div>

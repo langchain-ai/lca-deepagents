@@ -740,7 +740,7 @@ Here is a preview showing the head and tail of the result:
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'bb682f59')"><strong>D)</strong> By the agent model as part of generating its next response</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-bb682f59" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: C</strong> &#10003;</div>
 <div class="mcq-explanation">The middleware makes its own dedicated LLM call, separate from the agent's response turn, using the same underlying model. It sends the old messages to that call with a structured prompt to extract session intent, key facts, artifacts, and next steps.</div>
 </div>
 </div>
@@ -753,7 +753,7 @@ Here is a preview showing the head and tail of the result:
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '054f884f')"><strong>D)</strong> As a HumanMessage injected at the top of the preserved recent messages</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-054f884f" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: D</strong> &#10003;</div>
 <div class="mcq-explanation">The summary text is injected as a single HumanMessage placed at the top of the recent messages that were kept. The model receives the summary followed by the recent history, and picks up the conversation as if it had been there the whole time.</div>
 </div>
 </div>
@@ -772,7 +772,7 @@ Here is a preview showing the head and tail of the result:
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '07ae7f94')"><strong>D)</strong> The profile attribute only exists on string-initialized models, not objects</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-07ae7f94" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: C</strong> &#10003;</div>
 <div class="mcq-explanation">When you pass the model ID string, create_deep_agent re-initializes the model from scratch, which ignores any profile changes you made on the object. Passing the already-configured model object is the only way to ensure the overridden max_input_tokens reaches the middleware.</div>
 </div>
 </div>
@@ -785,7 +785,7 @@ Here is a preview showing the head and tail of the result:
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '796d72d7')"><strong>D)</strong> An error message asking the agent to call the tool again with a smaller query</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-796d72d7" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+<div class="mcq-answer-header"><strong>Answer: B</strong> &#10003;</div>
 <div class="mcq-explanation">FilesystemMiddleware writes the full result to /large_tool_results/<tool_call_id> on the filesystem, then replaces the inline ToolMessage with a preview showing the first and last 5 lines plus the file path. The agent can then use read_file with offset and limit to page through the full content on demand.</div>
 </div>
 </div>
