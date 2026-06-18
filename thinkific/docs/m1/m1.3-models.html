@@ -630,6 +630,7 @@
 </tr>
 </tbody>
 </table>
+<p>Most models in all three categories also accept image inputs (and some accept audio). Multimodal support works through the same <code>init_chat_model</code> interface.</p>
 <p>The table above covers the main categories used in this course. For the full directory of 50+ supported providers (OpenAI, Anthropic, Google, Groq, Ollama, Mistral, and many more), see the <a href="https://docs.langchain.com/oss/python/integrations/chat" target="_blank" rel="noopener noreferrer">LangChain chat model integrations</a>.</p>
 <p>Every lab gets its model from a single shared file, <strong><code>python/models.py</code></strong>. It exports a <code>model</code> object built with <code>init_chat_model(...)</code>, and the lab scripts simply do <code>from models import model</code>.</p>
 <p>To use a different model or provider, edit <code>models.py</code> (comment out the active line and uncomment the desired model):</p>
