@@ -581,24 +581,42 @@
 <div class="lt-panel active" id="p-summ" role="tabpanel">
 <details class="video-walkthrough">
 <summary>Video Walk-through [click to expand] — script available, video later</summary>
-<p><br></p>
-<p><strong>Script (will be recorded):</strong> This lesson covers how Deep Agents handles long conversations automatically. As you chat with an agent across many turns, messages accumulate and the token count rises. Left unchecked, it would eventually hit the model's context limit. SummarizationMiddleware deals with this automatically by watching the context fill up and compacting old messages into a summary before they ever reach the model.</p>
-<p>[Show diagram]</p>
-<p>Think of the context window like a thermometer. Every message adds tokens and the level rises. When it crosses 85% of the model's limit, the middleware fires. At that point, it picks a cutoff point, keeps the most recent messages intact, and summarizes everything older into a single block. The original messages are replaced in the model's view by that summary, so the token count drops sharply and the conversation can continue.</p>
-<p>This scales. On a second compaction event, the prior summary is treated just like any other old message, so it gets folded into a new combined summary along with whatever else has aged past the cutoff. Every compaction event produces exactly one summary block, no matter how many rounds have happened before.</p>
-<p>[Scroll to "What the summary contains"]</p>
-<p>So what actually goes into the summary? The middleware makes a separate LLM call, using the same model as the agent, with a structured prompt that extracts four things [highlight as I go]:</p>
-<p>The session intent, meaning what the user is trying to accomplish. Key facts and decisions from the conversation. Any artifacts like files that were created or modified. And what still remains to be done.</p>
-<p>That resulting text is then injected as a single message at the top of the preserved recent messages, so the model picks up as if it had been there the whole time.</p>
-<p>[Scroll to "Seeing it in action" and highlight the model.profile line]</p>
-<p>The default threshold is 85% of the model's real context window, which for Claude Haiku 4.5 is 170,000 tokens. To actually see it fire in a demo, we override model.profile["max_input_tokens"] to a small value so the threshold is hit after just a few turns.</p>
-<p>[Point at the expected output]</p>
-<p>[Highlight turn 1: stored : 2 message(s) (raw history, never trimmed)]</p>
-<p>[Highlight turn 2: stored : 4 message(s) (raw history, never trimmed)]</p>
-<p>You can see it fire on turn 3. [Highlight]</p>
-<p>After that, every subsequent turn shows "model saw: summary + messages[4:]", which means the model is receiving the summary plus only the most recent messages, not the full history.</p>
-<p>On turn 5, when we ask "what do you remember about me?", the agent correctly recalls the name, company, and project from earlier turns that it never directly saw again. The summary did its job.</p>
-<p>One important note: state["messages"] is never modified. The full history is always stored intact. Summarization only affects what gets sent to the model each turn.</p>
+<br>
+
+**Script (will be recorded):** This lesson covers how Deep Agents handles long conversations automatically. As you chat with an agent across many turns, messages accumulate and the token count rises. Left unchecked, it would eventually hit the model's context limit. SummarizationMiddleware deals with this automatically by watching the context fill up and compacting old messages into a summary before they ever reach the model.
+
+[Show diagram]
+
+Think of the context window like a thermometer. Every message adds tokens and the level rises. When it crosses 85% of the model's limit, the middleware fires. At that point, it picks a cutoff point, keeps the most recent messages intact, and summarizes everything older into a single block. The original messages are replaced in the model's view by that summary, so the token count drops sharply and the conversation can continue.
+
+This scales. On a second compaction event, the prior summary is treated just like any other old message, so it gets folded into a new combined summary along with whatever else has aged past the cutoff. Every compaction event produces exactly one summary block, no matter how many rounds have happened before.
+
+[Scroll to "What the summary contains"]
+
+So what actually goes into the summary? The middleware makes a separate LLM call, using the same model as the agent, with a structured prompt that extracts four things [highlight as I go]:
+
+The session intent, meaning what the user is trying to accomplish. Key facts and decisions from the conversation. Any artifacts like files that were created or modified. And what still remains to be done.
+
+That resulting text is then injected as a single message at the top of the preserved recent messages, so the model picks up as if it had been there the whole time.
+
+[Scroll to "Seeing it in action" and highlight the model.profile line]
+
+The default threshold is 85% of the model's real context window, which for Claude Haiku 4.5 is 170,000 tokens. To actually see it fire in a demo, we override model.profile["max_input_tokens"] to a small value so the threshold is hit after just a few turns.
+
+[Point at the expected output]
+
+[Highlight turn 1: stored : 2 message(s) (raw history, never trimmed)]
+
+[Highlight turn 2: stored : 4 message(s) (raw history, never trimmed)]
+
+You can see it fire on turn 3. [Highlight]
+
+After that, every subsequent turn shows "model saw: summary + messages[4:]", which means the model is receiving the summary plus only the most recent messages, not the full history.
+
+On turn 5, when we ask "what do you remember about me?", the agent correctly recalls the name, company, and project from earlier turns that it never directly saw again. The summary did its job.
+
+One important note: state["messages"] is never modified. The full history is always stored intact. Summarization only affects what gets sent to the model each turn.
+
 </details>
 <p>When a conversation runs long enough, older messages push the total token count toward the model's context limit. Deep Agents handles this automatically with <strong>SummarizationMiddleware</strong>; it watches the context fill up and compacts old messages into a summary before the model ever sees them.</p>
 <hr />
@@ -674,15 +692,24 @@ Turn 5  Agent: You mentioned your name is Alex, you work at Acme Corp, and you'v
 <p>Summarization deals with messages that accumulate over many turns. A different problem is a single tool call that returns an enormous result - a full database export, hundreds of search matches, or a long code generation output. Storing the full result inline would spike the token count in one shot.</p>
 <details class="video-walkthrough">
 <summary>Video Walk-through [click to expand] — script available, video later</summary>
-<p><br></p>
-<p><strong>Script (will be recorded):</strong> Summarization deals with messages that build up over many turns. But there can be a different problem: a single tool call that returns an enormous result, such as a full database export, hundreds of search matches, or a long file. That would spike the token count in just one shot.</p>
-<p>[Scroll to "Tool result offloading"]</p>
-<p>When a tool result is too large (over roughly 20,000 tokens) FilesystemMiddleware automatically offloads it to the filesystem and replaces it with a short preview and a file path the agent can read on demand.</p>
-<p>[Highlight the example message block]</p>
-<p>So instead of the full result, the model sees this. First, it's told the result was too large and where it was saved on the filesystem. Then it's told it can use read_file to retrieve it, but to only read part at a time. And finally it gets a preview: the first 5 lines and the last 5 lines, so it has enough context to know what the result contains before deciding how to proceed.</p>
-<p>[Scroll to the exclusions paragraph]</p>
-<p>The filesystem tools themselves are excluded from this, so things like read_file, grep, and ls. They either have their own truncation built in, or evicting them wouldn't make sense.</p>
-<p>In short: summarization handles gradual accumulation across turns, and tool result offloading handles single large spikes. Together they're what allows an agent to run indefinitely without hitting context limits.</p>
+<br>
+
+**Script (will be recorded):** Summarization deals with messages that build up over many turns. But there can be a different problem: a single tool call that returns an enormous result, such as a full database export, hundreds of search matches, or a long file. That would spike the token count in just one shot.
+
+[Scroll to "Tool result offloading"]
+
+When a tool result is too large (over roughly 20,000 tokens) FilesystemMiddleware automatically offloads it to the filesystem and replaces it with a short preview and a file path the agent can read on demand.
+
+[Highlight the example message block]
+
+So instead of the full result, the model sees this. First, it's told the result was too large and where it was saved on the filesystem. Then it's told it can use read_file to retrieve it, but to only read part at a time. And finally it gets a preview: the first 5 lines and the last 5 lines, so it has enough context to know what the result contains before deciding how to proceed.
+
+[Scroll to the exclusions paragraph]
+
+The filesystem tools themselves are excluded from this, so things like read_file, grep, and ls. They either have their own truncation built in, or evicting them wouldn't make sense.
+
+In short: summarization handles gradual accumulation across turns, and tool result offloading handles single large spikes. Together they're what allows an agent to run indefinitely without hitting context limits.
+
 </details>
 <p><strong>FilesystemMiddleware</strong> handles this automatically with tool result eviction. When a tool returns a result that exceeds roughly <strong>20,000 tokens</strong>, the middleware:</p>
 <ol>
@@ -724,72 +751,89 @@ Here is a preview showing the head and tail of the result:
 <p>In the next lesson we cover skills: how to package reusable agent behaviours so the model can load them on demand.</p>
 </div>
 <div class="lt-panel" id="p-quiz" role="tabpanel">
-<h2 id="check-your-understanding">Check your understanding</h2>
-<p><MCQ
+
+<h2>Check your understanding</h2>
+
+<MCQ
     question="At what threshold does SummarizationMiddleware fire by default?"
     choices='["85% of the model\'s max_input_tokens", "50% of the model\'s max_input_tokens", "When the context window is completely full", "After a fixed count of 20 messages"]'
     correctIndex={0}
     explanation="SummarizationMiddleware fires when total tokens exceed 85% of max_input_tokens. For Claude Haiku 4.5 that is 170,000 tokens. You can lower the threshold for demos by overriding model.profile[\"max_input_tokens\"]."
-/></p>
+/>
+
 <div class="mcq-container" id="mcq-bb682f59">
-<div class="mcq-question"><strong>Question:</strong> How is the summary itself generated when SummarizationMiddleware fires?</div>
-<div class="mcq-choices">
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'bb682f59')"><strong>A)</strong> By truncating the oldest messages until the token count drops below the limit</div>
+    <div class="mcq-question">
+        <strong>Question:</strong> How is the summary itself generated when SummarizationMiddleware fires?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'bb682f59')"><strong>A)</strong> By truncating the oldest messages until the token count drops below the limit</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'bb682f59')"><strong>B)</strong> By a fixed template that extracts the first sentence of each message</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, 'bb682f59')"><strong>C)</strong> By a separate LLM call using the same model as the agent</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'bb682f59')"><strong>D)</strong> By the agent model as part of generating its next response</div>
+    </div>
+    <div id="mcq-answer-bb682f59" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-explanation">The middleware makes its own dedicated LLM call, separate from the agent's response turn, using the same underlying model. It sends the old messages to that call with a structured prompt to extract session intent, key facts, artifacts, and next steps.</div>
+    </div>
 </div>
-<div class="mcq-answer" id="mcq-answer-bb682f59" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
-<div class="mcq-explanation">The middleware makes its own dedicated LLM call, separate from the agent's response turn, using the same underlying model. It sends the old messages to that call with a structured prompt to extract session intent, key facts, artifacts, and next steps.</div>
-</div>
-</div>
+
 <div class="mcq-container" id="mcq-054f884f">
-<div class="mcq-question"><strong>Question:</strong> Where in the message list does the generated summary appear?</div>
-<div class="mcq-choices">
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '054f884f')"><strong>A)</strong> Appended to the system prompt as an additional instruction block</div>
+    <div class="mcq-question">
+        <strong>Question:</strong> Where in the message list does the generated summary appear?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '054f884f')"><strong>A)</strong> Appended to the system prompt as an additional instruction block</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '054f884f')"><strong>B)</strong> As the very first message in state["messages"]</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '054f884f')"><strong>C)</strong> As a ToolMessage returned by a built-in summarize tool</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '054f884f')"><strong>D)</strong> As a HumanMessage injected at the top of the preserved recent messages</div>
+    </div>
+    <div id="mcq-answer-054f884f" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+        <div class="mcq-explanation">The summary text is injected as a single HumanMessage placed at the top of the recent messages that were kept. The model receives the summary followed by the recent history, and picks up the conversation as if it had been there the whole time.</div>
+    </div>
 </div>
-<div class="mcq-answer" id="mcq-answer-054f884f" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
-<div class="mcq-explanation">The summary text is injected as a single HumanMessage placed at the top of the recent messages that were kept. The model receives the summary followed by the recent history, and picks up the conversation as if it had been there the whole time.</div>
-</div>
-</div>
-<p><MCQ
+
+<MCQ
     question="What happens to state[\"messages\"] when summarization fires?"
     choices='["Older messages are deleted in place and replaced by the summary message", "state[\"messages\"] is never mutated; summarization only affects what is sent to the model each turn", "state[\"messages\"] is cleared and rebuilt from the summary on every subsequent turn", "A new summarized state replaces the original, and the old state is discarded"]'
     correctIndex={1}
     explanation="state[\"messages\"] is never modified. The full message history is always stored intact. Summarization happens only at the send layer: the middleware intercepts what gets forwarded to the model each turn, not the stored list."
-/></p>
+/>
+
 <div class="mcq-container" id="mcq-07ae7f94">
-<div class="mcq-question"><strong>Question:</strong> Why must you pass the model object to create_deep_agent when using a profile override, rather than the model ID string?</div>
-<div class="mcq-choices">
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '07ae7f94')"><strong>A)</strong> The string form does not support multimodal inputs required for summarization</div>
+    <div class="mcq-question">
+        <strong>Question:</strong> Why must you pass the model object to create_deep_agent when using a profile override, rather than the model ID string?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '07ae7f94')"><strong>A)</strong> The string form does not support multimodal inputs required for summarization</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '07ae7f94')"><strong>B)</strong> String initialization disables SummarizationMiddleware entirely</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '07ae7f94')"><strong>C)</strong> Passing the string re-initializes the model internally and discards the profile override</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '07ae7f94')"><strong>D)</strong> The profile attribute only exists on string-initialized models, not objects</div>
+    </div>
+    <div id="mcq-answer-07ae7f94" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-explanation">When you pass the model ID string, create_deep_agent re-initializes the model from scratch, which ignores any profile changes you made on the object. Passing the already-configured model object is the only way to ensure the overridden max_input_tokens reaches the middleware.</div>
+    </div>
 </div>
-<div class="mcq-answer" id="mcq-answer-07ae7f94" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
-<div class="mcq-explanation">When you pass the model ID string, create_deep_agent re-initializes the model from scratch, which ignores any profile changes you made on the object. Passing the already-configured model object is the only way to ensure the overridden max_input_tokens reaches the middleware.</div>
-</div>
-</div>
+
 <div class="mcq-container" id="mcq-796d72d7">
-<div class="mcq-question"><strong>Question:</strong> When FilesystemMiddleware evicts a large tool result, what does the agent see in its message history?</div>
-<div class="mcq-choices">
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '796d72d7')"><strong>A)</strong> The tool result is silently dropped and the agent continues without it</div>
+    <div class="mcq-question">
+        <strong>Question:</strong> When FilesystemMiddleware evicts a large tool result, what does the agent see in its message history?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '796d72d7')"><strong>A)</strong> The tool result is silently dropped and the agent continues without it</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '796d72d7')"><strong>B)</strong> A short head-and-tail preview of the result plus a file path the agent can read_file to retrieve the full content</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '796d72d7')"><strong>C)</strong> The full result compressed into a single summary message by a separate LLM call</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '796d72d7')"><strong>D)</strong> An error message asking the agent to call the tool again with a smaller query</div>
+    </div>
+    <div id="mcq-answer-796d72d7" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+        <div class="mcq-explanation">FilesystemMiddleware writes the full result to /large_tool_results/<tool_call_id> on the filesystem, then replaces the inline ToolMessage with a preview showing the first and last 5 lines plus the file path. The agent can then use read_file with offset and limit to page through the full content on demand.</div>
+    </div>
 </div>
-<div class="mcq-answer" id="mcq-answer-796d72d7" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
-<div class="mcq-explanation">FilesystemMiddleware writes the full result to /large_tool_results/<tool_call_id> on the filesystem, then replaces the inline ToolMessage with a preview showing the first and last 5 lines plus the file path. The agent can then use read_file with offset and limit to page through the full content on demand.</div>
+
 </div>
-</div>
-</div>
+
 <hr />
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />

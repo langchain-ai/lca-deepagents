@@ -590,22 +590,38 @@ document.addEventListener('DOMContentLoaded', function() { mermaid.run(); });</s
 <p>The filesystem backends from the last lesson give the agent file tools: <code>ls</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code>, <code>glob</code>, <code>grep</code>. <code>LocalShellBackend</code> and sandbox backends add one more: <strong><code>execute</code></strong>, which runs shell commands.</p>
 <details class="video-walkthrough">
 <summary>Video Walk-through [click to expand] — script available, video later</summary>
-<p><br></p>
-<p><strong>Script (will be recorded):</strong> This lesson builds on the filesystem backends from last time. Those backends gave the agent file tools: <code>read_file</code>, <code>write_file</code>, and so on. <code>LocalShellBackend</code> and sandbox backends add one more: <code>execute</code>, which lets the agent actually run shell commands.</p>
-<p>[Show the diagram]</p>
-<p>The diagram is simple. Both <code>LocalShellBackend</code> and <code>Sandbox</code> backends sit under the same Backend node, and both unlock the <code>execute</code> tool in addition to the standard filesystem surface. The agent sees the same tools either way; what changes is where those commands actually run.</p>
-<p>[Scroll to "The execute tool"]</p>
-<p>When the agent calls <code>execute</code>, it gets back stdout, stderr, and an exit code as a tool result. That means if something fails, the agent can see the error and fix it - and this is one of the powerful things a sandbox enables.</p>
-<p>[Scroll to "How do you choose?"]</p>
-<p>The choice comes down to isolation. <code>LocalShellBackend</code> runs commands directly on your machine, no sandboxing, no process isolation. Even if you set a <code>root_dir</code>, that only scopes the filesystem tools. The <code>execute</code> tool still runs with full host permissions, so the agent could theoretically run anything. That makes it fine for local development and personal tooling, but not for production or anything involving untrusted input.</p>
-<p>Sandboxes are the right choice when the agent needs to run arbitrary code safely - coding agents, data analysis, anything where you can't fully predict what the agent will execute.</p>
-<p>[Show the sandbox models diagram]</p>
-<p>There are two models for using a sandbox. On the left, Agent in Sandbox - the agent itself runs inside the sandbox. API keys have to live inside it and updates require rebuilding the image. On the right, Sandbox as a Tool - the agent runs on your host and calls the sandbox via <code>execute</code> and filesystem tools. API keys stay on your machine, the agent code is easy to update, and sandbox failures don't affect agent state. This is the model we use in this course.</p>
-<p>[Scroll to "Configuring a LangSmith sandbox"]</p>
-<p>Setting one up is straightforward. You create a sandbox client, provision a sandbox with <code>create_sandbox</code>, wrap it in <code>LangSmithSandbox</code>, and pass it as the backend. The try/finally block is important - sandboxes are billed resources and you always want to clean them up, even if the agent raises an error. The sandbox starts completely fresh each run, so anything you need inside it has to be explicitly uploaded beforehand.</p>
-<p>[Scroll to LocalShellBackend table]</p>
-<p><code>LocalShellBackend</code> has a few configuration options worth knowing: <code>root_dir</code> scopes the filesystem tools, <code>timeout</code> limits how long each <code>execute</code> call can run, and <code>inherit_env</code> controls whether the agent inherits your current environment variables. Just remember - <code>root_dir</code> does not restrict what <code>execute</code> can do. There's a security warning on the page that's worth reading if you plan to use this backend.</p>
-<p>Head over to the labs to see both patterns in action: Lab 1 is a basic sandbox agent that writes and runs a script, and Lab 2 uploads a database file, queries it, and retrieves a generated chart back from the sandbox.</p>
+<br>
+
+**Script (will be recorded):** This lesson builds on the filesystem backends from last time. Those backends gave the agent file tools: `read_file`, `write_file`, and so on. `LocalShellBackend` and sandbox backends add one more: `execute`, which lets the agent actually run shell commands.
+
+[Show the diagram]
+
+The diagram is simple. Both `LocalShellBackend` and `Sandbox` backends sit under the same Backend node, and both unlock the `execute` tool in addition to the standard filesystem surface. The agent sees the same tools either way; what changes is where those commands actually run.
+
+[Scroll to "The execute tool"]
+
+When the agent calls `execute`, it gets back stdout, stderr, and an exit code as a tool result. That means if something fails, the agent can see the error and fix it - and this is one of the powerful things a sandbox enables.
+
+[Scroll to "How do you choose?"]
+
+The choice comes down to isolation. `LocalShellBackend` runs commands directly on your machine, no sandboxing, no process isolation. Even if you set a `root_dir`, that only scopes the filesystem tools. The `execute` tool still runs with full host permissions, so the agent could theoretically run anything. That makes it fine for local development and personal tooling, but not for production or anything involving untrusted input.
+
+Sandboxes are the right choice when the agent needs to run arbitrary code safely - coding agents, data analysis, anything where you can't fully predict what the agent will execute.
+
+[Show the sandbox models diagram]
+
+There are two models for using a sandbox. On the left, Agent in Sandbox - the agent itself runs inside the sandbox. API keys have to live inside it and updates require rebuilding the image. On the right, Sandbox as a Tool - the agent runs on your host and calls the sandbox via `execute` and filesystem tools. API keys stay on your machine, the agent code is easy to update, and sandbox failures don't affect agent state. This is the model we use in this course.
+
+[Scroll to "Configuring a LangSmith sandbox"]
+
+Setting one up is straightforward. You create a sandbox client, provision a sandbox with `create_sandbox`, wrap it in `LangSmithSandbox`, and pass it as the backend. The try/finally block is important - sandboxes are billed resources and you always want to clean them up, even if the agent raises an error. The sandbox starts completely fresh each run, so anything you need inside it has to be explicitly uploaded beforehand.
+
+[Scroll to LocalShellBackend table]
+
+`LocalShellBackend` has a few configuration options worth knowing: `root_dir` scopes the filesystem tools, `timeout` limits how long each `execute` call can run, and `inherit_env` controls whether the agent inherits your current environment variables. Just remember - `root_dir` does not restrict what `execute` can do. There's a security warning on the page that's worth reading if you plan to use this backend.
+
+Head over to the labs to see both patterns in action: Lab 1 is a basic sandbox agent that writes and runs a script, and Lab 2 uploads a database file, queries it, and retrieves a generated chart back from the sandbox.
+
 </details>
 <hr />
 <div class="mermaid">
@@ -894,60 +910,75 @@ Chart saved to python/m2/genre_revenue.png</pre>
 </details>
 </div>
 <div class="lt-panel" id="p-quiz" role="tabpanel">
-<h2 id="check-your-understanding">Check your understanding</h2>
+
+<h2>Check your understanding</h2>
+
 <div class="mcq-container" id="mcq-70606047">
-<div class="mcq-question"><strong>Question:</strong> What does the execute tool return to the agent?</div>
-<div class="mcq-choices">
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '70606047')"><strong>A)</strong> stdout, stderr, and an exit code</div>
+    <div class="mcq-question">
+        <strong>Question:</strong> What does the execute tool return to the agent?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, true, '70606047')"><strong>A)</strong> stdout, stderr, and an exit code</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '70606047')"><strong>B)</strong> The script file contents</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '70606047')"><strong>C)</strong> A boolean success or failure</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '70606047')"><strong>D)</strong> stdout only</div>
+    </div>
+    <div id="mcq-answer-70606047" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
+        <div class="mcq-explanation">execute returns stdout, stderr, and an exit code as a tool result. The LLM sees all three on the next call, which lets it diagnose errors and retry.</div>
+    </div>
 </div>
-<div class="mcq-answer" id="mcq-answer-70606047" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
-<div class="mcq-explanation">execute returns stdout, stderr, and an exit code as a tool result. The LLM sees all three on the next call, which lets it diagnose errors and retry.</div>
-</div>
-</div>
+
 <div class="mcq-container" id="mcq-df396afc">
-<div class="mcq-question"><strong>Question:</strong> What does root_dir limit in LocalShellBackend?</div>
-<div class="mcq-choices">
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'df396afc')"><strong>A)</strong> All shell commands executed via execute</div>
+    <div class="mcq-question">
+        <strong>Question:</strong> What does root_dir limit in LocalShellBackend?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'df396afc')"><strong>A)</strong> All shell commands executed via execute</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, 'df396afc')"><strong>B)</strong> Filesystem tool access - ls, read_file, write_file, and similar</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'df396afc')"><strong>C)</strong> Network access from the agent</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'df396afc')"><strong>D)</strong> Which Python packages the agent can import</div>
+    </div>
+    <div id="mcq-answer-df396afc" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+        <div class="mcq-explanation">root_dir scopes the filesystem tools only. The execute tool still runs with full host permissions regardless of root_dir - that's why LocalShellBackend is unsuitable for production.</div>
+    </div>
 </div>
-<div class="mcq-answer" id="mcq-answer-df396afc" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
-<div class="mcq-explanation">root_dir scopes the filesystem tools only. The execute tool still runs with full host permissions regardless of root_dir - that's why LocalShellBackend is unsuitable for production.</div>
-</div>
-</div>
+
 <div class="mcq-container" id="mcq-420f73f9">
-<div class="mcq-question"><strong>Question:</strong> Which sandbox model does this course use?</div>
-<div class="mcq-choices">
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '420f73f9')"><strong>A)</strong> Agent in Sandbox - the agent runs inside the sandbox</div>
+    <div class="mcq-question">
+        <strong>Question:</strong> Which sandbox model does this course use?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '420f73f9')"><strong>A)</strong> Agent in Sandbox - the agent runs inside the sandbox</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '420f73f9')"><strong>B)</strong> Both models equally</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '420f73f9')"><strong>C)</strong> Neither - the course uses LocalShellBackend</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '420f73f9')"><strong>D)</strong> Sandbox as a Tool - the agent runs outside and calls the sandbox via execute</div>
+    </div>
+    <div id="mcq-answer-420f73f9" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+        <div class="mcq-explanation">This course uses the Sandbox as a Tool pattern: the agent runs on the host and calls the sandbox via execute and filesystem tools. API keys stay on the host and the agent code is easy to update.</div>
+    </div>
 </div>
-<div class="mcq-answer" id="mcq-answer-420f73f9" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
-<div class="mcq-explanation">This course uses the Sandbox as a Tool pattern: the agent runs on the host and calls the sandbox via execute and filesystem tools. API keys stay on the host and the agent code is easy to update.</div>
-</div>
-</div>
+
 <div class="mcq-container" id="mcq-638ff72b">
-<div class="mcq-question"><strong>Question:</strong> How do you make a local file available inside a LangSmith sandbox before the agent runs?</div>
-<div class="mcq-choices">
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '638ff72b')"><strong>A)</strong> Pass the file path in the system prompt</div>
+    <div class="mcq-question">
+        <strong>Question:</strong> How do you make a local file available inside a LangSmith sandbox before the agent runs?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '638ff72b')"><strong>A)</strong> Pass the file path in the system prompt</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '638ff72b')"><strong>B)</strong> The sandbox automatically syncs the local filesystem</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '638ff72b')"><strong>C)</strong> Call backend.upload_files() with the file contents before invoking the agent</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '638ff72b')"><strong>D)</strong> Write the file to /tmp - the sandbox reads it from there</div>
+    </div>
+    <div id="mcq-answer-638ff72b" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-explanation">upload_files() seeds the sandbox filesystem before the agent starts. Without it the sandbox starts empty - the agent has no access to local files unless you explicitly upload them.</div>
+    </div>
 </div>
-<div class="mcq-answer" id="mcq-answer-638ff72b" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
-<div class="mcq-explanation">upload_files() seeds the sandbox filesystem before the agent starts. Without it the sandbox starts empty - the agent has no access to local files unless you explicitly upload them.</div>
+
 </div>
-</div>
-</div>
+
 <script>
 (function () {
   var tabs = document.querySelectorAll('.lt-tab');

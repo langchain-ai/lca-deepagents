@@ -587,17 +587,28 @@
 <p>A skill is a directory containing a <code>SKILL.md</code> file. Skills follow an <a href="https://agentskills.io/specification" target="_blank" rel="noopener noreferrer">open standard</a>, which means they are portable across agents and shareable across teams.</p>
 <details class="video-walkthrough">
 <summary>Video Walk-through [click to expand] — script available, video later</summary>
-<p><br></p>
-<p><strong>Script (will be recorded):</strong> A skill is a directory containing a SKILL.md file. Skills follow an open standard, which means they're portable across agents and shareable across teams.</p>
-<p>[Show diagram]</p>
-<p>The directory structure is simple. Under your skills/ folder, each skill gets its own named subdirectory. Inside that, SKILL.md is the only required file, highlighted here in yellow. Everything else is optional: a scripts/ folder for executable code, references/ for documentation, assets/ for templates or resources. Importantly, the agent can't see any of those optional files unless the skill body explicitly mentions them.</p>
-<p>[Slide 2]</p>
-<p>This slide shows two skills side by side. Notice what's shown underneath each SKILL.md: just the name and description. Those are the only two fields injected into the system prompt on every call. The full body - the steps, output format, everything else - is only loaded when the agent activates the skill by calling read_file.</p>
-<p>[Next diagram]</p>
-<p>And this is what that looks like inside the file. The top block is the YAML frontmatter: always in context, always compact. Below it are the markdown instructions: the actual behaviour, like the BANT framework steps shown here as an example, and this stays out of context until activation.</p>
-<p>So the frontmatter is always present but compact, and the instructions are only loaded when needed. That's the core of how skills stay lightweight.</p>
-<p>[Scroll to the frontmatter fields table]</p>
-<p>There are only two required frontmatter fields: name and description. The name must be lowercase with hyphens and must match the directory name. The description is a single sentence describing when to use the skill; we'll come back to why that matters. The rest of the fields [highlight allowed-tools, compatibility, and metadata] are optional.</p>
+<br>
+
+**Script (will be recorded):** A skill is a directory containing a SKILL.md file. Skills follow an open standard, which means they're portable across agents and shareable across teams.
+
+[Show diagram]
+
+The directory structure is simple. Under your skills/ folder, each skill gets its own named subdirectory. Inside that, SKILL.md is the only required file, highlighted here in yellow. Everything else is optional: a scripts/ folder for executable code, references/ for documentation, assets/ for templates or resources. Importantly, the agent can't see any of those optional files unless the skill body explicitly mentions them.
+
+[Slide 2]
+
+This slide shows two skills side by side. Notice what's shown underneath each SKILL.md: just the name and description. Those are the only two fields injected into the system prompt on every call. The full body - the steps, output format, everything else - is only loaded when the agent activates the skill by calling read_file.
+
+[Next diagram]
+
+And this is what that looks like inside the file. The top block is the YAML frontmatter: always in context, always compact. Below it are the markdown instructions: the actual behaviour, like the BANT framework steps shown here as an example, and this stays out of context until activation.
+
+So the frontmatter is always present but compact, and the instructions are only loaded when needed. That's the core of how skills stay lightweight.
+
+[Scroll to the frontmatter fields table]
+
+There are only two required frontmatter fields: name and description. The name must be lowercase with hyphens and must match the directory name. The description is a single sentence describing when to use the skill; we'll come back to why that matters. The rest of the fields [highlight allowed-tools, compatibility, and metadata] are optional.
+
 </details>
 <iframe src="images/m3.2-skill-structure.html" style="width:100%;height:580px;border:none;border-radius:12px;display:block;margin:1.25rem 0 1.5rem;" title="Skill directory structure; use arrow keys or Prev/Next to navigate"></iframe>
 <h3 id="the-skillmd-file">The SKILL.md file</h3>
@@ -645,15 +656,24 @@
 <h2 id="progressive-disclosure">Progressive disclosure</h2>
 <details class="video-walkthrough">
 <summary>Video Walk-through [click to expand] — script available, video later</summary>
-<p><br></p>
-<p><strong>Script (will be recorded):</strong> Skills use a three-stage pattern called progressive disclosure, which is designed to keep the agent's context lean. The idea is: don't load what you don't need yet.</p>
-<p>[Scroll to and highlight the Skills System code block]</p>
-<p>Stage one is discovery. At startup, the SDK reads the name and description from each skill's frontmatter and automatically injects them into the system prompt. The SDK generates this section, not you. This is what it looks like. Both skills are listed [highlight] with their descriptions and the path to their SKILL.md. That's all that's in context at this point: just the names and descriptions, nothing from the skill bodies.</p>
-<p>[Scroll to "Activation"]</p>
-<p>Stage two is activation. When a user's request matches a skill's description, the agent calls read_file on the path shown in the system prompt, loading the full SKILL.md into context for that turn. This is the moment the instructions actually arrive.</p>
-<p>[Scroll to "Execution"]</p>
-<p>Then stage three is execution; the agent follows the instructions in the skill body, calling whatever tools it needs.</p>
-<p>Head over to the lab to see how the skills are wired up and watch both activation stages play out in LangSmith!</p>
+<br>
+
+**Script (will be recorded):** Skills use a three-stage pattern called progressive disclosure, which is designed to keep the agent's context lean. The idea is: don't load what you don't need yet.
+
+[Scroll to and highlight the Skills System code block]
+
+Stage one is discovery. At startup, the SDK reads the name and description from each skill's frontmatter and automatically injects them into the system prompt. The SDK generates this section, not you. This is what it looks like. Both skills are listed [highlight] with their descriptions and the path to their SKILL.md. That's all that's in context at this point: just the names and descriptions, nothing from the skill bodies.
+
+[Scroll to "Activation"]
+
+Stage two is activation. When a user's request matches a skill's description, the agent calls read_file on the path shown in the system prompt, loading the full SKILL.md into context for that turn. This is the moment the instructions actually arrive.
+
+[Scroll to "Execution"]
+
+Then stage three is execution; the agent follows the instructions in the skill body, calling whatever tools it needs.
+
+Head over to the lab to see how the skills are wired up and watch both activation stages play out in LangSmith!
+
 </details>
 <p>Skills use a three-stage pattern to keep the agent's context lean:</p>
 <p><strong>1. Discovery</strong></p>
@@ -674,70 +694,94 @@ Available skills:
 <p>You can see all three stages in a LangSmith trace: the Skills System section appears in every system message; the <code>read_file</code> call marks the moment of activation; and the subsequent tool calls show execution.</p>
 </div>
 <div class="lt-panel" id="p-quiz" role="tabpanel">
-<h2 id="check-your-understanding">Check your understanding</h2>
+
+<h2>Check your understanding</h2>
+
 <div class="mcq-container" id="mcq-71d7668c">
-<div class="mcq-question"><strong>Question:</strong> What constraint links the skill directory name to its SKILL.md frontmatter?</div>
-<div class="mcq-choices">
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '71d7668c')"><strong>A)</strong> The directory name must match the name field in the frontmatter</div>
+    <div class="mcq-question">
+        <strong>Question:</strong> What constraint links the skill directory name to its SKILL.md frontmatter?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, true, '71d7668c')"><strong>A)</strong> The directory name must match the name field in the frontmatter</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '71d7668c')"><strong>B)</strong> The directory name must match the description field</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '71d7668c')"><strong>C)</strong> The directory name must be all uppercase</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '71d7668c')"><strong>D)</strong> There is no constraint; the two are independent</div>
+    </div>
+    <div id="mcq-answer-71d7668c" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
+        <div class="mcq-explanation">Each skill lives in its own named directory, and that directory name must match the name field in the SKILL.md frontmatter. Breaking this constraint means the SDK cannot resolve the skill correctly.</div>
+    </div>
 </div>
-<div class="mcq-answer" id="mcq-answer-71d7668c" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
-<div class="mcq-explanation">Each skill lives in its own named directory, and that directory name must match the name field in the SKILL.md frontmatter. Breaking this constraint means the SDK cannot resolve the skill correctly.</div>
-</div>
-</div>
-<p><MCQ
+
+<MCQ
     question="At which stage does the agent call read_file on a skill's SKILL.md path?"
     choices='["Discovery: when the SDK assembles the system prompt at startup", "Execution: once per tool call during the run", "All three stages; the file is read once and cached at startup", "Activation: when a task matches the skill\'s description"]'
     correctIndex={3}
     explanation="Activation is the stage where the agent calls read_file. At discovery, only the name and description are injected; the full body stays unread until a matching task triggers the read."
-/></p>
-<p><MCQ
+/>
+
+<MCQ
     question="What should the description field in a skill's frontmatter communicate?"
     choices='["A summary of what the skill does internally, step by step", "The skill\'s author and version number", "In what situation the skill should be used", "The list of tools the skill is permitted to call"]'
     correctIndex={2}
     explanation="The description is the only text visible to the agent before it decides whether to activate a skill. Write it as a single, specific sentence describing when to use the skill, not what it does internally."
-/></p>
-<p><MCQ
+/>
+
+<MCQ
     question="Why does the SDK inject only the name and description into the system prompt rather than the full SKILL.md body?"
     choices='["The full body is too long for any model\'s context window", "To keep the agent\'s context lean by loading skill details only when a task requires them", "The full body is compiled into a binary at deploy time and is not readable as text", "Injecting the full body would expose internal instructions to users"]'
     correctIndex={1}
     explanation="Progressive disclosure keeps the context lean. Only the compact name and description are always present. The full body (steps, output format, bundled files) loads only when the agent activates the skill for a matching task."
-/></p>
+/>
+
 <div class="mcq-container" id="mcq-9033a08c">
-<div class="mcq-question"><strong>Question:</strong> Which two frontmatter fields in SKILL.md are required?</div>
-<div class="mcq-choices">
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '9033a08c')"><strong>A)</strong> name and allowed-tools</div>
+    <div class="mcq-question">
+        <strong>Question:</strong> Which two frontmatter fields in SKILL.md are required?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '9033a08c')"><strong>A)</strong> name and allowed-tools</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '9033a08c')"><strong>B)</strong> name and compatibility</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '9033a08c')"><strong>C)</strong> description and metadata</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '9033a08c')"><strong>D)</strong> name and description</div>
+    </div>
+    <div id="mcq-answer-9033a08c" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+        <div class="mcq-explanation">name and description are the only required fields. allowed-tools, compatibility, and metadata are all optional. name must be lowercase alphanumeric with hyphens and must match the directory name.</div>
+    </div>
 </div>
-<div class="mcq-answer" id="mcq-answer-9033a08c" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
-<div class="mcq-explanation">name and description are the only required fields. allowed-tools, compatibility, and metadata are all optional. name must be lowercase alphanumeric with hyphens and must match the directory name.</div>
+
 </div>
-</div>
-</div>
+
 <div class="lt-panel" id="p-lab" role="tabpanel">
 <h2 id="sales-assistant-with-skills">Sales Assistant with Skills</h2>
 <p>This lab uses a sales assistant with two skills: one for qualifying leads and one for drafting pitches. Using two skills makes the discovery and activation stages visible: both descriptions are always in the system prompt, but only the relevant skill's <code>SKILL.md</code> is read when needed.</p>
 <p>All files are already in the repo under <code>python/m3/</code>. Open <code>m3.2_scratch_agent_skills.py</code> and run it directly, or use a coding agent to explore the setup.</p>
 <details class="video-walkthrough">
 <summary>Video Walk-through [click to expand] — script available, video later</summary>
-<p><br></p>
-<p><strong>Script (will be recorded):</strong> [Open m3.2_scratch_agent_skills.py in VS Code]</p>
-<p>This is the whole agent! The point of this lab is to see skills in action so let's get right to it.</p>
-<p>[Highlight create_deep_agent]</p>
-<p>There are only three things being passed here: the model, a system prompt saying "You are a sales assistant", and the skills= parameter pointing to the skills/ directory. That's it. The SDK scans that directory, reads the frontmatter from each SKILL.md, and generates the Skills System block in the system prompt automatically.</p>
-<p>[Highlight the agent.invoke line]</p>
-<p>The agent is invoked with a single message: qualifying a lead at Acme Corp. Run this and you'll see the agent activate the qualify-lead skill; it calls read_file on qualify-lead/SKILL.md, loads the BANT framework instructions, and follows them.</p>
-<p>[Run it in terminal]</p>
-<p>Let's run it. Watch the output: the agent works through the qualification steps and classifies the lead.</p>
-<p>Now try swapping the message for: "Write a cold outreach message for a prospect at a mid-size logistics company." That will activate draft-pitch instead.</p>
-<p>[Open LangSmith]</p>
-<p>Let's open both runs in LangSmith and compare the system messages. In both, you'll see the Skills System section listing both skill names and descriptions. But the read_file call will target a different SKILL.md in each run. That's the activation stage made visible. The description was the only thing that determined which skill got loaded.</p>
+<br>
+
+**Script (will be recorded):** [Open m3.2_scratch_agent_skills.py in VS Code]
+
+This is the whole agent! The point of this lab is to see skills in action so let's get right to it.
+
+[Highlight create_deep_agent]
+
+There are only three things being passed here: the model, a system prompt saying "You are a sales assistant", and the skills= parameter pointing to the skills/ directory. That's it. The SDK scans that directory, reads the frontmatter from each SKILL.md, and generates the Skills System block in the system prompt automatically.
+
+[Highlight the agent.invoke line]
+
+The agent is invoked with a single message: qualifying a lead at Acme Corp. Run this and you'll see the agent activate the qualify-lead skill; it calls read_file on qualify-lead/SKILL.md, loads the BANT framework instructions, and follows them.
+
+[Run it in terminal]
+
+Let's run it. Watch the output: the agent works through the qualification steps and classifies the lead.
+
+Now try swapping the message for: "Write a cold outreach message for a prospect at a mid-size logistics company." That will activate draft-pitch instead.
+
+[Open LangSmith]
+
+Let's open both runs in LangSmith and compare the system messages. In both, you'll see the Skills System section listing both skill names and descriptions. But the read_file call will target a different SKILL.md in each run. That's the activation stage made visible. The description was the only thing that determined which skill got loaded.
+
 </details>
 <hr />
 <h3 id="1-qualify-leadskillmd">1. <code>qualify-lead/SKILL.md</code></h3>

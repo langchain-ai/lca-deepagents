@@ -581,8 +581,13 @@
 <div class="lt-panel active" id="p-del" role="tabpanel">
 <details class="video-walkthrough">
 <summary>Video Walk-through [click to expand]</summary>
-<p><br></p>
+<br>
+
+
 <Video src="TODO" />
+
+
+
 </details>
 <p>The Deep Agents harness has two capabilities that let it complete long-running tasks: <strong>planning</strong> and <strong>subagents</strong>.</p>
 <p align="center">
@@ -717,60 +722,75 @@
 </ul>
 </div>
 <div class="lt-panel" id="p-quiz" role="tabpanel">
-<h2 id="check-your-understanding">Check your understanding</h2>
+
+<h2>Check your understanding</h2>
+
 <div class="mcq-container" id="mcq-4133520e">
-<div class="mcq-question"><strong>Question:</strong> What is the job of the Deep Agents planning tool (write_todos)?</div>
-<div class="mcq-choices">
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '4133520e')"><strong>A)</strong> It keeps a structured to-do list and tracks each task’s status (pending → in progress → completed) as the agent works</div>
+    <div class="mcq-question">
+        <strong>Question:</strong> What is the job of the Deep Agents planning tool (write_todos)?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, true, '4133520e')"><strong>A)</strong> It keeps a structured to-do list and tracks each task’s status (pending → in progress → completed) as the agent works</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '4133520e')"><strong>B)</strong> It runs the tasks in parallel across several models</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '4133520e')"><strong>C)</strong> It deletes old messages once the context window is full</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '4133520e')"><strong>D)</strong> It writes the final answer to a file</div>
+    </div>
+    <div id="mcq-answer-4133520e" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
+        <div class="mcq-explanation">The planning tool maintains a structured to-do list, persisted in the agent’s state, so the agent has an explicit plan to track against on a long, multi-step job.</div>
+    </div>
 </div>
-<div class="mcq-answer" id="mcq-answer-4133520e" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
-<div class="mcq-explanation">The planning tool maintains a structured to-do list, persisted in the agent’s state, so the agent has an explicit plan to track against on a long, multi-step job.</div>
-</div>
-</div>
+
 <div class="mcq-container" id="mcq-316d52c9">
-<div class="mcq-question"><strong>Question:</strong> How does a main agent hand work to a subagent in Deep Agents?</div>
-<div class="mcq-choices">
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '316d52c9')"><strong>A)</strong> By editing the subagent’s source code at runtime</div>
+    <div class="mcq-question">
+        <strong>Question:</strong> How does a main agent hand work to a subagent in Deep Agents?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '316d52c9')"><strong>A)</strong> By editing the subagent’s source code at runtime</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '316d52c9')"><strong>B)</strong> By forwarding its entire message history to the subagent</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '316d52c9')"><strong>C)</strong> Subagents cannot be invoked; they run automatically every turn</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '316d52c9')"><strong>D)</strong> Through a built-in task tool - it calls the subagent like any other tool, and can fire off several at once</div>
+    </div>
+    <div id="mcq-answer-316d52c9" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+        <div class="mcq-explanation">Subagents use the subagent-as-tool model: the main agent calls the built-in task tool with an assignment. Because it is just a tool call, the main agent can invoke several subagents in parallel.</div>
+    </div>
 </div>
-<div class="mcq-answer" id="mcq-answer-316d52c9" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
-<div class="mcq-explanation">Subagents use the subagent-as-tool model: the main agent calls the built-in task tool with an assignment. Because it is just a tool call, the main agent can invoke several subagents in parallel.</div>
-</div>
-</div>
+
 <div class="mcq-container" id="mcq-3fdd2589">
-<div class="mcq-question"><strong>Question:</strong> When the main agent delegates to a subagent, what does the subagent receive and return at the hand-off boundary?</div>
-<div class="mcq-choices">
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '3fdd2589')"><strong>A)</strong> The main agent’s full message history; it returns the updated history</div>
+    <div class="mcq-question">
+        <strong>Question:</strong> When the main agent delegates to a subagent, what does the subagent receive and return at the hand-off boundary?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '3fdd2589')"><strong>A)</strong> The main agent’s full message history; it returns the updated history</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '3fdd2589')"><strong>B)</strong> It shares the main agent’s context directly, so nothing is passed</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '3fdd2589')"><strong>C)</strong> One task in; it returns one final result back</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '3fdd2589')"><strong>D)</strong> A task in; it returns its entire internal context</div>
+    </div>
+    <div id="mcq-answer-3fdd2589" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-explanation">A subagent runs in an isolated context. It receives one task - not the main agent’s history - and returns one final result. Internally it may take many steps, but only the result crosses the boundary, keeping the subagent’s work and tools out of the main agent’s context.</div>
+    </div>
 </div>
-<div class="mcq-answer" id="mcq-answer-3fdd2589" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
-<div class="mcq-explanation">A subagent runs in an isolated context. It receives one task - not the main agent’s history - and returns one final result. Internally it may take many steps, but only the result crosses the boundary, keeping the subagent’s work and tools out of the main agent’s context.</div>
-</div>
-</div>
+
 <div class="mcq-container" id="mcq-8900a6ca">
-<div class="mcq-question"><strong>Question:</strong> What is the difference between a synchronous and an asynchronous subagent?</div>
-<div class="mcq-choices">
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '8900a6ca')"><strong>A)</strong> Synchronous ones run in the background; asynchronous ones block the main agent</div>
+    <div class="mcq-question">
+        <strong>Question:</strong> What is the difference between a synchronous and an asynchronous subagent?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '8900a6ca')"><strong>A)</strong> Synchronous ones run in the background; asynchronous ones block the main agent</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '8900a6ca')"><strong>B)</strong> A synchronous subagent blocks the main agent until it finishes; an asynchronous one runs in the background while the main agent stays responsive</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '8900a6ca')"><strong>C)</strong> Synchronous subagents can use tools; asynchronous ones cannot</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '8900a6ca')"><strong>D)</strong> There is no difference; the terms are interchangeable</div>
+    </div>
+    <div id="mcq-answer-8900a6ca" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+        <div class="mcq-explanation">A synchronous subagent blocks the main agent until it returns. An asynchronous subagent runs as a background job so the main agent stays responsive and collects the result later.</div>
+    </div>
 </div>
-<div class="mcq-answer" id="mcq-answer-8900a6ca" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
-<div class="mcq-explanation">A synchronous subagent blocks the main agent until it returns. An asynchronous subagent runs as a background job so the main agent stays responsive and collects the result later.</div>
+
 </div>
-</div>
-</div>
+
 <hr />
 <h2 id="next">Next</h2>
 <p>In the next lesson you'll build a subagent team in a hands-on lab: a main agent that fans out parallel searches to subagents and synthesizes their results into a weekly newsletter.</p>

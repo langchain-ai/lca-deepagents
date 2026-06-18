@@ -535,28 +535,50 @@
 <h1 id="execution-environment">Execution Environment</h1>
 <details class="video-walkthrough">
 <summary>Video Walk-through [click to expand] — script available, video later</summary>
-<p><br></p>
-<p><strong>Script (will be recorded):</strong> A Deep Agent's execution environment gives it three capabilities: a filesystem to read and write files, a shell to run commands via the execute tool, and an interpreter to run code. The first two run through a swappable backend. The interpreter is the exception, which we'll come back to.</p>
-<p>[Show the backend diagram]</p>
-<p>Let's walk through this diagram. At the top, filesystem tools: read_file, write_file, ls, and so on, all flow down through the Backend. The backend is what you configure to control where files actually live and where commands actually run.</p>
-<p>[Point to State]</p>
-<p>The default is State. Files are kept in the agent's in-memory state. Nothing persists to disk, which is fine for simple use cases or demos.</p>
-<p>[Point to Disk]</p>
-<p>Filesystem backend persists files to local disk. Good for local development where you want files to actually exist on your machine.</p>
-<p>[Point to Store]</p>
-<p>Store connects to a remote storage backend, useful when your agent is deployed and needs persistent file access across runs.</p>
-<p>[Point to Context Hub]</p>
-<p>Context Hub is a managed backend that handles file storage in a hosted environment.</p>
-<p>[Point to Sandbox and LocalShell, and the execute tool node]</p>
-<p>We will cover Sandboxes in a later lesson.</p>
-<p>[Point to Composite and the Router]</p>
-<p>Composite is the most flexible option. It routes file operations to different backends depending on the path prefix, so you could have memory files going to one backend, working files to another, and so on. All within the same agent.</p>
-<p>[Point to Custom]</p>
-<p>Finally, Custom lets you implement your own backend if none of the built-ins fit your needs.</p>
-<p>[Scroll to "The Interpreter"]</p>
-<p>The interpreter is separate from all of this. Language models are unreliable at exact computation (such as calculations, data transformations and generating precise output) so rather than having the model try to reason through those, it writes code and the interpreter actually runs it, returning the real result. It runs as a tool in the agent's main loop, not through a backend. The last lesson of this module covers it in detail.</p>
-<p>The key idea to take away from this lesson is that the backend is what makes the execution environment configurable. Swap it and you change where files live and where commands run, without changing anything else about the agent.</p>
+<br>
+
+**Script (will be recorded):** A Deep Agent's execution environment gives it three capabilities: a filesystem to read and write files, a shell to run commands via the execute tool, and an interpreter to run code. The first two run through a swappable backend. The interpreter is the exception, which we'll come back to.
+
+[Show the backend diagram]
+
+Let's walk through this diagram. At the top, filesystem tools: read_file, write_file, ls, and so on, all flow down through the Backend. The backend is what you configure to control where files actually live and where commands actually run.
+
+[Point to State]
+
+The default is State. Files are kept in the agent's in-memory state. Nothing persists to disk, which is fine for simple use cases or demos.
+
+[Point to Disk]
+
+Filesystem backend persists files to local disk. Good for local development where you want files to actually exist on your machine.
+
+[Point to Store]
+
+Store connects to a remote storage backend, useful when your agent is deployed and needs persistent file access across runs.
+
+[Point to Context Hub]
+
+Context Hub is a managed backend that handles file storage in a hosted environment.
+
+[Point to Sandbox and LocalShell, and the execute tool node]
+
+We will cover Sandboxes in a later lesson.
+
+[Point to Composite and the Router]
+
+Composite is the most flexible option. It routes file operations to different backends depending on the path prefix, so you could have memory files going to one backend, working files to another, and so on. All within the same agent.
+
+[Point to Custom]
+
+Finally, Custom lets you implement your own backend if none of the built-ins fit your needs.
+
+[Scroll to "The Interpreter"]
+
+The interpreter is separate from all of this. Language models are unreliable at exact computation (such as calculations, data transformations and generating precise output) so rather than having the model try to reason through those, it writes code and the interpreter actually runs it, returning the real result. It runs as a tool in the agent's main loop, not through a backend. The last lesson of this module covers it in detail.
+
+The key idea to take away from this lesson is that the backend is what makes the execution environment configurable. Swap it and you change where files live and where commands run, without changing anything else about the agent.
+
 </details>
+
 <p>A Deep Agent has an <strong>execution environment</strong> that provides three things:</p>
 <ul>
 <li>a <strong>filesystem</strong> to read and write files</li>

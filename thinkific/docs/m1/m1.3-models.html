@@ -656,10 +656,14 @@ model = init_chat_model(&quot;anthropic:claude-haiku-4-5&quot;)   # workshop def
 <p>The video below is a quick walkthrough on how to change your model:</p>
 <details class="video-walkthrough">
 <summary>Video Walk-through [click to expand] — script available, video later</summary>
-<p><br></p>
-<p><strong>Script (will be recorded):</strong> So if you haven't already, run the deep agent you just created [open vscode]; unless you changed the default settings, this [gesture to answer in terminal] is your answer using Claude Haiku.</p>
-<p>Let's change it to Claude Sonnet by navigating to the models.py file and commenting out Haiku and uncommenting Sonnet [show in vscode]. Let's run it, and hey! That was super easy!</p>
-<p>[show the course page and the "Try an open-source model via OpenRouter" green tab] I highly encourage you to try out an open source model, go check out the videos on how to use Nvidia's model and Ollama's model - which doesn't require an API key!</p>
+<br>
+
+**Script (will be recorded):** So if you haven't already, run the deep agent you just created [open vscode]; unless you changed the default settings, this [gesture to answer in terminal] is your answer using Claude Haiku.
+
+Let's change it to Claude Sonnet by navigating to the models.py file and commenting out Haiku and uncommenting Sonnet [show in vscode]. Let's run it, and hey! That was super easy!
+
+[show the course page and the "Try an open-source model via OpenRouter" green tab] I highly encourage you to try out an open source model, go check out the videos on how to use Nvidia's model and Ollama's model - which doesn't require an API key!
+
 </details>
 <pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/m1.2_scratch_agent.py
 </code></pre>
@@ -695,7 +699,7 @@ model = init_chat_model(&quot;anthropic:claude-haiku-4-5&quot;)   # workshop def
 <p>Here are two real responses to "What is an LLM?", one from each model:</p>
 <div style="display:flex;gap:20px;align-items:flex-start;margin:1.5rem 0;">
 
-<details markdown="1" style="flex:1;border:1px solid #e5e7eb;border-radius:8px;padding:0.75rem 1rem;">
+<details style="flex:1;border:1px solid #e5e7eb;border-radius:8px;padding:0.75rem 1rem;">
 <summary style="cursor:pointer;font-weight:600;font-family:'Monaco','Courier New',monospace;font-size:0.875em;list-style:none;">claude-haiku-4-5</summary>
 <div style="margin-top:1rem;">
 <p>An LLM (Large Language Model) is a type of artificial intelligence system trained on vast amounts of text data to predict and generate human language.</p>
@@ -712,7 +716,7 @@ model = init_chat_model(&quot;anthropic:claude-haiku-4-5&quot;)   # workshop def
 </div>
 </details>
 
-<details markdown="1" style="flex:1;border:1px solid #e5e7eb;border-radius:8px;padding:0.75rem 1rem;">
+<details style="flex:1;border:1px solid #e5e7eb;border-radius:8px;padding:0.75rem 1rem;">
 <summary style="cursor:pointer;font-weight:600;font-family:'Monaco','Courier New',monospace;font-size:0.875em;list-style:none;">nvidia/nemotron-3-ultra-550b-a55b</summary>
 <div style="margin-top:1rem;">
 <p>An <strong>LLM (Large Language Model)</strong> is a type of artificial intelligence model trained on vast amounts of text data to understand and generate human-like language.</p>

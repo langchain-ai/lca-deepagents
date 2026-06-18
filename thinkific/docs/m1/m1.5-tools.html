@@ -722,6 +722,7 @@ buildDiagram({
 <p><strong>Try it in Lab 3:</strong> ask two unrelated questions in one message: <code>"Which genres have the most tracks, and which employee has handled the most invoices?"</code> Then watch the LangSmith trace to see whether the calls overlap.</p>
 </div>
 </details>
+
 <h3 id="defining-a-tool-with-tool">Defining a tool with <code>@tool</code></h3>
 <div class="video-container" style="max-width: 750px;">
     <div class="video-wrapper">
@@ -764,66 +765,82 @@ def get_stock_price(ticker: str) -&gt; str:
 
 </div>
 <div class="lt-panel" id="p-quiz" role="tabpanel">
-<h2 id="check-your-understanding">Check your understanding</h2>
+
+<h2>Check your understanding</h2>
+
 <div class="mcq-container" id="mcq-e6c89cc3">
-<div class="mcq-question"><strong>Question:</strong> You pass tools=[my_tool] to create_deep_agent. What happens to the built-in tools like read_file and write_todos?</div>
-<div class="mcq-choices">
-<div class="mcq-choice" onclick="handleMcqClick(this, true, 'e6c89cc3')"><strong>A)</strong> They are merged with my_tool; both are available</div>
+    <div class="mcq-question">
+        <strong>Question:</strong> You pass tools=[my_tool] to create_deep_agent. What happens to the built-in tools like read_file and write_todos?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, true, 'e6c89cc3')"><strong>A)</strong> They are merged with my_tool; both are available</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'e6c89cc3')"><strong>B)</strong> They are replaced by my_tool</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'e6c89cc3')"><strong>C)</strong> They are disabled until re-added explicitly</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'e6c89cc3')"><strong>D)</strong> They move to a separate tool list the agent accesses on request</div>
+    </div>
+    <div id="mcq-answer-e6c89cc3" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
+        <div class="mcq-explanation">The tools parameter is additive. Whatever you pass is merged with the SDK's built-in tool suite. Passing your own tools never removes read_file, write_todos, or any other built-in.</div>
+    </div>
 </div>
-<div class="mcq-answer" id="mcq-answer-e6c89cc3" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
-<div class="mcq-explanation">The tools parameter is additive. Whatever you pass is merged with the SDK's built-in tool suite. Passing your own tools never removes read_file, write_todos, or any other built-in.</div>
-</div>
-</div>
+
 <div class="mcq-container" id="mcq-503492c1">
-<div class="mcq-question"><strong>Question:</strong> When an LLM decides it needs to call a tool, what does it actually produce?</div>
-<div class="mcq-choices">
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '503492c1')"><strong>A)</strong> It calls the Python function directly</div>
+    <div class="mcq-question">
+        <strong>Question:</strong> When an LLM decides it needs to call a tool, what does it actually produce?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '503492c1')"><strong>A)</strong> It calls the Python function directly</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '503492c1')"><strong>B)</strong> A ToolMessage with the result already included</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '503492c1')"><strong>C)</strong> A plain text description of what it would do</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '503492c1')"><strong>D)</strong> An AIMessage with a tool_calls list specifying the name and arguments</div>
+    </div>
+    <div id="mcq-answer-503492c1" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+        <div class="mcq-explanation">The LLM never executes code. It outputs an AIMessage containing a tool_calls list with the tool name and arguments. The Tool Node inside the deep agent reads that list and performs the actual execution.</div>
+    </div>
 </div>
-<div class="mcq-answer" id="mcq-answer-503492c1" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
-<div class="mcq-explanation">The LLM never executes code. It outputs an AIMessage containing a tool_calls list with the tool name and arguments. The Tool Node inside the deep agent reads that list and performs the actual execution.</div>
-</div>
-</div>
+
 <div class="mcq-container" id="mcq-c63d2624">
-<div class="mcq-question"><strong>Question:</strong> Which part of a @tool definition does the model read to decide when to reach for that tool?</div>
-<div class="mcq-choices">
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'c63d2624')"><strong>A)</strong> The function name</div>
+    <div class="mcq-question">
+        <strong>Question:</strong> Which part of a @tool definition does the model read to decide when to reach for that tool?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'c63d2624')"><strong>A)</strong> The function name</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, 'c63d2624')"><strong>B)</strong> The docstring</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'c63d2624')"><strong>C)</strong> The type annotations on the parameters</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'c63d2624')"><strong>D)</strong> The return type annotation</div>
+    </div>
+    <div id="mcq-answer-c63d2624" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+        <div class="mcq-explanation">The docstring is the description the model uses to decide when to call a tool versus another. It is the most important of the three parts. Write it as a clear, specific sentence describing when the tool should be used.</div>
+    </div>
 </div>
-<div class="mcq-answer" id="mcq-answer-c63d2624" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
-<div class="mcq-explanation">The docstring is the description the model uses to decide when to call a tool versus another. It is the most important of the three parts. Write it as a clear, specific sentence describing when the tool should be used.</div>
-</div>
-</div>
-<p><MCQ
+
+<MCQ
     question="Why does Human-in-the-Loop require a checkpointer?"
     choices='["To save graph state so execution can pause and resume from the same point after a human decision", "To log tool call arguments to a file for audit purposes", "To validate that the human\'s approval matches the tool schema", "To prevent the LLM from calling the tool more than once"]'
     correctIndex={0}
     explanation="When interrupt() fires, the graph suspends and must save its current state so it can resume from exactly the same point once the human responds. A checkpointer handles that save-and-restore. Without one, the graph has no way to pause mid-run."
-/></p>
+/>
+
 <div class="mcq-container" id="mcq-997604bc">
-<div class="mcq-question"><strong>Question:</strong> In the SQL lab, write_sql calls interrupt() before db.run(). At that moment, has the database been modified?</div>
-<div class="mcq-choices">
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '997604bc')"><strong>A)</strong> Yes: the write runs first, then waits for approval to commit</div>
+    <div class="mcq-question">
+        <strong>Question:</strong> In the SQL lab, write_sql calls interrupt() before db.run(). At that moment, has the database been modified?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '997604bc')"><strong>A)</strong> Yes: the write runs first, then waits for approval to commit</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '997604bc')"><strong>B)</strong> It depends on the checkpointer used</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '997604bc')"><strong>C)</strong> No: interrupt() fires before db.run(), so nothing has been written yet</div>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '997604bc')"><strong>D)</strong> Yes: a draft write is created and rolled back on rejection</div>
+    </div>
+    <div id="mcq-answer-997604bc" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-explanation">interrupt() fires before db.run(). The graph pauses and the pending SQL surfaces to your script. The database is untouched until you approve; only then does db.run() execute. If you reject, write_sql returns 'Write cancelled.' and db.run() is never called.</div>
+    </div>
 </div>
-<div class="mcq-answer" id="mcq-answer-997604bc" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
-<div class="mcq-explanation">interrupt() fires before db.run(). The graph pauses and the pending SQL surfaces to your script. The database is untouched until you approve; only then does db.run() execute. If you reject, write_sql returns 'Write cancelled.' and db.run() is never called.</div>
+
 </div>
-</div>
-</div>
+
 <div class="lt-panel" id="p-lab3" role="tabpanel">
 <h2 id="two-sql-tools-with-human-in-the-loop">Two SQL Tools with Human-in-the-Loop</h2>
 <script>
@@ -984,27 +1001,48 @@ def get_stock_price(ticker: str) -&gt; str:
 <p>The <a href="https://github.com/lerocha/chinook-database" target="_blank" rel="noopener noreferrer">Chinook</a> database is a standard SQLite music store sample with 11 tables covering artists, albums, tracks, customers, invoices, and employees. The file is already in the repo at <code>python/m1/chinook.db</code>.</p>
 <details class="video-walkthrough">
 <summary>Video Walk-through [click to expand] — script available, video later</summary>
-<p><br></p>
-<p><strong>Script (will be recorded):</strong> [Open scratch_agent_tools in VSCode]</p>
-<p>This lab puts everything we just covered into practice. We have two SQL tools and Human-in-the-Loop on the write operation. Let's walk through the file.</p>
-<p>[Highlight the imports block]</p>
-<p>At the top, notice Command from LangGraph and MemorySaver. Command is how we resume the graph after a human decision. MemorySaver is our checkpointer — it saves the agent's state at each step so execution can pause and resume from exactly the same point. Without it, HITL can't work.</p>
-<p>[Highlight the SQLDatabase line]</p>
-<p>We're also connecting to the Chinook database here, which is a sample SQLite music store that ships with the repo.</p>
-<p>[Scroll to and highlight the system prompt]</p>
-<p>The system prompt tells the agent which tool to reach for: read_sql for SELECT queries, write_sql for anything that writes. This is a good example of why descriptions matter — the agent uses both the system prompt and the tool descriptions together to make that decision.</p>
-<p>[Scroll to and highlight read_sql]</p>
-<p>read_sql is straightforward. It takes a query, runs it, and returns the result. No HITL here because reads are safe.</p>
-<p>[Highlight write_sql]</p>
-<p>write_sql is also a plain tool — notice there's no interrupt() call inside it. The pause isn't in the tool itself; it's configured externally.</p>
-<p>[Highlight create_deep_agent call, specifically interrupt_on]</p>
-<p>Here's where HITL is wired up. The interrupt_on={"write_sql": True} argument configures the HITL Middleware — that's the component you saw in the diagram sitting between the Agent and Human. When the agent calls write_sql, the middleware intercepts it before it executes, pauses the graph, and surfaces the pending action to your script. Nothing has touched the database yet at this point.</p>
-<p>[Scroll to the while loop]</p>
-<p>Down here is where your script handles the pause. When the graph hits the interrupt, it returns with a <strong>interrupt</strong> key. The while loop catches that, prints the pending SQL, waits for your input, and calls agent.invoke(Command(resume=...)) to resume from exactly where it left off. On approve, the middleware forwards the call and the tool executes. On reject, the middleware injects a cancellation message and write_sql never runs.</p>
-<p>Let's run it. [Run it in terminal]</p>
-<p>The agent will first read the genres table, then propose an INSERT for "Synthwave". When it pauses, type yes to approve or no to cancel. Let's say yes.</p>
-<p>[Then open the run in LangSmith]</p>
-<p>You'll see the pause and resume as distinct steps in the trace.</p>
+<br>
+
+**Script (will be recorded):** [Open scratch_agent_tools in VSCode]
+
+This lab puts everything we just covered into practice. We have two SQL tools and Human-in-the-Loop on the write operation. Let's walk through the file.
+
+[Highlight the imports block]
+
+At the top, notice Command from LangGraph and MemorySaver. Command is how we resume the graph after a human decision. MemorySaver is our checkpointer — it saves the agent's state at each step so execution can pause and resume from exactly the same point. Without it, HITL can't work.
+
+[Highlight the SQLDatabase line]
+
+We're also connecting to the Chinook database here, which is a sample SQLite music store that ships with the repo.
+
+[Scroll to and highlight the system prompt]
+
+The system prompt tells the agent which tool to reach for: read_sql for SELECT queries, write_sql for anything that writes. This is a good example of why descriptions matter — the agent uses both the system prompt and the tool descriptions together to make that decision.
+
+[Scroll to and highlight read_sql]
+
+read_sql is straightforward. It takes a query, runs it, and returns the result. No HITL here because reads are safe.
+
+[Highlight write_sql]
+
+write_sql is also a plain tool — notice there's no interrupt() call inside it. The pause isn't in the tool itself; it's configured externally.
+
+[Highlight create_deep_agent call, specifically interrupt_on]
+
+Here's where HITL is wired up. The interrupt_on={"write_sql": True} argument configures the HITL Middleware — that's the component you saw in the diagram sitting between the Agent and Human. When the agent calls write_sql, the middleware intercepts it before it executes, pauses the graph, and surfaces the pending action to your script. Nothing has touched the database yet at this point.
+
+[Scroll to the while loop]
+
+Down here is where your script handles the pause. When the graph hits the interrupt, it returns with a __interrupt__ key. The while loop catches that, prints the pending SQL, waits for your input, and calls agent.invoke(Command(resume=...)) to resume from exactly where it left off. On approve, the middleware forwards the call and the tool executes. On reject, the middleware injects a cancellation message and write_sql never runs.
+
+Let's run it. [Run it in terminal]
+
+The agent will first read the genres table, then propose an INSERT for "Synthwave". When it pauses, type yes to approve or no to cancel. Let's say yes.
+
+[Then open the run in LangSmith]
+
+You'll see the pause and resume as distinct steps in the trace.
+
 </details>
 <hr />
 <h3 id="setup">Setup</h3>

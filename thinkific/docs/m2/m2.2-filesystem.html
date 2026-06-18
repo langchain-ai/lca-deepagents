@@ -584,11 +584,16 @@
 <p>The filesystem backends control <strong>where files are stored</strong>. Each backend implements the same interface (<code>ls</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code>, <code>glob</code>, <code>grep</code>), so the agent code stays the same regardless of which one you choose.</p>
 <details class="video-walkthrough">
 <summary>Video Walk-through [click to expand] — script available, video later</summary>
-<p><br></p>
-<p><strong>Script (will be recorded):</strong> You saw this diagram in the execution environment lesson: this lesson zooms in on just the storage side. The core idea is the same: every filesystem tool call goes through a backend, and swapping the backend changes where files live without touching the agent at all.</p>
-<p>[Walk the diagram from State through to Composite]</p>
-<p>State is the default: files live in the thread's checkpoint, so they're fast and zero-config but disappear when the thread ends. Filesystem writes to local disk. Store persists to a database, which means files survive across threads and sessions. Context Hub is different - files are injected directly into the model's context on every call rather than read on demand. And Composite lets you combine any of these by path prefix, which we'll see in the lab.</p>
-<p>The right backend to use comes down to one question: do these files need to survive beyond the current thread? If no, State is fine. If yes, use Store. If you need different answers for different paths, use Composite.</p>
+<br>
+
+**Script (will be recorded):** You saw this diagram in the execution environment lesson: this lesson zooms in on just the storage side. The core idea is the same: every filesystem tool call goes through a backend, and swapping the backend changes where files live without touching the agent at all.
+
+[Walk the diagram from State through to Composite]
+
+State is the default: files live in the thread's checkpoint, so they're fast and zero-config but disappear when the thread ends. Filesystem writes to local disk. Store persists to a database, which means files survive across threads and sessions. Context Hub is different - files are injected directly into the model's context on every call rather than read on demand. And Composite lets you combine any of these by path prefix, which we'll see in the lab.
+
+The right backend to use comes down to one question: do these files need to survive beyond the current thread? If no, State is fine. If yes, use Store. If you need different answers for different paths, use Composite.
+
 </details>
 <hr />
 <h2 id="storage-backends">Storage backends</h2>
@@ -669,15 +674,24 @@ graph TB
 </div>
 <details class="video-walkthrough">
 <summary>Video Walk-through [click to expand] — script available, video later</summary>
-<p><br></p>
-<p><strong>Script (will be recorded):</strong> [Scroll to Single backend]</p>
-<p>The simplest setup is just to pass one backend directly to <code>create_deep_agent</code>. The example here uses <code>StoreBackend</code>, which persists files across threads. The namespace lambda is worth noting: it uses the caller's user ID to keep each user's files isolated in the store.</p>
-<p>[Scroll to Composite backend]</p>
-<p>Composite is for when different files have different requirements. You define routes by path prefix and anything that doesn't match a route falls through to the default. Here <code>/memories/</code> and <code>/skills/</code> both go to the durable store, while everything else stays ephemeral in State. The agent never sees any of this - it just calls <code>read_file</code> and the routing happens transparently.</p>
-<p>[Scroll to Permissions]</p>
-<p>Permissions are a separate layer on top. You pass a list of <code>FilesystemPermission</code> rules and they're evaluated in order; first match wins, and if nothing matches the operation is allowed. Each rule has three fields: which operations it covers, which paths it applies to using glob patterns, and the mode. The default mode is allow, but you can also deny outright or use interrupt - which pauses for human approval instead of blocking silently, the same pattern we saw with HITL.</p>
-<p>[Point to the bottom note]</p>
-<p>A common combination: route <code>/skills/</code> to Store so files persist, but deny writes to it so only your application code can modify skills, not the agent. <code>/memories/</code> stays fully read/write.</p>
+<br>
+
+**Script (will be recorded):** [Scroll to Single backend]
+
+The simplest setup is just to pass one backend directly to `create_deep_agent`. The example here uses `StoreBackend`, which persists files across threads. The namespace lambda is worth noting: it uses the caller's user ID to keep each user's files isolated in the store.
+
+[Scroll to Composite backend]
+
+Composite is for when different files have different requirements. You define routes by path prefix and anything that doesn't match a route falls through to the default. Here `/memories/` and `/skills/` both go to the durable store, while everything else stays ephemeral in State. The agent never sees any of this - it just calls `read_file` and the routing happens transparently.
+
+[Scroll to Permissions]
+
+Permissions are a separate layer on top. You pass a list of `FilesystemPermission` rules and they're evaluated in order; first match wins, and if nothing matches the operation is allowed. Each rule has three fields: which operations it covers, which paths it applies to using glob patterns, and the mode. The default mode is allow, but you can also deny outright or use interrupt - which pauses for human approval instead of blocking silently, the same pattern we saw with HITL.
+
+[Point to the bottom note]
+
+A common combination: route `/skills/` to Store so files persist, but deny writes to it so only your application code can modify skills, not the agent. `/memories/` stays fully read/write.
+
 </details>
 <h2 id="single-backend">Single backend</h2>
 <p>Pass any backend directly to <code>create_deep_agent</code>. Here the agent stores all files in the LangGraph store, persisted across threads.</p>
@@ -749,19 +763,32 @@ graph TB
 <p>The agent is pre-seeded with a Chinook sales skill and asked to read it, then add a promotion note. You'll see it read successfully and get blocked on the write.</p>
 <details class="video-walkthrough">
 <summary>Video Walk-through [click to expand] — script available, video later</summary>
-<p><br></p>
-<p><strong>Script (will be recorded):</strong> [Open m2.2_agent.py in VS Code]</p>
-<p>This lab puts composite backends and permissions together in one place. The agent is given a skill file and asked to do two things: read it, then write a promotion note to it. One of those will succeed and one won't (which is the point).</p>
-<p>[Highlight the store.put block]</p>
-<p>First, we seed the store with a Chinook sales skill at <code>/skills/chinook-sales/SKILL.md</code>. This simulates a skill that already exists in production, managed by application code, not the agent.</p>
-<p>[Highlight the CompositeBackend block]</p>
-<p>The agent uses a <code>CompositeBackend</code>. <code>/memories/</code> and <code>/skills/</code> both route to <code>StoreBackend</code> so they persist across threads. Everything else falls back to <code>StateBackend</code>. The agent doesn't know any of this; it just calls <code>read_file</code> and the routing is transparent.</p>
-<p>[Highlight the permissions block]</p>
-<p>Then we add one permission rule: deny all writes to <code>/skills/**</code>. The reasoning is exactly what we covered - skills are managed by application code. The agent should be able to read them but never modify them. <code>/memories/</code> has no rule, so it stays fully read/write.</p>
-<p>[Highlight the agent.invoke message]</p>
-<p>The agent is asked to read the skill and then add a promotion note. That's deliberately two operations: a read that should work and a write that should be blocked.</p>
-<p>[Run it in terminal]</p>
-<p>The agent reads the file fine, then hits the permission rule on the write and reports the file is read-only. It even shows what it would have written, it just can't persist it. That's exactly the behavior we want.</p>
+<br>
+
+**Script (will be recorded):** [Open m2.2_agent.py in VS Code]
+
+This lab puts composite backends and permissions together in one place. The agent is given a skill file and asked to do two things: read it, then write a promotion note to it. One of those will succeed and one won't (which is the point).
+
+[Highlight the store.put block]
+
+First, we seed the store with a Chinook sales skill at `/skills/chinook-sales/SKILL.md`. This simulates a skill that already exists in production, managed by application code, not the agent.
+
+[Highlight the CompositeBackend block]
+
+The agent uses a `CompositeBackend`. `/memories/` and `/skills/` both route to `StoreBackend` so they persist across threads. Everything else falls back to `StateBackend`. The agent doesn't know any of this; it just calls `read_file` and the routing is transparent.
+
+[Highlight the permissions block]
+
+Then we add one permission rule: deny all writes to `/skills/**`. The reasoning is exactly what we covered - skills are managed by application code. The agent should be able to read them but never modify them. `/memories/` has no rule, so it stays fully read/write.
+
+[Highlight the agent.invoke message]
+
+The agent is asked to read the skill and then add a promotion note. That's deliberately two operations: a read that should work and a write that should be blocked.
+
+[Run it in terminal]
+
+The agent reads the file fine, then hits the permission rule on the write and reports the file is read-only. It even shows what it would have written, it just can't persist it. That's exactly the behavior we want.
+
 </details>
 <pre><code class="language-python"># python/m2/m2.2_agent.py
 from deepagents import create_deep_agent, FilesystemPermission
