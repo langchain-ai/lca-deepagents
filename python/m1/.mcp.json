@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "docs-langchain": {
+      "type": "http",
+      "url": "https://docs.langchain.com/mcp",
+      "allowedTools": [
+        "search_docs_by_lang_chain"
+      ]
+    }
+  }
+}
