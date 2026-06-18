@@ -631,28 +631,6 @@ tools, session_manager, server_infos = await get_mcp_tools(&quot;.mcp.json&quot;
 </code></pre>
 <p>When deepagents detects a server that requires OAuth, it pauses and opens a browser window for the user to log in. Tokens are stored in <code>~/.deepagents/.state/mcp-tokens/</code> and reused on subsequent runs.</p>
 <p><code>allowedTools</code> lets you restrict which tools from a server the agent can see. This is useful when a server exposes many tools but you only need a subset; for example, giving an agent read-only access to Gmail without exposing tools that can send or delete.</p>
-<h3 id="human-in-the-loop-hitl">Human-in-the-Loop (HITL)</h3>
-<p>Even after authorization, you may want a human to confirm before the agent reads or writes data. Pass <code>interrupt_on</code> to <code>create_deep_agent</code> with a mapping of tool names to approval settings:</p>
-<iframe src="images/m1.6-mcp-slides-hitl.html" style="width:100%;height:470px;border:none;border-radius:12px;display:block;margin:1.25rem 0 1.5rem;" title="HITL walkthrough; use arrow keys or Prev/Next to navigate"></iframe>
-<pre><code class="language-python"># python/m1/m1.6_scratch_agent_mcp.py
-from deepagents import create_deep_agent
-from langgraph.checkpoint.memory import MemorySaver
-
-agent = create_deep_agent(
-    model=model,
-    tools=tools,
-    interrupt_on={
-        &quot;search_threads&quot;: True,
-        &quot;get_thread&quot;:     True,
-    },
-    checkpointer=MemorySaver(),
-)
-</code></pre>
-<p><code>True</code> pauses the agent before calling that tool and presents the pending call to the user. The user can approve, edit the inputs, reject, or respond with a message. Execution resumes once a decision is made.</p>
-<div style="margin:1.5rem 0;padding:1.25rem 1.5rem;border-radius:12px;border:1px solid #99d3ff;background-color:#e5f4ff;color:#1e4d7a;">
-<strong>interrupt_on requires a checkpointer</strong>
-<p style="margin:0.5rem 0 0;">When the agent pauses for human approval, it needs to save its current state so execution can resume from exactly the same point after a decision is made. A checkpointer handles that save-and-restore. <code>MemorySaver</code> keeps state in memory and is fine for development; use a persistent checkpointer in production.</p>
-</div>
 </div>
 <div class="lt-panel" id="p-quiz" role="tabpanel">
 <h2 id="check-your-understanding">Check your understanding</h2>
@@ -708,19 +686,6 @@ agent = create_deep_agent(
 <div class="mcq-explanation">When deepagents detects auth: 'oauth', it pauses and opens a browser window for the user to log in. Tokens are stored in ~/.deepagents/.state/mcp-tokens/ and reused on subsequent runs, so the browser prompt only appears once.</div>
 </div>
 </div>
-<div class="mcq-container" id="mcq-cd400c71">
-<div class="mcq-question"><strong>Question:</strong> You add interrupt_on to create_deep_agent for an MCP tool but forget to pass a checkpointer. What happens?</div>
-<div class="mcq-choices">
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'cd400c71')"><strong>A)</strong> The agent runs normally and ignores the interrupt_on setting</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, 'cd400c71')"><strong>B)</strong> An error is raised at invocation time because interrupt_on requires a checkpointer to save and restore state</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'cd400c71')"><strong>C)</strong> The agent pauses but cannot resume; graph state is lost</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, 'cd400c71')"><strong>D)</strong> The interrupt fires once, then is automatically disabled for that session</div>
-</div>
-<div class="mcq-answer" id="mcq-answer-cd400c71" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
-<div class="mcq-explanation">interrupt_on requires a checkpointer. When the agent pauses for human approval, it needs to save its current state so execution can resume from exactly the same point. Without a checkpointer, that save-and-restore is impossible and an error is raised.</div>
-</div>
-</div>
 </div>
 <div class="lt-panel" id="p-lab" role="tabpanel">
 <h2 id="connecting-to-a-docs-server">Connecting to a Docs Server</h2>
@@ -728,7 +693,7 @@ agent = create_deep_agent(
 <h3 id="step-1-load-and-inspect">Step 1: Load and inspect</h3>
 <p>Open <code>python/m1/m1.6_scratch_agent_mcp.py</code>, already in the repo and connects to the LangChain docs server. Here's a walkthrough of what it does.</p>
 <p>The first thing <code>main()</code> does is load the MCP tools and print each tool's name and description so you can see what the server is offering:</p>
-<!-- code-highlight-3:12,13,14,15,16,17,18,19,20,21,25,26,27,28,29,30,31 -->
+<!-- code-highlight-2:12,13,14,15,16,17,18,19,20,21,25,26,27,28,29,30,31 -->
 <pre><code class="language-python"># python/m1/m1.6_scratch_agent_mcp.py
 import sys
 import asyncio
@@ -776,7 +741,7 @@ asyncio.run(main())
 <p>Two tools, no code written. Each name carries the <code>docs-langchain_</code> server prefix; deepagents uses that prefix to keep tools from different servers distinct and to let <code>interrupt_on</code> and <code>allowedTools</code> target tools precisely.</p>
 <h3 id="step-2-ask-a-question">Step 2: Ask a question</h3>
 <p>The agent is already wired up in <code>main()</code>; after printing the tools, it invokes the agent and prints the response:</p>
-<!-- code-highlight-5:33,34,35,36,37,38,39,40,41 -->
+<!-- code-highlight-4:33,34,35,36,37,38,39,40,41 -->
 <pre><code class="language-python"># python/m1/m1.6_scratch_agent_mcp.py
 import sys
 import asyncio
@@ -827,7 +792,7 @@ asyncio.run(main())
 <p>Open LangSmith. The agent calls <code>docs-langchain_search_docs_by_lang_chain</code> one or more times, reads the results, and synthesizes an answer. The trace looks identical to a locally-defined tool; the agent cannot tell the difference.</p>
 <h3 id="step-3-restrict-with-allowedtools">Step 3: Restrict with <code>allowedTools</code></h3>
 <p><code>allowedTools</code> is already set in <code>m1.6_scratch_agent_mcp.py</code>, restricting the server to the search tool only. Here's that config:</p>
-<!-- code-highlight-7:6 -->
+<!-- code-highlight-6:6 -->
 <pre><code class="language-python">MCP_CONFIG.write_text(json.dumps({
     &quot;mcpServers&quot;: {
         &quot;docs-langchain&quot;: {
@@ -852,7 +817,6 @@ asyncio.run(main())
 <li>Servers are configured in <code>.mcp.json</code>; the <code>type</code> field sets the transport (<code>stdio</code> for local subprocesses, <code>http</code> for stateless remote calls, <code>sse</code> for persistent streaming connections)</li>
 <li><code>allowedTools</code> restricts which tools from a server the agent can see; useful when a server exposes many tools but you only need a subset, or want to limit access to read-only operations</li>
 <li><code>auth: "oauth"</code> triggers a one-time browser authorization on first run; tokens are cached in <code>~/.deepagents/.state/mcp-tokens/</code> and reused automatically</li>
-<li><code>interrupt_on</code> pauses the agent before a named tool call for human approval; like HITL with custom tools, it requires a checkpointer</li>
 </ul>
 <hr />
 <h2 id="references">References</h2>
