@@ -660,6 +660,13 @@ model = init_chat_model(&quot;anthropic:claude-haiku-4-5&quot;)   # workshop def
 <pre><code class="language-bash">uv run ./python/m1/m1.2_scratch_agent.py
 </code></pre>
 <p>This also works with open-source models; no code changes required, just a different model line in <code>models.py</code>.</p>
+<p><strong>Why use an open-source model?</strong></p>
+<ul>
+<li><strong>Privacy</strong> — data never leaves your machine (when running locally via Ollama); useful for sensitive or proprietary content</li>
+<li><strong>Cost</strong> — no per-token charges when self-hosted; many hosted options are free or significantly cheaper than proprietary APIs</li>
+<li><strong>No vendor lock-in</strong> — swap between Llama, Mistral, Qwen, and others with a single line change</li>
+<li><strong>Customization</strong> — open weights mean you can fine-tune the model on your own data</li>
+</ul>
 <div style="margin:1.5rem 0;padding:1.25rem 1.5rem;border-radius:12px;border:1px solid #b3e0b3;background-color:#f0faf0;color:#1a4d1a;">
 <strong>Try an open-source model via OpenRouter</strong>
 <p style="margin:0.5rem 0 0;">OpenRouter gives you access to free hosted open-source models with no extra install. If you added your <code>OPENROUTER_API_KEY</code> to <code>.env</code> during setup, just uncomment the OpenRouter lines in <code>models.py</code> and run the lab again. If you haven't added it yet, head back to the <a href="../m0/m0.1-setup-python.html">setup lesson</a> to add it to your <code>.env</code> file.</p>
