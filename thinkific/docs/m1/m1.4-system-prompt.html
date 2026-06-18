@@ -584,45 +584,34 @@
 
 <div class="lt-panel active" id="p-sys" role="tabpanel">
 <h2 id="the-system-prompt_1">The System Prompt</h2>
-<details class="video-walkthrough">
-<summary>Video Walk-through [click to expand] — script available, video later</summary>
-<p><br></p>
-<p><strong>Script (will be recorded):</strong> The system prompt guides the model and is part of every model call; it is re-sent on every turn, ahead of the conversation and there are 3 parts to it.</p>
-<p>The first part is the User [highlight table] and this is an optional argument you pass to create_deep_agent. Optional because your agent can run without this.</p>
-<p>The second part is the Base [highlight table], which controls behavior guidance (e.g. being concise, admitting uncertainty instead of guessing etc.) and the base is always present.</p>
-<p>Finally there is the suffix, which is model-specific tuning.</p>
-<p>This lesson focuses on USER and BASE [highlight table] as those are the two parts you interact with directly.</p>
-<p>You've already seen your agent answer "What is an LLM?", but have you seen your agent answer as a posh British butler? If we give it this system prompt [highlight code block], you can!</p>
-<p>This video down here [Scroll down and point at separate langsmith trace video] is a video walking through our Langsmith platform. Langsmith allows you to actually see your agent's calls in real time. It breaks down what a trace is, and shows the system prompt we just learned about laid out in detail in the UI.</p>
-</details>
+<div class="video-container" style="max-width: 750px;">
+    <div class="video-wrapper">
+        <iframe
+            src="https://share.descript.com/embed/j6x7Jtq4ToA"
+            frameborder="0"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    </div>
+</div>
 <p>The system prompt <strong>guides the model and is part of every model call</strong>; it is<br />
 re-sent on every turn, ahead of the conversation. <code>create_deep_agent</code> assembles<br />
 it from three named parts; this lesson focuses on the first two, <strong>USER</strong> and <strong>BASE</strong>:</p>
 <table>
 <thead>
-<tr>
-<th>Part</th>
-<th>Where it comes from</th>
-</tr>
+<tr><th>Part</th><th>Where it comes from</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>USER</strong></td>
-<td>The <code>system_prompt</code> argument <em>you</em> pass to <code>create_deep_agent</code>. Optional.</td>
-</tr>
-<tr>
-<td><strong>BASE</strong></td>
-<td>The SDK's built-in <code>BASE_AGENT_PROMPT</code> (behavior guidance). Always present.</td>
-</tr>
-<tr style="opacity:0.4;">
-<td><strong>SUFFIX</strong></td>
-<td>Appended by a <code>HarnessProfile</code> for model-specific tuning. Optional; not covered in this lesson.</td>
-</tr>
+<tr><td><strong>USER</strong></td><td>The <code>system_prompt</code> argument <em>you</em> pass to <code>create_deep_agent</code>. Optional.</td></tr>
+<tr><td><strong>BASE</strong></td><td>The SDK's built-in <code>BASE_AGENT_PROMPT</code> (behavior guidance). Always present.</td></tr>
+<tr style="opacity:0.4;"><td><strong>SUFFIX</strong></td><td>Appended by a <code>HarnessProfile</code> for model-specific tuning. Optional; not covered in this lesson.</td></tr>
 </tbody>
 </table>
+
 <p>The USER is the <code>system_prompt</code> argument you pass to <code>create_deep_agent</code>. It sits at the very front of the assembled prompt. This lesson focuses on <strong>USER</strong> and <strong>BASE</strong>: the two parts you interact with directly.</p>
 <p>Here is a live demo: the same "What is an LLM?" question, but with a posh British butler set as the <code>system_prompt</code>:</p>
 <!-- code-highlight-0:2,3,4,5,6,7 -->
+
 <pre><code class="language-python"># python/m1/m1.4_scratch_agent_butler.py
 SYSTEM_PROMPT = (
     &quot;YOU ARE AN EXTREMELY POSH BRITISH BUTLER. You speak ONLY in the most &quot;
@@ -639,11 +628,7 @@ SYSTEM_PROMPT = (
     name=&quot;Butler Agent&quot;,
 )
 </code></pre>
-<div style="margin:1.5rem 0;padding:1.25rem 1.5rem;border-radius:12px;border:1px solid #99d3ff;background-color:#e5f4ff;color:#1e4d7a;">
-<p>In Lab 2, you'll add a <strong>system prompt</strong> for the first time by passing a persona (pirate, cowboy, Shakespeare) and see how that single line steers the agent's voice without touching anything else.</p>
-<p>In this example, I've given it a posh British butler persona.</p>
-<p><a href="https://smith.langchain.com/public/d41ebb92-7a6e-4b96-ba2f-4c6d49c1cbfb/r" target="_blank" rel="noopener noreferrer">View LangSmith trace →</a></p>
-<div class="video-container" style="max-width: 750px;">
+<div style="margin:1.5rem 0;padding:1.25rem 1.5rem;border-radius:12px;border:1px solid #99d3ff;background-color:#e5f4ff;color:#1e4d7a;"><p>In Lab 2, you'll add a <strong>system prompt</strong> for the first time by passing a persona (pirate, cowboy, Shakespeare) and see how that single line steers the agent's voice without touching anything else.</p><p>In this example, I've given it a posh British butler persona.</p><p><a href="https://smith.langchain.com/public/d41ebb92-7a6e-4b96-ba2f-4c6d49c1cbfb/r" target="_blank" rel="noopener noreferrer">View LangSmith trace →</a></p><div class="video-container" style="max-width: 750px;">
     <div class="video-wrapper">
         <iframe
             src="https://share.descript.com/embed/SDzVOFb98I3"
@@ -652,9 +637,8 @@ SYSTEM_PROMPT = (
             allowfullscreen>
         </iframe>
     </div>
-</div>
-<p><p>The <code>name="Butler Agent"</code> argument also sets the root trace name in LangSmith. Without it, traces show "LangGraph"; with it they show "Butler Agent".</p></p>
-</div>
+</div><p>The <code>name="Butler Agent"</code> argument also sets the root trace name in LangSmith. Without it, traces show "LangGraph"; with it they show "Butler Agent".</p></div>
+
 <p><strong>Code output:</strong></p>
 <pre class="no-copy"><code class="language-plaintext">An LLM, or Large Language Model, is quite simply a vast artificial intelligence
 system trained upon enormous quantities of textual data, I dare say.
@@ -742,7 +726,7 @@ that this single string is all you touched to redirect the agent's behavior.</p>
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '16124331')"><strong>D)</strong> Three: USER, BASE, and SUFFIX</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-16124331" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: D</strong> &#10003;</div>
+<div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
 <div class="mcq-explanation">The assembled prompt has three parts: USER (your system_prompt argument), BASE (the SDK's built-in BASE_AGENT_PROMPT), and SUFFIX (appended by a HarnessProfile for model-specific tuning).</div>
 </div>
 </div>
@@ -755,7 +739,7 @@ that this single string is all you touched to redirect the agent's behavior.</p>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '4a037246')"><strong>D)</strong> Interleaved with the BASE instructions</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-4a037246" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: A</strong> &#10003;</div>
+<div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
 <div class="mcq-explanation">The SDK slots the USER segment at the very front of the assembled prompt, ahead of the BASE instructions and any SUFFIX.</div>
 </div>
 </div>
@@ -768,7 +752,7 @@ that this single string is all you touched to redirect the agent's behavior.</p>
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '9df17580')"><strong>D)</strong> The SUFFIX always overrides the USER segment</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-9df17580" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: C</strong> &#10003;</div>
+<div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
 <div class="mcq-explanation">Defining the string is not enough. It must be passed explicitly: create_deep_agent(model=model, system_prompt=SYSTEM_PROMPT).</div>
 </div>
 </div>

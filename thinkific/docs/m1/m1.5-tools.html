@@ -584,56 +584,31 @@
 
 <div class="lt-panel active" id="p-tools" role="tabpanel">
 <h2 id="tools-extending-the-agent">Tools: Extending the Agent</h2>
-<details class="video-walkthrough">
-<summary>Video Walk-through [click to expand] — script available, video later</summary>
-<p><br></p>
-<p><strong>Script (will be recorded):</strong> Tools are functions you give an agent so it can act: look things up, run queries, call APIs. You define what they do and the agent decides when and how to call them.</p>
-<p>Every deep agent ships with a built-in set: you already saw them in the LangSmith trace as write_todos and Filesystem Tools in the system message.</p>
-<p>These tools [gesture to table] are always present, and anything you pass to the tools parameter [highlight code block tools=[my_tool_a, my_tool_b]] on create_deep_agent is added on top, not a replacement.</p>
-<p>This diagram shows exactly what happens under the hood when an agent uses a tool. Let's walk through it. [Zoom into diagram]</p>
-<p>First, the SDK injects tool schemas. Before any LLM call, the SDK takes all your tools and sends their names, descriptions, and argument schemas to the LLM, so the model knows what tools exist and what to pass to them.</p>
-<p>Then the LLM outputs tool_calls. The LLM decides it needs to call a tool and responds with an AIMessage containing a tool_calls list, which includes the tool name and the arguments. Importantly, the LLM doesn't run anything. It just produces a structured request.</p>
-<p>That AIMessage is then passed to the Tool Node, which is a built-in LangGraph component inside the deep agent that's responsible for actually executing tools.</p>
-<p>The Tool Node then executes the call. It reads tool_calls, finds execute_sql by name, and calls it with the arguments the LLM provided. If multiple independent tools were requested, it can run them in parallel.</p>
-<p>The tool then returns a result. execute_sql runs and returns a string, which the Tool Node wraps in a ToolMessage, linked back to the original request via a tool_call_id.</p>
-<p>That ToolMessage then feeds back to the LLM, which is called again with the full updated context: its original question, its tool call, and the result.</p>
-<p>And finally, the LLM either answers or loops. With the result in context, it either responds with a final answer, or issues another tool_call if it needs more information. And that's the loop.</p>
-<p>The LLM never runs tools directly. It only requests them, and everything else is the SDK and Tool Node orchestrating execution and feeding results back.</p>
-<p>[Open parallel tool calls dropdown]</p>
-<p>When tool calls have no dependency on each other, the Tool Node runs them simultaneously rather than one at a time. So if an agent with search_web and search_docs tools receives a question that needs both, both fire in the same turn and the LLM sees both results together in the next call.</p>
-</details>
+<div class="video-container" style="max-width: 750px;">
+    <div class="video-wrapper">
+        <iframe
+            src="https://share.descript.com/embed/E2a0vp8gM5Y"
+            frameborder="0"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    </div>
+</div>
 <p>Tools are functions you give an agent so it can act: look things up, run queries, call APIs, write files. The agent decides when to call them and what arguments to pass; you define what they do.</p>
-<p>Every deep agent ships with a built-in set of tools, loaded automatically by the SDK. You already saw these appear in the LangSmith trace in the previous lesson, as <code>write_todos</code> and <code>Filesystem Tools</code> sections inside the system message:</p>
+<p>Every deep agent ships with a built-in set of tools, loaded automatically by the SDK. You already saw these appear in the LangSmith trace in the previous lesson, as <code>write_todos</code> and <code>Filesystem Tools</code> inside the system message:</p>
 <table>
 <thead>
-<tr>
-<th>Tool(s)</th>
-<th>What it does</th>
-</tr>
+<tr><th>Tool(s)</th><th>What it does</th></tr>
 </thead>
 <tbody>
-<tr>
-<td><code>ls</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code></td>
-<td>Read and write files in the agent's working directory</td>
-</tr>
-<tr>
-<td><code>glob</code>, <code>grep</code></td>
-<td>Search files by name pattern or content</td>
-</tr>
-<tr>
-<td><code>execute</code></td>
-<td>Run shell commands (requires a sandbox backend)</td>
-</tr>
-<tr>
-<td><code>task</code></td>
-<td>Delegate work to a sub-agent with an isolated context</td>
-</tr>
-<tr>
-<td><code>write_todos</code></td>
-<td>Manage a running to-do list for multi-step planning</td>
-</tr>
+<tr><td><code>ls</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code></td><td>Read and write files in the agent's working directory</td></tr>
+<tr><td><code>glob</code>, <code>grep</code></td><td>Search files by name pattern or content</td></tr>
+<tr><td><code>execute</code></td><td>Run shell commands (requires a sandbox backend)</td></tr>
+<tr><td><code>task</code></td><td>Delegate work to a sub-agent with an isolated context</td></tr>
+<tr><td><code>write_todos</code></td><td>Manage a running to-do list for multi-step planning</td></tr>
 </tbody>
 </table>
+
 <p>These are always present. The <code>tools</code> parameter on <code>create_deep_agent</code> is <strong>additive</strong>: whatever you pass is merged with the built-in suite, not substituted for it.</p>
 <pre><code class="language-python">agent = create_deep_agent(
     model=model,
@@ -642,6 +617,7 @@
 </code></pre>
 <p>Step through the sequence to see how each part fits together:</p>
 <div class="sd-wrap" id="dg-tool-loop"></div>
+
 <script>
 buildDiagram({
   id: 'dg-tool-loop',
@@ -695,6 +671,7 @@ buildDiagram({
   }
 });
 </script>
+
 <script>
 (function () {
   var stage = document.getElementById('dg-tool-loop-stage');
@@ -736,6 +713,7 @@ buildDiagram({
   if (nb) nb.addEventListener('click', unfade);
 })();
 </script>
+
 <details style="margin:4px 0 16px;">
 <summary style="cursor:pointer;font-size:0.9em;color:#40668D;">Parallel tool calls</summary>
 <div style="padding:8px 16px 12px;">
@@ -745,16 +723,17 @@ buildDiagram({
 </div>
 </details>
 <h3 id="defining-a-tool-with-tool">Defining a tool with <code>@tool</code></h3>
-<details class="video-walkthrough">
-<summary>Video Walk-through [click to expand] — script available, video later</summary>
-<p><br></p>
-<p><strong>Script (will be recorded):</strong> Now we're at the fun part! Defining a tool with the @tool decorator!</p>
-<p>The @tool decorator from the langchain library is super simple: you write a regular Python function and the decorator turns it into something the model can call.</p>
-<p>LangChain also ships ready-made tools for common tasks (such as TavilySearchResults for web search), so you don't have to write everything from scratch.</p>
-<p>Anyways, this is what it looks like [highlight diagrams]: first, the decorator. Just by adding @tool above your function, LangChain registers it as a tool. So easy.</p>
-<p>Then the name and schema. These come directly from the function signature. The function name becomes the tool name, and the arguments and their types become the schema. So def get_stock_price(ticker: str) gives the model a tool called get_stock_price that expects a string called ticker. That's what gets sent to the LLM so it knows how to call it.</p>
-<p>And finally, the most important part, the description. This is your docstring and it's the only signal the model has for deciding when to reach for this tool versus any other. Write it as a clear, specific sentence describing what the tool does and when to use it.</p>
-</details>
+<div class="video-container" style="max-width: 750px;">
+    <div class="video-wrapper">
+        <iframe
+            src="https://share.descript.com/embed/oOMDbVt36V9"
+            frameborder="0"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    </div>
+</div>
+
 <p>Tools are part of the LangChain library. The <code>@tool</code> decorator from <code>langchain_core.tools</code> is the standard way to define one: write a regular Python function and the decorator turns it into something the model can call. LangChain also ships ready-made tools for common tasks (for example, <code>TavilySearchResults</code> for web search), so you don't have to write everything from scratch.</p>
 <pre><code class="language-python">from langchain_core.tools import tool
 
@@ -770,20 +749,19 @@ def get_stock_price(ticker: str) -&gt; str:
 <blockquote>
 <p><strong>Human-in-the-Loop (HITL)</strong> is a pattern where agent execution pauses at a critical step and waits for a human to approve, modify, or cancel before continuing. Deep agents support this via the <code>interrupt_on</code> argument to <code>create_deep_agent</code>, which intercepts named tool calls before they execute and presents them for review. It is important because agents can take irreversible actions: writing to a database, sending a message, deleting a file. HITL gives you a checkpoint before those actions happen.</p>
 </blockquote>
-<details class="video-walkthrough">
-<summary>Video Walk-through [click to expand] — script available, video later</summary>
-<p><br></p>
-<p><strong>Script (will be recorded):</strong> Now that you know how to define tools, it's important to keep in mind that tools can take irreversible actions, such as writing to a database, sending a message, deleting a file.</p>
-<p>Human-in-the-Loop is how you put a checkpoint before those actions happen, so the agent pauses and waits for you to approve, modify, or cancel before continuing.</p>
-<p>Let's look at how this works [zoom into diagram]. Let's walk through a concrete example using a write_sql tool.</p>
-<p>The agent calls write_sql. It has decided to write to the database and has figured out the query it wants to run. But nothing has actually executed yet, it's just a request at this point.</p>
-<p>Before the query runs, interrupt() fires. This is a LangGraph function you place inside the tool, before the dangerous part. When it hits this line, the entire agent freezes and saves its state. The pending SQL gets surfaced to you (printed out in your terminal) and the agent just waits.</p>
-<p>Now you're in control. You can read the query, decide if it looks right, and either approve or reject it.</p>
-<p>If you approve, the graph resumes from exactly where it paused, the query runs, and the result comes back to the agent as normal.</p>
-<p>If you reject, the graph also resumes, but this time write_sql returns "Write cancelled." without ever touching the database. The agent receives that as its tool result and carries on, knowing the write didn't happen.</p>
-<p>And that's the full flow. Two paths out of the human decision: approve and the action runs; reject and it doesn't. Either way the agent stays in the loop, and you stay in control of anything that can't be undone.</p>
-</details>
+<div class="video-container" style="max-width: 750px;">
+    <div class="video-wrapper">
+        <iframe
+            src="https://share.descript.com/embed/psLBd6yqR75"
+            frameborder="0"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    </div>
+</div>
+
 <div class="sd-wrap" id="dg-hitl"></div>
+
 </div>
 <div class="lt-panel" id="p-quiz" role="tabpanel">
 <h2 id="check-your-understanding">Check your understanding</h2>
@@ -796,7 +774,7 @@ def get_stock_price(ticker: str) -&gt; str:
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'e6c89cc3')"><strong>D)</strong> They move to a separate tool list the agent accesses on request</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-e6c89cc3" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: A</strong> &#10003;</div>
+<div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
 <div class="mcq-explanation">The tools parameter is additive. Whatever you pass is merged with the SDK's built-in tool suite. Passing your own tools never removes read_file, write_todos, or any other built-in.</div>
 </div>
 </div>
@@ -809,7 +787,7 @@ def get_stock_price(ticker: str) -&gt; str:
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '503492c1')"><strong>D)</strong> An AIMessage with a tool_calls list specifying the name and arguments</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-503492c1" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: D</strong> &#10003;</div>
+<div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
 <div class="mcq-explanation">The LLM never executes code. It outputs an AIMessage containing a tool_calls list with the tool name and arguments. The Tool Node inside the deep agent reads that list and performs the actual execution.</div>
 </div>
 </div>
@@ -822,7 +800,7 @@ def get_stock_price(ticker: str) -&gt; str:
 <div class="mcq-choice" onclick="handleMcqClick(this, false, 'c63d2624')"><strong>D)</strong> The return type annotation</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-c63d2624" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: B</strong> &#10003;</div>
+<div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
 <div class="mcq-explanation">The docstring is the description the model uses to decide when to call a tool versus another. It is the most important of the three parts. Write it as a clear, specific sentence describing when the tool should be used.</div>
 </div>
 </div>
@@ -841,7 +819,7 @@ def get_stock_price(ticker: str) -&gt; str:
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '997604bc')"><strong>D)</strong> Yes: a draft write is created and rolled back on rejection</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-997604bc" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: C</strong> &#10003;</div>
+<div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
 <div class="mcq-explanation">interrupt() fires before db.run(). The graph pauses and the pending SQL surfaces to your script. The database is untouched until you approve; only then does db.run() execute. If you reject, write_sql returns 'Write cancelled.' and db.run() is never called.</div>
 </div>
 </div>
@@ -1010,23 +988,23 @@ def get_stock_price(ticker: str) -&gt; str:
 <p><strong>Script (will be recorded):</strong> [Open scratch_agent_tools in VSCode]</p>
 <p>This lab puts everything we just covered into practice. We have two SQL tools and Human-in-the-Loop on the write operation. Let's walk through the file.</p>
 <p>[Highlight the imports block]</p>
-<p>At the top, notice two new imports: interrupt and Command from LangGraph. These are what power the Human-in-the-Loop pattern. We're also importing MemorySaver, which is our checkpointer. Remember, interrupt() needs to pause and resume the graph, and the checkpointer is what makes that possible. Without it, the graph has no way to save its state mid-run.</p>
+<p>At the top, notice Command from LangGraph and MemorySaver. Command is how we resume the graph after a human decision. MemorySaver is our checkpointer — it saves the agent's state at each step so execution can pause and resume from exactly the same point. Without it, HITL can't work.</p>
 <p>[Highlight the SQLDatabase line]</p>
 <p>We're also connecting to the Chinook database here, which is a sample SQLite music store that ships with the repo.</p>
 <p>[Scroll to and highlight the system prompt]</p>
-<p>The system prompt tells the agent which tool to reach for: read_sql for SELECT queries, write_sql for anything that writes. This is a good example of why descriptions matter because the agent uses both the system prompt and the tool descriptions together to make that decision.</p>
+<p>The system prompt tells the agent which tool to reach for: read_sql for SELECT queries, write_sql for anything that writes. This is a good example of why descriptions matter — the agent uses both the system prompt and the tool descriptions together to make that decision.</p>
 <p>[Scroll to and highlight read_sql]</p>
 <p>read_sql is straightforward. It takes a query, runs it, and returns the result. No HITL here because reads are safe.</p>
-<p>[Highlight write_sql, specifically the interrupt() line]</p>
-<p>write_sql is where it gets interesting. Notice that interrupt() fires before db.run(). At this point the graph freezes, saves its state, and surfaces the pending SQL to your script. Nothing has touched the database yet. Then depending on your response, it either calls db.run() or returns "Write cancelled."</p>
+<p>[Highlight write_sql]</p>
+<p>write_sql is also a plain tool — notice there's no interrupt() call inside it. The pause isn't in the tool itself; it's configured externally.</p>
+<p>[Highlight create_deep_agent call, specifically interrupt_on]</p>
+<p>Here's where HITL is wired up. The interrupt_on={"write_sql": True} argument configures the HITL Middleware — that's the component you saw in the diagram sitting between the Agent and Human. When the agent calls write_sql, the middleware intercepts it before it executes, pauses the graph, and surfaces the pending action to your script. Nothing has touched the database yet at this point.</p>
 <p>[Scroll to the while loop]</p>
-<p>Down here is where your script handles the pause. When the graph hits interrupt(), it returns with a <strong>interrupt</strong> key. The while loop catches that, prints the pending SQL, waits for your input, and then calls agent.invoke(Command(resume=approval)) to resume from exactly where it left off.</p>
-<p>[Highlight create_deep_agent call]</p>
-<p>And notice that the checkpointer is passed into create_deep_agent here, alongside the two tools.</p>
+<p>Down here is where your script handles the pause. When the graph hits the interrupt, it returns with a <strong>interrupt</strong> key. The while loop catches that, prints the pending SQL, waits for your input, and calls agent.invoke(Command(resume=...)) to resume from exactly where it left off. On approve, the middleware forwards the call and the tool executes. On reject, the middleware injects a cancellation message and write_sql never runs.</p>
 <p>Let's run it. [Run it in terminal]</p>
 <p>The agent will first read the genres table, then propose an INSERT for "Synthwave". When it pauses, type yes to approve or no to cancel. Let's say yes.</p>
 <p>[Then open the run in LangSmith]</p>
-<p>You'll see here the pause and resume as two distinct steps in the trace.</p>
+<p>You'll see the pause and resume as distinct steps in the trace.</p>
 </details>
 <hr />
 <h3 id="setup">Setup</h3>

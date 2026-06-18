@@ -211,6 +211,9 @@ details[open] > summary {
 }
 details > *:not(summary) { padding: 0 16px; }
 
+/* ── MCQ: render answer checkmark as plain text symbol, not emoji ── */
+.mcq-answer-header { font-variant-emoji: text; }
+
 /* ── Video walk-through blocks (pink) ── */
 details.video-walkthrough {
   border-color: #F4ABCD;

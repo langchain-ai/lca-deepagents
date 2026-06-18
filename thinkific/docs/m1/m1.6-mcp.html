@@ -643,7 +643,7 @@ tools, session_manager, server_infos = await get_mcp_tools(&quot;.mcp.json&quot;
 <div class="mcq-choice" onclick="handleMcqClick(this, true, 'a42d0a43')"><strong>D)</strong> As standard LangChain BaseTool objects; the agent cannot tell them apart from locally-defined tools</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-a42d0a43" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: D</strong> &#10003;</div>
+<div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
 <div class="mcq-explanation">langchain-mcp-adapters wraps each MCP server tool as a standard BaseTool. The agent sees MCP tools identically to any locally-defined tool; results come back as ToolMessages in the conversation history, and the model decides what to do next exactly as it would with a regular tool call.</div>
 </div>
 </div>
@@ -656,7 +656,7 @@ tools, session_manager, server_infos = await get_mcp_tools(&quot;.mcp.json&quot;
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '1482b380')"><strong>D)</strong> All three transports support persistent connections</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-1482b380" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: A</strong> &#10003;</div>
+<div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
 <div class="mcq-explanation">SSE (Server-Sent Events) opens a persistent HTTP connection. The server can push events back over that connection in real time, which is useful for long-running tools or streaming results. stdio is local subprocess only; HTTP opens a new connection per call.</div>
 </div>
 </div>
@@ -669,7 +669,7 @@ tools, session_manager, server_infos = await get_mcp_tools(&quot;.mcp.json&quot;
 <div class="mcq-choice" onclick="handleMcqClick(this, false, '90ce7dcd')"><strong>D)</strong> Sets a rate limit on how often each tool can be called</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-90ce7dcd" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: C</strong> &#10003;</div>
+<div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
 <div class="mcq-explanation">allowedTools lets you restrict which tools from a server the agent can see. This is useful when a server exposes many tools but you only need a subset; the agent never learns about the others.</div>
 </div>
 </div>
@@ -682,7 +682,7 @@ tools, session_manager, server_infos = await get_mcp_tools(&quot;.mcp.json&quot;
 <div class="mcq-choice" onclick="handleMcqClick(this, true, '69682098')"><strong>D)</strong> deepagents pauses and opens a browser window for the user to authorize; tokens are saved and reused on subsequent runs</div>
 </div>
 <div class="mcq-answer" id="mcq-answer-69682098" style="display: none;">
-<div class="mcq-answer-header"><strong>Answer: D</strong> &#10003;</div>
+<div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
 <div class="mcq-explanation">When deepagents detects auth: 'oauth', it pauses and opens a browser window for the user to log in. Tokens are stored in ~/.deepagents/.state/mcp-tokens/ and reused on subsequent runs, so the browser prompt only appears once.</div>
 </div>
 </div>
