@@ -736,17 +736,17 @@ By convention, memory files live in a <code>memories/</code> directory and the m
     </div>
 </div>
 
-<div class="mcq-container" id="mcq-592242f9">
+<div class="mcq-container" id="mcq-c3b4a40a">
     <div class="mcq-question">
-        <strong>Question:</strong> What does Deep Agents create when file paths are passed to the memory parameter of create_deep_agent?
+        <strong>Question:</strong> When memory=[&quot;memories/AGENTS.md&quot;] is passed to create_deep_agent, what is created behind the scenes?
     </div>
     <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, true, '592242f9')"><strong>A)</strong> A MemoryMiddleware that reads the file and injects its content into the system prompt on every call</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '592242f9')"><strong>B)</strong> A FilesystemBackend rooted at the memory directory</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '592242f9')"><strong>C)</strong> A checkpointer that snapshots memory file content between runs</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '592242f9')"><strong>D)</strong> A SQLite database for storing and indexing the memory contents</div>
+        <div class="mcq-choice" onclick="handleMcqClick(this, true, 'c3b4a40a')"><strong>A)</strong> A MemoryMiddleware that reads the file and injects its content into the system prompt on every call</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'c3b4a40a')"><strong>B)</strong> A FilesystemBackend rooted at memories/</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'c3b4a40a')"><strong>C)</strong> A checkpointer that snapshots the file&#39;s content between runs</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'c3b4a40a')"><strong>D)</strong> A SQLite database for storing and indexing the memory contents</div>
     </div>
-    <div id="mcq-answer-592242f9" class="mcq-answer" style="display: none;">
+    <div id="mcq-answer-c3b4a40a" class="mcq-answer" style="display: none;">
         <div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
         <div class="mcq-explanation">Passing memory=[...] creates a MemoryMiddleware. On every LLM call the middleware reads each source file and wraps the combined content in an [agent_memory] block appended to the system prompt. Without this argument, MemoryMiddleware is not active and nothing persists.</div>
     </div>
