@@ -817,7 +817,7 @@ Here is a preview showing the head and tail of the result:
     question="What happens to state[\"messages\"] when summarization fires?"
     choices='["Older messages are deleted in place and replaced by the summary message", "state[\"messages\"] is never mutated; summarization only affects what is sent to the model each turn", "state[\"messages\"] is cleared and rebuilt from the summary on every subsequent turn", "A new summarized state replaces the original, and the old state is discarded"]'
     correctIndex={1}
-    explanation="state[\"messages\"] is never modified. The full message history is always stored intact. Summarization happens only at the send layer: the middleware intercepts what gets forwarded to the model each turn, not the stored list."
+    explanation="state[\"messages\"] is never modified; the full message history is always preserved intact. This is intentional: summarization is lossy, so keeping the raw history means you can always audit exactly what the agent said and did, replay or inspect a conversation, and access details the summary may have omitted. Summarization only affects what is sent to the model each turn, not what is stored."
 />
 
 <div class="mcq-container" id="mcq-07ae7f94">
@@ -836,21 +836,6 @@ Here is a preview showing the head and tail of the result:
     </div>
 </div>
 
-<div class="mcq-container" id="mcq-796d72d7">
-    <div class="mcq-question">
-        <strong>Question:</strong> When FilesystemMiddleware evicts a large tool result, what does the agent see in its message history?
-    </div>
-    <div class="mcq-choices">
-        <div class="mcq-choice" onclick="handleMcqClick(this, false, '796d72d7')"><strong>A)</strong> The tool result is silently dropped and the agent continues without it</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, true, '796d72d7')"><strong>B)</strong> A short head-and-tail preview of the result plus a file path the agent can read_file to retrieve the full content</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '796d72d7')"><strong>C)</strong> The full result compressed into a single summary message by a separate LLM call</div>
-<div class="mcq-choice" onclick="handleMcqClick(this, false, '796d72d7')"><strong>D)</strong> An error message asking the agent to call the tool again with a smaller query</div>
-    </div>
-    <div id="mcq-answer-796d72d7" class="mcq-answer" style="display: none;">
-        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
-        <div class="mcq-explanation">FilesystemMiddleware writes the full result to /large_tool_results/<tool_call_id> on the filesystem, then replaces the inline ToolMessage with a preview showing the first and last 5 lines plus the file path. The agent can then use read_file with offset and limit to page through the full content on demand.</div>
-    </div>
-</div>
 
 </div>
 
