@@ -582,8 +582,10 @@
 </div>
 
 <div class="lt-panel active" id="p-mem" role="tabpanel">
-<h2 id="memory-always-present-context">Memory: Always-Present Context</h2>
-<p>Memory files are markdown files loaded at agent startup and injected into the system prompt on every LLM call. Unlike skills (which are loaded on demand when a task matches), memory is always present, every call.</p>
+<p>Memory lets an agent learn and improve across conversations. User preferences, project conventions, and context that builds up over time can all be stored and recalled, allowing the agent to behave more like a knowledgeable collaborator than a stateless assistant.</p>
+<p>Deep Agents makes memory first-class with filesystem-backed memory: the agent reads and writes memory as plain files, and you control where those files are stored using backends.</p>
+<h2 id="how-deep-agents-implements-memory">How Deep Agents implements memory</h2>
+<p>Memory files are markdown files loaded at agent startup and injected into the system prompt on every LLM call. Unlike skills, which are loaded on demand when a task matches, memory is always present on every call.</p>
 <details class="video-walkthrough">
 <summary>Video Walk-through [click to expand] — script available, video later</summary>
 <br>
@@ -692,6 +694,11 @@ By convention, memory files live in a <code>memories/</code> directory and the m
 </div>
 </details>
 
+<hr />
+<h2 id="references">References</h2>
+<p><strong>Documentation:</strong><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/memory" target="_blank" rel="noopener noreferrer">Memory (Deep Agents)</a><br />
+- <a href="https://agents.md/" target="_blank" rel="noopener noreferrer">agents.md specification</a></p>
 </div>
 <div class="lt-panel" id="p-quiz" role="tabpanel">
 
@@ -772,7 +779,7 @@ By convention, memory files live in a <code>memories/</code> directory and the m
 
 <div class="lt-panel" id="p-lab" role="tabpanel">
 <h2 id="lab-coding-assistant-with-memory">Lab: Coding Assistant with Memory</h2>
-<p>Both files are already in the repo: <code>python/m3/memory_agent.py</code> and <code>python/m3/memories/AGENTS.md</code>. Open them to see how they're wired up, then run the agent directly. The first invoke answers a question using the file's content; the second triggers a memory write. You can also swap in your own <code>AGENTS.md</code> content, or use a coding agent to explore and extend the setup.</p>
+<p>Both files are already in the repo: <code>python/m3/m3.3_memory_agent.py</code> and <code>python/m3/memories/AGENTS.md</code>. Open them to see how they're wired up, then run the agent directly. The first invoke answers a question using the file's content; the second triggers a memory write. You can also swap in your own <code>AGENTS.md</code> content, or use a coding agent to explore and extend the setup.</p>
 <details class="video-walkthrough">
 <summary>Video Walk-through [click to expand] — script available, video later</summary>
 <br>
@@ -816,7 +823,7 @@ Let's run it. Once it finishes, open both runs in LangSmith. In the first run yo
 </details>
 <hr />
 <h3 id="run-it">Run it</h3>
-<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m3/memory_agent.py
+<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m3/m3.3_memory_agent.py
 </code></pre>
 <p>After both invokes complete, open <code>python/m3/memories/AGENTS.md</code> and verify the ruff note was written in.</p>
 <hr />
@@ -831,11 +838,6 @@ Let's run it. Once it finishes, open both runs in LangSmith. In the first run yo
 Memory content is visible in the system message of <em>every</em> LLM call in every run. Skills content only appears as a <code>read_file</code> tool call in the specific run where the skill was activated. If you see a large block in the system prompt that is always there, that is memory. If you see a <code>read_file</code> mid-run, that is a skill activation.
 </div>
 </div>
-<hr />
-<h2 id="references">References</h2>
-<p><strong>Documentation:</strong><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/memory" target="_blank" rel="noopener noreferrer">Memory (Deep Agents)</a><br />
-- <a href="https://agents.md/" target="_blank" rel="noopener noreferrer">agents.md specification</a></p>
 <script>
 (function () {
   var tabs = document.querySelectorAll('.lt-tab');
