@@ -618,7 +618,8 @@ On turn 5, when we ask "what do you remember about me?", the agent correctly rec
 One important note: state["messages"] is never modified. The full history is always stored intact. Summarization only affects what gets sent to the model each turn.
 
 </details>
-<p>When a conversation runs long enough, older messages push the total token count toward the model's context limit. Deep Agents handles this automatically with <strong>SummarizationMiddleware</strong>; it watches the context fill up and compacts old messages into a summary before the model ever sees them.</p>
+<p>As agents have grown more capable, we ask more of them. Tasks that once took a single tool call now span dozens of steps. Research sessions run for many turns, complex workflows pile up tool results and intermediate reasoning, and back-and-forth refinement adds more with every exchange. More capability means more context, and more context means the total token count climbs steadily toward the model's limit. Left unchecked, a long-running agent eventually stalls.</p>
+<p>Deep Agents handles this automatically with <strong>SummarizationMiddleware</strong>; it watches the context fill up and compacts old messages into a summary before the model ever sees them.</p>
 <hr />
 <h2 id="how-the-context-window-fills-up">How the context window fills up</h2>
 <p>Think of the context window like a thermometer. Every new message adds tokens and the level rises. When it crosses <strong>85%</strong> of the model's limit, the middleware fires.</p>
@@ -653,8 +654,22 @@ buildSlideshow({
 <hr />
 <h2 id="seeing-it-in-action">Seeing it in action</h2>
 <p>The default trigger is 85% of the model's real context window: 170,000 tokens for Claude Haiku 4.5. To observe it in a demo we set <code>model.profile["max_input_tokens"]</code> to a small value so the threshold is hit after a few turns:</p>
-<div class="tabs-block" data-tabs="[{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;python&quot;, &quot;code&quot;: &quot;# python/m3/m3.x_summarization.py\nfrom models import model\n\n# Lower the reported context window so summarization fires at ~595 tokens\n# (85% of 700) instead of the real threshold. Must pass model object, not string.\nmodel.profile = {**model.profile, \&quot;max_input_tokens\&quot;: 700}\n\nagent = create_deep_agent(\n    model=model,\n    checkpointer=MemorySaver(),\n    system_prompt=\&quot;You are a helpful assistant. Keep every response to one sentence.\&quot;,\n)&quot;, &quot;highlights&quot;: []}]"></div>
-<div class="language-tabs-block" data-languages="{&quot;Python&quot;: [{&quot;title&quot;: &quot;Python&quot;, &quot;language&quot;: &quot;bash&quot;, &quot;code&quot;: &quot;cd python\nuv run python m3/m3.x_summarization.py&quot;, &quot;highlights&quot;: [], &quot;noHeader&quot;: true}]}"></div>
+<pre><code class="language-python"># python/m3/m3.1_summarization.py
+from models import model
+
+# Lower the reported context window so summarization fires at ~595 tokens
+# (85% of 700) instead of the real threshold. Must pass model object, not string.
+model.profile = {**model.profile, &quot;max_input_tokens&quot;: 700}
+
+agent = create_deep_agent(
+    model=model,
+    checkpointer=MemorySaver(),
+    system_prompt=&quot;You are a helpful assistant. Keep every response to one sentence.&quot;,
+)
+</code></pre>
+<pre><code class="language-bash">cd python
+uv run python m3/m3.1_summarization.py
+</code></pre>
 <p><strong>Expected output:</strong></p>
 <pre style="max-height:260px;overflow-y:auto;background:#0d1117;color:#e6edf3;padding:16px;border-radius:6px;font-size:12px;font-family:'IBM Plex Mono',monospace;line-height:1.6;white-space:pre-wrap;">──────────────────────────────────────────────────
 Turn 1  User:  My name is Alex. I work at Acme Corp.
@@ -749,6 +764,11 @@ Here is a preview showing the head and tail of the result:
 </ul>
 <h2 id="next">Next</h2>
 <p>In the next lesson we cover skills: how to package reusable agent behaviours so the model can load them on demand.</p>
+<hr />
+<h2 id="references">References</h2>
+<p><strong>Documentation:</strong><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/context-engineering" target="_blank" rel="noopener noreferrer">SummarizationMiddleware: Deep Agents</a><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/context-engineering" target="_blank" rel="noopener noreferrer">Context Engineering overview</a></p>
 </div>
 <div class="lt-panel" id="p-quiz" role="tabpanel">
 
@@ -834,11 +854,6 @@ Here is a preview showing the head and tail of the result:
 
 </div>
 
-<hr />
-<h2 id="references">References</h2>
-<p><strong>Documentation:</strong><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/context-engineering" target="_blank" rel="noopener noreferrer">SummarizationMiddleware: Deep Agents</a><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/context-engineering" target="_blank" rel="noopener noreferrer">Context Engineering overview</a></p>
 <script>
 (function () {
   var tabs = document.querySelectorAll('.lt-tab');
