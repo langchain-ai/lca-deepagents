@@ -543,6 +543,7 @@
 }
 .lt-group { display: flex; gap: 3px; }
 .lt-fs   { --c: #006DDD; }
+.lt-quiz { --c: #7C3AED; }
 .lt-wrap { --c: #B45309; }
 .lt-tab {
   font: 500 14px 'IBM Plex Mono', monospace;
@@ -574,6 +575,9 @@
 <div class="lt-bar" role="tablist" aria-label="Lesson sections">
   <div class="lt-group lt-fs">
     <button class="lt-tab active" data-p="fs" role="tab" aria-selected="true">Filesystem</button>
+  </div>
+  <div class="lt-group lt-quiz">
+    <button class="lt-tab" data-p="quiz" role="tab" aria-selected="false">Quiz</button>
   </div>
   <div class="lt-group lt-wrap">
     <button class="lt-tab" data-p="lab1" role="tab" aria-selected="false">Lab</button>
@@ -757,6 +761,92 @@ A common combination: route `/skills/` to Store so files persist, but deny write
 <p><strong>Documentation:</strong><br />
 - <a href="https://docs.langchain.com/oss/python/deepagents/backends" target="_blank" rel="noopener noreferrer">Filesystem Backends</a></p>
 </div>
+<div class="lt-panel" id="p-quiz" role="tabpanel">
+
+<h2>Check your understanding</h2>
+
+<div class="mcq-container" id="mcq-9f0b7fd1">
+    <div class="mcq-question">
+        <strong>Question:</strong> What do all filesystem backends have in common?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '9f0b7fd1')"><strong>A)</strong> They all persist files across threads</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '9f0b7fd1')"><strong>B)</strong> They all require a namespace function</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '9f0b7fd1')"><strong>C)</strong> They all use the same underlying storage system</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '9f0b7fd1')"><strong>D)</strong> They all expose the same tool surface (ls, read_file, write_file, etc.); the agent cannot tell which backend it is using</div>
+    </div>
+    <div id="mcq-answer-9f0b7fd1" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+        <div class="mcq-explanation">All backends implement the same interface: ls, read_file, write_file, edit_file, glob, grep. The agent code stays the same regardless of which backend you choose — swapping the backend is transparent to the agent.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-be509341">
+    <div class="mcq-question">
+        <strong>Question:</strong> What is the key difference between State and Store backends?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'be509341')"><strong>A)</strong> State supports permissions; Store does not</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'be509341')"><strong>B)</strong> State is faster but requires more configuration</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, 'be509341')"><strong>C)</strong> State is thread-scoped and ephemeral; Store persists files across threads and sessions</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'be509341')"><strong>D)</strong> Store requires a Composite wrapper to function</div>
+    </div>
+    <div id="mcq-answer-be509341" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-explanation">State keeps files in LangGraph state scoped to the current thread — they disappear when the thread ends. Store is backed by a database (PostgreSQL in production) and files persist across threads and sessions.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-b7d9ea8f">
+    <div class="mcq-question">
+        <strong>Question:</strong> What makes Context Hub different from other backends?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'b7d9ea8f')"><strong>A)</strong> It stores files in an encrypted database</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'b7d9ea8f')"><strong>B)</strong> It requires explicit read_file calls like other backends</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, 'b7d9ea8f')"><strong>C)</strong> Files are injected directly into the model context window without an explicit read call</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'b7d9ea8f')"><strong>D)</strong> It is only available in production deployments</div>
+    </div>
+    <div id="mcq-answer-b7d9ea8f" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-explanation">Context Hub injects files directly into the model's context window on every call, without requiring an explicit read_file call. This is useful for reference material the agent should always have in view.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-8808a34a">
+    <div class="mcq-question">
+        <strong>Question:</strong> How are FilesystemPermission rules evaluated?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '8808a34a')"><strong>A)</strong> All matching rules are applied in sequence</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '8808a34a')"><strong>B)</strong> The most specific path pattern wins</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '8808a34a')"><strong>C)</strong> Rules are evaluated in reverse order; the last match wins</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '8808a34a')"><strong>D)</strong> Rules are evaluated in order; the first match wins. If nothing matches, the operation is allowed</div>
+    </div>
+    <div id="mcq-answer-8808a34a" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+        <div class="mcq-explanation">FilesystemPermission rules are evaluated in order. The first rule whose operations and paths match wins. If no rule matches, the operation is allowed by default.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-9c1b3716">
+    <div class="mcq-question">
+        <strong>Question:</strong> What does interrupt mode do in a FilesystemPermission rule?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '9c1b3716')"><strong>A)</strong> It logs the operation and allows it anyway</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '9c1b3716')"><strong>B)</strong> It raises an exception and halts the agent</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '9c1b3716')"><strong>C)</strong> It pauses for human approval instead of blocking silently</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '9c1b3716')"><strong>D)</strong> It redirects the file operation to a different backend</div>
+    </div>
+    <div id="mcq-answer-9c1b3716" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-explanation">The interrupt mode pauses for human approval instead of blocking silently. This is the same HITL pattern seen with write_sql — the operation is held until a human approves or cancels it.</div>
+    </div>
+</div>
+
+</div>
+
 <div class="lt-panel" id="p-lab1" role="tabpanel">
 <h2 id="lab-filesystem-permissions">Lab: Filesystem Permissions</h2>
 <p>The lab agent uses a <code>CompositeBackend</code> with <code>/memories/</code> and <code>/skills/</code> both routed to the store. A <code>FilesystemPermission</code> rule denies all writes to <code>/skills/**</code>.</p>

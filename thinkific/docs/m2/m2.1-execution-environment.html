@@ -533,6 +533,54 @@
 <script>mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { background: '#F2FAFF', primaryColor: '#E5F4FF', primaryBorderColor: '#006DDD', primaryTextColor: '#030710', lineColor: '#2F4B68' } });</script>
 
 <h1 id="execution-environment">Execution Environment</h1>
+<style>
+.lt-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 28px 0 0;
+  border-bottom: 2px solid #CCE9FF;
+}
+.lt-group { display: flex; gap: 3px; }
+.lt-env  { --c: #006DDD; }
+.lt-quiz { --c: #7C3AED; }
+.lt-tab {
+  font: 500 14px 'IBM Plex Mono', monospace;
+  padding: 9px 14px;
+  border: none;
+  background: transparent;
+  color: #40668D;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  border-radius: 6px 6px 0 0;
+  transition: background .15s, color .15s, border-color .15s;
+  white-space: nowrap;
+}
+.lt-tab:hover { background: #F2FAFF; color: #030710; }
+.lt-tab.active {
+  color: var(--c);
+  border-bottom-color: var(--c);
+  background: #fff;
+}
+.lt-panel { display: none; padding-top: 24px; }
+.lt-panel.active { display: block; }
+@media (max-width: 600px) {
+  .lt-bar { flex-wrap: nowrap; overflow-x: auto; gap: 12px; }
+  .lt-tab { padding: 8px 10px; font-size: 13px; }
+}
+</style>
+
+<div class="lt-bar" role="tablist" aria-label="Lesson sections">
+  <div class="lt-group lt-env">
+    <button class="lt-tab active" data-p="env" role="tab" aria-selected="true">Execution Environment</button>
+  </div>
+  <div class="lt-group lt-quiz">
+    <button class="lt-tab" data-p="quiz" role="tab" aria-selected="false">Quiz</button>
+  </div>
+</div>
+
+<div class="lt-panel active" id="p-env" role="tabpanel">
 <details class="video-walkthrough">
 <summary>Video Walk-through [click to expand] — script available, video later</summary>
 <br>
@@ -578,7 +626,6 @@ The interpreter is separate from all of this. Language models are unreliable at 
 The key idea to take away from this lesson is that the backend is what makes the execution environment configurable. Swap it and you change where files live and where commands run, without changing anything else about the agent.
 
 </details>
-
 <p>A Deep Agent has an <strong>execution environment</strong> that provides three things:</p>
 <ul>
 <li>a <strong>filesystem</strong> to read and write files</li>
@@ -590,25 +637,25 @@ The key idea to take away from this lesson is that the backend is what makes the
 <h2 id="the-backend-landscape">The backend landscape</h2>
 <div class="mermaid">
 graph TB
-    Tools[Filesystem Tools] --> Backend[Backend]
+    Tools[Filesystem Tools] --&gt; Backend[Backend]
 
-    Backend --> State[State]
-    Backend --> Disk[Filesystem]
-    Backend --> Store[Store]
-    Backend --> ContextHub[Context Hub]
-    Backend --> Sandbox[Sandbox]
-    Backend --> LocalShell[Local Shell]
-    Backend --> Composite[Composite]
-    Backend --> Custom[Custom]
+    Backend --&gt; State[State]
+    Backend --&gt; Disk[Filesystem]
+    Backend --&gt; Store[Store]
+    Backend --&gt; ContextHub[Context Hub]
+    Backend --&gt; Sandbox[Sandbox]
+    Backend --&gt; LocalShell[Local Shell]
+    Backend --&gt; Composite[Composite]
+    Backend --&gt; Custom[Custom]
 
-    Composite --> Router{Routes}
-    Router --> State
-    Router --> Disk
-    Router --> Store
-    Router --> ContextHub
+    Composite --&gt; Router{Routes}
+    Router --&gt; State
+    Router --&gt; Disk
+    Router --&gt; Store
+    Router --&gt; ContextHub
 
-    Sandbox --> Execute["+ execute tool"]
-    LocalShell --> Execute["+ execute tool"]
+    Sandbox --&gt; Execute["+ execute tool"]
+    LocalShell --&gt; Execute["+ execute tool"]
 
     classDef trigger fill:#CCE9FF,stroke:#006DDD,stroke-width:2px,color:#030710
     classDef hub fill:#7FC8FF,stroke:#006DDD,stroke-width:2px,color:#030710
@@ -622,7 +669,6 @@ graph TB
     class Router decision
     class Execute output
 </div>
-
 <p>Every filesystem and <code>execute</code> call passes through whichever backend you configure. The default keeps files in the agent's <strong>state</strong>; others persist them to local <strong>disk</strong> or a <strong>store</strong>, run them in an isolated <strong>sandbox</strong>, or send files to different backends by path prefix (a <strong>composite</strong>). Sandbox and local-shell backends also add the <code>execute</code> tool. The next two lessons cover each in detail.</p>
 <hr />
 <h2 id="the-interpreter">The interpreter</h2>
@@ -640,6 +686,111 @@ graph TB
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />
 - <a href="https://docs.langchain.com/oss/python/deepagents/backends" target="_blank" rel="noopener noreferrer">Filesystem Backends</a></p>
+</div>
+<div class="lt-panel" id="p-quiz" role="tabpanel">
+
+<h2>Check your understanding</h2>
+
+<div class="mcq-container" id="mcq-693357f8">
+    <div class="mcq-question">
+        <strong>Question:</strong> What three capabilities does a Deep Agent's execution environment provide?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '693357f8')"><strong>A)</strong> Filesystem, database, and interpreter</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '693357f8')"><strong>B)</strong> Shell, interpreter, and model</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '693357f8')"><strong>C)</strong> Filesystem, shell (execute tool), and interpreter</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '693357f8')"><strong>D)</strong> Filesystem, shell, and model</div>
+    </div>
+    <div id="mcq-answer-693357f8" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-explanation">A Deep Agent's execution environment provides three things: a filesystem to read and write files, a shell to run commands via the execute tool, and an interpreter to run code.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-792ef327">
+    <div class="mcq-question">
+        <strong>Question:</strong> What do filesystem tools and the execute tool both run through?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '792ef327')"><strong>A)</strong> The agent main loop</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '792ef327')"><strong>B)</strong> The LLM directly</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '792ef327')"><strong>C)</strong> A swappable backend</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '792ef327')"><strong>D)</strong> The interpreter</div>
+    </div>
+    <div id="mcq-answer-792ef327" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: C</strong> ✅</div>
+        <div class="mcq-explanation">Every filesystem and execute call passes through whichever backend you configure. The backend is what makes the execution environment configurable — swap it and you change where files live and where commands run.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-ca617ce5">
+    <div class="mcq-question">
+        <strong>Question:</strong> What is the default backend, and where does it keep files?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, 'ca617ce5')"><strong>A)</strong> Filesystem backend; persists files to local disk</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, 'ca617ce5')"><strong>B)</strong> State backend; keeps files in the agent in-memory state</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'ca617ce5')"><strong>C)</strong> Store backend; writes to remote storage</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, 'ca617ce5')"><strong>D)</strong> Context Hub; managed hosted storage</div>
+    </div>
+    <div id="mcq-answer-ca617ce5" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+        <div class="mcq-explanation">State is the default backend. Files live in the agent's in-memory state, scoped to the current thread. Nothing persists to disk, which is fine for simple use cases or demos.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-394da9b6">
+    <div class="mcq-question">
+        <strong>Question:</strong> How is the interpreter different from filesystem tools and the execute tool?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '394da9b6')"><strong>A)</strong> It runs through a separate Interpreter backend</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '394da9b6')"><strong>B)</strong> It is only available in the Sandbox backend</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '394da9b6')"><strong>C)</strong> It calls the LLM directly instead of executing code</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '394da9b6')"><strong>D)</strong> It runs as a tool in the agent main loop, not through a backend</div>
+    </div>
+    <div id="mcq-answer-394da9b6" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+        <div class="mcq-explanation">The interpreter is the exception. Unlike filesystem tools and execute — which run through a backend — the interpreter runs as a tool in the agent's main loop.</div>
+    </div>
+</div>
+
+<div class="mcq-container" id="mcq-8d82ecdf">
+    <div class="mcq-question">
+        <strong>Question:</strong> Which backend routes file operations to different backends based on path prefix?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '8d82ecdf')"><strong>A)</strong> Custom</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '8d82ecdf')"><strong>B)</strong> Store</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '8d82ecdf')"><strong>C)</strong> Context Hub</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '8d82ecdf')"><strong>D)</strong> Composite</div>
+    </div>
+    <div id="mcq-answer-8d82ecdf" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: D</strong> ✅</div>
+        <div class="mcq-explanation">Composite routes different path prefixes to different backends. For example, /memories/ could go to Store while everything else falls back to State — all within the same agent.</div>
+    </div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  var tabs = document.querySelectorAll('.lt-tab');
+  function show(p) {
+    tabs.forEach(function (t) {
+      var on = t.getAttribute('data-p') === p;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    document.querySelectorAll('.lt-panel').forEach(function (panel) {
+      panel.classList.toggle('active', panel.id === 'p-' + p);
+    });
+  }
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () { show(t.getAttribute('data-p')); });
+  });
+})();
+</script>
 
     <script>
         // Handle MCQ choice clicks
