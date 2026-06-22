@@ -615,7 +615,7 @@ There are only two required frontmatter fields: name and description. The name m
 <p>Each skill lives in its own named directory, and the directory name must match the <code>name</code> field in the frontmatter:</p>
 <p>The <code>SKILL.md</code> file has two parts: a YAML frontmatter block at the top, and the skill instructions below it.</p>
 <p><img src="images/m3.2-skill-anatomy.svg" alt="SKILL.md anatomy: YAML frontmatter and skill instructions sections labelled" style="width:100%;display:block;margin:1.25rem 0 0.5rem;" /></p>
-<p>The agent reads only the frontmatter at startup; the full body is loaded when a skill is activated. Write the <code>description</code> as a single sentence: in what situation should this skill be used?</p>
+<p>The agent reads only the frontmatter at startup; the full body is loaded when a skill is activated. Write the <code>description</code> to clearly answer when the skill should be used. Keep it brief and specific.</p>
 <p>The recognized frontmatter fields are:</p>
 <table>
 <thead>
@@ -686,12 +686,20 @@ Available skills:
 - **draft-pitch**: Use when the user wants to write a sales pitch or outreach message.
   -&gt; Read skills/draft-pitch/SKILL.md for full instructions.
 </code></pre>
-<p>Your only job is writing the <code>description</code> value in the frontmatter. Because that value is always in context, keep it short and precise. Describe only <strong>when</strong> to use the skill, not what it does internally.</p>
+<p>Both the <code>name</code> and <code>description</code> are always in context, so keep them short and precise. The <code>description</code> in particular should describe only <strong>when</strong> to use the skill, not what it does internally.</p>
 <p><strong>2. Activation</strong></p>
 <p>When a task matches a skill's description, the agent calls <code>read_file</code> on the path shown in the system prompt, loading the full <code>SKILL.md</code> into context for that turn. The full content is not loaded automatically; the agent reads it on demand.</p>
 <p><strong>3. Execution</strong></p>
 <p>The agent follows the instructions in the skill body, calling any tools it needs and using any bundled files referenced in the instructions.</p>
 <p>You can see all three stages in a LangSmith trace: the Skills System section appears in every system message; the <code>read_file</code> call marks the moment of activation; and the subsequent tool calls show execution.</p>
+<div class="tip">
+<p><strong>Skills go further than static text.</strong> An agent can write and edit its own skill files over time, refining them from the preferences and patterns it learns on the job. Skills can also include executable scripts in a <code>scripts/</code> subdirectory, which the agent can run in a sandbox, enabling more advanced workflows like code generation, data processing, or multi-step automation.</p>
+</div>
+<hr />
+<h2 id="references">References</h2>
+<p><strong>Documentation:</strong><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/skills" target="_blank" rel="noopener noreferrer">Skills (Deep Agents)</a><br />
+- <a href="https://agentskills.io/specification" target="_blank" rel="noopener noreferrer">Agent Skills specification</a></p>
 </div>
 <div class="lt-panel" id="p-quiz" role="tabpanel">
 
@@ -868,15 +876,10 @@ print(result[&quot;messages&quot;][-1].content)
 <p>Then find the <code>read_file</code> tool call in the trace. It will target either <code>qualify-lead/SKILL.md</code> or <code>draft-pitch/SKILL.md</code> depending on which question you asked. That call is activation.</p>
 <p>Try both questions in two separate runs and compare which <code>read_file</code> call appears in each trace.</p>
 <div class="callout">
-<strong>Why the description is the only thing that matters at discovery</strong><br>
-The description is the only text the agent reads before deciding whether to activate a skill. The full body, the steps, the output format: none of it is visible until <code>read_file</code> is called. Write the description as a single, specific sentence that answers: "In what situation should this skill be used?"
+<strong>Why the name and description are what matter at discovery</strong><br>
+The name and description are the only text the agent sees before deciding whether to activate a skill. The full body, the steps, the output format: none of it is visible until <code>read_file</code> is called. Write the description to clearly answer: "In what situation should this skill be used?" Keep it brief and specific.
 </div>
 </div>
-<hr />
-<h2 id="references">References</h2>
-<p><strong>Documentation:</strong><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/skills" target="_blank" rel="noopener noreferrer">Skills (Deep Agents)</a><br />
-- <a href="https://agentskills.io/specification" target="_blank" rel="noopener noreferrer">Agent Skills specification</a></p>
 <script>
 (function () {
   var tabs = document.querySelectorAll('.lt-tab');
