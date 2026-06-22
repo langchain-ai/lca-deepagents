@@ -8,15 +8,15 @@ file on disk).
 
 - chinook-analyst — owns the database; self-bootstraps the schema into its own
   AGENTS.md; gates new-customer writes behind human approval.
-- inbox-manager   — owns the Gmail (MCP) tools; gates saving a draft behind
-  human approval. Only present when Gmail tools were discovered.
+- inbox-manager   — owns the mail (MCP) tools; gates saving a draft behind
+  human approval. Only present when mail tools were discovered.
 - quote-reviewer  — sanity-checks a drafted quote before it's sent.
 - genre-researcher — researches one genre for the newsletter (parallel fan-out);
   only present when web search (Tavily) is configured.
 
-Why Gmail lives in a subagent: the general-purpose subagent (always present)
+Why the inbox-manager lives in a subagent: the general-purpose subagent (always present)
 inherits the *main* agent's tools, so any gated tool placed on the main agent
-could be invoked ungated through delegation. Keeping `gmail_create_draft` and
+could be invoked ungated through delegation. Keeping `mail_create_draft` and
 `add_customer` solely on gated specialists means the only path to either write
 runs through its human-approval gate.
 """
@@ -43,18 +43,18 @@ in your memory, and use `add_customer` only when asked to add a genuinely new \
 customer (a human approves that write)."""
 
 INBOX_PROMPT = """You are the inbox-manager, the email specialist for the \
-Chinook Sales Assistant. You own Jane's Gmail and are the only agent that \
+Chinook Sales Assistant. You own Jane's inbox and are the only agent that \
 touches it.
 
-Your tools (MCP, prefixed with the server name "gmail"):
-- `gmail_list_messages` — list inbox messages (optionally filtered by a query).
-- `gmail_read_message` — read one message in full by id.
-- `gmail_create_draft` — save a reply to the drafts folder. It NEVER sends.
+Your tools (MCP, prefixed with the server name "mail"):
+- `mail_list_messages` — list inbox messages (optionally filtered by a query).
+- `mail_read_message` — read one message in full by id.
+- `mail_create_draft` — save a reply to the drafts folder. It NEVER sends.
 
 When asked to find or read mail, return a tight summary the caller can act on \
 (sender, subject, and the key content) — not the raw dump.
 
-When asked to save a draft, just call `gmail_create_draft` with the given \
+When asked to save a draft, just call `mail_create_draft` with the given \
 recipient, subject, and body. Saving a draft pauses automatically for Jane to \
 approve, edit, or reject — that pause IS the approval, so don't ask for \
 permission in prose first; make the call. Never invent a send tool; you only \
@@ -98,11 +98,11 @@ def build_subagents(
     backend: BackendProtocol,
     *,
     enable_search: bool,
-    gmail_tools: list | None = None,
+    mail_tools: list | None = None,
 ) -> list[dict]:
     """Return the subagent specs, wired to the shared filesystem backend.
 
-    ``gmail_tools`` are the MCP tools discovered for Gmail; when non-empty, an
+    ``mail_tools`` are the MCP tools discovered; when non-empty, an
     inbox-manager subagent is added that owns them and gates draft creation.
     """
 
@@ -140,23 +140,23 @@ def build_subagents(
 
     subagents = [chinook_analyst, quote_reviewer]
 
-    # inbox-manager — only when Gmail tools were actually discovered. Owns the
-    # gmail_* tools; gates gmail_create_draft (the one Gmail write) on approval.
-    if gmail_tools:
-        has_draft = any(getattr(t, "name", "") == "gmail_create_draft" for t in gmail_tools)
+    # inbox-manager — only when mail tools were actually discovered. Owns the
+    # mail_* tools; gates mail_create_draft (the one mail write) on approval.
+    if mail_tools:
+        has_draft = any(getattr(t, "name", "") == "mail_create_draft" for t in mail_tools)
         inbox_manager = {
             "name": "inbox-manager",
             "description": (
-                "Read Jane's Gmail inbox and save reply drafts. Delegate any "
+                "Read Jane's inbox and save reply drafts. Delegate any "
                 "email work here: finding/reading messages and creating a "
                 "draft reply (which pauses for Jane's approval)."
             ),
             "system_prompt": INBOX_PROMPT,
-            "tools": list(gmail_tools),
+            "tools": list(mail_tools),
             "model": model,
         }
         if has_draft:
-            inbox_manager["interrupt_on"] = {"gmail_create_draft": _APPROVE_EDIT_REJECT}
+            inbox_manager["interrupt_on"] = {"mail_create_draft": _APPROVE_EDIT_REJECT}
         subagents.append(inbox_manager)
 
     if enable_search:

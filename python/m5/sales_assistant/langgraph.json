@@ -1,5 +1,5 @@
 {
-  "dependencies": ["."],
+  "dependencies": ["../.."],
   "graphs": {
     "agent": "./agent.py:make_graph"
   },

@@ -1,20 +1,14 @@
-# python/m5/mcp/mock_gmail_server.py
-"""A local, offline stand-in for a Gmail MCP server.
+# python/m5/sales_assistant/mcp/mock_mail_server.py
+"""A local, offline mock mail MCP server.
 
-This is **Path B** of the course's two Gmail options (see the module README).
-Students who don't want to set up real Gmail OAuth get a zero-config MCP server
-that speaks the exact same three tools the assistant uses either way:
+Exposes three tools over stdio:
 
     list_messages(query)            -> summaries of inbox mail
     read_message(message_id)        -> the full body of one message
     create_draft(to, subject, body) -> save a reply to the drafts folder
 
-Because the tool names and signatures match what a real Gmail MCP server would
-expose, the agent code never branches on which backend is in use — only the MCP
-config the agent loads changes (see GMAIL_BACKEND in agent.py).
-
-State is a small JSON file managed by mail_store.py. Run directly, this script
-serves over stdio and is launched as a subprocess by the MCP client.
+State is a small JSON file managed by mail_store.py. Launched as a subprocess
+by mail_mcp.py when the assistant starts.
 """
 
 from __future__ import annotations
@@ -22,7 +16,7 @@ from __future__ import annotations
 from mail_store import load_store, next_id, save_store
 from mcp.server.fastmcp import FastMCP
 
-mcp = FastMCP("mock-gmail")
+mcp = FastMCP("mock-mail")
 
 
 @mcp.tool()

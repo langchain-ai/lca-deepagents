@@ -1,15 +1,15 @@
 # python/m5/sales_assistant/agent.py
 """The Chinook Sales Assistant — served as a graph for `langgraph dev`.
 
-This module is just the agent. The Gmail MCP plumbing lives in `gmail_mcp.py`;
+This module is just the agent. The mail MCP plumbing lives in `mail_mcp.py`;
 all this file does is assemble the agent around whatever tools that discovery
 returns.
 
 `langgraph.json` points at the async factory `make_graph`, which langgraph awaits
 once at startup. We use a factory (not a plain module-level `agent = ...`) for
-one reason: the Gmail tools come from an MCP server, and asking an MCP server for
+one reason: the mail tools come from an MCP server, and asking an MCP server for
 its tool list is an async call — so we discover the tools up front, then build
-the agent around whatever we found. If Gmail is unreachable, discovery returns no
+the agent around whatever we found. If the mail server is unreachable, discovery returns no
 tools and the assistant simply comes up without them.
 """
 
@@ -21,7 +21,7 @@ from pathlib import Path
 
 from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
-from gmail_mcp import load_gmail_tools
+from mail_mcp import load_mail_tools
 from langchain_quickjs import CodeInterpreterMiddleware
 from subagents import build_subagents
 from tools.html import markdown_to_html
@@ -51,9 +51,9 @@ async def make_graph():
     if not enable_search:
         logger.info("TAVILY_API_KEY not set — newsletter research subagent disabled.")
 
-    gmail_tools = await load_gmail_tools()
+    mail_tools = await load_mail_tools()
 
-    # The main agent holds NO gated tools. Gmail (gmail_create_draft) lives on
+    # The main agent holds NO gated tools. mail_create_draft lives on
     # the inbox-manager subagent and SQL writes (add_customer) on chinook-analyst,
     # each with its own approval gate — so the always-present general-purpose
     # subagent, which inherits the main agent's tools, can never reach a write
@@ -71,7 +71,7 @@ async def make_graph():
         tools=tools,
         system_prompt=SYSTEM_PROMPT,
         subagents=build_subagents(
-            backend, enable_search=enable_search, gmail_tools=gmail_tools
+            backend, enable_search=enable_search, mail_tools=mail_tools
         ),
         skills=["/skills"],
         memory=["/AGENTS.md"],
