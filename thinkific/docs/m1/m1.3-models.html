@@ -676,6 +676,16 @@ model = init_chat_model(&quot;anthropic:claude-haiku-4-5&quot;)   # workshop def
 <h2 id="models_1">Models</h2>
 <p>Run your scratch agent from the previous lesson (if you don't already have it up). Review <code>models.py</code> to see the available models, then switch the model in <code>models.py</code> (comment the current line for Haiku and uncomment another line for the model you want to use) and run it again.</p>
 <p>The video below is a quick walkthrough on how to change your model:</p>
+<div class="video-container" style="max-width: 750px;">
+    <div class="video-wrapper">
+        <iframe
+            src="https://share.descript.com/embed/MKueYS2eqAV"
+            frameborder="0"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    </div>
+</div>
 <pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/m1.2_scratch_agent.py
 </code></pre>
 <p>Run it again with the new model to compare:</p>
@@ -691,12 +701,14 @@ model = init_chat_model(&quot;anthropic:claude-haiku-4-5&quot;)   # workshop def
 <li><strong>Customization:</strong> open weights mean you can fine-tune the model on your own data</li>
 </ul>
 </div>
+
 <div style="margin:1.5rem 0;padding:0.75rem 1rem 0.75rem 1.25rem;border-left:4px solid #4ade80;background-color:#f0faf0;color:#1a4d1a;">
 <strong>Try an open-source model via OpenRouter</strong>
 <p style="margin:0.5rem 0 0;">OpenRouter gives you access to free hosted open-source models with no extra install. If you added your <code>OPENROUTER_API_KEY</code> to <code>.env</code> during setup, just uncomment the OpenRouter lines in <code>models.py</code> and run the lab again. If you haven't added it yet, head back to the <a href="../m0/m0.1-setup-python.html">setup lesson</a> to add it to your <code>.env</code> file.</p>
 <p style="margin:0.5rem 0 0;">Model used in this course: <a href="https://openrouter.ai/nvidia/nemotron-3-ultra-550b-a55b:free" target="_blank" rel="noopener noreferrer">nvidia/nemotron-3-ultra-550b-a55b:free on OpenRouter</a></p>
 <p style="margin:0.75rem 0 0;font-size:0.9em;color:#3a5a3a;"><strong>Note:</strong> Free models on hosted platforms typically mean you are consenting to the provider using your prompts and completions as training data. Avoid sending sensitive or proprietary information through free-tier endpoints.</p>
 </div>
+
 <div class="video-container" style="max-width: 750px;">
     <div class="video-wrapper">
         <iframe
@@ -707,6 +719,7 @@ model = init_chat_model(&quot;anthropic:claude-haiku-4-5&quot;)   # workshop def
         </iframe>
     </div>
 </div>
+
 <p>Here are two real responses to "What is an LLM?", one from each model:</p>
 <div style="display:flex;gap:20px;align-items:flex-start;margin:1.5rem 0;">
 
