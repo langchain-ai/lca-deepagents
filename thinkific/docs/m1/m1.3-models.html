@@ -648,27 +648,38 @@ model = init_chat_model(&quot;anthropic:claude-haiku-4-5&quot;)   # workshop def
 # model = init_chat_model(&quot;openai:gpt-4.1&quot;)
 </code></pre>
 <p>If you set up Anthropic or OpenAI in the setup lesson, those work out of the box. If you want to use Azure, Bedrock, or Google, those require an extra install (<code>uv sync --extra azure|bedrock|google</code>) and additional env vars; see the notes at the top of <code>models.py</code>.</p>
-<p>Head to <strong>Lab 1</strong> to run this yourself and see how the output changes across models.</p>
+<p>Head to <strong>Lab 1</strong> to run this yourself and see how the output changes across models. Scroll back to the top of this lesson and choose the <strong>Lab</strong> tab.</p>
+<hr />
+<h2 id="recap">Recap</h2>
+<ul>
+<li><code>init_chat_model("provider:model")</code> targets any LangChain-supported backend with a single string; swap the prefix to switch providers, swap the suffix to switch models</li>
+<li>All labs share one model object from <code>python/models.py</code>; changing that one line is the only code change needed to run a different model</li>
+<li>Three categories in this course: Proprietary &amp; Conversational, Advanced Reasoning, and Open-Source/Open-Weight; 50+ providers are supported in total</li>
+<li>Swapping the model changes nothing else in the agent; the system prompt, tools, and behavior instructions stay identical</li>
+</ul>
+<hr />
+<h2 id="next">Next</h2>
+<p>The next lesson covers the <strong>system prompt</strong>: how <code>create_deep_agent</code> assembles it from named parts, and how a single string can steer the agent's persona and domain without touching anything else.</p>
+<hr />
+<h2 id="references">References</h2>
+<p><strong>Documentation:</strong><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/overview" target="_blank" rel="noopener noreferrer">Deep Agents overview</a><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/models" target="_blank" rel="noopener noreferrer">Models (Deep Agents)</a><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/customization#prompt-assembly" target="_blank" rel="noopener noreferrer">Customization &amp; prompt assembly (Deep Agents)</a><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/context-engineering" target="_blank" rel="noopener noreferrer">Context engineering (Deep Agents)</a><br />
+- <a href="https://github.com/langchain-ai/deepagents" target="_blank" rel="noopener noreferrer">deepagents README (GitHub)</a><br />
+- <a href="https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents/deepagents/profiles/harness" target="_blank" rel="noopener noreferrer">Built-in harness profiles (GitHub)</a><br />
+- <a href="https://docs.langchain.com/oss/python/integrations/providers/overview" target="_blank" rel="noopener noreferrer">Providers overview (LangChain)</a><br />
+- <a href="https://docs.langchain.com/oss/python/integrations/chat" target="_blank" rel="noopener noreferrer">Chat model integrations (LangChain)</a></p>
 </div>
 <div class="lt-panel" id="p-lab1" role="tabpanel">
 <h2 id="models_1">Models</h2>
 <p>Run your scratch agent from the previous lesson (if you don't already have it up). Review <code>models.py</code> to see the available models, then switch the model in <code>models.py</code> (comment the current line for Haiku and uncomment another line for the model you want to use) and run it again.</p>
 <p>The video below is a quick walkthrough on how to change your model:</p>
-<details class="video-walkthrough">
-<summary>Video Walk-through [click to expand] — script available, video later</summary>
-<br>
-
-**Script (will be recorded):** So if you haven't already, run the deep agent you just created [open vscode]; unless you changed the default settings, this [gesture to answer in terminal] is your answer using Claude Haiku.
-
-Let's change it to Claude Sonnet by navigating to the models.py file and commenting out Haiku and uncommenting Sonnet [show in vscode]. Let's run it, and hey! That was super easy!
-
-[show the course page and the "Try an open-source model via OpenRouter" green tab] I highly encourage you to try out an open source model, go check out the videos on how to use Nvidia's model and Ollama's model - which doesn't require an API key!
-
-</details>
 <pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/m1.2_scratch_agent.py
 </code></pre>
 <p>Run it again with the new model to compare:</p>
-<pre><code class="language-bash">uv run ./python/m1/m1.2_scratch_agent.py
+<pre><code class="language-bash">cd ~/Documents/Github/lca-deepagents/python &amp;&amp; uv run ./m1/m1.2_scratch_agent.py
 </code></pre>
 <p>This also works with open-source models; no code changes required, just a different model line in <code>models.py</code>.</p>
 <div style="margin:1.5rem 0;padding:1.25rem 1.5rem;border-radius:12px;border:1px solid #b3e0b3;background-color:#f0faf0;color:#1a4d1a;">
@@ -763,28 +774,6 @@ model = init_chat_model(&quot;ollama:llama3.2&quot;)
 <p><strong>Local only.</strong> Ollama also offers hosted cloud models at ollama.com, which do require an API key. These steps are for running a model locally on your own machine.</p>
 </blockquote>
 </div>
-<hr />
-<h2 id="recap">Recap</h2>
-<ul>
-<li><code>init_chat_model("provider:model")</code> targets any LangChain-supported backend with a single string; swap the prefix to switch providers, swap the suffix to switch models</li>
-<li>All labs share one model object from <code>python/models.py</code>; changing that one line is the only code change needed to run a different model</li>
-<li>Three categories in this course: Proprietary &amp; Conversational, Advanced Reasoning, and Open-Source/Open-Weight; 50+ providers are supported in total</li>
-<li>Swapping the model changes nothing else in the agent; the system prompt, tools, and behavior instructions stay identical</li>
-</ul>
-<hr />
-<h2 id="next">Next</h2>
-<p>The next lesson covers the <strong>system prompt</strong>: how <code>create_deep_agent</code> assembles it from named parts, and how a single string can steer the agent's persona and domain without touching anything else.</p>
-<hr />
-<h2 id="references">References</h2>
-<p><strong>Documentation:</strong><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/overview" target="_blank" rel="noopener noreferrer">Deep Agents overview</a><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/models" target="_blank" rel="noopener noreferrer">Models (Deep Agents)</a><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/customization#prompt-assembly" target="_blank" rel="noopener noreferrer">Customization &amp; prompt assembly (Deep Agents)</a><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/context-engineering" target="_blank" rel="noopener noreferrer">Context engineering (Deep Agents)</a><br />
-- <a href="https://github.com/langchain-ai/deepagents" target="_blank" rel="noopener noreferrer">deepagents README (GitHub)</a><br />
-- <a href="https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents/deepagents/profiles/harness" target="_blank" rel="noopener noreferrer">Built-in harness profiles (GitHub)</a><br />
-- <a href="https://docs.langchain.com/oss/python/integrations/providers/overview" target="_blank" rel="noopener noreferrer">Providers overview (LangChain)</a><br />
-- <a href="https://docs.langchain.com/oss/python/integrations/chat" target="_blank" rel="noopener noreferrer">Chat model integrations (LangChain)</a></p>
 <script>
 (function () {
   var tabs = document.querySelectorAll('.lt-tab');
