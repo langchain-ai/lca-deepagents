@@ -1,0 +1,89 @@
+<svg width="720" height="250" viewBox="0 0 720 250" xmlns="http://www.w3.org/2000/svg"
+     font-family="'IBM Plex Mono', monospace"
+     role="img" aria-label="Contrast: without PTC, 4 LLM turns with tools interleaved; with PTC, 1 LLM turn and tools run inside eval()">
+
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7FC8FF"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="720" height="250" fill="#030710" rx="8"/>
+
+  <!-- ===== WITHOUT PTC ===== -->
+  <text x="14" y="28" font-size="13" font-weight="700" fill="#F2FAFF">Without PTC</text>
+
+  <!-- cy=58, box h=28 -->
+  <!-- LLM 1 -->
+  <rect x="14"  y="44" width="54" height="28" rx="4" fill="#0D1B33" stroke="#006DDD" stroke-width="1.5"/>
+  <text x="41"  y="62" text-anchor="middle" font-size="12" font-weight="700" fill="#7FC8FF">LLM</text>
+  <line x1="68"  y1="58" x2="82"  y2="58" stroke="#7FC8FF" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Tool 1 -->
+  <rect x="82"  y="44" width="54" height="28" rx="4" fill="#0D1B2A" stroke="#40668D" stroke-width="1"/>
+  <text x="109" y="62" text-anchor="middle" font-size="12" fill="#99D3FF">Tool 1</text>
+  <line x1="136" y1="58" x2="150" y2="58" stroke="#7FC8FF" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- LLM 2 -->
+  <rect x="150" y="44" width="54" height="28" rx="4" fill="#0D1B33" stroke="#006DDD" stroke-width="1.5"/>
+  <text x="177" y="62" text-anchor="middle" font-size="12" font-weight="700" fill="#7FC8FF">LLM</text>
+  <line x1="204" y1="58" x2="218" y2="58" stroke="#7FC8FF" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Tool 2 -->
+  <rect x="218" y="44" width="54" height="28" rx="4" fill="#0D1B2A" stroke="#40668D" stroke-width="1"/>
+  <text x="245" y="62" text-anchor="middle" font-size="12" fill="#99D3FF">Tool 2</text>
+  <line x1="272" y1="58" x2="286" y2="58" stroke="#7FC8FF" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- LLM 3 -->
+  <rect x="286" y="44" width="54" height="28" rx="4" fill="#0D1B33" stroke="#006DDD" stroke-width="1.5"/>
+  <text x="313" y="62" text-anchor="middle" font-size="12" font-weight="700" fill="#7FC8FF">LLM</text>
+  <line x1="340" y1="58" x2="354" y2="58" stroke="#7FC8FF" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Tool 3 -->
+  <rect x="354" y="44" width="54" height="28" rx="4" fill="#0D1B2A" stroke="#40668D" stroke-width="1"/>
+  <text x="381" y="62" text-anchor="middle" font-size="12" fill="#99D3FF">Tool 3</text>
+  <line x1="408" y1="58" x2="422" y2="58" stroke="#7FC8FF" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- LLM 4 -->
+  <rect x="422" y="44" width="54" height="28" rx="4" fill="#0D1B33" stroke="#006DDD" stroke-width="1.5"/>
+  <text x="449" y="62" text-anchor="middle" font-size="12" font-weight="700" fill="#7FC8FF">LLM</text>
+  <line x1="476" y1="58" x2="492" y2="58" stroke="#7FC8FF" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- response -->
+  <text x="494" y="63" font-size="12" fill="#40668D">response</text>
+
+  <!-- caption -->
+  <text x="14" y="96" font-size="12" fill="#40668D">4 LLM turns — each tool result is added to the context window before the next call</text>
+
+  <!-- Divider -->
+  <line x1="14" y1="112" x2="706" y2="112" stroke="#2F4B68" stroke-width="1"/>
+
+  <!-- ===== WITH PTC ===== -->
+  <text x="14" y="132" font-size="13" font-weight="700" fill="#F2FAFF">With PTC</text>
+
+  <!-- cy=162, box h=28 -->
+  <!-- LLM -->
+  <rect x="14"  y="148" width="54" height="28" rx="4" fill="#0D1B33" stroke="#006DDD" stroke-width="1.5"/>
+  <text x="41"  y="166" text-anchor="middle" font-size="12" font-weight="700" fill="#7FC8FF">LLM</text>
+  <line x1="68"  y1="162" x2="82"  y2="162" stroke="#006DDD" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- eval() box -->
+  <rect x="82"  y="141" width="188" height="42" rx="6" fill="#0D1B33" stroke="#006DDD" stroke-width="2"/>
+  <text x="176" y="158" text-anchor="middle" font-size="12" font-weight="700" fill="#7FC8FF">eval()</text>
+  <text x="176" y="175" text-anchor="middle" font-size="12" fill="#99D3FF">Tool 1 · Tool 2 · Tool 3</text>
+
+  <line x1="270" y1="162" x2="284" y2="162" stroke="#006DDD" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- LLM -->
+  <rect x="284" y="148" width="54" height="28" rx="4" fill="#0D1B33" stroke="#006DDD" stroke-width="1.5"/>
+  <text x="311" y="166" text-anchor="middle" font-size="12" font-weight="700" fill="#7FC8FF">LLM</text>
+  <line x1="338" y1="162" x2="354" y2="162" stroke="#7FC8FF" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- response -->
+  <text x="356" y="167" font-size="12" fill="#40668D">response</text>
+
+  <!-- caption -->
+  <text x="14" y="210" font-size="12" fill="#40668D">1 LLM turn — tools run inside eval(), intermediate results never enter the context window</text>
+
+</svg>
