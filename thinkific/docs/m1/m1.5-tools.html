@@ -763,6 +763,22 @@ def get_stock_price(ticker: str) -&gt; str:
 
 <div class="sd-wrap" id="dg-hitl"></div>
 
+<hr />
+<h2 id="recap">Recap</h2>
+<ul>
+<li>The <code>tools=</code> parameter is additive; your tools merge with the built-in suite (<code>write_todos</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code>, <code>glob</code>, <code>grep</code>, <code>task</code>) ; nothing is replaced</li>
+<li>The <code>@tool</code> decorator turns a Python function into a callable tool; the docstring is the description the model reads to decide when to use it</li>
+<li>The LLM never executes tools directly; it outputs an <code>AIMessage</code> with a <code>tool_calls</code> list; the Tool Node reads that and runs the function</li>
+<li>Human-in-the-Loop uses <code>interrupt_on</code> on <code>create_deep_agent</code> to intercept named tool calls before they execute; <code>Command(resume={"decisions": [...]})</code> restores execution after a human decision</li>
+<li>HITL requires a checkpointer (<code>MemorySaver</code> for development) so the graph can save state on pause and resume from exactly the same point</li>
+</ul>
+<hr />
+<h2 id="references">References</h2>
+<p><strong>Documentation:</strong><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/overview" target="_blank" rel="noopener noreferrer">Deep Agents overview</a><br />
+- <a href="https://docs.langchain.com/oss/python/deepagents/customization" target="_blank" rel="noopener noreferrer">Customization (Deep Agents)</a><br />
+- <a href="https://github.com/langchain-ai/deepagents" target="_blank" rel="noopener noreferrer">deepagents README (GitHub)</a><br />
+- <a href="https://github.com/langchain-ai/deepagents/tree/main/examples/text-to-sql-agent" target="_blank" rel="noopener noreferrer">text-to-sql-agent example (GitHub)</a></p>
 </div>
 <div class="lt-panel" id="p-quiz" role="tabpanel">
 
@@ -1047,12 +1063,18 @@ You'll see the pause and resume as distinct steps in the trace.
 <hr />
 <h3 id="setup">Setup</h3>
 <p>Confirm <code>langchain-community</code> is available (it ships with the workshop dependencies):</p>
-<pre><code class="language-bash">uv run python -c &quot;from langchain_community.utilities import SQLDatabase; print('ok')&quot;
+<pre><code class="language-bash">uv run python -c &quot;import warnings; warnings.filterwarnings('ignore'); from langchain_community.utilities import SQLDatabase; print('ok')&quot;
 </code></pre>
+<blockquote>
+<p><strong>Note:</strong> <code>langchain-community</code> is being deprecated. No standalone replacement for <code>SQLDatabase</code> exists yet, so it remains a dependency for this lab. The script suppresses the deprecation warning at import time.</p>
+</blockquote>
 <hr />
 <h3 id="1-imports-and-database-connection">1. Imports and database connection</h3>
 <p>Here's how the file sets up its imports and database connection:</p>
-<pre><code class="language-python">from pathlib import Path
+<pre><code class="language-python">import warnings
+warnings.filterwarnings(&quot;ignore&quot;, category=DeprecationWarning)
+
+from pathlib import Path
 
 from deepagents import create_deep_agent
 from langchain_community.utilities import SQLDatabase
@@ -1162,22 +1184,6 @@ The agent calls <code>read_sql</code> to inspect the genres table, then issues a
 <li><strong>Action tool</strong>: tools don't have to be read-only. Post to Slack, create a calendar event, write a row to a spreadsheet. The agent can act, not just retrieve.</li>
 </ul>
 </div>
-<hr />
-<h2 id="recap">Recap</h2>
-<ul>
-<li>The <code>tools=</code> parameter is additive; your tools merge with the built-in suite (<code>write_todos</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code>, <code>glob</code>, <code>grep</code>, <code>task</code>) ; nothing is replaced</li>
-<li>The <code>@tool</code> decorator turns a Python function into a callable tool; the docstring is the description the model reads to decide when to use it</li>
-<li>The LLM never executes tools directly; it outputs an <code>AIMessage</code> with a <code>tool_calls</code> list; the Tool Node reads that and runs the function</li>
-<li>Human-in-the-Loop uses <code>interrupt_on</code> on <code>create_deep_agent</code> to intercept named tool calls before they execute; <code>Command(resume={"decisions": [...]})</code> restores execution after a human decision</li>
-<li>HITL requires a checkpointer (<code>MemorySaver</code> for development) so the graph can save state on pause and resume from exactly the same point</li>
-</ul>
-<hr />
-<h2 id="references">References</h2>
-<p><strong>Documentation:</strong><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/overview" target="_blank" rel="noopener noreferrer">Deep Agents overview</a><br />
-- <a href="https://docs.langchain.com/oss/python/deepagents/customization" target="_blank" rel="noopener noreferrer">Customization (Deep Agents)</a><br />
-- <a href="https://github.com/langchain-ai/deepagents" target="_blank" rel="noopener noreferrer">deepagents README (GitHub)</a><br />
-- <a href="https://github.com/langchain-ai/deepagents/tree/main/examples/text-to-sql-agent" target="_blank" rel="noopener noreferrer">text-to-sql-agent example (GitHub)</a></p>
 <script>
 (function () {
   var tabs = document.querySelectorAll('.lt-tab');

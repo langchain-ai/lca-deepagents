@@ -533,7 +533,7 @@
 <script>mermaid.initialize({ startOnLoad: false, theme: 'base', themeVariables: { background: '#F2FAFF', primaryColor: '#E5F4FF', primaryBorderColor: '#006DDD', primaryTextColor: '#030710', lineColor: '#2F4B68' } });
 document.addEventListener('DOMContentLoaded', function() { mermaid.run(); });</script>
 
-<h1 id="shell-and-sandbox-backends">Shell and Sandbox Backends</h1>
+<h1 id="sandbox-and-localshell">Sandbox and LocalShell</h1>
 <style>
 .lt-bar {
   display: flex;
@@ -587,7 +587,6 @@ document.addEventListener('DOMContentLoaded', function() { mermaid.run(); });</s
 </div>
 
 <div class="lt-panel active" id="p-exec" role="tabpanel">
-<p>The filesystem backends from the last lesson give the agent file tools: <code>ls</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code>, <code>glob</code>, <code>grep</code>. <code>LocalShellBackend</code> and sandbox backends add one more: <strong><code>execute</code></strong>, which runs shell commands.</p>
 <details class="video-walkthrough">
 <summary>Video Walk-through [click to expand] — script available, video later</summary>
 <br>
@@ -623,6 +622,7 @@ Setting one up is straightforward. You create a sandbox client, provision a sand
 Head over to the labs to see both patterns in action: Lab 1 is a basic sandbox agent that writes and runs a script, and Lab 2 uploads a database file, queries it, and retrieves a generated chart back from the sandbox.
 
 </details>
+<p>The filesystem backends from the last lesson give the agent file tools: <code>ls</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code>, <code>glob</code>, <code>grep</code>. <code>LocalShellBackend</code> and sandbox backends add one more: <strong><code>execute</code></strong>, which runs shell commands.</p>
 <hr />
 <div class="mermaid">
 graph TB
@@ -650,6 +650,10 @@ graph TB
 <hr />
 <h2 id="how-do-you-choose">How do you choose?</h2>
 <p>Sandboxes are used for security. They let agents execute arbitrary code, access files, and use the network without compromising your credentials, local files, or host system. This isolation is essential when agents run autonomously.</p>
+<div style="text-align: center;">
+<img width="720" alt="Auth Proxy Pattern: sandbox makes requests without credentials, proxy sidecar injects Authorization header on outbound requests" src="images/m2.3-auth-proxy.png" />
+</div>
+<p>In LangSmith Sandboxes, credentials are kept out of the sandbox entirely via an <strong>auth proxy</strong> pattern: the sandbox code makes API calls with no authentication headers, and a proxy sidecar intercepts outbound requests and injects the credentials on the way out. Secrets never enter the sandbox — the agent cannot exfiltrate what it cannot see.</p>
 <p>Sandboxes are especially useful for:</p>
 <ul>
 <li><strong>Coding agents:</strong> Agents that run autonomously can use shell, git, clone repositories (many providers offer native git APIs, e.g., Daytona's git operations), and run Docker-in-Docker for build and test pipelines</li>
@@ -691,37 +695,6 @@ finally:
 <hr />
 <h2 id="localshellbackend">LocalShellBackend</h2>
 <p><code>LocalShellBackend</code> runs commands directly on the host machine. It scopes filesystem <em>tools</em> to a <code>root_dir</code>, but <code>execute</code> itself runs with full host permissions; no process isolation is applied.</p>
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>root_dir</code></td>
-<td><code>.</code></td>
-<td>Root of the agent's filesystem tool scope</td>
-</tr>
-<tr>
-<td><code>timeout</code></td>
-<td><code>30</code></td>
-<td>Max seconds per <code>execute</code> call</td>
-</tr>
-<tr>
-<td><code>inherit_env</code></td>
-<td><code>True</code></td>
-<td>Inherit the current process environment</td>
-</tr>
-<tr>
-<td><code>env</code></td>
-<td><code>{}</code></td>
-<td>Additional env vars to set for executed commands</td>
-</tr>
-</tbody>
-</table>
 <p><code>root_dir</code> scopes the filesystem tools (<code>ls</code>, <code>read_file</code>, <code>write_file</code>, etc.): the agent can only see files within that directory through those tools. It does not restrict the <code>execute</code> tool, which runs shell commands with full host permissions regardless of <code>root_dir</code>. The sandbox boundary is only on the file-access tools, not on execution. That's why it's unsuitable for production; the agent can still run <code>rm -rf /</code> via <code>execute</code> even if <code>root_dir</code> is set to a subdirectory.</p>
 <details style="border:1px solid #FCD34D;border-radius:6px;background:#FFFBEB;margin:20px 0;">
 <summary style="padding:10px 16px;cursor:pointer;font-weight:600;color:#92400E;list-style:none;border-radius:6px;">&#9888; Security Warning</summary>
@@ -765,12 +738,14 @@ finally:
 <li>The agent sees the same tools regardless of which backend you use</li>
 </ul>
 <h2 id="next">Next</h2>
-<p>The next lesson covers message history and how the agent's context window grows and compresses across turns.</p>
+<p>The next lesson covers the interpreter — how the agent writes and executes code directly in the main loop.</p>
 <hr />
 <h2 id="references">References</h2>
 <p><strong>Documentation:</strong><br />
 - <a href="https://docs.langchain.com/oss/python/deepagents/sandboxes" target="_blank" rel="noopener noreferrer">Execution Backends</a><br />
 - <a href="https://docs.langchain.com/langsmith/sandboxes" target="_blank" rel="noopener noreferrer">LangSmith Sandboxes</a></p>
+<p><strong>Blog:</strong><br />
+- <a href="https://www.langchain.com/blog/runtime-behind-production-deep-agents" target="_blank" rel="noopener noreferrer">The Runtime Behind Production Deep Agents</a></p>
 </div>
 <div class="lt-panel" id="p-lab1" role="tabpanel">
 <h2 id="lab-1-sandbox-agent">Lab 1: Sandbox Agent</h2>

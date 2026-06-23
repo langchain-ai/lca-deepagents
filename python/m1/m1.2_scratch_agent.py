@@ -1,6 +1,5 @@
-from deepagents import create_deep_agent
-
 from models import model
+from deepagents import create_deep_agent
 
 agent = create_deep_agent(model=model)
 

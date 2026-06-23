@@ -587,11 +587,17 @@
 <summary>Video Walk-through [click to expand]</summary>
 <br>
 
-
-<Video src="TODO" />
-
-
-
+<div class="video-container" style="max-width: 750px;">
+    <div class="video-wrapper">
+        <iframe
+            src="https://share.descript.com/embed/Gxg1d7sJkBI"
+            frameborder="0"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    </div>
+</details>
+</div>
 </details>
 <p>So far you've run every agent as a Python script that calls <code>agent.invoke(...)</code> and prints the result. That's a great fit for one-off tasks. The Chinook Sales Assistant you'll build and run next has different requirements: it must remain available and accept requests over the web, so it runs as a <strong>service</strong> rather than a one-time script.</p>
 <div style="text-align: center;">
@@ -608,7 +614,9 @@
 </svg>
 
 <p><em>The agent runs behind a web API - not inside your Python script.</em></p>
+
 </div>
+
 <hr />
 <h2 id="from-a-script-to-a-service">From a script to a service</h2>
 <p><code>langgraph dev</code> (part of the <code>langgraph-cli</code> package) provides a cloud-deployment-like environment on your local machine: it hosts your agent behind an HTTP API and runs the supporting infrastructure around it.</p>
@@ -617,33 +625,21 @@
   <rect width="720" height="300" fill="#030710" rx="8"/>
   <text x="360" y="34" text-anchor="middle" font-size="17" font-weight="300" fill="#F2FAFF">Your agent runs inside langgraph dev</text>
 
-  
-<!-- Studio (client) -->
-
-
+  <!-- Studio (client) -->
   <rect x="24" y="128" width="150" height="76" rx="8" fill="#161F34" stroke="#40668D" stroke-width="1"/>
   <text x="99" y="160" text-anchor="middle" font-size="16" font-weight="600" fill="#7FC8FF">Studio</text>
   <text x="99" y="182" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">chat + debug UI</text>
 
-  
-<!-- HTTP arrow into langgraph dev -->
-
-
+  <!-- HTTP arrow into langgraph dev -->
   <line x1="174" y1="166" x2="205" y2="166" stroke="#40668D" stroke-width="1.5"/>
   <polygon points="205,159 214,166 205,173" fill="#40668D"/>
   <text x="194" y="154" text-anchor="middle" font-size="13" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">HTTP</text>
 
-  
-<!-- langgraph dev box -->
-
-
+  <!-- langgraph dev box -->
   <rect x="214" y="64" width="482" height="222" rx="8" fill="#0D1322" stroke="#40668D" stroke-width="1" stroke-dasharray="4 3"/>
   <text x="234" y="90" font-size="14" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">langgraph dev</text>
 
-  
-<!-- agent node -->
-
-
+  <!-- agent node -->
   <rect x="355" y="104" width="200" height="58" rx="8" fill="#161F34" stroke="#7FC8FF" stroke-width="1.5"/>
   <text x="455" y="130" text-anchor="middle" font-size="16" font-weight="600" fill="#F2FAFF">Your deep agent</text>
   <text x="455" y="150" text-anchor="middle" font-size="12" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">create_deep_agent(...)</text>
@@ -651,10 +647,7 @@
   <line x1="455" y1="162" x2="455" y2="178" stroke="#40668D" stroke-width="1.5"/>
   <text x="455" y="192" text-anchor="middle" font-size="13" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">built-in services</text>
 
-  
-<!-- service tiles -->
-
-
+  <!-- service tiles -->
   <rect x="232" y="204" width="100" height="64" rx="6" fill="#161F34" stroke="#40668D" stroke-width="1"/>
   <text x="282" y="234" text-anchor="middle" font-size="14" font-weight="600" fill="#7FC8FF">HTTP API</text>
   <text x="282" y="254" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">endpoints</text>
@@ -673,7 +666,9 @@
 </svg>
 
 <p><em>You write the agent; <code>langgraph dev</code> wraps it in an HTTP API - with persistence, memory, and a task queue - and a client like Studio talks to it over HTTP.</em></p>
+
 </div>
+
 <h3 id="studio-a-client-for-that-api">Studio: a client for that API</h3>
 <p><code>langgraph dev</code> includes a chat and debugging interface called "Studio". As shown in the diagram, Studio uses the API endpoints provided by <code>langgraph dev</code> to allow you to converse with your agent via chat as well as examine and control the underlying agentic loop via a graphical debugger.</p>
 <hr />
@@ -753,6 +748,19 @@
 <li><strong><code>langgraph dev</code> ships a client</strong> for that API: <strong>LangGraph Studio</strong>, a combined <strong>chat + debug</strong> interface: and any other chat UI talks to the agent the same way, over HTTP.</li>
 </ul>
 <p>Try it yourself in the <strong>Lab</strong> tab above.</p>
+<hr />
+<h2 id="next">Next</h2>
+<p>With deployment understood, the next lesson builds and runs the capstone itself: <strong>the Chinook Sales Assistant</strong>.</p>
+<hr />
+<h2 id="references">References</h2>
+<p><strong>Documentation:</strong><br />
+- <a href="https://docs.langchain.com/oss/python/langgraph/local-server" target="_blank" rel="noopener noreferrer">Run a local server (<code>langgraph dev</code>)</a><br />
+- <a href="https://docs.langchain.com/oss/python/langgraph/studio" target="_blank" rel="noopener noreferrer">LangGraph Studio</a><br />
+- <a href="https://docs.langchain.com/langsmith/server-api-ref" target="_blank" rel="noopener noreferrer">Agent Server API reference</a><br />
+- <a href="https://docs.langchain.com/langgraph-platform/sdk" target="_blank" rel="noopener noreferrer">LangGraph SDK overview</a></p>
+<p><strong>LangGraph SDK API reference:</strong><br />
+- <a href="https://reference.langchain.com/python/langgraph-sdk" target="_blank" rel="noopener noreferrer">Python SDK</a><br />
+- <a href="https://reference.langchain.com/javascript/langchain-langgraph-sdk" target="_blank" rel="noopener noreferrer">TypeScript SDK</a></p>
 </div>
 <div class="lt-panel" id="p-quiz" role="tabpanel">
 
@@ -824,17 +832,24 @@
 
 </div>
 
-<hr />
-<h2 id="next">Next</h2>
-<p>With deployment understood, the next lesson builds and runs the capstone itself: <strong>the Chinook Sales Assistant</strong>.</p>
-<hr />
-<h2 id="references">References</h2>
-<p><strong>Documentation:</strong><br />
-- <a href="https://docs.langchain.com/oss/python/langgraph/local-server" target="_blank" rel="noopener noreferrer">Run a local server (<code>langgraph dev</code>)</a><br />
-- <a href="https://docs.langchain.com/oss/python/langgraph/studio" target="_blank" rel="noopener noreferrer">LangGraph Studio</a><br />
-- <a href="https://docs.langchain.com/langsmith/server-api-ref" target="_blank" rel="noopener noreferrer">Agent Server API reference</a></p>
 <div class="lt-panel" id="p-lab" role="tabpanel">
 <h2 id="lab-deploy-a-basic-agent">Lab: Deploy a Basic Agent</h2>
+<details class="video-walkthrough">
+<summary>Video Walk-through [click to expand]</summary>
+<br>
+
+<div class="video-container" style="max-width: 750px;">
+    <div class="video-wrapper">
+        <iframe
+            src="https://share.descript.com/embed/yuAYWuqkrHJ"
+            frameborder="0"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    </div>
+</details>
+</div>
+</details>
 <p>You'll build a simple agent.</p>
 <p>The agent itself is a single <code>create_deep_agent</code> call. It pulls <code>model</code> from the course's shared <code>models.py</code> - so the agent uses whatever provider you configured during setup - and is exposed as a module-level <code>graph</code> so the server can find it:</p>
 <pre><code class="language-python"># python/m5/hello/agent.py

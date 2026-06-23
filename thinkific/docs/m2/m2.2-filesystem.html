@@ -585,7 +585,6 @@
 </div>
 
 <div class="lt-panel active" id="p-fs" role="tabpanel">
-<p>The filesystem backends control <strong>where files are stored</strong>. Each backend implements the same interface (<code>ls</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code>, <code>glob</code>, <code>grep</code>), so the agent code stays the same regardless of which one you choose.</p>
 <details class="video-walkthrough">
 <summary>Video Walk-through [click to expand] — script available, video later</summary>
 <br>
@@ -599,11 +598,12 @@ State is the default: files live in the thread's checkpoint, so they're fast and
 The right backend to use comes down to one question: do these files need to survive beyond the current thread? If no, State is fine. If yes, use Store. If you need different answers for different paths, use Composite.
 
 </details>
+<p>The filesystem backends control <strong>where files are stored</strong>. Each backend implements the same interface (<code>ls</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code>, <code>glob</code>, <code>grep</code>), so the agent code stays the same regardless of which one you choose. The <strong>Custom</strong> backend lets you implement the interface directly for any storage system not covered by the built-ins — S3, GitHub, or a proprietary store.</p>
 <hr />
 <h2 id="storage-backends">Storage backends</h2>
 <div class="mermaid">
 graph TB
-    Tools[Filesystem Tools] --&gt; Backend[Backend]
+    Tools["ls · read_file · write_file · edit_file · glob · grep"] --&gt; Backend[Backend]
 
     Backend --&gt; State[State]
     Backend --&gt; Disk[Filesystem]
@@ -628,8 +628,10 @@ graph TB
     class State,Disk,Store,ContextHub,Composite,Custom process
     class Router decision
 </div>
+<p><em>Every filesystem tool call is routed through the Backend. Composite routes different path prefixes to different backends within the same agent.</em></p>
 <hr />
-<h2 id="the-backends">The backends</h2>
+<h2 id="the-filesystem-backends">The filesystem backends</h2>
+<p>You can select different backends depending on your agent's storage needs. The list below describes the built-in options. You can also build a custom backend for your needs (GitHub, S3, etc.).</p>
 <p><strong>State</strong>: the default. Files live in LangGraph state, also referred to as "checkpoint or short-term memory". It is scoped to the current thread. Persists as long as the thread persists.</p>
 <p><strong>Filesystem</strong>: reads and writes files on the local disk. Scoped to a <code>root_dir</code> you specify. </p>
 <p><strong>Store</strong>: backed by the store. In production, this is a PostgreSQL database; locally, it can be an in-memory database or a local database. Files persist across threads. </p>
@@ -708,16 +710,14 @@ from langgraph.store.memory import InMemoryStore
 
 agent = create_deep_agent(
     model=model,
-    backend=StoreBackend(
-        namespace=lambda rt: (rt.server_info.user.identity,),
-    ),
-    store=InMemoryStore(),  # swap for PostgresStore in production
+    backend=StoreBackend(namespace=(&quot;files&quot;,)),
+    store=InMemoryStore(),
 )
 </code></pre>
-<p><code>rt</code> is the LangGraph runtime passed to the backend at invocation time. <code>rt.server_info.user.identity</code> is the caller's user ID; using it as the namespace key keeps each user's files isolated in the store.</p>
+<p>The namespace groups files in the store — all files written by this agent land under <code>("files",)</code> in the key-value store.</p>
 <hr />
 <h2 id="composite-backend">Composite backend</h2>
-<p><code>CompositeBackend</code> routes path prefixes to different backends. Everything not matched by a route falls through to the <code>default</code>.</p>
+<p>Most agents have files with different lifetimes. Scratch files written during a task only need to survive the current thread. Memories and skills need to persist across threads and sessions. Using a single backend forces a trade-off: either everything is ephemeral or everything is durable. <code>CompositeBackend</code> resolves this by routing path prefixes to different backends. Everything not matched by a route falls through to the <code>default</code>.</p>
 <!-- code-highlight-1:12,13,16 -->
 <pre><code class="language-python"># python/m2/m2.2_agent.py
 from models import model
@@ -730,11 +730,11 @@ agent = create_deep_agent(
     backend=CompositeBackend(
         default=StateBackend(),
         routes={
-            &quot;/memories/&quot;: StoreBackend(namespace=lambda rt: (rt.server_info.user.identity,)),
-            &quot;/skills/&quot;: StoreBackend(namespace=lambda rt: (rt.server_info.user.identity,)),
+            &quot;/memories/&quot;: StoreBackend(namespace=(&quot;files&quot;,)),
+            &quot;/skills/&quot;: StoreBackend(namespace=(&quot;files&quot;,)),
         },
     ),
-    store=InMemoryStore(),  # swap for PostgresStore in production
+    store=InMemoryStore(),
 )
 </code></pre>
 <ul>
@@ -744,7 +744,7 @@ agent = create_deep_agent(
 </ul>
 <hr />
 <h2 id="permissions">Permissions</h2>
-<p>Pass a list of <code>FilesystemPermission</code> rules to <code>create_deep_agent</code> to control which paths the agent can read or write. Rules are evaluated in order; the first match wins. If nothing matches, the operation is allowed.</p>
+<p>Permissions are enforced in code, not in the prompt — the model cannot bypass them. Pass a list of <code>FilesystemPermission</code> rules to <code>create_deep_agent</code>; rules are evaluated in order and the first match wins. If nothing matches, the operation is allowed.</p>
 <p>Each rule has three fields:</p>
 <table>
 <thead>
@@ -788,8 +788,8 @@ agent = create_deep_agent(
     backend=CompositeBackend(
         default=StateBackend(),
         routes={
-            &quot;/memories/&quot;: StoreBackend(namespace=lambda rt: (rt.server_info.user.identity,)),
-            &quot;/skills/&quot;: StoreBackend(namespace=lambda rt: (rt.server_info.user.identity,)),
+            &quot;/memories/&quot;: StoreBackend(namespace=(&quot;files&quot;,)),
+            &quot;/skills/&quot;: StoreBackend(namespace=(&quot;files&quot;,)),
         },
     ),
     store=InMemoryStore(),
@@ -914,27 +914,27 @@ agent = create_deep_agent(
 
 **Script (will be recorded):** [Open m2.2_agent.py in VS Code]
 
-This lab puts composite backends and permissions together in one place. The agent is given a skill file and asked to do two things: read it, then write a promotion note to it. One of those will succeed and one won't (which is the point).
+This lab puts composite backends and permissions together. The agent is given a skill file and asked to read it, then write a promotion note to it — one operation succeeds, one is blocked.
 
 [Highlight the store.put block]
 
-First, we seed the store with a Chinook sales skill at `/skills/chinook-sales/SKILL.md`. This simulates a skill that already exists in production, managed by application code, not the agent.
+First, we seed the store with a Chinook sales skill at `/skills/chinook-sales/SKILL.md`. This simulates a skill that already exists in production, managed by application code.
 
 [Highlight the CompositeBackend block]
 
-The agent uses a `CompositeBackend`. `/memories/` and `/skills/` both route to `StoreBackend` so they persist across threads. Everything else falls back to `StateBackend`. The agent doesn't know any of this; it just calls `read_file` and the routing is transparent.
+The agent uses a `CompositeBackend`. `/memories/` and `/skills/` both route to `StoreBackend` so they persist across threads. Everything else falls back to `StateBackend`.
 
 [Highlight the permissions block]
 
-Then we add one permission rule: deny all writes to `/skills/**`. The reasoning is exactly what we covered - skills are managed by application code. The agent should be able to read them but never modify them. `/memories/` has no rule, so it stays fully read/write.
+One permission rule denies all writes to `/skills/**`. Skills are managed by application code — the agent can read them but not modify them. `/memories/` has no rule, so it stays fully read/write.
 
 [Highlight the agent.invoke message]
 
-The agent is asked to read the skill and then add a promotion note. That's deliberately two operations: a read that should work and a write that should be blocked.
+The agent is asked to read the skill and add a promotion note — a read followed by a write.
 
 [Run it in terminal]
 
-The agent reads the file fine, then hits the permission rule on the write and reports the file is read-only. It even shows what it would have written, it just can't persist it. That's exactly the behavior we want.
+The agent reads the file successfully, then hits the permission rule on the write and reports the file is read-only.
 
 </details>
 <pre><code class="language-python"># python/m2/m2.2_agent.py
@@ -981,8 +981,8 @@ agent = create_deep_agent(
     backend=CompositeBackend(
         default=StateBackend(),
         routes={
-            &quot;/memories/&quot;: StoreBackend(namespace=lambda _rt: (&quot;student&quot;,)),
-            &quot;/skills/&quot;: StoreBackend(namespace=lambda _rt: (&quot;student&quot;,)),
+            &quot;/memories/&quot;: StoreBackend(namespace=(&quot;student&quot;,)),
+            &quot;/skills/&quot;: StoreBackend(namespace=(&quot;student&quot;,)),
         },
     ),
     store=store,

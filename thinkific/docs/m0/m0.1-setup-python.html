@@ -548,6 +548,7 @@
 <li>LLM Model API key: choose your favorite provider. The course defaults to Anthropic (<a href="https://console.anthropic.com/" target="_blank" rel="noopener noreferrer">sign up for an Anthropic API key here</a>)</li>
 <li>LangSmith API key: <a href="#getting-started-with-langsmith">how to get one</a></li>
 <li>Tavily API key (optional, for the Module 4 &amp; 5 web-search labs): <a href="https://app.tavily.com" target="_blank" rel="noopener noreferrer">get a free key</a></li>
+<li>Node.js (optional, for the coding agent setup steps below — needed for <code>npx</code>): <a href="https://nodejs.org" target="_blank" rel="noopener noreferrer">nodejs.org</a></li>
 </ul>
 <h3 id="installation">Installation</h3>
 <p>Clone the repository and move to the <code>python</code> directory:</p>
@@ -593,8 +594,9 @@ uv run python env_utils.py
 <h3 id="setup-your-coding-agent">Setup Your Coding Agent</h3>
 <p>Using a coding agent to build your agents is encouraged throughout this course. Three additions make it significantly more effective.</p>
 <h4 id="langchain-skills">LangChain Skills</h4>
-<p>Install the LangChain skills to give your coding agent deep knowledge of Deep Agents, LangGraph, and the LangChain ecosystem:</p>
-<pre><code class="language-bash">npx skills add langchain-ai/langchain-skills --skill '*' --yes --global
+<p>Install the LangChain skills to give your coding agent deep knowledge of Deep Agents, LangGraph, and the LangChain ecosystem. Run this from the repo root:</p>
+<pre><code class="language-bash">cd lca-deepagents
+npx skills add langchain-ai/langchain-skills --skill '*' --yes
 </code></pre>
 <p>This installs skills including <code>deep-agents-core</code>, <code>deep-agents-memory</code>, <code>deep-agents-orchestration</code>, and more.</p>
 <h4 id="langchain-docs-mcp-server">LangChain Docs MCP Server</h4>

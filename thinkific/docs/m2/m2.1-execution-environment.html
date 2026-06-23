@@ -634,44 +634,232 @@ The key idea to take away from this lesson is that the backend is what makes the
 </ul>
 <p>The first two run through a pluggable <strong>backend</strong> (below); the interpreter runs as a tool in the main loop.</p>
 <hr />
-<h2 id="the-backend-landscape">The backend landscape</h2>
-<div class="mermaid">
-graph TB
-    Tools[Filesystem Tools] --&gt; Backend[Backend]
+<h2 id="file-system">File System</h2>
+<div style="text-align: center;">
+<svg viewBox="0 0 720 190" width="680" role="img" aria-label="LLM calls filesystem tools (read_file, write_file, ls, grep, glob) which pass through a Backend to storage." xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="720" height="190" fill="#030710" rx="8"/>
 
-    Backend --&gt; State[State]
-    Backend --&gt; Disk[Filesystem]
-    Backend --&gt; Store[Store]
-    Backend --&gt; ContextHub[Context Hub]
-    Backend --&gt; Sandbox[Sandbox]
-    Backend --&gt; LocalShell[Local Shell]
-    Backend --&gt; Composite[Composite]
-    Backend --&gt; Custom[Custom]
+  
+<!-- LLM -->
 
-    Composite --&gt; Router{Routes}
-    Router --&gt; State
-    Router --&gt; Disk
-    Router --&gt; Store
-    Router --&gt; ContextHub
 
-    Sandbox --&gt; Execute["+ execute tool"]
-    LocalShell --&gt; Execute["+ execute tool"]
+  <rect x="24" y="65" width="82" height="60" rx="8" fill="#161F34" stroke="#7FC8FF" stroke-width="1.5"/>
+  <text x="65" y="100" text-anchor="middle" font-size="16" font-weight="600" fill="#F2FAFF">LLM</text>
 
-    classDef trigger fill:#CCE9FF,stroke:#006DDD,stroke-width:2px,color:#030710
-    classDef hub fill:#7FC8FF,stroke:#006DDD,stroke-width:2px,color:#030710
-    classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:1px,color:#030710
-    classDef decision fill:#CCE9FF,stroke:#40668D,stroke-width:1.5px,color:#030710
-    classDef output fill:#030710,stroke:#030710,stroke-width:1px,color:#F2FAFF
+  
+<!-- Arrow LLM → Backend with tool labels above -->
 
-    class Tools trigger
-    class Backend hub
-    class State,Disk,Store,ContextHub,Sandbox,LocalShell,Composite,Custom process
-    class Router decision
-    class Execute output
+
+  <line x1="106" y1="95" x2="375" y2="95" stroke="#40668D" stroke-width="1.5"/>
+  <polygon points="375,88 387,95 375,102" fill="#40668D"/>
+  <text x="244" y="70" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">read_file · write_file · ls</text>
+  <text x="244" y="83" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">grep · glob</text>
+
+  
+<!-- Backend box -->
+
+
+  <rect x="387" y="55" width="126" height="80" rx="8" fill="#0D1322" stroke="#7FC8FF" stroke-width="1.5"/>
+  <text x="450" y="100" text-anchor="middle" font-size="16" font-weight="600" fill="#7FC8FF">Backend</text>
+
+  
+<!-- Arrow Backend → disk -->
+
+
+  <line x1="513" y1="95" x2="546" y2="95" stroke="#40668D" stroke-width="1.5"/>
+  <polygon points="546,88 558,95 546,102" fill="#40668D"/>
+
+  
+<!-- Disk cylinder -->
+
+
+  <rect x="558" y="63" width="114" height="64" fill="#161F34" stroke="none"/>
+  <line x1="558" y1="63" x2="558" y2="127" stroke="#7FC8FF" stroke-width="1.5"/>
+  <line x1="672" y1="63" x2="672" y2="127" stroke="#7FC8FF" stroke-width="1.5"/>
+  <line x1="559" y1="80" x2="671" y2="80" stroke="#40668D" stroke-width="1"/>
+  <line x1="559" y1="96" x2="671" y2="96" stroke="#40668D" stroke-width="1"/>
+  <line x1="559" y1="112" x2="671" y2="112" stroke="#40668D" stroke-width="1"/>
+  <ellipse cx="615" cy="127" rx="57" ry="14" fill="#0D1322" stroke="#7FC8FF" stroke-width="1.5"/>
+  <ellipse cx="615" cy="63" rx="57" ry="14" fill="#1a2744" stroke="#7FC8FF" stroke-width="1.5"/>
+  <circle cx="615" cy="63" r="5" fill="#7FC8FF"/>
+</svg>
+
+<p><em>The LLM calls standard filesystem tools; the Backend Protocol determines where the data actually lives.</em></p>
 </div>
-<p>Every filesystem and <code>execute</code> call passes through whichever backend you configure. The default keeps files in the agent's <strong>state</strong>; others persist them to local <strong>disk</strong> or a <strong>store</strong>, run them in an isolated <strong>sandbox</strong>, or send files to different backends by path prefix (a <strong>composite</strong>). Sandbox and local-shell backends also add the <code>execute</code> tool. The next two lessons cover each in detail.</p>
+<p>A filesystem gives an agent a place to work. It uses it to:</p>
+<ul>
+<li>read and write <strong>scratch files</strong> as it tackles multi-step work</li>
+<li>load and store <strong>persistent memories</strong> in the hot path</li>
+<li>invoke <strong>skills</strong> when relevant for a given task</li>
+</ul>
+<p>Agents are excellent at this because they're trained in an environment that uses filesystems, and trained on vast amounts of code that does the same.</p>
+<p>The <strong>Backend</strong> is what makes the filesystem configurable. All five tools talk to that one interface; swap the implementation behind it and files move from in-memory state to local disk to a remote store — without changing a line of agent code. You'll learn more about the filesystem and the backend in the next lesson.</p>
+<hr />
+<h2 id="shell">Shell</h2>
+<div style="text-align: center;">
+<svg viewBox="0 0 720 190" width="680" role="img" aria-label="LLM calls filesystem tools plus execute, which go to a Sandbox — an isolated environment." xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="720" height="190" fill="#030710" rx="8"/>
+
+  
+<!-- LLM -->
+
+
+  <rect x="24" y="65" width="82" height="60" rx="8" fill="#161F34" stroke="#7FC8FF" stroke-width="1.5"/>
+  <text x="65" y="100" text-anchor="middle" font-size="16" font-weight="600" fill="#F2FAFF">LLM</text>
+
+  
+<!-- Arrow LLM → Sandbox with tool labels above -->
+
+
+  <line x1="106" y1="95" x2="378" y2="95" stroke="#40668D" stroke-width="1.5"/>
+  <polygon points="378,88 390,95 378,102" fill="#40668D"/>
+  <text x="246" y="70" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">read_file · write_file · ls</text>
+  <text x="246" y="83" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">grep · glob · <tspan font-weight="700" fill="#CCE9FF">execute</tspan></text>
+  <text x="246" y="109" text-anchor="middle" font-size="11" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, monospace">execute("ls -la /workspace")</text>
+
+  
+<!-- Sandbox as terminal window -->
+
+
+  <rect x="390" y="38" width="296" height="114" rx="8" fill="#0D1322" stroke="#7FC8FF" stroke-width="1.5"/>
+  
+<!-- Title bar fill -->
+
+
+  <rect x="391" y="39" width="294" height="24" rx="6" fill="#1a2744"/>
+  <rect x="391" y="52" width="294" height="11" fill="#1a2744"/>
+  
+<!-- Traffic lights -->
+
+
+  <circle cx="408" cy="51" r="4" fill="#FF5F57" opacity="0.85"/>
+  <circle cx="422" cy="51" r="4" fill="#FFBD2E" opacity="0.85"/>
+  <circle cx="436" cy="51" r="4" fill="#28CA41" opacity="0.85"/>
+  
+<!-- Title -->
+
+
+  <text x="538" y="56" text-anchor="middle" font-size="12" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">local shell / sandbox</text>
+  
+<!-- Prompt -->
+
+
+  <text x="410" y="104" font-size="14" fill="#7FC8FF" font-family="'IBM Plex Mono', ui-monospace, monospace">$ _</text>
+</svg>
+
+<p><em>The shell backend adds <code>execute</code> to the full filesystem interface.</em></p>
+</div>
+<p>Giving an agent the ability to run code unlocks much more creative problem solving and dynamic runtime behaviour. The agent isn't limited to what it can reason through — it can write code, run it, see the real result, and act on it.</p>
+<p>Deep Agents supports two backends that provide <code>execute</code>:</p>
+<p><strong>Sandbox</strong> — runs commands in an isolated environment (a container or VM). The agent can't affect the host machine, which makes it safe for running untrusted or unpredictable code. The right choice when the agent is doing anything consequential.</p>
+<p><strong>Local shell</strong> — runs commands directly on your machine. No isolation overhead. Use when local access is required; otherwise a sandbox is safer.</p>
+<p>You'll learn more about sandboxes and shells in an upcoming lesson.</p>
 <hr />
 <h2 id="the-interpreter">The interpreter</h2>
+<div style="text-align: center;">
+<svg viewBox="0 0 720 322" width="680" role="img" aria-label="Sequence diagram: Client sends a request to the LLM; the LLM generates a code block and sends it to the Interpreter; the Interpreter executes the code and returns the final result to the LLM; the LLM sends the final response back to the Client." xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="720" height="322" fill="#030710" rx="8"/>
+
+  
+<!-- Participant labels -->
+
+
+  <text x="90" y="24" text-anchor="middle" font-size="13" fill="#CCE9FF">Client</text>
+  <text x="360" y="24" text-anchor="middle" font-size="13" fill="#CCE9FF">LLM</text>
+  <text x="630" y="24" text-anchor="middle" font-size="13" fill="#CCE9FF">Interpreter</text>
+
+  
+<!-- Client: person icon -->
+
+
+  <circle cx="90" cy="56" r="22" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+  <circle cx="90" cy="48" r="8" fill="none" stroke="#7FC8FF" stroke-width="1.5"/>
+  <path d="M73,72 Q73,62 90,62 Q107,62 107,72" fill="none" stroke="#7FC8FF" stroke-width="1.5" stroke-linecap="round"/>
+
+  
+<!-- LLM: concentric rings -->
+
+
+  <circle cx="360" cy="56" r="22" fill="#161F34" stroke="#7FC8FF" stroke-width="1.5"/>
+  <circle cx="360" cy="56" r="12" fill="none" stroke="#7FC8FF" stroke-width="1" opacity="0.6"/>
+  <circle cx="360" cy="56" r="5" fill="#7FC8FF"/>
+
+  
+<!-- Interpreter: {} code symbol -->
+
+
+  <circle cx="630" cy="56" r="22" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+  <text x="630" y="61" text-anchor="middle" font-size="15" font-weight="700" fill="#7FC8FF" font-family="'IBM Plex Mono', ui-monospace, monospace">{}</text>
+
+  
+<!-- Lifelines -->
+
+
+  <line x1="90" y1="78" x2="90" y2="314" stroke="#40668D" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="360" y1="78" x2="360" y2="314" stroke="#40668D" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="630" y1="78" x2="630" y2="314" stroke="#40668D" stroke-width="1" stroke-dasharray="4 3"/>
+
+  
+<!-- Step 1: Client → LLM (REQUEST) -->
+
+
+  <line x1="90" y1="108" x2="326" y2="108" stroke="#7FC8FF" stroke-width="1.5"/>
+  <polygon points="326,101 338,108 326,115" fill="#7FC8FF"/>
+  <circle cx="90" cy="108" r="10" fill="#006DDD"/>
+  <text x="90" y="112" text-anchor="middle" font-size="12" font-weight="700" fill="#F2FAFF">1</text>
+  <text x="213" y="94" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">REQUEST</text>
+
+  
+<!-- Step 2: LLM → Interpreter (CODE BLOCK) -->
+
+
+  <line x1="360" y1="144" x2="596" y2="144" stroke="#7FC8FF" stroke-width="1.5"/>
+  <polygon points="596,137 608,144 596,151" fill="#7FC8FF"/>
+  <circle cx="360" cy="144" r="10" fill="#006DDD"/>
+  <text x="360" y="148" text-anchor="middle" font-size="12" font-weight="700" fill="#F2FAFF">2</text>
+  <text x="490" y="130" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">CODE BLOCK</text>
+
+  
+<!-- Code block -->
+
+
+  <rect x="374" y="154" width="244" height="82" rx="4" fill="#0D1322" stroke="#40668D" stroke-width="1"/>
+  <text x="386" y="174" font-size="12" fill="#7FC8FF" font-family="'IBM Plex Mono', ui-monospace, monospace">results = search(query)</text>
+  <text x="386" y="192" font-size="12" fill="#7FC8FF" font-family="'IBM Plex Mono', ui-monospace, monospace">relevant = check(results)</text>
+  <text x="386" y="210" font-size="12" fill="#7FC8FF" font-family="'IBM Plex Mono', ui-monospace, monospace">create_ticket(relevant)</text>
+  <text x="386" y="228" font-size="12" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, monospace">...</text>
+
+  
+<!-- Step 3: EXECUTE (at Interpreter) -->
+
+
+  <circle cx="630" cy="250" r="10" fill="#006DDD"/>
+  <text x="630" y="254" text-anchor="middle" font-size="12" font-weight="700" fill="#F2FAFF">3</text>
+  <text x="648" y="254" text-anchor="start" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">EXECUTE</text>
+
+  
+<!-- Step 4: Interpreter → LLM (RETURN FINAL RESULT) -->
+
+
+  <line x1="630" y1="274" x2="394" y2="274" stroke="#7FC8FF" stroke-width="1.5"/>
+  <polygon points="394,267 382,274 394,281" fill="#7FC8FF"/>
+  <circle cx="630" cy="274" r="10" fill="#006DDD"/>
+  <text x="630" y="278" text-anchor="middle" font-size="12" font-weight="700" fill="#F2FAFF">4</text>
+  <text x="495" y="260" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">RETURN FINAL RESULT</text>
+
+  
+<!-- Step 5: LLM → Client (FINAL RESPONSE) -->
+
+
+  <line x1="360" y1="298" x2="124" y2="298" stroke="#7FC8FF" stroke-width="1.5"/>
+  <polygon points="124,291 112,298 124,305" fill="#7FC8FF"/>
+  <circle cx="360" cy="298" r="10" fill="#006DDD"/>
+  <text x="360" y="302" text-anchor="middle" font-size="12" font-weight="700" fill="#F2FAFF">5</text>
+  <text x="225" y="284" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">FINAL RESPONSE</text>
+</svg>
+
+<p><em>The LLM writes code; the Interpreter runs it and returns the real result.</em></p>
+</div>
 <p>The interpreter lets the agent run code. Language models are unreliable at exact computation, so when a task needs a precise result - a calculation, a data transformation, a generated file - the agent writes code and the interpreter runs it, returning the actual output. It runs as a tool in the agent's main loop, alongside the agent's other tools. The final lesson of this module covers it in detail.</p>
 <hr />
 <h2 id="recap">Recap</h2>
