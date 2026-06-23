@@ -2,6 +2,11 @@
 .env
 .env.*
 !.env.example
+.m1_gmail_state.json
+.m1_github_state.json
+.m1_github_token
+python/m1/gh_auth/.mcp.github.json
+client_secret_*.json
 *.pem
 *.key
 *.p12
@@ -81,3 +86,4 @@ python/m5/sales_assistant/research/
 # Working docs (not checked in)
 python/m5/spec.md
 python/m5/lessonplan.md
+python/m1/m1.6_NOTES.md
