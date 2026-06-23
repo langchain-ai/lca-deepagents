@@ -28,7 +28,7 @@ Rules:
 def read_sql(query: str) -> str:
     """Run a read-only SELECT query against the Chinook music store database."""
     try:
-        return db.run(query)
+        return str(db.run(query))
     except Exception as e:
         return f"Error: {e}"
 
@@ -37,7 +37,7 @@ def write_sql(query: str) -> str:
     """Execute a write operation (INSERT, UPDATE, DELETE, ALTER) against the Chinook database.
     Requires human approval before executing."""
     try:
-        return db.run(query)
+        return str(db.run(query))
     except Exception as e:
         return f"Error: {e}"
 
