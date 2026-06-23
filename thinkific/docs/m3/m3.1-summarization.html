@@ -579,10 +579,6 @@
 </div>
 
 <div class="lt-panel active" id="p-summ" role="tabpanel">
-<details class="video-walkthrough">
-<summary>Video Walk-through [click to expand]</summary>
-<br>
-
 <div class="video-container" style="max-width: 750px;">
     <div class="video-wrapper">
         <iframe
@@ -592,26 +588,47 @@
             allowfullscreen>
         </iframe>
     </div>
-</details>
 </div>
-<p><strong>Script:</strong> This lesson covers how Deep Agents handles long conversations automatically. As you chat with an agent across many turns, messages accumulate and the token count rises. Left unchecked, it would eventually hit the model's context limit. SummarizationMiddleware deals with this automatically by watching the context fill up and compacting old messages into a summary before they ever reach the model.</p>
-<p>[Show diagram]</p>
-<p>Think of the context window like a thermometer. Every message adds tokens and the level rises. When it crosses 85% of the model's limit, the middleware fires. At that point, it picks a cutoff point, keeps the most recent messages intact, and summarizes everything older into a single block. The original messages are replaced in the model's view by that summary, so the token count drops sharply and the conversation can continue.</p>
-<p>This scales. On a second compaction event, the prior summary is treated just like any other old message, so it gets folded into a new combined summary along with whatever else has aged past the cutoff. Every compaction event produces exactly one summary block, no matter how many rounds have happened before.</p>
-<p>[Scroll to "What the summary contains"]</p>
-<p>So what actually goes into the summary? The middleware makes a separate LLM call, using the same model as the agent, with a structured prompt that extracts four things [highlight as I go]:</p>
-<p>The session intent, meaning what the user is trying to accomplish. Key facts and decisions from the conversation. Any artifacts like files that were created or modified. And what still remains to be done.</p>
-<p>That resulting text is then injected as a single message at the top of the preserved recent messages, so the model picks up as if it had been there the whole time.</p>
-<p>[Scroll to "Seeing it in action" and highlight the model.profile line]</p>
-<p>The default threshold is 85% of the model's real context window, which for Claude Haiku 4.5 is 170,000 tokens. To actually see it fire in a demo, we override model.profile["max_input_tokens"] to a small value so the threshold is hit after just a few turns.</p>
-<p>[Point at the expected output]</p>
-<p>[Highlight turn 1: stored : 2 message(s) (raw history, never trimmed)]</p>
-<p>[Highlight turn 2: stored : 4 message(s) (raw history, never trimmed)]</p>
-<p>You can see it fire on turn 3. [Highlight]</p>
-<p>After that, every subsequent turn shows "model saw: summary + messages[4:]", which means the model is receiving the summary plus only the most recent messages, not the full history.</p>
-<p>On turn 5, when we ask "what do you remember about me?", the agent correctly recalls the name, company, and project from earlier turns that it never directly saw again. The summary did its job.</p>
-<p>One important note: state["messages"] is never modified. The full history is always stored intact. Summarization only affects what gets sent to the model each turn.</p>
+<details class="video-walkthrough">
+<summary>Script [click to expand]</summary>
+<br>
+
+**Script:** This lesson covers how Deep Agents handles long conversations automatically. As you chat with an agent across many turns, messages accumulate and the token count rises. Left unchecked, it would eventually hit the model's context limit. SummarizationMiddleware deals with this automatically by watching the context fill up and compacting old messages into a summary before they ever reach the model.
+
+[Show diagram]
+
+Think of the context window like a thermometer. Every message adds tokens and the level rises. When it crosses 85% of the model's limit, the middleware fires. At that point, it picks a cutoff point, keeps the most recent messages intact, and summarizes everything older into a single block. The original messages are replaced in the model's view by that summary, so the token count drops sharply and the conversation can continue.
+
+This scales. On a second compaction event, the prior summary is treated just like any other old message, so it gets folded into a new combined summary along with whatever else has aged past the cutoff. Every compaction event produces exactly one summary block, no matter how many rounds have happened before.
+
+[Scroll to "What the summary contains"]
+
+So what actually goes into the summary? The middleware makes a separate LLM call, using the same model as the agent, with a structured prompt that extracts four things [highlight as I go]:
+
+The session intent, meaning what the user is trying to accomplish. Key facts and decisions from the conversation. Any artifacts like files that were created or modified. And what still remains to be done.
+
+That resulting text is then injected as a single message at the top of the preserved recent messages, so the model picks up as if it had been there the whole time.
+
+[Scroll to "Seeing it in action" and highlight the model.profile line]
+
+The default threshold is 85% of the model's real context window, which for Claude Haiku 4.5 is 170,000 tokens. To actually see it fire in a demo, we override model.profile["max_input_tokens"] to a small value so the threshold is hit after just a few turns.
+
+[Point at the expected output]
+
+[Highlight turn 1: stored : 2 message(s) (raw history, never trimmed)]
+
+[Highlight turn 2: stored : 4 message(s) (raw history, never trimmed)]
+
+You can see it fire on turn 3. [Highlight]
+
+After that, every subsequent turn shows "model saw: summary + messages[4:]", which means the model is receiving the summary plus only the most recent messages, not the full history.
+
+On turn 5, when we ask "what do you remember about me?", the agent correctly recalls the name, company, and project from earlier turns that it never directly saw again. The summary did its job.
+
+One important note: state["messages"] is never modified. The full history is always stored intact. Summarization only affects what gets sent to the model each turn.
+
 </details>
+
 <p>As agents grow more capable, tasks span more steps, sessions run longer, and tool results pile up. Token counts climb steadily toward the model's limit, and left unchecked, a long-running agent eventually stalls.</p>
 <p>Deep Agents handles this automatically with <strong>SummarizationMiddleware</strong>; it watches the context fill up and compacts old messages into a summary before the model ever sees them.</p>
 <hr />
@@ -701,11 +718,22 @@ Turn 5  Agent: You mentioned your name is Alex, you work at Acme Corp, and you'v
 <hr />
 <h2 id="tool-result-offloading">Tool result offloading</h2>
 <p>Summarization deals with messages that accumulate over many turns. A different problem is a single tool call that returns an enormous result - a full database export, hundreds of search matches, or a long code generation output. Storing the full result inline would spike the token count in one shot.</p>
+<div class="video-container" style="max-width: 750px;">
+    <div class="video-wrapper">
+        <iframe
+            src="https://share.descript.com/embed/jyMqNJVwvLd"
+            frameborder="0"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    </div>
+</div>
+
 <details class="video-walkthrough">
-<summary>Video Walk-through [click to expand] — script available, video later</summary>
+<summary>Script [click to expand]</summary>
 <br>
 
-**Script (will be recorded):** Summarization deals with messages that build up over many turns. But there can be a different problem: a single tool call that returns an enormous result, such as a full database export, hundreds of search matches, or a long file. That would spike the token count in just one shot.
+**Script:** Summarization deals with messages that build up over many turns. But there can be a different problem: a single tool call that returns an enormous result, such as a full database export, hundreds of search matches, or a long file. That would spike the token count in just one shot.
 
 [Scroll to "Tool result offloading"]
 
@@ -771,12 +799,21 @@ Here is a preview showing the head and tail of the result:
 
 <h2>Check your understanding</h2>
 
-<MCQ
-    question="At what threshold does SummarizationMiddleware fire by default?"
-    choices='["85% of the model\'s max_input_tokens", "50% of the model\'s max_input_tokens", "When the context window is completely full", "After a fixed count of 20 messages"]'
-    correctIndex={0}
-    explanation="SummarizationMiddleware fires when total tokens exceed 85% of max_input_tokens. For Claude Haiku 4.5 that is 170,000 tokens. You can lower the threshold for demos by overriding model.profile[\"max_input_tokens\"]."
-/>
+<div class="mcq-container" id="mcq-2c6c2a40">
+    <div class="mcq-question">
+        <strong>Question:</strong> At what threshold does SummarizationMiddleware fire by default?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, true, '2c6c2a40')"><strong>A)</strong> 85% of the model&#39;s max_input_tokens</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '2c6c2a40')"><strong>B)</strong> 50% of the model&#39;s max_input_tokens</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '2c6c2a40')"><strong>C)</strong> When the context window is completely full</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '2c6c2a40')"><strong>D)</strong> After a fixed count of 20 messages</div>
+    </div>
+    <div id="mcq-answer-2c6c2a40" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: A</strong> ✅</div>
+        <div class="mcq-explanation">SummarizationMiddleware fires when total tokens exceed 85% of max_input_tokens. For Claude Haiku 4.5 that is 170,000 tokens. You can lower the threshold for demos by overriding model.profile[&quot;max_input_tokens&quot;].</div>
+    </div>
+</div>
 
 <div class="mcq-container" id="mcq-bb682f59">
     <div class="mcq-question">
@@ -810,12 +847,21 @@ Here is a preview showing the head and tail of the result:
     </div>
 </div>
 
-<MCQ
-    question="What happens to state[\"messages\"] when summarization fires?"
-    choices='["Older messages are deleted in place and replaced by the summary message", "state[\"messages\"] is never mutated; summarization only affects what is sent to the model each turn", "state[\"messages\"] is cleared and rebuilt from the summary on every subsequent turn", "A new summarized state replaces the original, and the old state is discarded"]'
-    correctIndex={1}
-    explanation="state[\"messages\"] is never modified; the full message history is always preserved intact. This is intentional: summarization is lossy, so keeping the raw history means you can always audit exactly what the agent said and did, replay or inspect a conversation, and access details the summary may have omitted. Summarization only affects what is sent to the model each turn, not what is stored."
-/>
+<div class="mcq-container" id="mcq-949e5b56">
+    <div class="mcq-question">
+        <strong>Question:</strong> What happens to state[&quot;messages&quot;] when summarization fires?
+    </div>
+    <div class="mcq-choices">
+        <div class="mcq-choice" onclick="handleMcqClick(this, false, '949e5b56')"><strong>A)</strong> Older messages are deleted in place and replaced by the summary message</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, true, '949e5b56')"><strong>B)</strong> state[&quot;messages&quot;] is never mutated; summarization only affects what is sent to the model each turn</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '949e5b56')"><strong>C)</strong> state[&quot;messages&quot;] is cleared and rebuilt from the summary on every subsequent turn</div>
+<div class="mcq-choice" onclick="handleMcqClick(this, false, '949e5b56')"><strong>D)</strong> A new summarized state replaces the original, and the old state is discarded</div>
+    </div>
+    <div id="mcq-answer-949e5b56" class="mcq-answer" style="display: none;">
+        <div class="mcq-answer-header"><strong>Answer: B</strong> ✅</div>
+        <div class="mcq-explanation">state[&quot;messages&quot;] is never modified; the full message history is always preserved intact. This is intentional: summarization is lossy, so keeping the raw history means you can always audit exactly what the agent said and did, replay or inspect a conversation, and access details the summary may have omitted. Summarization only affects what is sent to the model each turn, not what is stored.</div>
+    </div>
+</div>
 
 <div class="mcq-container" id="mcq-07ae7f94">
     <div class="mcq-question">
