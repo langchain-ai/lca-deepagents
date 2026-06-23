@@ -586,11 +586,21 @@
 <p>Deep Agents makes memory first-class with filesystem-backed memory: the agent reads and writes memory as plain files, and you control where those files are stored using backends.</p>
 <h2 id="how-deep-agents-implements-memory">How Deep Agents implements memory</h2>
 <p>Memory files are markdown files loaded at agent startup and injected into the system prompt on every LLM call. Unlike skills, which are loaded on demand when a task matches, memory is always present on every call.</p>
+<div class="video-container" style="max-width: 750px;">
+    <div class="video-wrapper">
+        <iframe
+            src="https://share.descript.com/embed/MVBfa2AadOp"
+            frameborder="0"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    </div>
+</div>
 <details class="video-walkthrough">
-<summary>Video Walk-through [click to expand] — script available, video later</summary>
+<summary>Script [click to expand]</summary>
 <br>
 
-**Script (will be recorded):** Memory files are markdown files loaded at agent startup and injected into the system prompt on every LLM call. Unlike skills, which load on demand when a task matches, memory is always present.
+**Script:** Memory files are markdown files loaded at agent startup and injected into the system prompt on every LLM call. Unlike skills, which load on demand when a task matches, memory is always present.
 
 [Show the memory scope diagram]
 
@@ -607,6 +617,7 @@ The memory file itself is just standard markdown, no required structure. However
 You can verify this in LangSmith: the video below in the "How Injection Works" section shows exactly where to look.
 
 </details>
+
 <p><img src="images/m3.3-memory-scope.svg" alt="Two-panel diagram. Left: three user figures with converging arrows into one shared AGENTS.md file, labeled Agent Memory - shared across all users. Right: three user figures each with a separate memory file, labeled User Memory - per user, separate file each." style="width:100%;display:block;margin:1.25rem 0 0.5rem;" /></p>
 <p><strong>Agent memory</strong> is shared across all users. Deep Agents makes memory first-class: the agent reads and writes memory as files, and you control where those files are stored using backends.</p>
 <p><strong>User memory</strong> gives each user their own file. The agent remembers preferences, context, and history per user while core agent instructions stay fixed. Users can also have per-user skills if stored in a user-scoped backend.</p>
@@ -615,6 +626,7 @@ You can verify this in LangSmith: the video below in the "How Injection Works" s
 <h3 id="the-memory-argument">The memory argument</h3>
 <p>The <code>memory</code> argument is how you attach memory files to your agent. Without it, <code>MemoryMiddleware</code> is not active and nothing persists. Pass a list of file paths:</p>
 <!-- code-highlight-0:3 -->
+
 <pre><code class="language-python">agent = create_deep_agent(
     model=model,
     memory=[&quot;memories/AGENTS.md&quot;],
@@ -645,6 +657,7 @@ You can verify this in LangSmith: the video below in the "How Injection Works" s
         </iframe>
     </div>
 </div>
+
 <details class="video-walkthrough">
 <summary>Video Walk-through [click to expand] — script available, video later</summary>
 <br>
