@@ -53,7 +53,7 @@ agent = create_deep_agent(
     interrupt_on={"write_sql": True},
 )
 
-config: RunnableConfig = {"configurable": {"thread_id": "lab3"}}
+config: RunnableConfig = {"configurable": {"thread_id": "lab3-demo"}}
 
 result = agent.invoke(
     {"messages": [{"role": "user", "content": "What genres are in the database? Then add a new genre called 'Synthwave'."}]},
