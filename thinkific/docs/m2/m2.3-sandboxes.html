@@ -651,7 +651,51 @@ graph TB
 <h2 id="how-do-you-choose">How do you choose?</h2>
 <p>Sandboxes are used for security. They let agents execute arbitrary code, access files, and use the network without compromising your credentials, local files, or host system. This isolation is essential when agents run autonomously.</p>
 <div style="text-align: center;">
-<img width="720" alt="Auth Proxy Pattern: sandbox makes requests without credentials, proxy sidecar injects Authorization header on outbound requests" src="images/m2.3-auth-proxy.png" />
+<svg viewBox="0 0 880 210" width="720" role="img" aria-label="Auth Proxy Pattern: Sandbox makes API requests without credentials; Proxy Sidecar intercepts and injects Authorization header; API receives the authenticated request." xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="880" height="210" fill="#030710" rx="8"/>
+
+  
+<!-- Sandbox -->
+
+
+  <rect x="20" y="74" width="168" height="82" rx="8" fill="#161F34" stroke="#7FC8FF" stroke-width="1.5"/>
+  <text x="104" y="111" text-anchor="middle" font-size="14" font-weight="600" fill="#F2FAFF">Sandbox</text>
+  <text x="104" y="130" text-anchor="middle" font-size="11" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, monospace">no credentials</text>
+
+  
+<!-- Arrow 1: Sandbox → Proxy (muted — unauthenticated) -->
+
+
+  <line x1="188" y1="115" x2="284" y2="115" stroke="#40668D" stroke-width="1.5"/>
+  <polygon points="284,108 296,115 284,122" fill="#40668D"/>
+  <text x="242" y="103" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">request</text>
+
+  
+<!-- Proxy Sidecar -->
+
+
+  <rect x="296" y="56" width="232" height="118" rx="8" fill="#0D1322" stroke="#7FC8FF" stroke-width="1.5"/>
+  <text x="412" y="94" text-anchor="middle" font-size="14" font-weight="600" fill="#7FC8FF">Proxy Sidecar</text>
+  <text x="412" y="114" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">holds credentials</text>
+  <text x="412" y="132" text-anchor="middle" font-size="11" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, monospace">injects Authorization</text>
+  <text x="412" y="149" text-anchor="middle" font-size="11" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, monospace">header on outbound</text>
+
+  
+<!-- Arrow 2: Proxy → API (bright — authenticated), longer span -->
+
+
+  <line x1="528" y1="115" x2="692" y2="115" stroke="#7FC8FF" stroke-width="1.5"/>
+  <polygon points="692,108 704,115 692,122" fill="#7FC8FF"/>
+  <text x="610" y="103" text-anchor="middle" font-size="11" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">authorized request</text>
+
+  
+<!-- API (narrower to give arrow room) -->
+
+
+  <rect x="704" y="74" width="156" height="82" rx="8" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+  <text x="782" y="120" text-anchor="middle" font-size="14" font-weight="600" fill="#F2FAFF">API</text>
+</svg>
+<p><em>Secrets never enter the sandbox — the agent cannot exfiltrate what it cannot see.</em></p>
 </div>
 <p>In LangSmith Sandboxes, credentials are kept out of the sandbox entirely via an <strong>auth proxy</strong> pattern: the sandbox code makes API calls with no authentication headers, and a proxy sidecar intercepts outbound requests and injects the credentials on the way out. Secrets never enter the sandbox — the agent cannot exfiltrate what it cannot see.</p>
 <p>Sandboxes are especially useful for:</p>
