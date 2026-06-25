@@ -76,10 +76,10 @@
   <text x="727" y="512" text-anchor="middle" font-size="10" fill="#40668D">tokens</text>
 
   <!-- Legend -->
-  <rect x="30" y="528" width="14" height="14" rx="2" fill="#E5F4FF" stroke="#006DDD" stroke-width="1"/>
-  <text x="50" y="540" font-size="11" fill="#030710">Recent messages (kept)</text>
-  <rect x="258" y="528" width="14" height="14" rx="2" fill="#0D1322" stroke="#40668D" stroke-width="1"/>
-  <text x="278" y="540" font-size="11" fill="#030710">Old messages (summarized)</text>
-  <rect x="510" y="528" width="14" height="14" rx="2" fill="#CCE9FF" stroke="#006DDD" stroke-width="1.5"/>
-  <text x="530" y="540" font-size="11" fill="#030710">Summary (injected in their place)</text>
+  <rect x="30" y="525" width="14" height="14" rx="2" fill="#E5F4FF" stroke="#006DDD" stroke-width="1"/>
+  <text x="50" y="537" font-size="11" fill="#030710">Recent messages (kept)</text>
+  <rect x="30" y="549" width="14" height="14" rx="2" fill="#0D1322" stroke="#40668D" stroke-width="1"/>
+  <text x="50" y="561" font-size="11" fill="#030710">Old messages (summarized)</text>
+  <rect x="436" y="525" width="14" height="14" rx="2" fill="#CCE9FF" stroke="#006DDD" stroke-width="1.5"/>
+  <text x="456" y="537" font-size="11" fill="#030710">Summary (injected in their place)</text>
 </svg>
