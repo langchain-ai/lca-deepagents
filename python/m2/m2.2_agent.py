@@ -43,8 +43,8 @@ agent = create_deep_agent(
     backend=CompositeBackend(
         default=StateBackend(),
         routes={
-            "/memories/": StoreBackend(namespace=("student",)),
-            "/skills/": StoreBackend(namespace=("student",)),
+            "/memories/": StoreBackend(namespace=lambda _: ("student",)),
+            "/skills/": StoreBackend(namespace=lambda _: ("student",)),
         },
     ),
     store=store,
