@@ -67,12 +67,11 @@
   <line x1="436" y1="249" x2="704" y2="249" stroke="#40668D" stroke-width="1.5" stroke-dasharray="5,3"/>
 
   <!-- New combined summary (larger, slightly deeper tint) -->
-  <rect x="448" y="262" width="244" height="130" rx="4" fill="#B2DEFF" stroke="#006DDD" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <rect x="448" y="262" width="244" height="82" rx="4" fill="#B2DEFF" stroke="#006DDD" stroke-width="1.5" stroke-dasharray="6,3"/>
   <text x="570" y="288" text-anchor="middle" font-size="14" font-weight="700" fill="#006DDD">&#x2211; Summary</text>
   <line x1="463" y1="296" x2="677" y2="296" stroke="#7FC8FF" stroke-width="1"/>
   <text x="570" y="313" text-anchor="middle" font-size="12" fill="#030710">Session intent &#xb7; key facts</text>
   <text x="570" y="331" text-anchor="middle" font-size="12" fill="#030710">decisions &#xb7; next steps</text>
-  <text x="570" y="366" text-anchor="middle" font-size="10" font-style="italic" fill="#40668D">&#x2190; replaced 3 messages + prior summary</text>
 
   <!-- Thermometer: After (~25% full) -->
   <rect x="718" y="90" width="18" height="410" rx="9" fill="#FFFFFF" stroke="#CCE9FF" stroke-width="1.5"/>
