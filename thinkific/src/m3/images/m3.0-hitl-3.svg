@@ -1,0 +1,87 @@
+<svg width="900" height="490" xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="900" height="490" fill="#F2FAFF" rx="8"/>
+
+  <defs>
+    <marker id="arr" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
+      <polygon points="0,0 9,3.5 0,7" fill="#64748B"/>
+    </marker>
+    <marker id="arr-blue" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
+      <polygon points="0,0 9,3.5 0,7" fill="#3B82F6"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="450" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#030710">Human-in-the-Loop</text>
+  <text x="450" y="53" text-anchor="middle" font-size="12" fill="#006DDD" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace">③ Human sends command; CHECKPOINTER restores state; CONTINUE resumes</text>
+
+  <!-- ═══ HUMAN boundary (0.2) ═══ -->
+  <g opacity="0.2">
+    <rect x="20" y="62" width="195" height="385" rx="4" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+    <text x="31" y="80" font-size="11" fill="#94A3B8" letter-spacing="1" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace">HUMAN</text>
+  </g>
+
+  <!-- ═══ REVIEW (0.5) ═══ -->
+  <g opacity="0.5">
+    <rect x="47" y="253" width="141" height="52" rx="4" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.5"/>
+    <text x="117" y="284" text-anchor="middle" font-size="14" font-weight="700" fill="#7C3AED">REVIEW</text>
+  </g>
+
+  <!-- ═══ CHECKPOINTER (1.0) ═══ -->
+  <rect x="273" y="240" width="124" height="90" fill="#E2E8F0"/>
+  <line x1="273" y1="240" x2="273" y2="330" stroke="#94A3B8" stroke-width="1.5"/>
+  <line x1="397" y1="240" x2="397" y2="330" stroke="#94A3B8" stroke-width="1.5"/>
+  <ellipse cx="335" cy="330" rx="62" ry="18" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1.5"/>
+  <ellipse cx="335" cy="240" rx="62" ry="18" fill="#DBEAFE" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="335" y="370" text-anchor="middle" font-size="11" fill="#64748B" letter-spacing="0.5" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace">CHECKPOINTER</text>
+
+  <!-- ═══ AGENT boundary (1.0) ═══ -->
+  <rect x="455" y="62" width="425" height="385" rx="4" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+  <text x="466" y="80" font-size="11" fill="#94A3B8" letter-spacing="1" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace">AGENT</text>
+
+  <!-- ═══ DRAFT ACTION (0.2) ═══ -->
+  <g opacity="0.2">
+    <rect x="540" y="94" width="200" height="44" rx="4" fill="#DBEAFE" stroke="#3B82F6" stroke-width="1.5"/>
+    <text x="640" y="121" text-anchor="middle" font-size="13" font-weight="700" fill="#1D4ED8">DRAFT ACTION</text>
+  </g>
+
+  <!-- ═══ DRAFT → INTERRUPT arrow (0.2) ═══ -->
+  <g opacity="0.2">
+    <line x1="640" y1="138" x2="640" y2="164" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+  </g>
+
+  <!-- ═══ INTERRUPT() (0.2) ═══ -->
+  <g opacity="0.2">
+    <rect x="540" y="164" width="200" height="44" rx="4" fill="#BFDBFE" stroke="#2563EB" stroke-width="2"/>
+    <text x="640" y="191" text-anchor="middle" font-size="13" font-weight="700" fill="#1E40AF">INTERRUPT()</text>
+  </g>
+
+  <!-- ═══ Dashed INTERRUPT→CONTINUE (0.5) ═══ -->
+  <g opacity="0.5">
+    <line x1="640" y1="208" x2="640" y2="360" stroke="#3B82F6" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr-blue)"/>
+  </g>
+
+  <!-- ═══ CONTINUE (1.0) ═══ -->
+  <rect x="540" y="360" width="200" height="44" rx="4" fill="#DBEAFE" stroke="#3B82F6" stroke-width="1.5"/>
+  <text x="640" y="387" text-anchor="middle" font-size="13" font-weight="700" fill="#1D4ED8">CONTINUE</text>
+
+  <!-- ═══ SURFACE PAYLOAD arrow (0.2) ═══ -->
+  <g opacity="0.2">
+    <path d="M 540,176 H 240 V 279 H 188" stroke="#64748B" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+    <text x="390" y="167" text-anchor="middle" font-size="10" fill="#64748B" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace">SURFACE PAYLOAD</text>
+  </g>
+
+  <!-- ═══ SAVE arrow (0.2) ═══ -->
+  <g opacity="0.2">
+    <path d="M 540,196 L 397,265" stroke="#64748B" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+    <text x="472" y="222" text-anchor="middle" font-size="10" fill="#64748B" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace">SAVE</text>
+  </g>
+
+  <!-- ═══ LOAD arrow (1.0) ═══ -->
+  <path d="M 397,330 L 540,380" stroke="#64748B" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+  <text x="472" y="347" text-anchor="middle" font-size="10" fill="#64748B" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace">LOAD</text>
+
+  <!-- ═══ COMMAND arrow (1.0) ═══ -->
+  <path d="M 117,305 V 395 H 540" stroke="#64748B" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+  <text x="329" y="410" text-anchor="middle" font-size="10" fill="#64748B" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace">Command (resume/decision)</text>
+
+</svg>
