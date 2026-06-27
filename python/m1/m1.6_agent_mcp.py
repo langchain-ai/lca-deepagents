@@ -15,7 +15,6 @@ async def main():
             "url": "https://docs.langchain.com/mcp",
         }
     })
-
     tools = await client.get_tools()
 
     print(f"\ndocs-langchain: {len(tools)} tool(s)")
