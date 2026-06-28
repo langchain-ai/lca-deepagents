@@ -17,9 +17,9 @@ Requires in .env:
   GITHUB_CLIENT_ID
 
 When registering your OAuth App at github.com/settings/developers, use
-  http://127.0.0.1
-as the Authorization callback URL. GitHub validates the host but not the port
-for loopback addresses (RFC 8252), so the script can use an ephemeral port.
+  http://127.0.0.1:8765/
+as the Authorization callback URL. This matches the fixed loopback listener used
+by both this script and github_agent.py.
 
 Run:  uv run python m1/gh_auth/step2.py
 """
@@ -114,8 +114,8 @@ def capture_code(authorization_endpoint: str, client_id: str, scope: str) -> dic
         def log_message(self, *args):
             pass
 
-    server = HTTPServer(("127.0.0.1", 0), Handler)
-    redirect_uri = f"http://127.0.0.1:{server.server_address[1]}/"
+    server = HTTPServer(("127.0.0.1", 8765), Handler)
+    redirect_uri = "http://127.0.0.1:8765/"
 
     auth_url = authorization_endpoint + "?" + urllib.parse.urlencode({
         "client_id": client_id,

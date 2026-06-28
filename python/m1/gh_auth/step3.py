@@ -179,7 +179,7 @@ def main() -> None:
     STATE_FILE.unlink(missing_ok=True)
     print("State file deleted (code was single-use).")
     TOKEN_FILE.write_text(access_token)
-    print(f"Access token saved to {TOKEN_FILE.name} — Step 4 will read it.\n")
+    print(f"Access token saved to {TOKEN_FILE.name}.\n")
 
     print("Retrying tools/call with Bearer token:")
     retry_tools_call(access_token)

@@ -3,13 +3,13 @@
 
 An "editor" main agent delegates each of the distributor's top music genres to
 a single `genre-researcher` subagent type, run in parallel. Each researcher
-web-searches its genre, keeps the raw results in a private /research/<genre>/
+web-searches its genre, keeps the raw results in an assigned /research/<genre>/
 scratch folder, and returns one short article segment. The editor assembles the
 segments and writes a styled HTML newsletter to /output/newsletter.html.
 
 The agent runs on the default (ephemeral) StateBackend — it never touches the
-real local filesystem. The companion run_newsletter.py extracts the finished
-HTML from agent state and writes it to disk.
+real local filesystem. The companion m4.2_run_newsletter.py extracts the finished HTML from agent state
+and writes it to disk.
 """
 
 import os
@@ -28,7 +28,14 @@ TOP_GENRES = ["Rock", "Latin", "Metal", "Alternative & Punk"]
 
 # --- Tools -----------------------------------------------------------------
 # internet_search belongs ONLY to the subagent (see `tools=` below).
-_tavily = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
+tavily_api_key = os.environ.get("TAVILY_API_KEY")
+if not tavily_api_key:
+    raise RuntimeError(
+        "TAVILY_API_KEY is required for the Module 4.2 newsletter lab. "
+        "Set it in your environment before running m4.2_run_newsletter.py."
+    )
+
+_tavily = TavilyClient(api_key=tavily_api_key)
 
 
 @tool
@@ -79,7 +86,7 @@ def markdown_to_html(markdown_text: str, title: str = "This Week in Music") -> s
 GENRE_PROMPT = """You are a music journalist researching one genre for an
 online music distributor's weekly newsletter.
 
-You will be given a single genre and a private research folder to work in.
+You will be given a single genre and an assigned research folder to work in.
 
 How to work:
 1. Use internet_search to find recent, noteworthy developments in that genre
@@ -98,7 +105,7 @@ Return ONLY the finished segment as your reply:
 - Do NOT paste raw search results or link dumps into your reply — those live
   in your research files. Return just the polished segment."""
 
-# Subagents may read/write ONLY their research scratch space; nothing else.
+# Researchers may write under /research/** and are denied writes elsewhere.
 research_permissions = [
     FilesystemPermission(operations=["read", "write"], paths=["/research/**"], mode="allow"),
     FilesystemPermission(operations=["write"], paths=["/**"], mode="deny"),
@@ -125,7 +132,7 @@ newsletter. This week you are featuring the distributor's top genres:
 Your job:
 1. For EACH genre, delegate to the genre-researcher subagent using the task
    tool — fire them off in parallel. Tell each one which genre to cover and
-   which private folder to use (/research/<genre>/), and ask for one segment.
+   which assigned folder to use (/research/<genre>/), and ask for one segment.
 2. Collect the four returned segments. Do NOT research genres yourself.
 3. Assemble them into one Markdown newsletter: a top-level "# This Week in
    Music" title, a one-sentence intro, then the four "## <Genre>" sections.

@@ -1,4 +1,4 @@
-# python/m4/m4_2_run_newsletter.py
+# python/m4/m4.2_run_newsletter.py
 """Run the editor agent and save everything it produces.
 
 Note on file handling: Deep Agents *can* be given real local disk access (via a
@@ -27,7 +27,7 @@ result = agent.invoke(
 print(result["messages"][-1].content)
 
 # Everything the agent produced lives in agent state (not on your disk — it ran
-# on a sandboxed StateBackend). Pull it all out and mirror it to OUT_DIR: the
+# in the default StateBackend). Pull it all out and mirror it to OUT_DIR: the
 # editor's newsletter AND each researcher's raw /research/<genre>/ archive.
 files = result.get("files", {})
 if "/output/newsletter.html" not in files:

@@ -27,7 +27,7 @@ async def main():
     agent = create_deep_agent(model=model, tools=tools)
 
     result = await agent.ainvoke({
-        "messages": [{"role": "user", "content": "How does LangGraph's interrupt API work, and what role does a checkpointer play?"}]
+        "messages": [{"role": "user", "content": "Use the LangChain docs MCP tool to explain what MCP is and how LangChain uses MCP tools."}]
     })
     print(result["messages"][-1].content)
 

@@ -1,57 +1,39 @@
-# python/m2/m2_2_agent.py
+# python/m2/m2.2_agent.py
+from pathlib import Path
+
 from deepagents import FilesystemPermission, create_deep_agent
-from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-from deepagents.backends.utils import create_file_data
-from langgraph.store.memory import InMemoryStore
+from deepagents.backends import CompositeBackend, FilesystemBackend, StateBackend
 
 from models import model
 
-store = InMemoryStore()
-
-# Seed the Chinook sales skill
-store.put(
-    ("student",),
-    "/skills/chinook-sales/SKILL.md",
-    create_file_data("""\
----
-name: chinook-sales
-description: Act as a Chinook sales rep — answer questions about customers, invoices, and the music catalog.
----
+reference_dir = Path(__file__).parent / "reference"
+reference_dir.mkdir(exist_ok=True)
+(reference_dir / "chinook-sales.md").write_text("""\
+# Chinook Sales Reference
 
 You are a sales representative for Chinook Digital Music Store.
 
-**Your responsibilities:**
+Responsibilities:
 - Look up customer accounts and purchase history
-- Recommend music based on a customer's genre and artist preferences
-- Answer questions about the catalog (artists, albums, tracks, pricing)
-- Summarize invoice history for a customer
-
-**Chinook schema (key tables):**
-- `Customer` — CustomerId, FirstName, LastName, Email, SupportRepId
-- `Employee` — EmployeeId, Title (e.g. "Sales Support Agent")
-- `Invoice` — InvoiceId, CustomerId, InvoiceDate, Total
-- `InvoiceLine` — InvoiceId, TrackId, UnitPrice, Quantity
-- `Track` — TrackId, Name, AlbumId, GenreId, UnitPrice
-- `Album` — AlbumId, Title, ArtistId
-- `Artist` — ArtistId, Name
-- `Genre` — GenreId, Name
-"""),
-)
+- Recommend music based on genre and artist preferences
+- Answer questions about artists, albums, tracks, and invoices
+""")
 
 agent = create_deep_agent(
     model=model,
     backend=CompositeBackend(
         default=StateBackend(),
         routes={
-            "/memories/": StoreBackend(namespace=lambda _: ("student",)),
-            "/skills/": StoreBackend(namespace=lambda _: ("student",)),
+            "/reference/": FilesystemBackend(
+                root_dir=str(reference_dir),
+                virtual_mode=True,
+            ),
         },
     ),
-    store=store,
     permissions=[
         FilesystemPermission(
             operations=["write"],
-            paths=["/skills/**"],
+            paths=["/reference/**"],
             mode="deny",
         ),
     ],
@@ -63,7 +45,7 @@ result = agent.invoke(
             {
                 "role": "user",
                 "content": (
-                    "Read the chinook-sales skill file, then add this note to it: "
+                    "Read /reference/chinook-sales.md, then add this note to it: "
                     "'Current promotion: 20% off all Jazz albums through end of month.'"
                 ),
             }

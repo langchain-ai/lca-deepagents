@@ -1,4 +1,4 @@
-# python/m5/mcp/send_to_inbox.py
+# python/m5/sales_assistant/mcp/send_to_inbox.py
 """Drop a message into the mock mailbox — the offline stand-in for "a customer
 just emailed you."
 
