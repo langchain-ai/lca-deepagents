@@ -1,1 +1,5 @@
 *.md merge=binary
+*.py merge=binary
+*.svg merge=binary
+*.html merge=binary
+*.json merge=binary
