@@ -88,6 +88,23 @@ python/m5/sales_assistant/research/
 python/m5/spec.md
 python/m5/lessonplan.md
 python/m1/m1.6_NOTES.md
+python/m1/archive/
+thinkific/src/m3/summarization-and-offload-research.txt
+
+# Backup files
+*.bak
 
 # Deferred / unused lessons
 gmail_unused/
+thinkific/src/m1/archive/
+thinkific/src/*/images/archive/
+
+# Trial / sketch images (referenced only in *.sketches.md)
+thinkific/src/m3/images/m3.0-*.svg
+thinkific/archive/
+thinkific/src/archive/
+python/m5/archive/
+archive/
+.agents/
+.claude/
+thinkific/src/m3/m3.sketches.md
