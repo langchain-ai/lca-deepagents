@@ -47,6 +47,4 @@ Current sales rep: Jane Peacock (EmployeeId 3)
 
 ## Recent Lookups
 
-Patrick Gray (patrick.gray@oceanic-air.example) - Existing Customer:
-- CustomerId: 60
-- Company: Oceanic Air Cafes (not yet verified in detail)
+_(none yet)_

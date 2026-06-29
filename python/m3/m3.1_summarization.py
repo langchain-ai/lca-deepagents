@@ -1,5 +1,5 @@
 """
-python/m3/m3.x_summarization.py
+python/m3/m3.1_summarization.py
 
 Demonstrates how the built-in SummarizationMiddleware compresses conversation
 history when the context window fills up.
@@ -10,7 +10,7 @@ overrides model.profile["max_input_tokens"] to a small value so summarization
 fires after a few turns.
 
 Run:
-    cd python && uv run ./m3/m3.x_summarization.py
+    cd python && uv run ./m3/m3.1_summarization.py
 """
 
 import asyncio

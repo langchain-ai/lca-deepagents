@@ -33,7 +33,8 @@ agent = create_deep_agent(
         "Use the query_chinook tool to query the database and the eval tool "
         "to process results programmatically with JavaScript. "
         "Key tables: Genre(GenreId, Name), Track(TrackId, Name, GenreId), "
-        "InvoiceLine(InvoiceLineId, InvoiceId, TrackId, UnitPrice, Quantity)."
+        "InvoiceLine(InvoiceLineId, InvoiceId, TrackId, UnitPrice, Quantity). "
+        "When joining tables, qualify revenue as InvoiceLine.UnitPrice * InvoiceLine.Quantity."
     ),
 )
 
