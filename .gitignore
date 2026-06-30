@@ -19,6 +19,10 @@ credentials/
 .#*
 *~
 
+# TypeScript / Node
+node_modules/
+*.tsbuildinfo
+
 # Python
 __pycache__/
 *.py[cod]
