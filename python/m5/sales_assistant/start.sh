@@ -5,10 +5,24 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
+# Kill any leftover mail server from a previous run.
+OLD_PID=$(lsof -ti :5002 2>/dev/null || true)
+if [ -n "$OLD_PID" ]; then
+    echo "Port 5002 already in use (PID $OLD_PID) — killing it ..."
+    kill "$OLD_PID" 2>/dev/null || true
+    sleep 1
+fi
+
 echo "Starting mock mail server on http://127.0.0.1:5002 ..."
 uv run python "$SCRIPT_DIR/mcp/mock_mail_server.py" &
 MAIL_PID=$!
-trap "kill $MAIL_PID 2>/dev/null; wait $MAIL_PID 2>/dev/null" EXIT
+
+# Kill the mail server on Ctrl-C, normal exit, or TERM.
+cleanup() {
+    kill "$MAIL_PID" 2>/dev/null
+    wait "$MAIL_PID" 2>/dev/null
+}
+trap cleanup EXIT INT TERM
 
 # Wait until the server accepts connections (up to 10 seconds).
 for i in $(seq 1 10); do

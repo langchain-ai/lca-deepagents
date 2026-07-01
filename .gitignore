@@ -85,6 +85,7 @@ python/m5/sales_assistant/research/
 .langgraph_api/
 
 # Working docs (not checked in)
+checklist.md
 python/m5/spec.md
 python/m5/lessonplan.md
 python/m1/m1.6_NOTES.md
