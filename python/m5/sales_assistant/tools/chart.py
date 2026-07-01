@@ -1,14 +1,12 @@
 # python/m5/tools/chart.py
 """Optional territory chart rendering, via a LangSmith sandbox.
 
-This is the course's **optional sandbox** feature. Rendering a PNG needs
-matplotlib, which we don't want to force into every student's environment — so
-instead of installing it locally, we run a short matplotlib script inside an
-ephemeral LangSmith sandbox, read the image back, and save it under /outputs.
+Chart rendering requires matplotlib, which we ship as a sandbox tool rather
+than a local dependency. That way students who don't enable the sandbox still
+get a fully working assistant — they just don't get the chart. The territory
+report skill produces a complete numbers-only report in that case.
 
-The tool is only registered when ENABLE_SANDBOX is set (see agent.py). Without
-it, the territory-report skill simply produces a numbers-only report — the
-assistant still works, it just doesn't draw a picture.
+The tool is only registered when ENABLE_SANDBOX is set (see agent.py).
 """
 
 from __future__ import annotations

@@ -25,7 +25,6 @@ from __future__ import annotations
 
 from deepagents import FilesystemPermission, MemoryMiddleware
 from deepagents.backends.protocol import BackendProtocol
-from tools.mail import MAIL_TOOLS
 from tools.sql import add_customer, introspect_schema, query_chinook
 
 from models import model, strong_model
@@ -99,6 +98,7 @@ def build_subagents(
     backend: BackendProtocol,
     *,
     enable_search: bool,
+    mail_tools: list,
 ) -> list[dict]:
     """Return the subagent specs, wired to the shared filesystem backend."""
 
@@ -142,7 +142,7 @@ def build_subagents(
             "draft reply (which pauses for Jane's approval)."
         ),
         "system_prompt": INBOX_PROMPT,
-        "tools": MAIL_TOOLS,
+        "tools": mail_tools,
         "model": model,
         "interrupt_on": {"mail_create_draft": _APPROVE_EDIT_REJECT},
     }

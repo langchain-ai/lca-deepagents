@@ -1,14 +1,14 @@
 # python/m5/sales_assistant/mcp/mock_mail_server.py
 """A local, offline mock mail MCP server.
 
-Exposes three tools over stdio:
+Exposes three tools over HTTP (streamable-http transport) on port 5002:
 
-    list_messages(query)            -> summaries of inbox mail
-    read_message(message_id)        -> the full body of one message
-    create_draft(to, subject, body) -> save a reply to the drafts folder
+    mail_list_messages(query)            -> summaries of inbox mail
+    mail_read_message(message_id)        -> the full body of one message
+    mail_create_draft(to, subject, body) -> save a reply to the drafts folder
 
-State is a small JSON file managed by mail_store.py. Launched as a subprocess
-by mail_mcp.py when the assistant starts.
+State is a small JSON file managed by mail_store.py. Started by start.sh
+before langgraph dev so make_graph() can discover the tools at startup.
 """
 
 from __future__ import annotations
@@ -16,11 +16,11 @@ from __future__ import annotations
 from mail_store import load_store, next_id, save_store
 from mcp.server.fastmcp import FastMCP
 
-mcp = FastMCP("mock-mail", host="127.0.0.1", port=5001)
+mcp = FastMCP("mock-mail", host="127.0.0.1", port=5002)
 
 
 @mcp.tool()
-def list_messages(query: str = "") -> list[dict]:
+def mail_list_messages(query: str = "") -> list[dict]:
     """List messages in the inbox.
 
     Returns a summary (id, sender, subject, date, snippet) for each message —
@@ -49,7 +49,7 @@ def list_messages(query: str = "") -> list[dict]:
 
 
 @mcp.tool()
-def read_message(message_id: str) -> dict:
+def mail_read_message(message_id: str) -> dict:
     """Return the full message (sender, subject, date, complete body) by id."""
     store = load_store()
     for m in store["inbox"]:
@@ -59,7 +59,7 @@ def read_message(message_id: str) -> dict:
 
 
 @mcp.tool()
-def create_draft(to: str, subject: str, body: str) -> dict:
+def mail_create_draft(to: str, subject: str, body: str) -> dict:
     """Save a reply to the drafts folder. Does NOT send.
 
     Mirrors a real Gmail "create draft" call: the message is staged for the

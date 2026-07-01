@@ -1,9 +1,10 @@
 # python/m5/sales_assistant/agent.py
 """The Chinook Sales Assistant — served as a graph for `langgraph dev`.
 
-Mail tools are plain LangChain tools (tools/mail.py) — no MCP discovery at
-startup, so no async factory is needed. The mail server (mcp/mock_mail_server.py)
-runs as a separate HTTP process, started by start.sh before langgraph dev.
+Mail tools are discovered at startup from the mock mail MCP server
+(mcp/mock_mail_server.py), which start.sh brings up before langgraph dev.
+make_graph() connects to that already-running server, discovers its tools
+via MultiServerMCPClient, and passes them into create_deep_agent.
 """
 
 from __future__ import annotations
@@ -14,6 +15,7 @@ from pathlib import Path
 
 from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
+from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain_quickjs import CodeInterpreterMiddleware
 from subagents import build_subagents
 from tools.html import markdown_to_html
@@ -30,6 +32,8 @@ SYSTEM_PROMPT = (
     "from your memory) and use the matching playbook from /skills/ for each task."
 )
 
+MAIL_SERVER = {"transport": "streamable-http", "url": "http://127.0.0.1:5002/mcp"}
+
 _enable_search = bool(os.environ.get("TAVILY_API_KEY"))
 if not _enable_search:
     logger.info("TAVILY_API_KEY not set — newsletter research subagent disabled.")
@@ -41,14 +45,18 @@ if os.environ.get("ENABLE_SANDBOX"):
     from tools.chart import render_chart
     _tools.append(render_chart)
 
-agent = create_deep_agent(
-    model=strong_model,
-    tools=_tools,
-    system_prompt=SYSTEM_PROMPT,
-    subagents=build_subagents(_backend, enable_search=_enable_search),
-    skills=["/skills"],
-    memory=["/AGENTS.md"],
-    backend=_backend,
-    middleware=[CodeInterpreterMiddleware()],
-    name="chinook-sales-assistant",
-)
+
+async def make_graph():
+    client = MultiServerMCPClient({"mock-mail": MAIL_SERVER})
+    mail_tools = await client.get_tools()
+    return create_deep_agent(
+        model=strong_model,
+        tools=_tools + mail_tools,
+        system_prompt=SYSTEM_PROMPT,
+        subagents=build_subagents(_backend, enable_search=_enable_search, mail_tools=mail_tools),
+        skills=["/skills"],
+        memory=["/AGENTS.md"],
+        backend=_backend,
+        middleware=[CodeInterpreterMiddleware()],
+        name="chinook-sales-assistant",
+    )

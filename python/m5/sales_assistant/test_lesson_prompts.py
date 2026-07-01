@@ -74,31 +74,28 @@ async def run_prompt(client, label: str, prompt: str) -> None:
     while True:
         await client.runs.join(thread["thread_id"], run["run_id"])
         state = await client.threads.get_state(thread["thread_id"])
-        run_status = state.get("next", [])
 
-        # Check whether the run ended in an interrupt.
-        tasks = state.get("tasks", [])
-        interrupted = any(
-            t.get("interrupts") for t in tasks if isinstance(t, dict)
-        )
+        # state["next"] is non-empty only when the graph is paused at an interrupt.
+        interrupted = bool(state.get("next"))
 
         if not interrupted or interrupt_count >= 3:
             break
 
         # Auto-approve the interrupt (mirrors a student clicking "Approve").
         interrupt_count += 1
+        tasks = state.get("tasks", [])
         interrupt_info = [
             i
             for t in tasks
             for i in (t.get("interrupts") or [])
         ]
         print(f"  [interrupt #{interrupt_count}] auto-approving: "
-              f"{interrupt_info[0].get('value', '') if interrupt_info else '?'!r:.80}")
+              f"{str(interrupt_info[0].get('value', ''))[:80] if interrupt_info else '?'}")
 
         run = await client.runs.create(
             thread_id=thread["thread_id"],
             assistant_id="agent",
-            command={"resume": "approve"},
+            command={"resume": {"decisions": [{"type": "approve"}]}},
         )
 
     messages = state["values"].get("messages", [])

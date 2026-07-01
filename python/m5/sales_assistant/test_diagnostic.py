@@ -178,6 +178,27 @@ async def test_code_interpreter(client) -> Result:
         return Result(label, "FAIL", str(exc))
 
 
+async def test_mail_tool_names(client) -> Result:
+    label = "inbox-manager — MCP tool names discovered correctly"
+    print(f"  Running: {label}...", end=" ", flush=True)
+    try:
+        from langchain_mcp_adapters.client import MultiServerMCPClient
+        from agent import MAIL_SERVER
+
+        mcp_client = MultiServerMCPClient({"mock-mail": MAIL_SERVER})
+        tools = await mcp_client.get_tools()
+        names = {t.name for t in tools}
+        expected = {"mail_list_messages", "mail_read_message", "mail_create_draft"}
+        missing = expected - names
+        passed = not missing
+        detail = f"found: {sorted(names)}" if passed else f"missing: {sorted(missing)}"
+        print("done")
+        return Result(label, "PASS" if passed else "FAIL", detail)
+    except Exception as exc:
+        print("done")
+        return Result(label, "FAIL", str(exc))
+
+
 async def test_inbox_manager(client) -> Result:
     label = "inbox-manager — mail MCP tool call"
     print(f"  Running: {label}...", end=" ", flush=True)
@@ -281,6 +302,7 @@ TESTS = [
     test_skills_loaded,
     test_chinook_analyst,
     test_code_interpreter,
+    test_mail_tool_names,
     test_inbox_manager,
     test_hitl_interrupt,
     test_chart_sandbox_direct,
