@@ -63,7 +63,7 @@ def render_chart(
     client = SandboxClient()
     sandbox = client.create_sandbox(name=sandbox_name)
     try:
-        _run(sandbox, "pip3 install matplotlib --break-system-packages")
+        _run(sandbox, "python3 -c 'import matplotlib' 2>/dev/null || pip3 install matplotlib --break-system-packages")
         sandbox.write("/render_chart.py", script.encode("utf-8"))
         _run(sandbox, "python3 /render_chart.py")
         png = sandbox.read("/chart.png")
