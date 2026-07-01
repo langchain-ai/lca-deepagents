@@ -25,6 +25,7 @@ from __future__ import annotations
 
 from deepagents import FilesystemPermission, MemoryMiddleware
 from deepagents.backends.protocol import BackendProtocol
+from tools.mail import MAIL_TOOLS
 from tools.sql import add_customer, introspect_schema, query_chinook
 
 from models import model, strong_model
@@ -98,13 +99,8 @@ def build_subagents(
     backend: BackendProtocol,
     *,
     enable_search: bool,
-    mail_tools: list | None = None,
 ) -> list[dict]:
-    """Return the subagent specs, wired to the shared filesystem backend.
-
-    ``mail_tools`` are the MCP tools discovered; when non-empty, an
-    inbox-manager subagent is added that owns them and gates draft creation.
-    """
+    """Return the subagent specs, wired to the shared filesystem backend."""
 
     chinook_analyst = {
         "name": "chinook-analyst",
@@ -138,26 +134,20 @@ def build_subagents(
         "model": strong_model,
     }
 
-    subagents = [chinook_analyst, quote_reviewer]
+    inbox_manager = {
+        "name": "inbox-manager",
+        "description": (
+            "Read Jane's inbox and save reply drafts. Delegate any "
+            "email work here: finding/reading messages and creating a "
+            "draft reply (which pauses for Jane's approval)."
+        ),
+        "system_prompt": INBOX_PROMPT,
+        "tools": MAIL_TOOLS,
+        "model": model,
+        "interrupt_on": {"mail_create_draft": _APPROVE_EDIT_REJECT},
+    }
 
-    # inbox-manager — only when mail tools were actually discovered. Owns the
-    # mail_* tools; gates mail_create_draft (the one mail write) on approval.
-    if mail_tools:
-        has_draft = any(getattr(t, "name", "") == "mail_create_draft" for t in mail_tools)
-        inbox_manager = {
-            "name": "inbox-manager",
-            "description": (
-                "Read Jane's inbox and save reply drafts. Delegate any "
-                "email work here: finding/reading messages and creating a "
-                "draft reply (which pauses for Jane's approval)."
-            ),
-            "system_prompt": INBOX_PROMPT,
-            "tools": list(mail_tools),
-            "model": model,
-        }
-        if has_draft:
-            inbox_manager["interrupt_on"] = {"mail_create_draft": _APPROVE_EDIT_REJECT}
-        subagents.append(inbox_manager)
+    subagents = [chinook_analyst, quote_reviewer, inbox_manager]
 
     if enable_search:
         from tools.search import internet_search

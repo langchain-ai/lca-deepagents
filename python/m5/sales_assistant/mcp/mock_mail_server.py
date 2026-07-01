@@ -16,7 +16,7 @@ from __future__ import annotations
 from mail_store import load_store, next_id, save_store
 from mcp.server.fastmcp import FastMCP
 
-mcp = FastMCP("mock-mail")
+mcp = FastMCP("mock-mail", host="127.0.0.1", port=5001)
 
 
 @mcp.tool()
@@ -79,4 +79,4 @@ def create_draft(to: str, subject: str, body: str) -> dict:
 
 
 if __name__ == "__main__":
-    mcp.run()  # stdio transport
+    mcp.run(transport="streamable-http")
