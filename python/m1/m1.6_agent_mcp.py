@@ -5,9 +5,6 @@ from langchain_mcp_adapters.client import MultiServerMCPClient
 
 from models import model
 
-ALLOWED = {"search_docs_by_lang_chain"}
-
-
 async def main():
     client = MultiServerMCPClient({
         "docs-langchain": {
@@ -22,7 +19,13 @@ async def main():
         print(f"  {t.name}")
         print(f"  {t.description[:90]}")
 
+    # filter to allowed tools only
+    ALLOWED = {"search_docs_by_lang_chain"}
     tools = [t for t in tools if t.name in ALLOWED]
+
+    print(f"\nfiltered to: {len(tools)} tool(s)")
+    for t in tools:
+        print(f"  {t.name}")
 
     agent = create_deep_agent(model=model, tools=tools)
 
