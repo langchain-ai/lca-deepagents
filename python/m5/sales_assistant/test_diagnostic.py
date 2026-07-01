@@ -60,15 +60,58 @@ def _last_ai_text(messages: list) -> str:
 
 async def _ask(client, prompt: str) -> tuple[str, list]:
     thread = await client.threads.create()
+    _, messages = await _ask_in_thread(client, thread["thread_id"], prompt)
+    return _last_ai_text(messages), messages
+
+
+async def _ask_in_thread(client, thread_id: str, prompt: str) -> tuple[str, list]:
+    """Send a follow-up message to an existing thread, printing a dot every 5s."""
     run = await client.runs.create(
-        thread_id=thread["thread_id"],
+        thread_id=thread_id,
         assistant_id="agent",
         input={"messages": [{"role": "user", "content": prompt}]},
     )
-    await client.runs.join(thread["thread_id"], run["run_id"])
-    state = await client.threads.get_state(thread["thread_id"])
+    # Poll manually so we can print progress dots while waiting.
+    while True:
+        state = await client.runs.get(thread_id, run["run_id"])
+        if state["status"] in ("success", "error", "timeout"):
+            break
+        print(".", end="", flush=True)
+        await asyncio.sleep(5)
+    state = await client.threads.get_state(thread_id)
     messages = state["values"].get("messages", [])
     return _last_ai_text(messages), messages
+
+
+def _tool_outputs(messages: list, tool_name: str) -> list[str]:
+    return [
+        m.get("content", "")
+        for m in messages
+        if m.get("type") == "tool" and m.get("name") == tool_name
+    ]
+
+
+OUTPUTS_DIR = Path(__file__).parent / "outputs"
+
+# Detected at startup in main(); tests use this instead of the ENABLE_SANDBOX env var.
+_sandbox_available: bool = False
+
+
+async def _probe_sandbox(client) -> bool:
+    """Return True if the running agent exposes the retrieve_output tool."""
+    try:
+        assistants = await client.assistants.search(limit=1)
+        if not assistants:
+            return False
+        aid = assistants[0]["assistant_id"]
+        schemas = await client.assistants.get_schemas(aid)
+        tools = schemas.get("tools") or []
+        return any(
+            (t.get("name") or t.get("function", {}).get("name")) == "retrieve_output"
+            for t in tools
+        )
+    except Exception:
+        return False
 
 
 def _reset_inbox() -> None:
@@ -183,7 +226,7 @@ async def test_mail_tool_names(client) -> Result:
     print(f"  Running: {label}...", end=" ", flush=True)
     try:
         from langchain_mcp_adapters.client import MultiServerMCPClient
-        from agent import MAIL_SERVER
+        from agent_no_sandbox import MAIL_SERVER
 
         mcp_client = MultiServerMCPClient({"mock-mail": MAIL_SERVER})
         tools = await mcp_client.get_tools()
@@ -239,25 +282,27 @@ async def test_hitl_interrupt(client) -> Result:
         return Result(label, "FAIL", str(exc))
 
 
-async def test_chart_sandbox_direct(client) -> Result:
-    label = "Chart sandbox — render_chart direct (matplotlib + LangSmith sandbox)"
-    print(f"  Running: {label}...", end=" ", flush=True)
-    if not os.environ.get("ENABLE_SANDBOX"):
-        print("skipped")
-        return Result(label, "SKIP", note="set ENABLE_SANDBOX=1 to run this test")
-    try:
-        import json
-        from tools.chart import render_chart
 
-        raw = render_chart.invoke({
-            "labels": ["Rock", "Latin", "Metal"],
-            "values": [300.0, 137.0, 85.0],
-            "title": "Diagnostic Chart",
-            "output_filename": "test_diagnostic_chart.png",
-        })
-        result = json.loads(raw)
-        passed = result.get("status") == "saved"
-        detail = result.get("path") or result.get("error", raw)
+async def test_retrieve_output_chart(client) -> Result:
+    label = "retrieve_output — sales chart from Chinook DB lands in outputs/"
+    print(f"  Running: {label}...", end=" ", flush=True)
+    if not _sandbox_available:
+        print("skipped")
+        return Result(label, "SKIP", note="running agent does not expose retrieve_output")
+    target = OUTPUTS_DIR / "diag_genre_revenue.png"
+    target.unlink(missing_ok=True)
+    try:
+        thread = await client.threads.create()
+        _, messages = await _ask_in_thread(
+            client, thread["thread_id"],
+            "Query the Chinook database for total revenue by genre (top 5 genres). "
+            "Generate a bar chart, save it to /retrieve/diag_genre_revenue.png, "
+            "then call retrieve_output to copy it locally.",
+        )
+        tool_outs = _tool_outputs(messages, "retrieve_output")
+        passed = target.exists() and bool(tool_outs)
+        detail = (f"{target.stat().st_size:,} bytes" if target.exists()
+                  else f"file missing; retrieve_output returned: {tool_outs}")
         print("done")
         return Result(label, "PASS" if passed else "FAIL", detail)
     except Exception as exc:
@@ -265,27 +310,59 @@ async def test_chart_sandbox_direct(client) -> Result:
         return Result(label, "FAIL", str(exc))
 
 
-async def test_chart_sandbox_via_agent(client) -> Result:
-    label = "Chart sandbox — render_chart via agent"
+async def test_retrieve_output_reuse(client) -> Result:
+    label = "retrieve_output — second chart in same thread (sandbox reuse)"
     print(f"  Running: {label}...", end=" ", flush=True)
-    if not os.environ.get("ENABLE_SANDBOX"):
+    if not _sandbox_available:
         print("skipped")
-        return Result(label, "SKIP", note="set ENABLE_SANDBOX=1 to run this test")
+        return Result(label, "SKIP", note="running agent does not expose retrieve_output")
+    target = OUTPUTS_DIR / "diag_country_sales.png"
+    target.unlink(missing_ok=True)
     try:
-        reply, _ = await _ask(
-            client,
-            "Render a simple bar chart showing: Rock=$300, Latin=$137, Metal=$85. "
-            "Save it to /outputs/test_chart.png.",
+        thread = await client.threads.create()
+        await _ask_in_thread(
+            client, thread["thread_id"],
+            "Query the Chinook database for total revenue by genre (top 5). "
+            "Generate a bar chart, save it to /retrieve/diag_reuse_first.png, "
+            "then call retrieve_output.",
         )
-        reply_lower = reply.lower()
-        if any(w in reply_lower for w in ("connection", "unavailable", "unreachable")):
-            print("skipped")
-            return Result(label, "SKIP",
-                          note="LangSmith sandbox unreachable — requires sandbox API access")
-        passed = "saved" in reply_lower or "png" in reply_lower or "chart" in reply_lower
+        _, messages = await _ask_in_thread(
+            client, thread["thread_id"],
+            "Now generate a bar chart of total sales by country for the top 5 countries. "
+            "Save it to /retrieve/diag_country_sales.png then call retrieve_output.",
+        )
+        tool_outs = _tool_outputs(messages, "retrieve_output")
+        passed = target.exists() and bool(tool_outs)
+        detail = (f"{target.stat().st_size:,} bytes" if target.exists()
+                  else f"file missing; retrieve_output returned: {tool_outs}")
         print("done")
-        return Result(label, "PASS" if passed else "FAIL",
-                      textwrap.shorten(reply, 80))
+        return Result(label, "PASS" if passed else "FAIL", detail)
+    except Exception as exc:
+        print("done")
+        return Result(label, "FAIL", str(exc))
+
+
+async def test_retrieve_output_missing(client) -> Result:
+    label = "retrieve_output — missing file returns clean error string"
+    print(f"  Running: {label}...", end=" ", flush=True)
+    if not _sandbox_available:
+        print("skipped")
+        return Result(label, "SKIP", note="running agent does not expose retrieve_output")
+    try:
+        thread = await client.threads.create()
+        _, messages = await _ask_in_thread(
+            client, thread["thread_id"],
+            "Call retrieve_output with sandbox_path='/retrieve/does_not_exist.png' "
+            "and tell me exactly what it returned.",
+        )
+        tool_outs = _tool_outputs(messages, "retrieve_output")
+        last = tool_outs[-1] if tool_outs else ""
+        passed = bool(tool_outs) and any(
+            kw in last.lower() for kw in ("error", "not_found", "file_not_found")
+        )
+        detail = repr(last[:80]) if last else "retrieve_output was not called"
+        print("done")
+        return Result(label, "PASS" if passed else "FAIL", detail)
     except Exception as exc:
         print("done")
         return Result(label, "FAIL", str(exc))
@@ -305,31 +382,25 @@ TESTS = [
     test_mail_tool_names,
     test_inbox_manager,
     test_hitl_interrupt,
-    test_chart_sandbox_direct,
-    test_chart_sandbox_via_agent,
+    test_retrieve_output_chart,
+    test_retrieve_output_reuse,
+    test_retrieve_output_missing,
 ]
 
 
 async def main() -> None:
+    global _sandbox_available
     client = get_client(url=API_URL)
 
     print(f"\nChinook Sales Assistant — Diagnostic\n{'─' * 42}")
+    _sandbox_available = await _probe_sandbox(client)
+    mode = "sandbox" if _sandbox_available else "no-sandbox"
+    print(f"  Mode: {mode}\n")
 
     results: list[Result] = []
-    direct_chart_passed = False
 
     for test_fn in TESTS:
-        # Skip the agent chart test if the direct chart test didn't pass.
-        if test_fn is test_chart_sandbox_via_agent and not direct_chart_passed:
-            label = "Chart sandbox — render_chart via agent"
-            print(f"  Running: {label}... skipped")
-            results.append(Result(label, "SKIP",
-                                  note="skipped — direct sandbox test did not pass"))
-            continue
-
         result = await test_fn(client)
-        if test_fn is test_chart_sandbox_direct and result.status == "PASS":
-            direct_chart_passed = True
         results.append(result)
 
         # Stop immediately if the server isn't reachable — all other tests will fail too.

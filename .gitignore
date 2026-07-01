@@ -81,6 +81,7 @@ python/temp/
 .mcp.generated.json
 python/m5/sales_assistant/mcp/mail_store.json
 python/m5/sales_assistant/outputs/
+python/m5/sales_assistant/retrieve/
 python/m5/sales_assistant/research/
 .langgraph_api/
 
