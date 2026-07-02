@@ -209,8 +209,8 @@ async def test_mail_tool_names(client) -> Result:
     label = "inbox-manager — MCP tool names discovered correctly"
     print(f"  Running: {label}...", end=" ", flush=True)
     try:
-        from langchain_mcp_adapters.client import MultiServerMCPClient
         from agent_no_sandbox import MAIL_SERVER
+        from langchain_mcp_adapters.client import MultiServerMCPClient
 
         mcp_client = MultiServerMCPClient({"mock-mail": MAIL_SERVER})
         tools = await mcp_client.get_tools()

@@ -107,7 +107,7 @@ def _lookup_or_create(name: str):
 async def make_graph(config: RunnableConfig, runtime: ServerRuntime):
     ls_backend = None
 
-    if ert := runtime.execution_runtime:
+    if runtime.execution_runtime:
         # Real run — look up or create a thread-scoped sandbox
         thread_id = config.get("configurable", {}).get("thread_id")
         sandbox = await asyncio.to_thread(_lookup_or_create, f"thread-{thread_id}")
