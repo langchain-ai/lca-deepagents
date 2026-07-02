@@ -4,14 +4,15 @@
 Runs all capability layers in order and prints a summary. Start both
 services first, then run this in a second terminal:
 
-    ./start.sh                          # terminal 1
-    uv run python test_diagnostic.py    # terminal 2
+    ./start.sh                                    # terminal 1
+    uv run python test_diagnostic.py              # terminal 2 (no-sandbox)
+    uv run python test_diagnostic.py --sandbox    # terminal 2 (sandbox)
 """
 
 from __future__ import annotations
 
+import argparse
 import asyncio
-import os
 import subprocess
 import textwrap
 from dataclasses import dataclass
@@ -68,7 +69,7 @@ async def _ask_in_thread(client, thread_id: str, prompt: str) -> tuple[str, list
     """Send a follow-up message to an existing thread, printing a dot every 5s."""
     run = await client.runs.create(
         thread_id=thread_id,
-        assistant_id="agent",
+        assistant_id=_assistant_id,
         input={"messages": [{"role": "user", "content": prompt}]},
     )
     # Poll manually so we can print progress dots while waiting.
@@ -93,25 +94,8 @@ def _tool_outputs(messages: list, tool_name: str) -> list[str]:
 
 OUTPUTS_DIR = Path(__file__).parent / "outputs"
 
-# Detected at startup in main(); tests use this instead of the ENABLE_SANDBOX env var.
 _sandbox_available: bool = False
-
-
-async def _probe_sandbox(client) -> bool:
-    """Return True if the running agent exposes the retrieve_output tool."""
-    try:
-        assistants = await client.assistants.search(limit=1)
-        if not assistants:
-            return False
-        aid = assistants[0]["assistant_id"]
-        schemas = await client.assistants.get_schemas(aid)
-        tools = schemas.get("tools") or []
-        return any(
-            (t.get("name") or t.get("function", {}).get("name")) == "retrieve_output"
-            for t in tools
-        )
-    except Exception:
-        return False
+_assistant_id: str = "agent"
 
 
 def _reset_inbox() -> None:
@@ -264,7 +248,7 @@ async def test_hitl_interrupt(client) -> Result:
         thread = await client.threads.create()
         run = await client.runs.create(
             thread_id=thread["thread_id"],
-            assistant_id="agent",
+            assistant_id=_assistant_id,
             input={"messages": [{"role": "user", "content":
                 "Draft a reply to the email from Morgan Vale saying we will get "
                 "back to them within 24 hours. Save the draft."
@@ -390,10 +374,15 @@ TESTS = [
 
 async def main() -> None:
     global _sandbox_available
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--sandbox", action="store_true",
+                        help="Enable sandbox tests (requires sandbox server)")
+    args = parser.parse_args()
+    _sandbox_available = args.sandbox
+
     client = get_client(url=API_URL)
 
     print(f"\nChinook Sales Assistant — Diagnostic\n{'─' * 42}")
-    _sandbox_available = await _probe_sandbox(client)
     mode = "sandbox" if _sandbox_available else "no-sandbox"
     print(f"  Mode: {mode}\n")
 
