@@ -273,8 +273,8 @@ async def test_retrieve_output_chart(client) -> Result:
     if not _sandbox_available:
         print("skipped")
         return Result(label, "SKIP", note="running agent does not expose retrieve_output")
-    target = OUTPUTS_DIR / "diag_genre_revenue.png"
-    target.unlink(missing_ok=True)
+    for f in OUTPUTS_DIR.glob("diag_genre_revenue_*.png"):
+        f.unlink()
     try:
         thread = await client.threads.create()
         _, messages = await _ask_in_thread(
@@ -284,8 +284,10 @@ async def test_retrieve_output_chart(client) -> Result:
             "then call retrieve_output to copy it locally.",
         )
         tool_outs = _tool_outputs(messages, "retrieve_output")
-        passed = target.exists() and bool(tool_outs)
-        detail = (f"{target.stat().st_size:,} bytes" if target.exists()
+        matches = sorted(OUTPUTS_DIR.glob("diag_genre_revenue_*.png"))
+        target = matches[-1] if matches else None
+        passed = bool(target) and bool(tool_outs)
+        detail = (f"{target.stat().st_size:,} bytes" if target
                   else f"file missing; retrieve_output returned: {tool_outs}")
         print("done")
         return Result(label, "PASS" if passed else "FAIL", detail)
@@ -300,8 +302,8 @@ async def test_retrieve_output_reuse(client) -> Result:
     if not _sandbox_available:
         print("skipped")
         return Result(label, "SKIP", note="running agent does not expose retrieve_output")
-    target = OUTPUTS_DIR / "diag_country_sales.png"
-    target.unlink(missing_ok=True)
+    for f in OUTPUTS_DIR.glob("diag_country_sales_*.png"):
+        f.unlink()
     try:
         thread = await client.threads.create()
         await _ask_in_thread(
@@ -316,8 +318,10 @@ async def test_retrieve_output_reuse(client) -> Result:
             "Save it to /retrieve/diag_country_sales.png then call retrieve_output.",
         )
         tool_outs = _tool_outputs(messages, "retrieve_output")
-        passed = target.exists() and bool(tool_outs)
-        detail = (f"{target.stat().st_size:,} bytes" if target.exists()
+        matches = sorted(OUTPUTS_DIR.glob("diag_country_sales_*.png"))
+        target = matches[-1] if matches else None
+        passed = bool(target) and bool(tool_outs)
+        detail = (f"{target.stat().st_size:,} bytes" if target
                   else f"file missing; retrieve_output returned: {tool_outs}")
         print("done")
         return Result(label, "PASS" if passed else "FAIL", detail)
