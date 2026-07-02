@@ -29,6 +29,7 @@ from deepagents.backends.langsmith import LangSmithSandbox
 from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import tool
 from langchain_mcp_adapters.client import MultiServerMCPClient
+from langgraph_sdk.runtime import ServerRuntime
 from subagents import build_subagents
 from tools.html import markdown_to_html
 
@@ -84,31 +85,31 @@ def _lookup_or_create(name: str):
         raise
 
 
-# Thread-scoped sandbox pattern from the deepagents going-to-production docs:
-# https://docs.langchain.com/oss/python/deepagents/going-to-production#lifecycle
+# Thread-scoped sandbox pattern:
+# https://docs.langchain.com/langsmith/graph-rebuild#context-manager-factory
 #
-# The factory accepts RunnableConfig so LangGraph injects thread_id on each
-# run. Introspection calls (get_schema, get_graph, get_subgraphs) do not
-# carry a thread_id, so when it is absent we return a graph with the same
-# topology but backed by local filesystem — no sandbox, no expensive setup.
-# Real runs always have a thread_id and get their own isolated sandbox.
+# The factory accepts ServerRuntime so the server can signal whether it is
+# processing an actual run (execution_runtime is non-None) or handling
+# introspection calls (get_schema, get_graph, assistants.read, …). When
+# execution_runtime is None we skip the expensive sandbox setup and fall back
+# to local filesystem — same graph topology, no sandbox, no MCP round-trip.
+# Real runs get their own thread-scoped sandbox looked up by thread_id.
 @contextlib.asynccontextmanager
-async def make_graph(config: RunnableConfig):
-    thread_id = (config.get("configurable") or {}).get("thread_id")
-
+async def make_graph(config: RunnableConfig, runtime: ServerRuntime):
     ls_backend = None
 
-    if thread_id is None:
-        # Introspection — same graph shape, no sandbox, no MCP round-trip
-        backend = FilesystemBackend(root_dir=str(HERE), virtual_mode=True)
-    else:
+    if ert := runtime.execution_runtime:
         # Real run — look up or create a thread-scoped sandbox
+        thread_id = (config.get("configurable") or {}).get("thread_id")
         sandbox = await asyncio.to_thread(_lookup_or_create, f"thread-{thread_id}")
         ls_backend = LangSmithSandbox(sandbox)
         backend = CompositeBackend(
             default=ls_backend,
             routes={"/": FilesystemBackend(root_dir=str(HERE), virtual_mode=True)},
         )
+    else:
+        # Introspection — same graph shape, no sandbox, no MCP round-trip
+        backend = FilesystemBackend(root_dir=str(HERE), virtual_mode=True)
 
     @tool
     def retrieve_output(sandbox_path: str) -> str:
