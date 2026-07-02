@@ -18,6 +18,7 @@ Rules:
 - Use send_email when the user asks you to send an email.
 - Keep emails concise and professional.
 - Do not claim an email was sent until the tool result confirms it.
+- When confirming an email was sent, quote the subject and body from the tool result, not the original request.
 """
 
 agent = create_deep_agent(
@@ -68,4 +69,7 @@ while result.get("__interrupt__"):
 
     result = agent.invoke(Command(resume={"decisions": decisions}), config=config)
 
-print(result["messages"][-1].content)
+for msg in result["messages"]:
+    if hasattr(msg, "name") and msg.name == "send_email":
+        print(msg.content)
+        break
