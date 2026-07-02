@@ -70,8 +70,27 @@ def _lookup_or_create(name: str):
     client = _get_client()
     existing = [s for s in client.list_sandboxes() if s.name == name]
     if existing:
-        logger.info("Reusing sandbox %s", name)
-        return existing[0]
+        sb = existing[0]
+        status = getattr(sb, "status", "ready")
+        if status == "ready":
+            logger.info("Reusing sandbox %s", name)
+            return sb
+        if status == "stopped":
+            logger.info("Restarting stopped sandbox %s", name)
+            try:
+                return client.start_sandbox(name, timeout=15)
+            except Exception as exc:
+                raise RuntimeError(
+                    "Sandbox is not available — please try again in a moment."
+                ) from exc
+        # Any other transitional state — wait up to 15 seconds
+        logger.info("Waiting for sandbox %s (status: %s)", name, status)
+        try:
+            return client.wait_for_sandbox(name, timeout=15)
+        except Exception as exc:
+            raise RuntimeError(
+                "Sandbox is not available — please try again in a moment."
+            ) from exc
     try:
         sb = client.create_sandbox(name=name, idle_ttl_seconds=600)
         logger.info("Created sandbox %s", name)

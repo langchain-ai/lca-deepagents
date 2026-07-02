@@ -22,17 +22,18 @@ to combine results.
 
 ## 2. Write the report
 
-- Use the code interpreter to get today's date: `new Date().toISOString().slice(0, 10)`.
+- Use the code interpreter to get today's date (Python: `import datetime; datetime.date.today().isoformat()`).
 - `write_file` a clear Markdown report to `/outputs/territory_report-<date>.md`:
   headline totals, a top-customers list, and a revenue-by-genre table.
 
 ## 3. Chart (optional)
 
-- **If the `render_chart` tool is available**, call it with the revenue-by-genre
-  labels and values (a "pie" chart works well) and save it to
-  `/outputs/territory_chart.png`. Reference the image in the report.
-- **If `render_chart` is not available**, skip the image — the Markdown report
-  with its numbers is the deliverable. Note in the report that charting is off.
+- **If `retrieve_output` is available** (sandbox mode): use `execute_code` to
+  generate a matplotlib pie chart of revenue by genre, save it to
+  `/retrieve/territory_chart.png`, then call `retrieve_output` to copy it
+  locally. Reference the image in the report.
+- **Otherwise**, skip the image — the Markdown report is the deliverable.
+  Note in the report that charting is not available in this environment.
 
 ## Done
 

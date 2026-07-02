@@ -1,0 +1,80 @@
+<svg width="840" height="450" xmlns="http://www.w3.org/2000/svg"
+     font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="840" height="450" fill="#030710" rx="8"/>
+
+  <!-- Title -->
+  <text x="420" y="30" text-anchor="middle" font-size="15" font-weight="300" fill="#F2FAFF">Anatomy of make_graph() — sandbox variant</text>
+  <text x="420" y="50" text-anchor="middle" font-size="11" fill="#99D3FF"
+        font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Per-thread isolated execution with file retrieval</text>
+
+  <!-- Editor window -->
+  <rect x="24" y="65" width="440" height="345" rx="8" fill="#0D1322" stroke="#2F4B68" stroke-width="1.5"/>
+  <rect x="24" y="65" width="440" height="24" rx="8" fill="#1E3A5F"/>
+  <rect x="24" y="81" width="440" height="8" fill="#1E3A5F"/>
+  <circle cx="40" cy="77" r="4" fill="#441E33"/>
+  <circle cx="54" cy="77" r="4" fill="#634643"/>
+  <circle cx="68" cy="77" r="4" fill="#2E3900"/>
+  <text x="84" y="81" font-size="9" fill="#99D3FF"
+        font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">agent_sandbox.py</text>
+
+  <!-- Highlight: decorator + signature (PURPLE, 2 lines) -->
+  <rect x="28" y="93" width="432" height="36" rx="3" fill="#1E1A34" stroke="#7E65AE" stroke-width="1.5"/>
+  <!-- Highlight: execution check (BLUE, 1 line) -->
+  <rect x="28" y="165" width="432" height="18" rx="3" fill="#0D1F3A" stroke="#006DDD" stroke-width="1.5"/>
+  <!-- Highlight: retrieve_output tool (GREEN, 3 lines) -->
+  <rect x="28" y="291" width="432" height="54" rx="3" fill="#2E3900" stroke="#6E8900" stroke-width="1.5"/>
+  <!-- Highlight: yield (PLUM) -->
+  <rect x="28" y="363" width="432" height="18" rx="3" fill="#200C22" stroke="#C78EAD" stroke-width="1.5"/>
+
+  <!-- Code -->
+  <g font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11">
+    <text x="50"  y="105" fill="#D5C3F7">@contextlib.asynccontextmanager</text>
+    <text x="50"  y="123" fill="#D5C3F7">async def make_graph(config, runtime):</text>
+    <text x="76"  y="141" fill="#40668D">    ls_backend = None</text>
+    <text x="76"  y="177" fill="#7FC8FF">    if ert := runtime.execution_runtime:</text>
+    <text x="102" y="195" fill="#40668D">        thread_id = (...).get("thread_id")</text>
+    <text x="102" y="213" fill="#40668D">        sandbox = _lookup_or_create(f"thread-{thread_id}")</text>
+    <text x="102" y="231" fill="#40668D">        ls_backend = LangSmithSandbox(sandbox)</text>
+    <text x="102" y="249" fill="#40668D">        backend = CompositeBackend(default=ls_backend, ...)</text>
+    <text x="76"  y="267" fill="#40668D">    else:</text>
+    <text x="102" y="285" fill="#40668D">        backend = FilesystemBackend(...)</text>
+    <text x="76"  y="303" fill="#E3FF8F">    @tool</text>
+    <text x="76"  y="321" fill="#E3FF8F">    def retrieve_output(sandbox_path: str):</text>
+    <text x="102" y="339" fill="#E3FF8F">        ...  # copy sandbox file to disk</text>
+    <text x="76"  y="375" fill="#C78EAD">    yield create_deep_agent(...)</text>
+  </g>
+
+  <!-- Connectors -->
+  <line x1="464" y1="111" x2="476" y2="102" stroke="#7E65AE" stroke-width="1.5"/>
+  <line x1="464" y1="174" x2="476" y2="178" stroke="#006DDD" stroke-width="1.5"/>
+  <line x1="464" y1="318" x2="476" y2="306" stroke="#6E8900" stroke-width="1.5"/>
+  <line x1="464" y1="372" x2="476" y2="374" stroke="#C78EAD" stroke-width="1.5"/>
+
+  <!-- Box 1: CONTEXT MANAGER (PURPLE) -->
+  <rect x="476" y="80" width="340" height="56" rx="6" fill="#0D1322" stroke="#7E65AE" stroke-width="1.5"/>
+  <text x="487" y="99"  font-size="12" font-weight="400" fill="#D5C3F7">CONTEXT MANAGER</text>
+  <text x="487" y="115" font-size="11" fill="#B2DEFF">accepts config: RunnableConfig</text>
+  <text x="487" y="129" font-size="11" fill="#B2DEFF">and runtime: ServerRuntime</text>
+
+  <!-- Box 2: EXECUTION CHECK (BLUE) -->
+  <rect x="476" y="150" width="340" height="68" rx="6" fill="#0D1322" stroke="#006DDD" stroke-width="1.5"/>
+  <text x="487" y="169" font-size="12" font-weight="400" fill="#7FC8FF">EXECUTION CHECK</text>
+  <text x="487" y="185" font-size="11" fill="#B2DEFF">non-None only for real runs; skips</text>
+  <text x="487" y="201" font-size="11" fill="#B2DEFF">sandbox setup and MCP discovery</text>
+  <text x="487" y="217" font-size="11" fill="#B2DEFF">for introspection calls</text>
+
+  <!-- Box 3: FILE BRIDGE (GREEN) -->
+  <rect x="476" y="268" width="340" height="56" rx="6" fill="#0D1322" stroke="#6E8900" stroke-width="1.5"/>
+  <text x="487" y="287" font-size="12" font-weight="400" fill="#E3FF8F">FILE BRIDGE</text>
+  <text x="487" y="303" font-size="11" fill="#B2DEFF">write to /retrieve/ in the sandbox;</text>
+  <text x="487" y="319" font-size="11" fill="#B2DEFF">call retrieve_output to copy to outputs/</text>
+
+  <!-- Box 4: YIELD NOT RETURN (PLUM) -->
+  <rect x="476" y="352" width="340" height="44" rx="6" fill="#0D1322" stroke="#C78EAD" stroke-width="1.5"/>
+  <text x="487" y="371" font-size="12" font-weight="400" fill="#C78EAD">YIELD NOT RETURN</text>
+  <text x="487" y="387" font-size="11" fill="#B2DEFF">context manager; local objects released, sandbox persists</text>
+
+  <!-- Footer -->
+  <text x="420" y="430" text-anchor="middle" font-size="10" fill="#40668D"
+        font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">The else branch falls back to local filesystem — same graph shape, no sandbox setup.</text>
+</svg>
