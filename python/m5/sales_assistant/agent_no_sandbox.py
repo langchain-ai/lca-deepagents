@@ -1,10 +1,11 @@
-# python/m5/sales_assistant/agent.py
-"""The Chinook Sales Assistant — served as a graph for `langgraph dev`.
+# python/m5/sales_assistant/agent_no_sandbox.py
+"""Chinook Sales Assistant — no-sandbox variant.
 
-Mail tools are discovered at startup from the mock mail MCP server
-(mcp/mock_mail_server.py), which start.sh brings up before langgraph dev.
-make_graph() connects to that already-running server, discovers its tools
-via MultiServerMCPClient, and passes them into create_deep_agent.
+Uses a local FilesystemBackend and QuickJS code interpreter. No LangSmith
+sandbox required. Charts are not available in this configuration.
+
+Start with:
+    ./start_no_sandbox.sh
 """
 
 from __future__ import annotations
@@ -40,18 +41,13 @@ if not _enable_search:
 
 _backend = FilesystemBackend(root_dir=str(HERE), virtual_mode=True)
 
-_tools = [markdown_to_html]
-if os.environ.get("ENABLE_SANDBOX"):
-    from tools.chart import render_chart
-    _tools.append(render_chart)
-
 
 async def make_graph():
     client = MultiServerMCPClient({"mock-mail": MAIL_SERVER})
     mail_tools = await client.get_tools()
     return create_deep_agent(
         model=strong_model,
-        tools=_tools + mail_tools,
+        tools=[markdown_to_html] + mail_tools,
         system_prompt=SYSTEM_PROMPT,
         subagents=build_subagents(_backend, enable_search=_enable_search, mail_tools=mail_tools),
         skills=["/skills"],
