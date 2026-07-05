@@ -6,6 +6,8 @@ You can find the course at [Deep Agents](<fill in Thinkific URL>).
 
 ### Prerequisites
 
+> **Windows:** Windows is supported through [WSL (Windows Subsystem for Linux)](https://learn.microsoft.com/en-us/windows/wsl/install).
+
 - Python 3.11–3.14
 - [uv](https://docs.astral.sh/uv/) — [how to install](#installing-uv)
 - LLM Model API key — choose your favorite provider. The course defaults to Anthropic ([sign up for an Anthropic API key here](https://console.anthropic.com/))
@@ -17,7 +19,7 @@ You can find the course at [Deep Agents](<fill in Thinkific URL>).
 Clone the repository and move to the `python` directory:
 
 ```bash
-git clone https://github.com/langchain-ai/lca-deepagents.git
+git clone --depth 1 https://github.com/langchain-ai/lca-deepagents.git
 cd lca-deepagents/python
 ```
 

@@ -41,10 +41,11 @@ result = agent.invoke(
         ]
     },
     config=config,
+    version="v2",
 )
 
-while result.get("__interrupt__"):
-    pending = result["__interrupt__"][0].value
+while result.interrupts:
+    pending = result.interrupts[0].value
     decisions = []
     for req in pending["action_requests"]:
         print(f"\nApproval required for {req['name']}:")
@@ -67,9 +68,9 @@ while result.get("__interrupt__"):
                 {"type": "reject", "message": "User rejected this email draft."}
             )
 
-    result = agent.invoke(Command(resume={"decisions": decisions}), config=config)
+    result = agent.invoke(Command(resume={"decisions": decisions}), config=config, version="v2")
 
-for msg in result["messages"]:
+for msg in result.value["messages"]:
     if hasattr(msg, "name") and msg.name == "send_email":
         print(msg.content)
         break

@@ -20,13 +20,13 @@ load_dotenv(Path(__file__).parent / "../../.env")
 
 API_URL = "http://127.0.0.1:2024"
 OUTPUTS_DIR = Path(__file__).parent / "outputs"
-TARGET = OUTPUTS_DIR / "quick_check.txt"
 
 
 async def main() -> None:
     client = get_client(url=API_URL)
 
-    TARGET.unlink(missing_ok=True)
+    for f in OUTPUTS_DIR.glob("quick_check_*.txt"):
+        f.unlink()
 
     print("Creating thread...")
     thread = await client.threads.create()
@@ -42,11 +42,12 @@ async def main() -> None:
     )
     await client.runs.join(thread["thread_id"], run["run_id"])
 
-    if TARGET.exists():
-        content = TARGET.read_text().strip()
-        print(f"PASS — outputs/quick_check.txt exists: {repr(content)}")
+    matches = sorted(OUTPUTS_DIR.glob("quick_check_*.txt"))
+    if matches:
+        content = matches[-1].read_text().strip()
+        print(f"PASS — {matches[-1].name} exists: {repr(content)}")
     else:
-        print("FAIL — outputs/quick_check.txt not found")
+        print("FAIL — no quick_check_*.txt found in outputs/")
 
 
 asyncio.run(main())

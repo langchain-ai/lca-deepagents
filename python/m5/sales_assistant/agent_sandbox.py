@@ -20,6 +20,7 @@ import asyncio
 import contextlib
 import logging
 import os
+from datetime import datetime
 from pathlib import Path
 
 from deepagents import create_deep_agent
@@ -35,7 +36,7 @@ from tools.html import markdown_to_html
 
 from models import strong_model
 
-logger = logging.getLogger("chinook-sales-assistant")
+logger = logging.getLogger(__name__)
 
 HERE = Path(__file__).resolve().parent
 
@@ -55,19 +56,9 @@ _enable_search = bool(os.environ.get("TAVILY_API_KEY"))
 if not _enable_search:
     logger.info("TAVILY_API_KEY not set — newsletter research subagent disabled.")
 
-_sandbox_client = None
-
-
-def _get_client():
-    global _sandbox_client
-    if _sandbox_client is None:
-        from langsmith.sandbox import SandboxClient
-        _sandbox_client = SandboxClient()
-    return _sandbox_client
-
-
 def _lookup_or_create(name: str):
-    client = _get_client()
+    from langsmith.sandbox import SandboxClient
+    client = SandboxClient()
     existing = [s for s in client.list_sandboxes() if s.name == name]
     if existing:
         sb = existing[0]
@@ -117,14 +108,15 @@ def _lookup_or_create(name: str):
 async def make_graph(config: RunnableConfig, runtime: ServerRuntime):
     ls_backend = None
 
-    if ert := runtime.execution_runtime:
+    if runtime.execution_runtime:
         # Real run — look up or create a thread-scoped sandbox
-        thread_id = (config.get("configurable") or {}).get("thread_id")
+        thread_id = config.get("configurable", {}).get("thread_id")
         sandbox = await asyncio.to_thread(_lookup_or_create, f"thread-{thread_id}")
         ls_backend = LangSmithSandbox(sandbox)
+        local_backend = FilesystemBackend(root_dir=str(HERE), virtual_mode=True)
         backend = CompositeBackend(
             default=ls_backend,
-            routes={"/": FilesystemBackend(root_dir=str(HERE), virtual_mode=True)},
+            routes={"/": local_backend},
         )
     else:
         # Introspection — same graph shape, no sandbox, no MCP round-trip
@@ -149,11 +141,13 @@ async def make_graph(config: RunnableConfig, runtime: ServerRuntime):
         resp = responses[0]
         if resp.content is None:
             return f"Error retrieving {sandbox_path}: {resp.error}"
-        # Use only the filename to prevent path traversal on local disk
-        filename = Path(sandbox_path).name
-        out_path = HERE / "outputs" / filename
-        out_path.parent.mkdir(exist_ok=True)
-        out_path.write_bytes(resp.content)
+        stem = Path(sandbox_path).stem
+        suffix = Path(sandbox_path).suffix
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"{stem}_{ts}{suffix}"
+        result = local_backend.upload_files([(f"/outputs/{filename}", resp.content)])
+        if result[0].error:
+            return f"Error saving {filename}: {result[0].error}"
         return f"Saved to outputs/{filename}"
 
     mcp_client = MultiServerMCPClient({"mock-mail": MAIL_SERVER})

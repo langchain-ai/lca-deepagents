@@ -31,7 +31,7 @@
     <text x="50"  y="105" fill="#D5C3F7">@contextlib.asynccontextmanager</text>
     <text x="50"  y="123" fill="#D5C3F7">async def make_graph(config, runtime):</text>
     <text x="76"  y="141" fill="#40668D">    ls_backend = None</text>
-    <text x="76"  y="177" fill="#7FC8FF">    if ert := runtime.execution_runtime:</text>
+    <text x="76"  y="177" fill="#7FC8FF">    if runtime.execution_runtime:</text>
     <text x="102" y="195" fill="#40668D">        thread_id = (...).get("thread_id")</text>
     <text x="102" y="213" fill="#40668D">        sandbox = _lookup_or_create(f"thread-{thread_id}")</text>
     <text x="102" y="231" fill="#40668D">        ls_backend = LangSmithSandbox(sandbox)</text>

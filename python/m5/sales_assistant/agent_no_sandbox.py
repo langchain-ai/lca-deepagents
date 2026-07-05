@@ -23,7 +23,7 @@ from tools.html import markdown_to_html
 
 from models import strong_model
 
-logger = logging.getLogger("chinook-sales-assistant")
+logger = logging.getLogger(__name__)
 
 HERE = Path(__file__).resolve().parent
 
