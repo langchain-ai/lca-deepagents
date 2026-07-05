@@ -42,6 +42,8 @@ def query_chinook(sql: str) -> str:
 
 
 # --- Agent with interpreter ---
+# Additional information is added to the system prompt to guide the agent to use
+# the interpreter as well as some hints on how to use it.
 
 agent_with = create_deep_agent(
     model=model,
