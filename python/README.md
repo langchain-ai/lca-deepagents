@@ -17,7 +17,7 @@ You can find the course at [Deep Agents](<fill in Thinkific URL>).
 Clone the repository and move to the `python` directory:
 
 ```bash
-git clone https://github.com/langchain-ai/lca-deepagents.git
+git clone --depth 1 https://github.com/langchain-ai/lca-deepagents.git
 cd lca-deepagents/python
 ```
 
