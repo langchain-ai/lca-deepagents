@@ -5,6 +5,7 @@ from langchain_mcp_adapters.client import MultiServerMCPClient
 
 from models import model
 
+
 async def main():
     client = MultiServerMCPClient({
         "docs-langchain": {

@@ -11,7 +11,6 @@ Run:  uv run python m1/gh_auth/step1.py
 
 from __future__ import annotations
 
-import json
 import os
 from urllib.parse import urlsplit
 
@@ -91,14 +90,13 @@ def _show_auth_endpoints(client: httpx.Client, issuer: str) -> None:
     if not _trusted_github_host(issuer):
         print(f"  (skipping: untrusted issuer host {issuer!r})")
         return
-    host = urlsplit(issuer).hostname
     discovery_url = issuer.rstrip("/") + "/.well-known/oauth-authorization-server"
     try:
         data = client.get(discovery_url).json()
         auth_ep = data.get("authorization_endpoint")
         token_ep = data.get("token_endpoint")
         if auth_ep and token_ep:
-            print(f"\n----- Step 1 result -----")
+            print("\n----- Step 1 result -----")
             print(f"  authorization_endpoint: {auth_ep}")
             print(f"  token_endpoint:         {token_ep}")
             return
@@ -108,7 +106,7 @@ def _show_auth_endpoints(client: httpx.Client, issuer: str) -> None:
     # GitHub does not serve an RFC 8414 document; derive endpoints from the
     # issuer URL (https://github.com/login/oauth → .../authorize, .../access_token).
     base = issuer.rstrip("/")
-    print(f"\n----- Step 1 result -----")
+    print("\n----- Step 1 result -----")
     print(f"  authorization_endpoint: {base}/authorize")
     print(f"  token_endpoint:         {base}/access_token")
 
