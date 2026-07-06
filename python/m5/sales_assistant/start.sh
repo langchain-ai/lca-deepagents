@@ -35,4 +35,4 @@ done
 echo "Mail server up (PID $MAIL_PID). Starting langgraph dev ..."
 cd "$SCRIPT_DIR"
 
-uv run langgraph dev
+uv run langgraph dev "$@"
