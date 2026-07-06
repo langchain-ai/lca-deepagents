@@ -91,6 +91,7 @@ python/m5/spec.md
 python/m5/lessonplan.md
 python/m1/m1.6_NOTES.md
 python/m1/archive/
+python/m1/gmail_auth.py
 thinkific/src/m3/summarization-and-offload-research.txt
 
 # Backup files
@@ -110,3 +111,4 @@ archive/
 .agents/
 .claude/
 thinkific/src/m3/m3.sketches.md
+python/m5/sales_assistant/agent_sandbox.py

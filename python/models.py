@@ -25,7 +25,6 @@ To swap providers:
   4. Set the provider's env vars in `.env` (see notes inline).
 """
 
-import os
 from pathlib import Path
 
 from dotenv import load_dotenv

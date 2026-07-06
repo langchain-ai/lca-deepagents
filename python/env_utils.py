@@ -286,22 +286,6 @@ def doublecheck_env(file_path: str):
 
         printed_keys.add(key)
 
-    # Check for any additional uncommented variables in .env that weren't in .env.example
-    actual_env_file = ".env"
-    if os.path.exists(actual_env_file):
-        actual_env_vars = dotenv_values(actual_env_file)
-        additional_vars = set(actual_env_vars.keys()) - printed_keys
-
-        if additional_vars:
-            print("\nAdditional variables in .env (not in .env.example):")
-            for key in sorted(additional_vars):
-                current = os.getenv(key)
-                if current is not None:
-                    # No example value to compare against for additional vars
-                    print(f"{key}={summarize_value(key, current, None)}")
-                else:
-                    print(f"{key}=<not set>")
-
     # Special check for LangSmith tracing
     langsmith_tracing = os.getenv("LANGSMITH_TRACING", "").lower()
     langsmith_api_key = os.getenv("LANGSMITH_API_KEY", "")
