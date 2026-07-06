@@ -6,13 +6,13 @@ You can find the course at [Deep Agents](<fill in Thinkific URL>).
 
 ### Prerequisites
 
-> **Windows:** Windows is supported through [WSL (Windows Subsystem for Linux)](https://learn.microsoft.com/en-us/windows/wsl/install).
-
 - Python 3.11–3.14
-- [uv](https://docs.astral.sh/uv/) — [how to install](#installing-uv)
-- LLM Model API key — choose your favorite provider. The course defaults to Anthropic ([sign up for an Anthropic API key here](https://console.anthropic.com/))
-- LangSmith API key — [how to get one](#getting-started-with-langsmith)
-- Tavily API key (optional, for the Module 4 & 5 web-search labs) — [get a free key](https://app.tavily.com)
+- [uv](https://docs.astral.sh/uv/): [how to install](#installing-uv)
+- LLM Model API key: choose your favorite provider. The course defaults to Anthropic ([sign up for an Anthropic API key here](https://console.anthropic.com/))
+- LangSmith API key: [how to get one](#getting-started-with-langsmith)
+- Tavily API key (optional, for the Module 4 & 5 web-search labs): [get a free key](https://app.tavily.com)
+- Node.js (optional, needed for `npx` in the LangSmith Skills setup below): [nodejs.org](https://nodejs.org)
+- Windows: supported through [WSL (Windows Subsystem for Linux)](https://learn.microsoft.com/en-us/windows/wsl/install)
 
 ### Installation
 
@@ -80,10 +80,11 @@ Using a coding agent to build your agents is encouraged throughout this course. 
 
 #### LangChain Skills
 
-Install the LangChain skills to give your coding agent deep knowledge of Deep Agents, LangGraph, and the LangChain ecosystem:
+Install the LangChain skills to give your coding agent deep knowledge of Deep Agents, LangGraph, and the LangChain ecosystem. Run this from the repo root:
 
 ```bash
-npx skills add langchain-ai/langchain-skills --skill '*' --yes --global
+cd lca-deepagents
+npx skills add langchain-ai/langchain-skills --skill '*' --yes
 ```
 
 This installs skills including `deep-agents-core`, `deep-agents-memory`, `deep-agents-orchestration`, and more.
@@ -145,10 +146,7 @@ The course requires Python 3.11–3.14.
 ### Getting Started with LangSmith
 
 - Create a [LangSmith](https://smith.langchain.com/) account
-- Create a LangSmith API key
-
-<img width="600" alt="LangSmith API key - step 1" src="https://github.com/user-attachments/assets/e39b8364-c3e3-4c75-a287-d9d4685caad5" />
-<img width="600" alt="LangSmith API key - step 2" src="https://github.com/user-attachments/assets/2e916b2d-e3b0-4c59-a178-c5818604b8fe" />
+- Go to **Settings → API Keys** and create a new API key
 
 ### Installing uv
 
