@@ -4,11 +4,20 @@ import { fileURLToPath } from "node:url";
 import { createInterface } from "node:readline/promises";
 import { tool } from "@langchain/core/tools";
 import { z } from "zod";
-import { Command } from "@langchain/langgraph";
+import { Command, INTERRUPT, isInterrupted } from "@langchain/langgraph";
 import { MemorySaver } from "@langchain/langgraph";
 import { createDeepAgent } from "deepagents";
 
 import { model } from "../models.js";
+
+interface ActionRequest {
+  name: string;
+  args: Record<string, unknown>;
+}
+
+interface ApprovalRequest {
+  action_requests: ActionRequest[];
+}
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DB_PATH = join(__dirname, "chinook.db");
@@ -83,8 +92,8 @@ let result = await agent.invoke(
 
 const rl = createInterface({ input: process.stdin, output: process.stdout });
 
-while ((result as any).__interrupt__?.length) {
-  const pending = (result as any).__interrupt__[0].value;
+while (isInterrupted<ApprovalRequest>(result) && result[INTERRUPT].length) {
+  const pending = result[INTERRUPT][0].value!;
   for (const req of pending.action_requests) {
     console.log(`\nApproval required for ${req.name}:`);
     console.log(`  ${JSON.stringify(req.args)}`);

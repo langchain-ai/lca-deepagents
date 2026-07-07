@@ -33,6 +33,15 @@ const agent = createDeepAgent({
 
 const THREAD = { configurable: { thread_id: "demo" } };
 
+interface SummarizationEvent {
+  cutoffIndex?: number;
+}
+
+interface AgentStateValues {
+  messages?: unknown[];
+  _summarizationEvent?: SummarizationEvent;
+}
+
 async function turn(message: string): Promise<unknown> {
   const result = await agent.invoke(
     { messages: [new HumanMessage(message)] },
@@ -42,7 +51,7 @@ async function turn(message: string): Promise<unknown> {
 }
 
 async function showState(): Promise<void> {
-  const state = await (agent.getState as (config: unknown) => Promise<{ values: Record<string, any> }>)(THREAD);
+  const state = await (agent.getState as (config: unknown) => Promise<{ values: AgentStateValues }>)(THREAD);
   const messages = state.values.messages ?? [];
   const event = state.values._summarizationEvent;
   console.log(`  stored : ${messages.length} message(s) (raw history, never trimmed)`);

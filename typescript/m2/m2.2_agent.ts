@@ -68,6 +68,8 @@ try {
     { configurable: { thread_id: "lab-m2.2" } }
   );
   console.log(result.messages[result.messages.length - 1].content);
-} catch (e: any) {
-  console.log("Permission enforced:", e.cause?.message ?? e.message);
+} catch (e) {
+  const err = e instanceof Error ? e : new Error(String(e));
+  const cause = err.cause instanceof Error ? err.cause : undefined;
+  console.log("Permission enforced:", cause?.message ?? err.message);
 }

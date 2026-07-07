@@ -1,11 +1,21 @@
 import { createInterface } from "node:readline/promises";
 import { tool } from "@langchain/core/tools";
+import { isToolMessage } from "@langchain/core/messages";
 import { z } from "zod";
 import { MemorySaver } from "@langchain/langgraph";
-import { Command } from "@langchain/langgraph";
+import { Command, INTERRUPT, isInterrupted } from "@langchain/langgraph";
 import { createDeepAgent } from "deepagents";
 
 import { model } from "../models.js";
+
+interface ActionRequest {
+  name: string;
+  args: Record<string, unknown>;
+}
+
+interface ApprovalRequest {
+  actionRequests: ActionRequest[];
+}
 
 const sendEmail = tool(
   ({ to, subject, body }) =>
@@ -54,8 +64,8 @@ let result = await agent.invoke(
 
 const rl = createInterface({ input: process.stdin, output: process.stdout });
 
-while ((result as any).__interrupt__?.length) {
-  const pending = (result as any).__interrupt__[0].value;
+while (isInterrupted<ApprovalRequest>(result) && result[INTERRUPT].length) {
+  const pending = result[INTERRUPT][0].value!;
   const decisions = [];
 
   for (const req of pending.actionRequests) {
@@ -87,7 +97,7 @@ while ((result as any).__interrupt__?.length) {
 
 rl.close();
 for (const msg of result.messages) {
-  if ((msg as any).name === "send_email") {
+  if (isToolMessage(msg) && msg.name === "send_email") {
     console.log(msg.content);
     break;
   }
