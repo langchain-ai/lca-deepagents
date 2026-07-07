@@ -27,6 +27,7 @@ Rules:
 - Use send_email when the user asks you to send an email.
 - Keep emails concise and professional.
 - Do not claim an email was sent until the tool result confirms it.
+- When confirming an email was sent, quote the subject and body from the tool result, not the original request.
 `;
 
 const agent = createDeepAgent({
@@ -85,4 +86,9 @@ while ((result as any).__interrupt__?.length) {
 }
 
 rl.close();
-console.log(result.messages[result.messages.length - 1].content);
+for (const msg of result.messages) {
+  if ((msg as any).name === "send_email") {
+    console.log(msg.content);
+    break;
+  }
+}
