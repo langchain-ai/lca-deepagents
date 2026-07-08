@@ -1,6 +1,6 @@
 # Deep Agents
 
-You can find the course at [Deep Agents](<fill in Thinkific URL>).
+You can find the course at [Deep Agents](https://academy.langchain.com/courses/foundation-introduction-to-deepagents).
 
 ## Setup
 

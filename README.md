@@ -1,6 +1,6 @@
 # Deep Agents
 
-Course materials for the [Deep Agents](https://www.langchain.com/academy) course on LangChain Academy.
+Course materials for the [Deep Agents](https://academy.langchain.com/courses/foundation-introduction-to-deepagents) course on LangChain Academy.
 
 ## Contents
 
