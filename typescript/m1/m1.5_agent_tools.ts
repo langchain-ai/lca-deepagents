@@ -16,7 +16,7 @@ interface ActionRequest {
 }
 
 interface ApprovalRequest {
-  action_requests: ActionRequest[];
+  actionRequests: ActionRequest[];
 }
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -94,13 +94,13 @@ const rl = createInterface({ input: process.stdin, output: process.stdout });
 
 while (isInterrupted<ApprovalRequest>(result) && result[INTERRUPT].length) {
   const pending = result[INTERRUPT][0].value!;
-  for (const req of pending.action_requests) {
+  for (const req of pending.actionRequests) {
     console.log(`\nApproval required for ${req.name}:`);
     console.log(`  ${JSON.stringify(req.args)}`);
   }
   const approval = (await rl.question("\nApprove? (yes/no): ")).trim().toLowerCase();
   const decision = ["yes", "y"].includes(approval) ? "approve" : "reject";
-  const decisions = pending.action_requests.map(() => ({ type: decision }));
+  const decisions = pending.actionRequests.map(() => ({ type: decision }));
   result = await agent.invoke(new Command({ resume: { decisions } }), config);
 }
 

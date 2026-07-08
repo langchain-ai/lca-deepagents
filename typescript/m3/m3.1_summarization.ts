@@ -17,11 +17,11 @@ import { HumanMessage } from "@langchain/core/messages";
 
 import { model } from "../models.js";
 
-// Shrink the reported context window so summarization triggers at ~595 tokens
-// (85% of 700) instead of the real threshold. Must use model object, not string.
+// Shrink the reported context window so summarization triggers at ~340 tokens
+// (85% of 400) instead of the real threshold. Must use model object, not string.
 
 Object.defineProperty(model, "profile", {
-  value: { ...model.profile, maxInputTokens: 700 },
+  value: { ...model.profile, maxInputTokens: 400 },
   configurable: true,
 });
 

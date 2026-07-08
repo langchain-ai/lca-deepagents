@@ -17,6 +17,7 @@
     "@langchain/openai": "latest",
     "@langchain/quickjs": "latest",
     "@langchain/tavily": "latest",
+    "@modelcontextprotocol/sdk": "latest",
     "deepagents": "latest",
     "dotenv": "^16.0.0",
     "langchain": "^1.0.0",
@@ -27,6 +28,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@langchain/langgraph-cli": "^1.4.2",
+    "@langchain/langgraph-sdk": "latest",
     "@types/node": "^22.0.0",
     "@types/sanitize-html": "latest",
     "eslint": "^9.0.0",
