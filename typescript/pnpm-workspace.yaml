@@ -1,4 +1,5 @@
 allowBuilds:
   canvas: true
+  esbuild: true
 minimumReleaseAgeExclude:
   - langsmith@0.7.17
