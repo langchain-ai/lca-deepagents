@@ -50,7 +50,7 @@ result = agent.invoke(
             {
                 "role": "user",
                 "content": (
-                    "Email professor.chen@university.edu that I'll be late, but first "
+                    "Email professor.weng@university.edu that I'll be late, but first "
                     "check whether I should just apologize or ask for a short extension."
                 ),
             }
