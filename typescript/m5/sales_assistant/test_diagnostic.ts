@@ -278,7 +278,7 @@ async function testHitlInterrupt(client: Client): Promise<Result> {
 async function testRenderPieChart(client: Client): Promise<Result> {
   const label = "render_pie_chart — genre revenue chart lands in outputs/";
   process.stdout.write(`  Running: ${label}... `);
-  const target = join(OUTPUTS_DIR, "diag_genre_revenue.svg");
+  const target = join(OUTPUTS_DIR, "diag_genre_revenue.png");
   if (existsSync(target)) unlinkSync(target);
   try {
     const thread = await client.threads.create();
@@ -286,7 +286,7 @@ async function testRenderPieChart(client: Client): Promise<Result> {
       client,
       thread.thread_id,
       "Query the Chinook database for total revenue by genre (top 5 genres). " +
-        "Call render_pie_chart to save a pie chart as diag_genre_revenue.svg."
+        "Call render_pie_chart to save a pie chart as diag_genre_revenue.png."
     );
     const toolOuts = toolOutputs(messages, "render_pie_chart");
     const exists = existsSync(target);

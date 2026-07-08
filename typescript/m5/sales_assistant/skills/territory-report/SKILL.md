@@ -29,7 +29,7 @@ to combine results.
 ## 3. Chart
 
 Call `render_pie_chart` with the revenue-by-genre labels and values, saved as
-`territory_chart.svg`. Reference the image in the report.
+`territory_chart.png`. Reference the image in the report.
 
 ## Done
 
