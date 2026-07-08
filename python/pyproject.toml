@@ -29,6 +29,7 @@ dependencies = [
     "markdown",
     "nh3",
     "matplotlib>=3.11.0",
+    "questionary>=2.0.0",
 ]
 
 [tool.ruff]
