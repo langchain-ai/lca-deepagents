@@ -1,0 +1,4 @@
+allowBuilds:
+  canvas: true
+minimumReleaseAgeExclude:
+  - langsmith@0.7.17
