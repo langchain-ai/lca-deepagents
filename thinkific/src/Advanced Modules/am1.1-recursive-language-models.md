@@ -1,0 +1,523 @@
+[For translation, open lesson in new tab and use Chrome translate](https://langchain-ai.github.io/lca-deepagents/Advanced%20Modules/am1.1-recursive-language-models.html)
+
+<style>@import url('../shared/sd-components.css');</style>
+<script src="../shared/sd-components.js"></script>
+
+# Recursive Language Models (RLMs)
+
+<style>
+.lt-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 28px 0 0;
+  border-bottom: 2px solid #CCE9FF;
+}
+.lt-group { display: flex; gap: 3px; }
+.lt-quiz  { --c: #7C3AED; }
+.lt-lab   { --c: #B45309; }
+.lt-rlm   { --c: #0E7490; }
+.lt-tab {
+  font: 500 14px 'IBM Plex Mono', monospace;
+  padding: 9px 14px;
+  border: none;
+  background: transparent;
+  color: #40668D;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  border-radius: 6px 6px 0 0;
+  transition: background .15s, color .15s, border-color .15s;
+  white-space: nowrap;
+}
+.lt-tab:hover { background: #F2FAFF; color: #030710; }
+.lt-tab.active {
+  color: var(--c);
+  border-bottom-color: var(--c);
+  background: #fff;
+}
+.lt-panel { display: none; padding-top: 24px; }
+.lt-panel.active { display: block; }
+@media (max-width: 600px) {
+  .lt-bar { flex-wrap: nowrap; overflow-x: auto; gap: 12px; }
+  .lt-tab { padding: 8px 10px; font-size: 13px; }
+}
+</style>
+
+<div class="lt-bar" role="tablist" aria-label="Lesson sections">
+  <div class="lt-group lt-rlm">
+    <button class="lt-tab active" data-p="rlm" role="tab" aria-selected="true">RLMs</button>
+  </div>
+  <div class="lt-group lt-lab">
+    <button class="lt-tab" data-p="lab" role="tab" aria-selected="false">Lab</button>
+  </div>
+  <div class="lt-group lt-quiz">
+    <button class="lt-tab" data-p="quiz" role="tab" aria-selected="false">Quiz</button>
+  </div>
+</div>
+
+<div class="lt-panel active" id="p-rlm" markdown="1" role="tabpanel">
+
+## From one subagent to many
+
+In the last module, delegation meant handing **one task** to **one subagent** and getting one result back: a `genre-researcher` for Rock, another call for Metal, a third for Latin. You wrote the `task` calls yourself, one per genre, because there were only four genres.
+
+Now say the job is 10,000 sales transcripts, or a 300-page document, and the task is the same on every piece: summarize this page, classify this transcript. There's no longer a short list the model can just enumerate in its head. Dispatching all of it, even in parallel, means *someone* has to enumerate every item and keep track of which ones are done. Ask the model to do that itself and you've put the exact thing that breaks agents at scale (tracking state across a shrinking context window) back in the model's head instead of off of it.
+
+Here's that same difference written as code, since that's really what's changing:
+
+```python
+# the model enumerates each item itself, and has to remember its own place
+task(description="summarize transcript 1 of 10,000")
+task(description="summarize transcript 2 of 10,000")
+# ...however many calls it takes, nothing guarantees it reaches transcript 10,000...
+```
+
+```python
+# written once, run by code: the loop is the guarantee, not the model's memory
+for transcript in transcripts:
+    task(description=f"summarize {transcript}")
+```
+
+`task()` itself didn't change, it's the same subagent call either way. What changed is *where the decision to keep going lives*:
+
+- **First version:** in the model, however many calls it takes.
+- **Second version:** in a loop the interpreter runs once.
+
+This is where **RLMs**, recursive language models, come in: subagents dispatched by code, not by the model.
+
+That loop doesn't have to be a literal `for`: it could be a map over a list, a parallel fan-out, or a branching pipeline. The only thing that matters is that it's a fixed shape written in code, not something the model has to reconstruct from memory on every turn.
+
+<div style="text-align: center;">
+<svg viewBox="0 0 720 300" width="720" role="img" aria-label="Two panels. Left, labeled small, fixed N (shown in Module 4): a main agent fans out to four subagents at once, in a single step, with a note reading the model enumerates a short list itself. Right, labeled large or open-ended N (RLM): a main agent writes a loop once, and the loop fans out to many subagents at once, with a note reading code enumerates the list instead." xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="720" height="300" fill="#030710" rx="8"/>
+  <text x="360" y="32" text-anchor="middle" font-size="16" font-weight="300" fill="#F2FAFF">Same subagent primitive, two different scales</text>
+
+  <!-- left panel -->
+  <text x="176" y="60" text-anchor="middle" font-size="13" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">small, fixed N (shown in Module 4)</text>
+  <rect x="121" y="76" width="110" height="30" rx="5" fill="#161F34" stroke="#7FC8FF" stroke-width="1.5"/>
+  <text x="176" y="96" text-anchor="middle" font-size="12" fill="#F2FAFF" font-family="'IBM Plex Mono', ui-monospace, monospace">main agent</text>
+  <line x1="150" y1="106" x2="82" y2="150" stroke="#40668D" stroke-width="1.5"/>
+  <line x1="168" y1="106" x2="144" y2="150" stroke="#40668D" stroke-width="1.5"/>
+  <line x1="184" y1="106" x2="206" y2="150" stroke="#40668D" stroke-width="1.5"/>
+  <line x1="202" y1="106" x2="268" y2="150" stroke="#40668D" stroke-width="1.5"/>
+  <rect x="56" y="150" width="52" height="26" rx="5" fill="#161F34" stroke="#40668D"/>
+  <rect x="118" y="150" width="52" height="26" rx="5" fill="#161F34" stroke="#40668D"/>
+  <rect x="180" y="150" width="52" height="26" rx="5" fill="#161F34" stroke="#40668D"/>
+  <rect x="242" y="150" width="52" height="26" rx="5" fill="#161F34" stroke="#40668D"/>
+  <text x="82" y="167" text-anchor="middle" font-size="10" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">sub 1</text>
+  <text x="144" y="167" text-anchor="middle" font-size="10" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">sub 2</text>
+  <text x="206" y="167" text-anchor="middle" font-size="10" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">sub 3</text>
+  <text x="268" y="167" text-anchor="middle" font-size="10" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">sub 4</text>
+  <text x="176" y="196" text-anchor="middle" font-size="11" fill="#5BADDF" font-family="'IBM Plex Mono', ui-monospace, monospace">...all 4, dispatched in one step...</text>
+  <rect x="56" y="212" width="240" height="52" rx="6" fill="#2A1420" stroke="#B45309"/>
+  <text x="176" y="233" text-anchor="middle" font-size="12" fill="#FFD9A8">the model enumerates the 4 items</text>
+  <text x="176" y="251" text-anchor="middle" font-size="12" fill="#FFD9A8">itself; 4 is easy to hold in context</text>
+
+  <!-- divider -->
+  <line x1="360" y1="56" x2="360" y2="272" stroke="#1E2A44" stroke-width="1.5"/>
+
+  <!-- right panel -->
+  <text x="544" y="60" text-anchor="middle" font-size="13" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">large / open-ended N (RLM)</text>
+  <rect x="424" y="76" width="240" height="30" rx="5" fill="#161F34" stroke="#7FC8FF" stroke-width="1.5"/>
+  <text x="544" y="96" text-anchor="middle" font-size="12" fill="#F2FAFF" font-family="'IBM Plex Mono', ui-monospace, monospace">for item in items: task(item)</text>
+  <line x1="484" y1="106" x2="464" y2="150" stroke="#40668D" stroke-width="1.5"/>
+  <line x1="544" y1="106" x2="544" y2="150" stroke="#40668D" stroke-width="1.5"/>
+  <line x1="604" y1="106" x2="624" y2="150" stroke="#40668D" stroke-width="1.5"/>
+  <rect x="434" y="150" width="60" height="26" rx="5" fill="#161F34" stroke="#40668D"/>
+  <rect x="514" y="150" width="60" height="26" rx="5" fill="#161F34" stroke="#40668D"/>
+  <rect x="594" y="150" width="60" height="26" rx="5" fill="#161F34" stroke="#40668D"/>
+  <text x="464" y="167" text-anchor="middle" font-size="10" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">sub 1</text>
+  <text x="544" y="167" text-anchor="middle" font-size="10" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">sub 2</text>
+  <text x="624" y="167" text-anchor="middle" font-size="10" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">sub N</text>
+  <text x="544" y="196" text-anchor="middle" font-size="11" fill="#5BADDF" font-family="'IBM Plex Mono', ui-monospace, monospace">...however many there are, at once...</text>
+  <rect x="424" y="212" width="240" height="52" rx="6" fill="#0D2A20" stroke="#0E7490"/>
+  <text x="544" y="233" text-anchor="middle" font-size="12" fill="#8FE9D0">code enumerates the list; N could be</text>
+  <text x="544" y="251" text-anchor="middle" font-size="12" fill="#8FE9D0">10,000, and the model never has to</text>
+</svg>
+</div>
+
+The subagent on the right is doing the exact same job as the one on the left; even the fan-out pattern is the same. What's different is *who enumerated the list*: at 4 items, the model could hold that itself. At 10,000, only code reliably can. That's the whole idea in one picture.
+
+---
+
+## RLM = recursive language model
+
+An **RLM** is a model that can call itself. The term comes from Alex Zhang and MIT CSAIL researchers, who proposed Recursive Language Models to fight **context rot**, the same context management issue you saw in [Module 3 (Summarization and Context Offloading)](../m3/m3.1-summarization-context-offloading.html).
+
+Instead of cramming everything into one model's context window, an RLM runs code in an interpreter that dispatches subagents and recurses over pieces of the input, treating the prompt as a variable it can inspect and manipulate programmatically, using primitives you'd recognize from big data: **grep, partition, map, reduce**.
+
+The paper's core insight: instead of one massive model call, split the context into two model calls, then combine their results in a third.
+
+<div class="sd-wrap" id="dg-rlm-recurse">
+<div class="sd-stage" id="dg-rlm-recurse-stage" tabindex="0" style="background:#030710">
+<svg viewBox="0 0 720 474" role="img" aria-label="A context box splits into call A and call B, each handling half the context. Both feed into a third call, call C, which combines their results. Stepping forward reveals that call A recurses the same way, splitting again into A1 and A2 if its half is still too big. A further step shows A1 and A2 being small enough to answer directly, combining into call A3, which feeds back up into call C: the recursion has a base case and the loop closes." xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="rlm-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#40668D"/>
+    </marker>
+    <marker id="rlm-arrow-light" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#5BADDF"/>
+    </marker>
+  </defs>
+
+  <rect width="720" height="474" fill="#030710" rx="8"/>
+  <text x="360" y="44" text-anchor="middle" font-size="15" font-weight="300" fill="#F2FAFF">Split, call, combine</text>
+  <text x="360" y="64" text-anchor="middle" font-size="12" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">the paper's core loop</text>
+
+  <!-- top context box -->
+  <rect x="295" y="82" width="130" height="32" rx="5" fill="#161F34" stroke="#7FC8FF" stroke-width="1.5"/>
+  <text x="360" y="102" text-anchor="middle" font-size="12" fill="#F2FAFF" font-family="'IBM Plex Mono', ui-monospace, monospace">context</text>
+
+  <!-- split lines -->
+  <line x1="325" y1="114" x2="215" y2="154" stroke="#40668D" stroke-width="1.5" marker-end="url(#rlm-arrow)"/>
+  <line x1="395" y1="114" x2="505" y2="154" stroke="#40668D" stroke-width="1.5" marker-end="url(#rlm-arrow)"/>
+
+  <!-- call A and B -->
+  <rect x="135" y="154" width="160" height="36" rx="5" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+  <text x="215" y="176" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">call A (half 1)</text>
+
+  <rect x="425" y="154" width="160" height="36" rx="5" fill="#161F34" stroke="#40668D" stroke-width="1.5"/>
+  <text x="505" y="176" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, monospace">call B (half 2)</text>
+
+  <!-- converge lines -->
+  <line x1="235" y1="190" x2="330" y2="230" stroke="#40668D" stroke-width="1.5" marker-end="url(#rlm-arrow)"/>
+  <line x1="485" y1="190" x2="390" y2="230" stroke="#40668D" stroke-width="1.5" marker-end="url(#rlm-arrow)"/>
+
+  <!-- call C -->
+  <rect x="270" y="230" width="180" height="32" rx="6" fill="#161F34" stroke="#7FC8FF" stroke-width="1.5"/>
+  <text x="360" y="250" text-anchor="middle" font-size="12" fill="#F2FAFF" font-family="'IBM Plex Mono', ui-monospace, monospace">call C: combine(A, B)</text>
+
+  <!-- step 1: recursion on call A, revealed on advance -->
+  <g class="step step-hidden" id="dg-rlm-recurse-s0">
+    <line x1="145" y1="190" x2="145" y2="280" stroke="#5BADDF" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#rlm-arrow-light)"/>
+    <rect x="65" y="280" width="160" height="30" rx="5" fill="#161F34" stroke="#5BADDF" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="145" y="299" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">call A (still large)</text>
+    <line x1="115" y1="310" x2="90" y2="354" stroke="#5BADDF" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#rlm-arrow-light)"/>
+    <line x1="175" y1="310" x2="200" y2="354" stroke="#5BADDF" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#rlm-arrow-light)"/>
+    <rect x="55" y="354" width="70" height="26" rx="4" fill="#161F34" stroke="#5BADDF" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="90" y="371" text-anchor="middle" font-size="10" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">A1</text>
+    <rect x="165" y="354" width="70" height="26" rx="4" fill="#161F34" stroke="#5BADDF" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="200" y="371" text-anchor="middle" font-size="10" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">A2</text>
+  </g>
+
+  <!-- step 2: A1/A2 are small enough now; combine and close the loop back into call C -->
+  <g class="step step-hidden" id="dg-rlm-recurse-s1">
+    <line x1="90" y1="380" x2="115" y2="424" stroke="#5BADDF" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#rlm-arrow-light)"/>
+    <line x1="200" y1="380" x2="185" y2="424" stroke="#5BADDF" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#rlm-arrow-light)"/>
+    <rect x="50" y="424" width="200" height="30" rx="5" fill="#161F34" stroke="#5BADDF" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="150" y="443" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">call A3: combine(A1, A2)</text>
+    <path d="M 250 439 L 265 439 L 265 246 L 270 246" fill="none" stroke="#5BADDF" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#rlm-arrow-light)"/>
+  </g>
+</svg>
+</div>
+<div class="sd-bar">
+  <div class="sd-caption">
+    <strong id="dg-rlm-recurse-tag">Split, call, combine</strong>
+    <span id="dg-rlm-recurse-cap">Split the context, call each half, combine in a third call.</span>
+  </div>
+  <div class="sd-controls">
+    <button class="sd-btn" id="dg-rlm-recurse-prev" disabled title="Previous">&#8592;</button>
+    <button class="sd-btn" id="dg-rlm-recurse-next" title="Next">&#8594;</button>
+  </div>
+</div>
+<div class="sd-dots" id="dg-rlm-recurse-dots">
+  <div class="sd-dot active" data-i="0"></div>
+  <div class="sd-dot" data-i="1"></div>
+  <div class="sd-dot" data-i="2"></div>
+</div>
+<div class="mobile-note">Best viewed on a wider screen</div>
+</div>
+
+<script>
+(function () {
+  var steps = [
+    { tag: 'Split, call, combine', caption: 'Split the context, call each half, combine in a third call.' },
+    { tag: 'Recursing on a piece', caption: 'If a half is still too big to handle in one call, that call recurses the same way: split again, call, combine, until each piece is small enough.' },
+    { tag: 'The recursion has a base case', caption: 'A1 and A2 are small enough to answer directly now, so they combine into call A3, and that result feeds back up into call C. The loop closes: recursion bottoms out, it doesn’t split forever.' }
+  ];
+  var id = 'dg-rlm-recurse';
+  var overlay0 = document.getElementById(id + '-s0');
+  var overlay1 = document.getElementById(id + '-s1');
+  var tagEl   = document.getElementById(id + '-tag');
+  var capEl   = document.getElementById(id + '-cap');
+  var prevBtn = document.getElementById(id + '-prev');
+  var nextBtn = document.getElementById(id + '-next');
+  var dots    = document.querySelectorAll('#' + id + '-dots .sd-dot');
+  var stage   = document.getElementById(id + '-stage');
+  if (!overlay0 || !overlay1 || !stage) return;
+  var current = 0;
+
+  function render() {
+    overlay0.classList.toggle('step-hidden', current < 1);
+    overlay1.classList.toggle('step-hidden', current < 2);
+    tagEl.textContent = steps[current].tag;
+    capEl.textContent = steps[current].caption;
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === steps.length - 1;
+    dots.forEach(function (d, i) { d.classList.toggle('active', i === current); });
+  }
+
+  function advance() { if (current < steps.length - 1) { current++; render(); } }
+  function retreat() { if (current > 0) { current--; render(); } }
+
+  render();
+  prevBtn.addEventListener('click', retreat);
+  nextBtn.addEventListener('click', advance);
+  dots.forEach(function (d, i) { d.addEventListener('click', function () { current = i; render(); }); });
+  stage.addEventListener('click', advance);
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); advance(); }
+    if (e.key === 'ArrowLeft')                    { e.preventDefault(); retreat(); }
+  });
+})();
+</script>
+
+- **Orchestration lives in code.** The loop, the branching, the "did I get to all of them" logic, is a script, not a chain of model turns.
+- **Context lives in variables or files**, not in the model's own transcript. A running total is a Python variable, not something the model has to keep re-stating to itself.
+- **Divide and conquer.** Split the work, process the pieces (possibly recursively), combine.
+
+---
+
+## Why RLMs
+
+Agents have trouble doing work reliably **at scale**, for two structural reasons:
+
+- **Context windows are finite.** There's a hard ceiling on how much a single model call can hold.
+- **Summarization is lossy.** Compressing history to fit is the usual fix, and it's the fix you already met in m3.1, but compression throws information away. Averaging deal size across 10,000 transcripts, for example, means the agent has to track a running total in its own ephemeral context, and that running total can drift.
+
+RLMs support two things that turn-by-turn delegation doesn't guarantee:
+
+- **Deterministic coverage.** A `for batch in batches` loop touches every batch. A model deciding for itself, turn by turn, whether it's covered everything reliably fails at scale, on a long-context benchmark called OOLONG (below), a plain agent at 128k tokens didn't just answer wrong, it often gave up outright, reporting it couldn't compute the result.
+- **Bespoke orchestration.** The pipeline can branch, run in parallel, or run sequentially, shaped however the task needs, instead of being constrained to one tool call per model turn.
+
+<div style="background:#EEF6FF;border:1px solid #B8DEFF;border-radius:8px;padding:16px 20px;margin:1rem 0;" markdown="1">
+
+**OOLONG benchmark** — classifying headlines into four categories, then answering counting, user-filtered, and temporal questions over nearly all of them (0–1 scale):
+
+| Context length | Without interpreter | With interpreter |
+|---|---|---|
+| 64k tokens | 0.58 | 0.67 |
+| 128k tokens | 0.44 | 0.79 |
+
+The interpreter-enabled agent was slower and cost more in output tokens, and this was an untuned smoke test, not a finished benchmark. Treat the gap as directional evidence, not a guarantee.
+
+</div>
+
+---
+
+## How Deep Agents implements this: dynamic subagents
+
+You already have both ingredients this needs: **subagents** (m4.1–m4.2) and a **code interpreter** (m2.4). LangChain's implementation, **dynamic subagents**, wires them together: instead of the model calling `task` turn by turn, it writes a script that the interpreter executes, and that script dispatches subagents programmatically.
+
+The canonical example is one subagent per page of a 300-page document:
+
+```javascript
+const results = await Promise.all(pages.map(page =>
+  task({ description: `Summarize page ${page.number}`, subagentType: "summarizer" })
+));
+```
+
+Compare that to the diagram above: `Promise.all` over `pages` *is* the `for` loop on the right. Nothing about the `summarizer` subagent itself is new, it's a subagent the way `genre-researcher` was a subagent. What's new is that the dispatch loop lives in code the interpreter runs, not in the model's own turn-by-turn reasoning.
+
+<div style="background:#FFF7E8;border:1px solid #F3D9A0;border-radius:8px;padding:16px 20px;margin:1rem 0;" markdown="1">
+
+**Naming note.** This isn't a literal implementation of the RLM paper. The paper loads the entire prompt into the interpreter and recurses directly with plain LM calls. Deep Agents' dynamic subagents keep their own tools and state, which puts them closer to what the LangChain team calls **recursive agents (RA)**: subagents dispatched from code, but each one still a full agent, not a bare recursive LM call. The "RLM" label in this lesson (and in the source blog post) is the popular shorthand; know the distinction so you're not surprised if you read the paper directly.
+
+</div>
+
+A key differentiator over a fixed orchestrator + fixed subagent setup: the orchestrator and its subagents can run on **any model or mix of models**, for example a frontier orchestrator paired with cheaper open-weight subagents for cost efficiency, or the reverse for deep research work where the subagents need to be strong.
+
+---
+
+## Setup
+
+Two components, same as above: subagents and a code interpreter.
+
+```bash
+pip install -U "deepagents[quickjs]"
+```
+
+```python
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    middleware=[CodeInterpreterMiddleware()],
+)
+```
+
+Dynamic dispatch is triggered by the word **"workflow"** in the prompt:
+
+```python
+result = await agent.ainvoke({
+    "messages": [{
+        "role": "user",
+        "content": "Run a workflow that reviews every file in src/routes/ and summarizes the top risks."
+    }]
+})
+```
+
+For zero-setup testing, LangChain's `dcode` terminal coding agent ships with the interpreter pre-enabled:
+
+```bash
+curl -LsSf https://langch.in/dcode | bash
+dcode
+```
+
+---
+
+## When to reach for this vs. a plain subagent team
+
+<Tip>
+
+**Reach for dynamic subagents / RLMs when:**
+- The number of units of work is large, fixed, or only known at runtime (pages, rows, files, transcripts)
+- You need a **guarantee** that every unit gets covered, not a best-effort pass
+- The orchestration itself is non-trivial: branching, parallel fan-out, or a pipeline shape the model would otherwise have to reconstruct every turn
+
+**Stick with an ordinary subagent team (m4.2) when:**
+- There's a small, fixed number of specialized roles (a researcher per genre, a reviewer, an analyst)
+- You're delegating *by role*, not fanning out over a large, uniform collection of items
+
+</Tip>
+
+---
+
+## Recap
+
+- An **RLM** (recursive language model) is a model that can call itself; the term comes from research aimed at fighting **context rot**.
+- The subagent primitive from m4 doesn't change. What moves is *who writes the loop*: code, not the model's own turn-by-turn reasoning.
+- Orchestration lives in code; context lives in variables or files, not the model's transcript.
+- The payoff is **deterministic coverage** and **bespoke orchestration**, both hard to get from a model deciding turn by turn.
+- Deep Agents implements this as **dynamic subagents**: subagents (m4) dispatched from a script running in a **code interpreter** (m2.4). This is closer to "recursive agents (RA)" than a literal implementation of the RLM paper, know the distinction.
+- Reach for it when the number of work units is large or open-ended and you need guaranteed coverage; stick with a plain subagent team for a small, fixed set of specialist roles.
+
+---
+
+## References
+
+**Documentation:**
+- [Deep Agents overview](https://docs.langchain.com/oss/python/deepagents/overview)
+- [Subagents (Deep Agents)](https://docs.langchain.com/oss/python/deepagents/subagents)
+- [Context engineering (Deep Agents)](https://docs.langchain.com/oss/python/deepagents/context-engineering)
+
+**Blog:**
+- [How to use RLMs in Deep Agents](https://www.langchain.com/blog/how-to-use-rlms-in-deep-agents)
+- [Running subagents in the background](https://www.langchain.com/blog/running-subagents-in-the-background)
+
+</div>
+
+<div class="lt-panel" id="p-lab" markdown="1" role="tabpanel">
+
+## Try it: a workflow-triggered dynamic subagent
+
+<Tip>
+
+This lesson doesn't yet have a dedicated dataset or a recorded LangSmith trace the way the m4.2 newsletter lab does. What follows is a minimal, self-contained example you can run against your own files to see the pattern in action; a fuller lab with its own data is a good candidate for a follow-up pass on this module.
+
+</Tip>
+
+**1. Install the interpreter extra:**
+
+```bash
+pip install -U "deepagents[quickjs]"
+```
+
+**2. Build an agent with the interpreter enabled, and a `summarizer` subagent for it to dispatch:**
+
+```python
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+summarizer = {
+    "name": "summarizer",
+    "description": "Summarize one file or one chunk of text in 3-5 sentences.",
+    "system_prompt": "You are a careful summarizer. Return only the summary.",
+}
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    middleware=[CodeInterpreterMiddleware()],
+    subagents=[summarizer],
+)
+```
+
+**3. Ask for a workflow over a real, multi-file target**, for example every file in a small directory of notes or source files:
+
+```python
+result = await agent.ainvoke({
+    "messages": [{
+        "role": "user",
+        "content": (
+            "Run a workflow that summarizes every markdown file under ./notes/ "
+            "and lists the three files with the most action items."
+        )
+    }]
+})
+```
+
+**4. Compare against the turn-by-turn version.** Ask the same agent, without the word "workflow," to "summarize each file in ./notes/ one at a time." On a small folder both approaches will look similar. As the folder grows past a handful of files, watch for where the turn-by-turn version starts skipping files or losing track of the running list, that's context rot showing up in miniature, and it's exactly what the `for`-loop-in-code version is built to avoid.
+
+</div>
+
+<div class="lt-panel" id="p-quiz" role="tabpanel">
+
+<h2>Check your understanding</h2>
+
+<MCQ
+    question="What is the core problem RLMs are designed to address?"
+    choices='["Slow API response times", "Context rot: agent performance degrading as context accumulates, and the lossiness of summarization as a fix", "The cost of running multiple models", "A lack of available subagent types"]'
+    correctIndex={1}
+    explanation="RLMs were proposed to combat context rot, the degradation in agent performance as context accumulates, since summarization as a fix is lossy and can cause drift on long-running aggregation tasks."
+/>
+
+<MCQ
+    question="In the RLM pattern, what changes compared to the turn-by-turn subagent delegation from the previous module, and what stays the same?"
+    choices='["The subagent primitive changes; the loop stays in the model’s head", "Nothing changes; RLMs are unrelated to subagents", "The subagent primitive stays the same; what changes is that the dispatch loop moves into code the interpreter runs, instead of the model deciding turn by turn", "Subagents are replaced entirely by a single recursive model call"]'
+    correctIndex={2}
+    explanation="A dynamic subagent does the same kind of focused task a subagent from m4 does. What moves is who writes the loop: a script the code interpreter runs dispatches many subagents, rather than the model deciding turn by turn whether it has covered everything."
+/>
+
+<MCQ
+    question="What two benefits does moving orchestration into code give you over letting the model manage a loop across turns?"
+    choices='["Lower token usage and faster responses, always", "Deterministic coverage (every unit is guaranteed to be touched) and bespoke orchestration (branching, parallel, or sequential, shaped by the task)", "The ability to use only one model for everything", "Automatic summarization of all subagent outputs"]'
+    correctIndex={1}
+    explanation="A for-loop in code guarantees every unit is processed, something a model reasoning turn by turn struggles with at scale. Code-based orchestration can also be branching, parallel, or sequential in whatever shape the task needs, rather than one tool call per model turn."
+/>
+
+<MCQ
+    question="True or false: Deep Agents' dynamic subagents are a direct implementation of the Recursive Language Models paper."
+    choices='["True, they are identical designs", "False, the paper recurses with plain LM calls over the full prompt loaded into the interpreter, while Deep Agents dispatches subagents that keep their own tools and state, closer to recursive agents (RA)", "True, but only when using the quickjs interpreter", "False, because Deep Agents does not use a code interpreter at all"]'
+    correctIndex={1}
+    explanation="The paper's design recurses directly with plain LM calls over the prompt loaded into the interpreter. Deep Agents' dynamic subagents retain their own tools and state, which the LangChain team describes as closer to recursive agents (RA) than a literal implementation of the paper."
+/>
+
+<MCQ
+    question="What two components does an agent need before it can use dynamic subagents / RLM-style dispatch?"
+    choices='["A vector database and an embedding model", "Subagents and a code interpreter (e.g. CodeInterpreterMiddleware)", "A checkpointer and a thread ID", "A sandbox and a Gmail-style mock MCP server"]'
+    correctIndex={1}
+    explanation="Dynamic subagents combine the two pieces from earlier modules: subagents (m4) to do the focused work, and a code interpreter (m2.4), such as CodeInterpreterMiddleware, to run the script that dispatches them."
+/>
+
+</div>
+
+<script>
+(function () {
+  var tabs = document.querySelectorAll('.lt-tab');
+  function show(p) {
+    tabs.forEach(function (t) {
+      var on = t.getAttribute('data-p') === p;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    document.querySelectorAll('.lt-panel').forEach(function (panel) {
+      panel.classList.toggle('active', panel.id === 'p-' + p);
+    });
+  }
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () { show(t.getAttribute('data-p')); });
+  });
+})();
+</script>
