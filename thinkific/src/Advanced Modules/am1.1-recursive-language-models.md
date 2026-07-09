@@ -207,7 +207,7 @@ The paper's core insight: instead of one massive model call, split the context i
     <line x1="200" y1="380" x2="185" y2="424" stroke="#5BADDF" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#rlm-arrow-light)"/>
     <rect x="50" y="424" width="200" height="30" rx="5" fill="#161F34" stroke="#5BADDF" stroke-width="1.5" stroke-dasharray="4,3"/>
     <text x="150" y="443" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, monospace">call A3: combine(A1, A2)</text>
-    <path d="M 250 439 L 265 439 L 265 246 L 270 246" fill="none" stroke="#5BADDF" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#rlm-arrow-light)"/>
+    <path d="M 250 439 L 360 439 L 360 262" fill="none" stroke="#5BADDF" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#rlm-arrow-light)"/>
   </g>
 </svg>
 </div>
