@@ -12,7 +12,7 @@
 
   <!-- Title -->
   <text x="450" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#030710">Human-in-the-Loop</text>
-  <text x="450" y="53" text-anchor="middle" font-size="12" fill="#006DDD" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace">① Agent runs DRAFT ACTION and calls INTERRUPT()</text>
+  <text x="450" y="53" text-anchor="middle" font-size="12" fill="#006DDD" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace">① Agent runs DRAFT ACTION and calls interrupt()</text>
 
   <!-- ═══ HUMAN boundary (0.2) ═══ -->
   <g opacity="0.2">
@@ -47,9 +47,9 @@
   <!-- ═══ DRAFT → INTERRUPT arrow (1.0) ═══ -->
   <line x1="640" y1="138" x2="640" y2="164" stroke="#006DDD" stroke-width="1.5" marker-end="url(#arr-blue)"/>
 
-  <!-- ═══ INTERRUPT() (1.0) ═══ -->
+  <!-- ═══ interrupt() (1.0) ═══ -->
   <rect x="540" y="164" width="200" height="44" rx="4" fill="#CCE9FF" stroke="#006DDD" stroke-width="2"/>
-  <text x="640" y="191" text-anchor="middle" font-size="13" font-weight="700" fill="#030710">INTERRUPT()</text>
+  <text x="640" y="191" text-anchor="middle" font-size="13" font-weight="700" fill="#030710">interrupt()</text>
 
   <!-- ═══ Dashed INTERRUPT→CONTINUE (0.2) ═══ -->
   <g opacity="0.2">

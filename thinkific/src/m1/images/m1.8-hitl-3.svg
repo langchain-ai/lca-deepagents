@@ -49,10 +49,10 @@
     <line x1="640" y1="138" x2="640" y2="164" stroke="#006DDD" stroke-width="1.5" marker-end="url(#arr-blue)"/>
   </g>
 
-  <!-- ═══ INTERRUPT() (0.2) ═══ -->
+  <!-- ═══ interrupt() (0.2) ═══ -->
   <g opacity="0.2">
     <rect x="540" y="164" width="200" height="44" rx="4" fill="#CCE9FF" stroke="#006DDD" stroke-width="2"/>
-    <text x="640" y="191" text-anchor="middle" font-size="13" font-weight="700" fill="#030710">INTERRUPT()</text>
+    <text x="640" y="191" text-anchor="middle" font-size="13" font-weight="700" fill="#030710">interrupt()</text>
   </g>
 
   <!-- ═══ Dashed INTERRUPT→CONTINUE (0.5) ═══ -->
