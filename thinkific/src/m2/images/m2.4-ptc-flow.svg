@@ -1,87 +1,87 @@
-<svg width="760" height="380" xmlns="http://www.w3.org/2000/svg">
-  <rect width="760" height="380" fill="#030710" rx="8"/>
+<svg width="1000" height="640" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1000" height="640" fill="#030710" rx="8"/>
 
   <!-- Title -->
-  <text x="380" y="28" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" font-weight="600" fill="#F2FAFF">Programmatic Tool Calling: 4 sequential queries, 1 LLM tool call</text>
+  <text x="500" y="28" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" font-weight="600" fill="#F2FAFF">Programmatic Tool Calling: 4 sequential queries, 1 LLM tool call</text>
 
   <!-- Column headers -->
-  <text x="90" y="52" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#99D3FF">LLM</text>
-  <text x="375" y="52" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#99D3FF">JavaScript  (inside eval)</text>
-  <text x="645" y="52" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#99D3FF">Python host</text>
+  <text x="120" y="52" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#99D3FF">LLM</text>
+  <text x="460" y="52" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#99D3FF">JavaScript  (inside eval)</text>
+  <text x="840" y="52" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#99D3FF">Python host</text>
 
   <!-- Dividers -->
-  <line x1="210" y1="38" x2="210" y2="364" stroke="#2F4B68" stroke-width="1" stroke-dasharray="4"/>
-  <line x1="530" y1="38" x2="530" y2="364" stroke="#2F4B68" stroke-width="1" stroke-dasharray="4"/>
+  <line x1="220" y1="38" x2="220" y2="614" stroke="#2F4B68" stroke-width="1" stroke-dasharray="4"/>
+  <line x1="700" y1="38" x2="700" y2="614" stroke="#2F4B68" stroke-width="1" stroke-dasharray="4"/>
 
   <!-- LLM box top -->
-  <rect x="20" y="62" width="140" height="32" rx="6" fill="#0D1322" stroke="#40668D"/>
-  <text x="90" y="83" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#7FC8FF">LLM</text>
+  <rect x="55" y="62" width="130" height="32" rx="6" fill="#0D1322" stroke="#40668D"/>
+  <text x="120" y="83" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#7FC8FF">LLM</text>
 
   <!-- Arrow: LLM → eval -->
-  <line x1="160" y1="78" x2="222" y2="78" stroke="#006DDD" stroke-width="1.5" marker-end="url(#arr)"/>
-  <text x="191" y="72" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#7FC8FF">eval(code)</text>
+  <line x1="187" y1="78" x2="287" y2="78" stroke="#006DDD" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="237" y="72" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#7FC8FF">eval(code)</text>
 
   <!-- eval box -->
-  <rect x="225" y="62" width="300" height="32" rx="6" fill="#0D1B33" stroke="#006DDD" stroke-width="1.5"/>
-  <text x="375" y="83" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#7FC8FF">eval( JS code )</text>
+  <rect x="290" y="62" width="340" height="32" rx="6" fill="#0D1B33" stroke="#006DDD" stroke-width="1.5"/>
+  <text x="460" y="83" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#7FC8FF">eval( JS code )</text>
 
   <!-- Down: eval → Q1 -->
-  <line x1="375" y1="94" x2="375" y2="108" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="460" y1="94" x2="460" y2="164" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)"/>
 
   <!-- Q1 -->
-  <rect x="225" y="110" width="300" height="30" rx="4" fill="#0D1B2A" stroke="#006DDD"/>
-  <text x="375" y="129" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#B2DEFF">top artist by revenue</text>
-  <line x1="525" y1="125" x2="542" y2="125" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4"/>
-  <rect x="544" y="110" width="200" height="30" rx="4" fill="#0D1B2A" stroke="#40668D"/>
-  <text x="644" y="129" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#B2DEFF">query_chinook( ) ×1</text>
+  <rect x="290" y="164" width="340" height="30" rx="4" fill="#0D1B2A" stroke="#006DDD"/>
+  <text x="460" y="183" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#B2DEFF">top artist by revenue</text>
+  <line x1="630" y1="179" x2="712" y2="179" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4"/>
+  <rect x="715" y="164" width="250" height="30" rx="4" fill="#0D1B2A" stroke="#40668D"/>
+  <text x="840" y="183" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#B2DEFF">query_chinook( ) ×1</text>
 
   <!-- Down: Q1 → Q2, labeled ArtistId -->
-  <line x1="375" y1="140" x2="375" y2="162" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)"/>
-  <text x="382" y="155" font-family="IBM Plex Mono,monospace" font-size="12" fill="#99D3FF">ArtistId</text>
+  <line x1="460" y1="194" x2="460" y2="264" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="467" y="233" font-family="IBM Plex Mono,monospace" font-size="12" fill="#99D3FF">ArtistId</text>
 
   <!-- Q2 -->
-  <rect x="225" y="164" width="300" height="30" rx="4" fill="#0D1B2A" stroke="#006DDD"/>
-  <text x="375" y="183" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#B2DEFF">best album for artist</text>
-  <line x1="525" y1="179" x2="542" y2="179" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4"/>
-  <rect x="544" y="164" width="200" height="30" rx="4" fill="#0D1B2A" stroke="#40668D"/>
-  <text x="644" y="183" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#B2DEFF">query_chinook( ) ×1</text>
+  <rect x="290" y="264" width="340" height="30" rx="4" fill="#0D1B2A" stroke="#006DDD"/>
+  <text x="460" y="283" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#B2DEFF">best album for artist</text>
+  <line x1="630" y1="279" x2="712" y2="279" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4"/>
+  <rect x="715" y="264" width="250" height="30" rx="4" fill="#0D1B2A" stroke="#40668D"/>
+  <text x="840" y="283" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#B2DEFF">query_chinook( ) ×1</text>
 
   <!-- Down: Q2 → Q3, labeled AlbumId -->
-  <line x1="375" y1="194" x2="375" y2="216" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)"/>
-  <text x="382" y="209" font-family="IBM Plex Mono,monospace" font-size="12" fill="#99D3FF">AlbumId</text>
+  <line x1="460" y1="294" x2="460" y2="364" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="467" y="333" font-family="IBM Plex Mono,monospace" font-size="12" fill="#99D3FF">AlbumId</text>
 
   <!-- Q3 -->
-  <rect x="225" y="218" width="300" height="30" rx="4" fill="#0D1B2A" stroke="#006DDD"/>
-  <text x="375" y="237" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#B2DEFF">top track on album</text>
-  <line x1="525" y1="233" x2="542" y2="233" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4"/>
-  <rect x="544" y="218" width="200" height="30" rx="4" fill="#0D1B2A" stroke="#40668D"/>
-  <text x="644" y="237" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#B2DEFF">query_chinook( ) ×1</text>
+  <rect x="290" y="364" width="340" height="30" rx="4" fill="#0D1B2A" stroke="#006DDD"/>
+  <text x="460" y="383" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#B2DEFF">top track on album</text>
+  <line x1="630" y1="379" x2="712" y2="379" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4"/>
+  <rect x="715" y="364" width="250" height="30" rx="4" fill="#0D1B2A" stroke="#40668D"/>
+  <text x="840" y="383" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#B2DEFF">query_chinook( ) ×1</text>
 
   <!-- Down: Q3 → Q4, labeled TrackId -->
-  <line x1="375" y1="248" x2="375" y2="270" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)"/>
-  <text x="382" y="263" font-family="IBM Plex Mono,monospace" font-size="12" fill="#99D3FF">TrackId</text>
+  <line x1="460" y1="394" x2="460" y2="464" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="467" y="433" font-family="IBM Plex Mono,monospace" font-size="12" fill="#99D3FF">TrackId</text>
 
   <!-- Q4 -->
-  <rect x="225" y="272" width="300" height="30" rx="4" fill="#0D1B2A" stroke="#006DDD"/>
-  <text x="375" y="291" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#B2DEFF">customers who bought track</text>
-  <line x1="525" y1="287" x2="542" y2="287" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4"/>
-  <rect x="544" y="272" width="200" height="30" rx="4" fill="#0D1B2A" stroke="#40668D"/>
-  <text x="644" y="291" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#B2DEFF">query_chinook( ) ×1</text>
+  <rect x="290" y="464" width="340" height="30" rx="4" fill="#0D1B2A" stroke="#006DDD"/>
+  <text x="460" y="483" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#B2DEFF">customers who bought track</text>
+  <line x1="630" y1="479" x2="712" y2="479" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4"/>
+  <rect x="715" y="464" width="250" height="30" rx="4" fill="#0D1B2A" stroke="#40668D"/>
+  <text x="840" y="483" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#B2DEFF">query_chinook( ) ×1</text>
 
   <!-- Down: Q4 → combine -->
-  <line x1="375" y1="302" x2="375" y2="318" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="460" y1="494" x2="460" y2="564" stroke="#40668D" stroke-width="1.5" marker-end="url(#arr)"/>
 
   <!-- Combine box -->
-  <rect x="225" y="320" width="300" height="30" rx="4" fill="#0D1322" stroke="#40668D"/>
-  <text x="375" y="339" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#7FC8FF">format final answer</text>
+  <rect x="290" y="564" width="340" height="30" rx="4" fill="#0D1322" stroke="#40668D"/>
+  <text x="460" y="583" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#7FC8FF">format final answer</text>
 
   <!-- Result → LLM -->
-  <line x1="225" y1="335" x2="163" y2="335" stroke="#006DDD" stroke-width="1.5" marker-end="url(#arr)"/>
-  <text x="192" y="329" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#7FC8FF">result</text>
+  <line x1="290" y1="579" x2="187" y2="579" stroke="#006DDD" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="239" y="573" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#7FC8FF">result</text>
 
   <!-- LLM bottom box -->
-  <rect x="20" y="320" width="140" height="30" rx="6" fill="#0D1322" stroke="#40668D"/>
-  <text x="90" y="339" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#7FC8FF">LLM</text>
+  <rect x="55" y="564" width="130" height="30" rx="6" fill="#0D1322" stroke="#40668D"/>
+  <text x="120" y="583" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#7FC8FF">LLM</text>
 
   <!-- Arrow marker -->
   <defs>
