@@ -226,6 +226,53 @@ details[open].video-walkthrough > summary { border-bottom-color: #F4ABCD; }
 /* ── Tip box: remove bottom margin on last paragraph ── */
 .tip p:last-child { margin-bottom: 0; }
 
+/* ── Code tabs (block-switch: language choice scoped to one code block) ── */
+.code-tabs {
+  position: relative;
+  margin: 1rem 0 1.5rem;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #030710;
+}
+
+/* Same top offset and height as .copy-button-inline so both sit inline,
+   left and right, in the reserved top band of the code block (see pre { padding-top }). */
+.code-tab-list {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.9rem;
+  height: 28px;
+  z-index: 2;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.code-tab {
+  font: 500 12px 'IBM Plex Mono', monospace;
+  padding: 0 0 4px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: #B8D4FF;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+}
+
+.code-tab:hover { color: #F2FAFF; }
+
+.code-tab.active {
+  color: #F2FAFF;
+  border-bottom-color: #7FC8FF;
+}
+
+.code-tab-panel { display: none; }
+.code-tab-panel.active { display: block; }
+.code-tab-panel pre {
+  margin: 0;
+  border-radius: 8px;
+}
+
 /* ── Code-block copy button: always-visible icon, never overlapping the code ── */
 /* Extra top padding reserves a band for the button so the first line stays clear. */
 pre { padding-top: 2.85rem; }
@@ -248,6 +295,33 @@ pre .copy-button-inline:hover {
   filter: none;
   opacity: 1;
   background-color: rgba(127, 200, 255, 0.30);
+}
+
+/* ── Page-level language switch (page-switch: scope is the whole lesson) ── */
+.page-lang-switch {
+  display: inline-flex;
+  gap: 18px;
+  margin: 0 0 28px;
+}
+
+.page-lang-btn {
+  padding: 0 0 5px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: #40668D;
+  font: 500 12px 'IBM Plex Mono', monospace;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.page-lang-btn:hover { color: #006DDD; }
+
+.page-lang-btn.active {
+  color: #006DDD;
+  border-bottom-color: #006DDD;
 }
 
 /* ── Back to Top button ── */

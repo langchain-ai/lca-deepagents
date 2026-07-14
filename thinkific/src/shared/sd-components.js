@@ -1,5 +1,57 @@
-// ── Back to Top button ───────────────────────────────────────────────────────
+// ── Page components ──────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('[data-code-tabs]').forEach(function (wrap) {
+    var tabs = wrap.querySelectorAll('[data-code-tab]');
+    var panels = wrap.querySelectorAll('[data-code-panel]');
+
+    function activate(lang) {
+      tabs.forEach(function (tab) {
+        var active = tab.getAttribute('data-code-tab') === lang;
+        tab.classList.toggle('active', active);
+        tab.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+
+      panels.forEach(function (panel) {
+        panel.classList.toggle('active', panel.getAttribute('data-code-panel') === lang);
+      });
+    }
+
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        activate(tab.getAttribute('data-code-tab'));
+      });
+    });
+  });
+
+  // Page-level language switch (page-switch: scope is the whole lesson).
+  // Persisted in localStorage so the choice carries across lessons.
+  document.querySelectorAll('[data-page-lang-switch]').forEach(function (wrap) {
+    var buttons = wrap.querySelectorAll('[data-page-lang]');
+    if (!buttons.length) return;
+
+    function activate(lang) {
+      buttons.forEach(function (btn) {
+        var active = btn.getAttribute('data-page-lang') === lang;
+        btn.classList.toggle('active', active);
+        btn.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+      document.querySelectorAll('[data-lang]').forEach(function (el) {
+        el.hidden = el.getAttribute('data-lang') !== lang;
+      });
+      try { localStorage.setItem('lca-page-lang', lang); } catch (e) {}
+    }
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        activate(btn.getAttribute('data-page-lang'));
+      });
+    });
+
+    var stored = null;
+    try { stored = localStorage.getItem('lca-page-lang'); } catch (e) {}
+    activate(stored || buttons[0].getAttribute('data-page-lang'));
+  });
+
   var panel = document.querySelector('.lt-panel');
   if (!panel) return;
 
