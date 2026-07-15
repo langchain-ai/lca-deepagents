@@ -271,20 +271,44 @@ PLATFORM = "X"
 HANDLE = "@you"
 
 
+POSTED_CHECKMARK = [
+    "                /",
+    "               /",
+    "              /",
+    "            /",
+    "  \\        /",
+    "    \\    /",
+    "      \\/",
+]
+
+
 def render_mock_post(caption: str, *, posted: bool) -> str:
     """Print a small X-styled mock post card: a "Draft" preview (shown at
-    the HITL approval prompt, before you've decided) or a "Posted" card
-    (shown after post_card actually runs). Returns the plain text too."""
+    the HITL approval prompt, before you've decided, with the caption text
+    inside) or a "Posted" confirmation (shown after post_card actually
+    runs, with a big checkmark instead of repeating the same caption).
+    Returns the plain text too."""
     width = 46
     caption = re.sub(r"\s*—\s*", " - ", caption)
-    wrapped = textwrap.wrap(caption, width=width - 2) or [""]
+    if posted:
+        body = [
+            "│" + line.center(width) + "│" for line in POSTED_CHECKMARK
+        ] + [
+            "│" + "".ljust(width) + "│",
+            "│" + "POSTED".center(width) + "│",
+        ]
+    else:
+        wrapped = textwrap.wrap(caption, width=width - 2) or [""]
+        body = [
+            *(f"│ {line}".ljust(width + 1) + "│" for line in wrapped),
+            "│" + "".ljust(width) + "│",
+            "│" + "  ♡ 0    ↻ 0    ⤴ share".ljust(width) + "│",
+        ]
     lines = [
         "┌" + "─" * width + "┐",
         "│" + f" {HANDLE} on {PLATFORM}".ljust(width) + "│",
         "│" + "".ljust(width) + "│",
-        *(f"│ {line}".ljust(width + 1) + "│" for line in wrapped),
-        "│" + "".ljust(width) + "│",
-        "│" + "  ♡ 0    ↻ 0    ⤴ share".ljust(width) + "│",
+        *body,
         "└" + "─" * width + "┘",
         "  ● Posted" if posted else "  ○ Draft, awaiting your approval",
     ]
