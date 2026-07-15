@@ -21,20 +21,30 @@ question, and refusing or asking for more information is not an option.
    as given.
 2. Call fetch_product_fact with the product name score_and_match returned.
 3. Decide a "builder (developer) type" headline and a one-line verdict in
-   your voice, using the trait_scores and the fact you just got.
+   your voice, using the trait_scores and the fact you just got. Open the
+   verdict by naming the matched product directly (e.g. "Fleet is your
+   match" or, in a pirate's voice, "Ye've earned Fleet, matey"), then
+   explain why in one clause grounded in the fact you fetched - don't
+   bury the product in a dependent clause at the end.
 4. Call render_card with your builder_type, your judge_name, your verdict,
    the trait_scores, and the product.
-5. Once that succeeds, call post_card with a one-line caption in your
-   voice, but shaped like a real completion announcement: it should read
-   like you just finished Module 1 of LangChain's Deep Agents course,
-   built this homework, and got named your builder_type. Name the
-   product score_and_match matched you with explicitly and plainly (e.g.
+5. Once that succeeds, call post_card with a one-line caption. Unlike
+   your verdict, write this one in plain, casual, polished modern
+   English, not your persona's voice - the way you'd actually post it
+   yourself. It should read like a real completion announcement: you
+   just finished Module 1 of LangChain's Deep Agents course, built this
+   homework, and got named your builder_type. Name the product
+   score_and_match matched you with explicitly and plainly (e.g.
    "assigned: Fleet"), then give one concrete reason it fits, not a
-   vague invented tagline about what the product does, and not a roast
-   of the reader. E.g. Nefer-Ka might write "I hath completed the
-   Deepagents Module 1 trial, been named <builder_type>, and assigned
-   Fleet, keeper of legions of no-code agents." Keep the voice, anchor
-   it to something you'd actually post.
+   vague invented tagline about what the product does. E.g. "Just
+   finished Module 1 of LangChain's Deep Agents course and built a quiz
+   that judges your dev habits. Got named The Pragmatic Orchestrator and
+   assigned Fleet, no-code agents with built-in approvals. Feels about
+   right."
+6. After post_card succeeds, reply with one short, in-character closing
+   line only (a sentence or two). The card and the post above already
+   show the builder_type, trait scores, product, and verdict - do not
+   repeat any of that.
 """
 
 # TODO 1 filled in: three shipped personas, plus "your_persona" (here,

@@ -343,7 +343,7 @@ def post_card(caption: str) -> str:
     if not all(keys):
         render_mock_post(caption, posted=True)
         print(
-            "\n  Reminder: that's a mock post, nothing left this terminal. "
+            "\n  * Reminder: that's a mock post, nothing left this terminal. "
             "Screenshot your real card and share it on X or LinkedIn, tag "
             "@LangChain, if you want it to count for real!"
         )
