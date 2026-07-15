@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=IBM+Plex+Mono:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=IBM+Plex+Mono:wght@300;400;500;700&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -9,6 +9,11 @@
 }
 
 p { margin-bottom: 18px; }
+
+/* Custom callout divs (`<div style="background:...">`) wrap a single <p>;
+   its own margin-bottom stacks with the div's padding and reads as a
+   trailing blank line inside the box. */
+div[style*="background:"] > p:last-child { margin-bottom: 0; }
 
 .callout {
   border-left: 3px solid #006DDD;
@@ -100,6 +105,7 @@ hr {
   line-height: 1.6;
   color: #030710;
   min-height: 3em;
+  white-space: pre-line;
 }
 
 .sd-caption strong {
@@ -210,6 +216,16 @@ details[open] > summary {
   border-radius: 6px 6px 0 0;
 }
 details > *:not(summary) { padding: 0 16px; }
+details > summary + * { padding-top: 8px; }
+
+/* ── Nested note: indented, more compact dropdown under a list item ── */
+details.nested-note {
+  width: calc(100% - 32px);
+  margin: 12px 0 20px 32px;
+}
+details.nested-note > summary {
+  padding: 7px 14px;
+}
 
 /* ── MCQ: hide ✅ emoji in answer header (no text presentation in Unicode) ── */
 .mcq-answer-header { font-size: 0 !important; }
