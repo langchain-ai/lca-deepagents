@@ -146,8 +146,10 @@ def score_and_match(answers: list[tuple[int, int, int]]) -> dict:
 # ════════════════════════════════════════════════════════════════════════
 # TODO 3 (Lesson 1.6, MCP: Connecting Agents to External Services)
 # Stretch goal for full credit.
-# Ground your verdict in one real fact about the product you were matched
-# with, instead of a guess. Mirror m1.6_agent_mcp.py exactly:
+# score_and_match (TODO 2) already decided which product you got, purely
+# from the fixed PRODUCT_MATCHES lookup - MCP has no say in that. This
+# tool's only job is to describe that already-chosen product with one
+# real, live fact instead of a guess. Mirror m1.6_agent_mcp.py exactly:
 #   1. Connect to https://docs.langchain.com/mcp with MultiServerMCPClient.
 #   2. Filter its tools down to just "search_docs_by_lang_chain".
 #   3. Spin up a tiny agent with that one tool and ask it to describe

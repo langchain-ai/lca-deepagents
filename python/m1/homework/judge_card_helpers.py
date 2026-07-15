@@ -88,7 +88,10 @@ QUIZ_QUESTIONS = [
 ]
 
 # One real LangChain product per axis-leaning direction, keyed lowercase.
-# (See https://docs.langchain.com for the full product lineup.)
+# (See https://docs.langchain.com for the full product lineup.) This
+# lookup is what decides which product you get - TODO 3's MCP call only
+# describes whichever product this table already picked, it doesn't
+# choose it.
 PRODUCT_MATCHES = {
     "chaotic": "Fleet",
     "organized": "Evaluation",
