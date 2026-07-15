@@ -91,6 +91,10 @@ def score_and_match(answers: list[tuple[int, int, int]]) -> dict:
     return {"trait_scores": scores, "product": product}
 
 
+# No login, API key, or account needed here - docs.langchain.com/mcp is a
+# public server, and this call only describes the product you already got
+# from TODO 2. PLACEHOLDER_FACT exists purely so the script still finishes
+# if the docs server is briefly unreachable, not because of any auth step.
 PLACEHOLDER_FACT = "no real data connected yet: swap this for a real MCP-sourced fact"
 
 
