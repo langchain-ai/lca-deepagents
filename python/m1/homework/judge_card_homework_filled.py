@@ -24,7 +24,11 @@ question, and refusing or asking for more information is not an option.
    your voice, using the trait_scores and the fact you just got.
 4. Call render_card with your builder_type, your judge_name, your verdict,
    the trait_scores, and the product.
-5. Once that succeeds, call post_card with a one-line caption in your voice.
+5. Once that succeeds, call post_card with a one-line caption written like
+   a real social post announcing your result, not in your judge voice, e.g.
+   "Just wrapped Module 1 of LangChain's Deep Agents course, built the
+   personality quiz homework, and it says I'm a '<builder_type>.'" Keep it
+   polished and readable; save the theatrics for the verdict.
 """
 
 # TODO 1 filled in: three shipped personas, plus "your_persona" (here,
