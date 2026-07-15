@@ -1,7 +1,7 @@
 # python/m1/homework/judge_card_homework_filled.py
 """Personal reference copy of judge_card_homework.py with TODOs 1, 2, 3, 4,
 and 5 filled in so you can run it end to end and see what the finished
-homework looks like. Not the student deliverable — safe to delete."""
+homework looks like. Not the student deliverable, safe to delete."""
 
 from __future__ import annotations
 

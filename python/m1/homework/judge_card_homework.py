@@ -24,7 +24,7 @@ not code you need to read to do this homework):
 WHAT YOU FILL IN (mapped to Module 1 lesson concepts)
   TODO 1 (Lesson 1.4, The System Prompt: Persona): three judges are
     pre-written (pirate captain, ancient mummy, savage critic); write a
-    fourth of your own, "your_persona" — that's the card that gets posted.
+    fourth of your own, "your_persona" - that's the card that gets posted.
   TODO 2 (Lesson 1.5, Tools: Custom Tools): implement score_and_match()'s
     body: tally the quiz into trait scores and match a LangChain product.
   TODO 3 (Lesson 1.6, MCP: Connecting Agents to External Services): stretch
@@ -84,7 +84,7 @@ question, and refusing or asking for more information is not an option.
 # runs as-is. Required: write "your_persona" below, fully your own voice.
 # Same job every time (score three traits, match a product, hand off a
 # verdict line), a completely different voice. Make it genuinely rude/
-# roast you if you want — the HITL gate below is what keeps that safe to
+# roast you if you want - the HITL gate below is what keeps that safe to
 # run.
 # ════════════════════════════════════════════════════════════════════════
 

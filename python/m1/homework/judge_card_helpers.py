@@ -213,7 +213,7 @@ def render_result_card(
 
 # Optional per-persona styling passed through to render_result_card, keyed
 # by judge_name (the name the persona calls itself, e.g. "Nefer-Ka") since
-# that's what render_card receives — not the JUDGE_PERSONAS dict key. Any
+# that's what render_card receives, not the JUDGE_PERSONAS dict key. Any
 # persona not listed here just gets the default look (default mascot, red
 # bars). Add an entry for your own persona if you want a distinct theme:
 # PERSONA_STYLES["your_persona_name"] = {...}.
@@ -261,6 +261,20 @@ PERSONA_STYLES: dict[str, dict] = {
 }
 
 
+def print_boxed(label: str, text: str, width: int = 56) -> None:
+    """Print text in a bordered box under a bold label, instead of letting
+    it just hang in the terminal. Used for the agent's own replies (e.g.
+    the final wrap-up, or its follow-up if you reject a card)."""
+    wrapped = textwrap.wrap(text, width=width) or [""]
+    lines = [
+        f"[{label}]",
+        "┌" + "─" * (width + 2) + "┐",
+        *(f"│ {line}".ljust(width + 2) + "│" for line in wrapped),
+        "└" + "─" * (width + 2) + "┘",
+    ]
+    print("\n" + "\n".join(lines))
+
+
 PLATFORM = "X"
 HANDLE = "@you"
 
@@ -279,7 +293,7 @@ def render_mock_post(caption: str, *, posted: bool) -> str:
         "│" + "".ljust(width) + "│",
         "│" + "  ♡ 0    ↻ 0    ⤴ share".ljust(width) + "│",
         "└" + "─" * width + "┘",
-        "  ● Posted" if posted else "  ○ Draft — awaiting your approval",
+        "  ● Posted" if posted else "  ○ Draft, awaiting your approval",
     ]
     text = "\n".join(lines)
     print(text)
@@ -387,4 +401,4 @@ def run_judge(
                 decisions.append({"type": "reject", "message": "User rejected this card before it posted."})
         result = agent.invoke(Command(resume={"decisions": decisions}), config=config, version="v2")
 
-    print(f"\n[{judge_name}] {result.value['messages'][-1].content}")
+    print_boxed(judge_name, result.value["messages"][-1].content)
