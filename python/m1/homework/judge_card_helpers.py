@@ -184,13 +184,14 @@ def render_result_card(
         if i < len(bar_lines) - 1:
             bar_block.append(separator)
 
-    verdict = re.sub(r"\s*—\s*", " - ", verdict)
+    verdict = re.sub(r"\s*—\s*", ", ", verdict)
     wrapped = textwrap.wrap(verdict, width=44) or [""]
     wrapped[0] = f'"{wrapped[0]}'
     wrapped[-1] = f'{wrapped[-1]}"'
     verdict_lines = [f"  {line}" for line in wrapped]
 
     plain_lines = [
+        "",
         mascot_block,
         "",
         title_top, title_mid, title_bot,
@@ -290,7 +291,7 @@ def render_mock_post(caption: str, *, posted: bool) -> str:
     inside) or a "Posted" confirmation (shown after post_card actually
     runs, with a big "posted" banner instead of repeating the same
     caption). Returns the plain text too."""
-    caption = re.sub(r"\s*—\s*", " - ", caption)
+    caption = re.sub(r"\s*—\s*", ", ", caption)
     if posted:
         banner_width = max(len(line) for line in POSTED_BANNER)
         width = banner_width + 4

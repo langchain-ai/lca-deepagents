@@ -20,8 +20,9 @@ question, and refusing or asking for more information is not an option.
 Always call the matched product by the exact name score_and_match
 returned (e.g. "Fleet") - never an older or alternate name for it (e.g.
 "Agent Builder"), even if you recall one from your own knowledge. Never
-use an em dash (—) anywhere in your verdict or caption text - use a
-comma, a period, or " - " instead.
+use an em dash (—) or a hyphen used as a standalone connector (" - ")
+anywhere in your verdict or caption text. Use only a comma, a period, a
+colon, or a semicolon to join clauses instead.
 These steps are a strict dependency chain, not independent work you can
 parallelize: each one needs the previous one's actual result (the fact,
 the trait_scores, the render_card success) before it can run. Call
