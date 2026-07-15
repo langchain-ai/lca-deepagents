@@ -26,7 +26,7 @@ not code you need to read to do this homework):
 WHAT YOU FILL IN (mapped to Module 1 lesson concepts)
   TODO 1 (Lesson 1.4, The System Prompt: Persona): three judges are
     pre-written (pirate captain, ancient mummy, savage critic); write a
-    fourth of your own, "your_persona" - that's the card that gets posted.
+    fourth of your own, "your_persona": that's the card that gets posted.
   TODO 2 (Lesson 1.5, Tools: Custom Tools): implement score_and_match()'s
     body: tally the quiz into trait scores and match a LangChain product.
   TODO 3 (Lesson 1.6, MCP: Connecting Agents to External Services): stretch
@@ -80,7 +80,7 @@ from models import model
 # runs as-is. Required: write "your_persona" below, fully your own voice.
 # Same job every time (score three traits, match a product, hand off a
 # verdict line), a completely different voice. Make it genuinely rude/
-# roast you if you want - the HITL gate below is what keeps that safe to
+# roast you if you want; the HITL gate below is what keeps that safe to
 # run.
 # ════════════════════════════════════════════════════════════════════════
 
@@ -116,11 +116,11 @@ tried"), and act like reviewing this quiz is a personal favor you're
 doing the user, one you deeply regret. Every verdict should read like an
 eye-roll delivered as a formal statement. Talk down to the user like
 they're a mildly disappointing intern who needs everything explained
-twice - address them with a pet name that is not a compliment ("sweetie,"
+twice: address them with a pet name that is not a compliment ("sweetie,"
 "champ," "darling"), and treat every question you were asked as an
 obviously stupid one you're too tired to be surprised by anymore. If a
 sentence could plausibly be said by a mildly annoyed customer service
-rep, it isn't cutting enough yet - sharpen it until it sounds like Vex
+rep, it isn't cutting enough yet; sharpen it until it sounds like Vex
 can barely be bothered to look up from whatever they were doing to
 deliver it. You are sharp, a little cruel, and allergic to participation
 trophies.""" + TOOL_SEQUENCE,
@@ -137,24 +137,10 @@ below.""" + TOOL_SEQUENCE,
 
 # ════════════════════════════════════════════════════════════════════════
 # TODO 2 (Lesson 1.5, Tools: Custom Tools)
-# The tallying below is done for you: scores starts at [50, 50, 50] and
-# each answer's (chaotic/organized, cautious/bold, solo/collaborative)
-# delta tuple gets added in, clamped to 0-100. Your job is to turn that
-# finished `scores` list into a matched product:
-#
-#   axis_index = the index (0, 1, or 2) of whichever score is furthest
-#       from 50, i.e. has the biggest abs(score - 50)
-#       Hint: this is a "find the index of the biggest value" problem.
-#       Python's max() takes a key= function if you want to search by
-#       something other than the value itself, e.g.
-#       max(range(len(scores)), key=lambda i: ...)
-#   direction = TRAIT_AXES[axis_index] is a (left_label, right_label)
-#       pair, e.g. ("Chaotic", "Organized"); pick whichever label matches
-#       the side scores[axis_index] leans toward (>= 50 means the right
-#       label, otherwise the left label)
-#   product = PRODUCT_MATCHES[direction.lower()], e.g.
-#       PRODUCT_MATCHES["chaotic"] -> "Fleet"
-#   return {"trait_scores": scores, "product": product}
+# The tallying (scoring each answer, then clamping to 0-100) is done for
+# you below; read the comments to see how it works. Your job starts at
+# the "TODO here" comment: turn the finished scores list into a matched
+# product.
 # ════════════════════════════════════════════════════════════════════════
 
 @tool
@@ -162,20 +148,40 @@ def score_and_match(answers: list[tuple[int, int, int]]) -> dict:
     """Tally the quiz answers into three 0-100 trait scores and pick a
     matching LangChain product. Call this first, with the exact answers
     list you were given."""
+    # Each of the 3 trait scores (chaotic/organized, cautious/bold,
+    # solo/collaborative) starts neutral, at 50.
     scores = [50, 50, 50]
+    # answers is a list of (delta_1, delta_2, delta_3) tuples, one per
+    # question. Add each delta onto its matching score.
     for delta_tuple in answers:
         for i in range(3):
             scores[i] += delta_tuple[i]
+    # A long run of the same answer could push a score past 0 or 100, so
+    # clamp every score back into that range.
     scores = [max(0, min(100, score)) for score in scores]
 
-    raise NotImplementedError("TODO 2: see the comment block above")
+    # TODO here: scores is finished. Use it to pick a matched product.
+    # 1. Set axis_index to the index (0, 1, or 2) of whichever score in
+    #    scores is furthest from 50, i.e. has the biggest abs(score - 50).
+    #    Hint: this is a "find the index of the biggest value" problem.
+    #    Python's max() takes a key= function if you want to search by
+    #    something other than the value itself, e.g.
+    #    max(range(len(scores)), key=lambda i: ...)
+    # 2. TRAIT_AXES[axis_index] is a (left_label, right_label) pair, e.g.
+    #    ("Chaotic", "Organized"). Set direction to whichever label
+    #    matches the side scores[axis_index] leans toward: the right
+    #    label if scores[axis_index] >= 50, otherwise the left label.
+    # 3. Set product to PRODUCT_MATCHES[direction.lower()], e.g.
+    #    PRODUCT_MATCHES["chaotic"] -> "Fleet".
+    # 4. Return {"trait_scores": scores, "product": product}.
+    raise NotImplementedError("TODO 2: see the comments above")
 
 
 # ════════════════════════════════════════════════════════════════════════
 # TODO 3 (Lesson 1.6, MCP: Connecting Agents to External Services)
 # Stretch goal for full credit.
 # score_and_match (TODO 2) already decided which product you got, purely
-# from the fixed PRODUCT_MATCHES lookup - MCP has no say in that. This
+# from the fixed PRODUCT_MATCHES lookup; MCP has no say in that. This
 # tool's only job is to describe that already-chosen product with one
 # real, live fact instead of a guess. Mirror m1.6_agent_mcp.py exactly:
 #   1. Connect to https://docs.langchain.com/mcp with MultiServerMCPClient.
@@ -190,7 +196,7 @@ def score_and_match(answers: list[tuple[int, int, int]]) -> dict:
 # the homework stays runnable either way.
 # ════════════════════════════════════════════════════════════════════════
 
-# No login, API key, or account needed here - docs.langchain.com/mcp is a
+# No login, API key, or account needed here: docs.langchain.com/mcp is a
 # public server, and this call only describes the product you already got
 # from TODO 2. PLACEHOLDER_FACT exists purely so the script still finishes
 # if the docs server is briefly unreachable, not because of any auth step.

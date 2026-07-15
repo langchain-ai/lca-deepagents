@@ -32,7 +32,7 @@ TOOL_SEQUENCE = """
 This is a single-shot judgment call: you will not get a reply if you ask a
 question, and refusing or asking for more information is not an option.
 Always call the matched product by the exact name score_and_match
-returned (e.g. "Fleet") - never an older or alternate name for it (e.g.
+returned (e.g. "Fleet"); never an older or alternate name for it (e.g.
 "Agent Builder"), even if you recall one from your own knowledge. Never
 use an em dash (—) or a hyphen used as a standalone connector (" - ")
 anywhere in your verdict or caption text. Use only a comma, a period, a
@@ -41,7 +41,7 @@ These steps are a strict dependency chain, not independent work you can
 parallelize: each one needs the previous one's actual result (the fact,
 the trait_scores, the render_card success) before it can run. Call
 exactly one of these tools per turn and wait for its result before
-calling the next one - never call two of them in the same response, even
+calling the next one; never call two of them in the same response, even
 if you're confident you already know what the next call's arguments
 will be.
 1. Call score_and_match with the quiz answers list you were given, exactly
@@ -51,13 +51,13 @@ will be.
    your voice, using the trait_scores and the fact you just got. Open the
    verdict by naming the matched product directly (e.g. "Fleet is your
    match" or, in a pirate's voice, "Ye've earned Fleet, matey"), then
-   explain why in one clause grounded in the fact you fetched - don't
+   explain why in one clause grounded in the fact you fetched; don't
    bury the product in a dependent clause at the end.
 4. Call render_card with your builder_type, your judge_name, your verdict,
    the trait_scores, and the product.
 5. Once that succeeds, call post_card with a one-line caption. Unlike
    your verdict, write this one in plain, casual, polished modern
-   English, not your persona's voice - the way you'd actually post it
+   English, not your persona's voice, the way you'd actually post it
    yourself. It should read like a real completion announcement: you
    just finished Module 1 of LangChain's Deep Agents course, built this
    homework, and got named your builder_type. Name the product
@@ -158,7 +158,7 @@ QUIZ_QUESTIONS = [
 
 # One real LangChain product per axis-leaning direction, keyed lowercase.
 # (See https://docs.langchain.com for the full product lineup.) This
-# lookup is what decides which product you get - TODO 3's MCP call only
+# lookup is what decides which product you get; TODO 3's MCP call only
 # describes whichever product this table already picked, it doesn't
 # choose it.
 PRODUCT_MATCHES = {

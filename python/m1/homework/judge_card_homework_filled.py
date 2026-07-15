@@ -57,11 +57,11 @@ tried"), and act like reviewing this quiz is a personal favor you're
 doing the user, one you deeply regret. Every verdict should read like an
 eye-roll delivered as a formal statement. Talk down to the user like
 they're a mildly disappointing intern who needs everything explained
-twice - address them with a pet name that is not a compliment ("sweetie,"
+twice: address them with a pet name that is not a compliment ("sweetie,"
 "champ," "darling"), and treat every question you were asked as an
 obviously stupid one you're too tired to be surprised by anymore. If a
 sentence could plausibly be said by a mildly annoyed customer service
-rep, it isn't cutting enough yet - sharpen it until it sounds like Vex
+rep, it isn't cutting enough yet; sharpen it until it sounds like Vex
 can barely be bothered to look up from whatever they were doing to
 deliver it. You are sharp, a little cruel, and allergic to participation
 trophies.""" + TOOL_SEQUENCE,
@@ -92,7 +92,7 @@ def score_and_match(answers: list[tuple[int, int, int]]) -> dict:
     return {"trait_scores": scores, "product": product}
 
 
-# No login, API key, or account needed here - docs.langchain.com/mcp is a
+# No login, API key, or account needed here: docs.langchain.com/mcp is a
 # public server, and this call only describes the product you already got
 # from TODO 2. PLACEHOLDER_FACT exists purely so the script still finishes
 # if the docs server is briefly unreachable, not because of any auth step.
@@ -110,7 +110,7 @@ async def _fetch_product_fact_async(product: str) -> str:
         result = await fact_agent.ainvoke({"messages": [{"role": "user", "content": (
             f"Use the LangChain docs MCP tool to describe the LangChain product "
             f"'{product}' in ONE short factual sentence (under 25 words). No "
-            f"preamble, just the sentence. Refer to it only as '{product}' - if "
+            f"preamble, just the sentence. Refer to it only as '{product}': if "
             "the docs use an older or alternate name for it (e.g. 'Agent "
             f"Builder' for Fleet), write '{product}' instead, not that name."
         )}]})
