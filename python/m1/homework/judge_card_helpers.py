@@ -292,8 +292,10 @@ def render_mock_post(caption: str, *, posted: bool) -> str:
     caption). Returns the plain text too."""
     caption = re.sub(r"\s*—\s*", " - ", caption)
     if posted:
-        width = max(len(line) for line in POSTED_BANNER) + 4
-        body = ["│" + line.center(width) + "│" for line in POSTED_BANNER]
+        banner_width = max(len(line) for line in POSTED_BANNER)
+        width = banner_width + 4
+        left_pad = " " * ((width - banner_width) // 2)
+        body = ["│" + left_pad + line.ljust(banner_width) + left_pad + "│" for line in POSTED_BANNER]
     else:
         width = 46
         wrapped = textwrap.wrap(caption, width=width - 2) or [""]
