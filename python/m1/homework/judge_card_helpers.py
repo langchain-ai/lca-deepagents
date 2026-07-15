@@ -256,9 +256,9 @@ PERSONA_STYLES: dict[str, dict] = {
     "Vex": {
         "mascot": "\n".join([
             "  ///-\\\\\\",
-            "  |^   ^|",
-            "  |O   O|",
-            "  |  ~ *slap*!",
+            "  |-   ^|",
+            "  |-   -|",
+            "  |  ~ *scoff*",
             "   \\ O /",
             "    | |",
         ]),
