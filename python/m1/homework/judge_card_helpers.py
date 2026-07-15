@@ -271,14 +271,16 @@ PLATFORM = "X"
 HANDLE = "@you"
 
 
-POSTED_CHECKMARK = [
-    "                /",
-    "               /",
-    "              /",
-    "            /",
-    "  \\        /",
-    "    \\    /",
-    "      \\/",
+POSTED_BANNER = [
+    "                                    ░██                      ░██",
+    "                                    ░██                      ░██",
+    "░████████   ░███████   ░███████  ░████████  ░███████   ░████████",
+    "░██    ░██ ░██    ░██ ░██           ░██    ░██    ░██ ░██    ░██",
+    "░██    ░██ ░██    ░██  ░███████     ░██    ░█████████ ░██    ░██",
+    "░███   ░██ ░██    ░██        ░██    ░██    ░██        ░██   ░███",
+    "░██░█████   ░███████   ░███████      ░████  ░███████   ░█████░██",
+    "░██",
+    "░██",
 ]
 
 
@@ -286,18 +288,14 @@ def render_mock_post(caption: str, *, posted: bool) -> str:
     """Print a small X-styled mock post card: a "Draft" preview (shown at
     the HITL approval prompt, before you've decided, with the caption text
     inside) or a "Posted" confirmation (shown after post_card actually
-    runs, with a big checkmark instead of repeating the same caption).
-    Returns the plain text too."""
-    width = 46
+    runs, with a big "posted" banner instead of repeating the same
+    caption). Returns the plain text too."""
     caption = re.sub(r"\s*—\s*", " - ", caption)
     if posted:
-        body = [
-            "│" + line.center(width) + "│" for line in POSTED_CHECKMARK
-        ] + [
-            "│" + "".ljust(width) + "│",
-            "│" + "POSTED".center(width) + "│",
-        ]
+        width = max(len(line) for line in POSTED_BANNER) + 4
+        body = ["│" + line.center(width) + "│" for line in POSTED_BANNER]
     else:
+        width = 46
         wrapped = textwrap.wrap(caption, width=width - 2) or [""]
         body = [
             *(f"│ {line}".ljust(width + 1) + "│" for line in wrapped),
