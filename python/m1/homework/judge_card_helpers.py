@@ -27,7 +27,7 @@ OUTPUT_DIR.mkdir(exist_ok=True)
 
 RESET = "\033[0m"
 BOLD = "\033[1m"
-DEFAULT_COLOR = "\033[91m"  # bright red
+DEFAULT_COLOR = "\033[92m"  # bright green (unstyled personas, e.g. your own)
 
 DEFAULT_MASCOT = "\n".join([
     " ___",
@@ -41,7 +41,7 @@ DEFAULT_MASCOT = "\n".join([
 # toward the *right* label you land.
 TRAIT_AXES = [("Chaotic", "Organized"), ("Cautious", "Bold"), ("Solo", "Collaborative")]
 
-# 5 fixed quiz questions. Each choice carries a (chaotic/organized,
+# 8 fixed quiz questions. Each choice carries a (chaotic/organized,
 # cautious/bold, solo/collaborative) delta applied to a running score that
 # starts at 50 per axis.
 QUIZ_QUESTIONS = [
@@ -85,6 +85,30 @@ QUIZ_QUESTIONS = [
             ("Whiteboarding with the whole team.", (-1, 1, 2)),
         ],
     },
+    {
+        "question": "Someone asks you to review their PR right now.",
+        "choices": [
+            ("Sure, dropping what I'm doing to look now.", (0, -1, 2)),
+            ("I'll finish my current task first, then review.", (1, 0, 0)),
+            ("Skim it fast, leave a couple comments, move on.", (-1, 0, 1)),
+        ],
+    },
+    {
+        "question": "Your build just failed in CI. What's your first move?",
+        "choices": [
+            ("Re-run it, probably flaky.", (-1, 1, 0)),
+            ("Read the full log before touching anything.", (1, -1, 0)),
+            ("Ping whoever touched that file last.", (0, 0, 2)),
+        ],
+    },
+    {
+        "question": "How do you feel about writing documentation?",
+        "choices": [
+            ("Write it as I go, future me will thank me.", (1, -1, 0)),
+            ("I'll write it eventually. Probably.", (-2, 1, -1)),
+            ("Only if someone else is going to read it soon.", (0, 0, 1)),
+        ],
+    },
 ]
 
 # One real LangChain product per axis-leaning direction, keyed lowercase.
@@ -103,7 +127,7 @@ PRODUCT_MATCHES = {
 
 
 def run_quiz() -> list[tuple[int, int, int]]:
-    """Ask the 5 fixed quiz questions with arrow-key selection and return
+    """Ask the 8 fixed quiz questions with arrow-key selection and return
     the chosen (chaotic/organized, cautious/bold, solo/collaborative)
     delta for each answer, in order."""
     answers = []
@@ -206,7 +230,7 @@ PERSONA_STYLES: dict[str, dict] = {
             "    ||",
             "    ||",
         ]),
-        "color": "\033[96m",  # bright cyan
+        "color": "\033[95m",  # bright magenta/purple
     },
     "Nefer-Ka": {
         "mascot": "\n".join([
@@ -225,15 +249,41 @@ PERSONA_STYLES: dict[str, dict] = {
     },
     "Vex": {
         "mascot": "\n".join([
-            "   ^      _",
-            "  ( o    o )",
-            "    ~____~",
-            "    :    :",
-            "     \\__/",
+            "  ///-\\\\\\",
+            "  |^   ^|",
+            "  |O   O|",
+            "  |  ~ *slap*!",
+            "   \\ O /",
+            "    | |",
         ]),
         "color": "\033[91m",  # bright red
     },
 }
+
+
+PLATFORM = "X"
+HANDLE = "@you"
+
+
+def render_mock_post(caption: str, *, posted: bool) -> str:
+    """Print a small X-styled mock post card: a "Draft" preview (shown at
+    the HITL approval prompt, before you've decided) or a "Posted" card
+    (shown after post_card actually runs). Returns the plain text too."""
+    width = 46
+    wrapped = textwrap.wrap(caption, width=width - 2) or [""]
+    lines = [
+        "┌" + "─" * width + "┐",
+        "│" + f" {HANDLE} on {PLATFORM}".ljust(width) + "│",
+        "│" + "".ljust(width) + "│",
+        *(f"│ {line}".ljust(width + 1) + "│" for line in wrapped),
+        "│" + "".ljust(width) + "│",
+        "│" + "  ♡ 0    ↻ 0    ⤴ share".ljust(width) + "│",
+        "└" + "─" * width + "┘",
+        "  ● Posted" if posted else "  ○ Draft — awaiting your approval",
+    ]
+    text = "\n".join(lines)
+    print(text)
+    return text
 
 
 @tool
@@ -259,17 +309,26 @@ def render_card(
 
 @tool
 def post_card(caption: str) -> str:
-    """Publish the finished result card. Posts a real tweet if X API
-    credentials are set in .env; otherwise a safe no-op mock (so this lab
-    is safe to run without any credentials). Only call this after
-    render_card has produced the card."""
+    """Publish the finished result card as a mock post on X. Posts a real
+    tweet instead if X API credentials are set in .env (so this lab is
+    safe to run without any credentials). Only call this after render_card
+    has produced the card."""
     keys = [os.environ.get(k) for k in ("X_API_KEY", "X_API_SECRET", "X_ACCESS_TOKEN", "X_ACCESS_SECRET")]
     if not all(keys):
+        render_mock_post(caption, posted=True)
+        print(
+            "\n  Reminder: that's a mock post, nothing left this terminal. "
+            "Screenshot your real card and share it on X or LinkedIn, tag "
+            "@LangChain, if you want it to count for real!"
+        )
         return f"Posted with caption: {caption!r}"
+    from requests_oauthlib import OAuth1Session
+
     session = OAuth1Session(*keys)
     response = session.post("https://api.x.com/2/tweets", json={"text": caption})
     response.raise_for_status()
     tweet_id = response.json()["data"]["id"]
+    render_mock_post(caption, posted=True)
     return f"Posted: https://x.com/i/web/status/{tweet_id}"
 
 
@@ -305,15 +364,18 @@ def run_judge(
         decisions = []
         for req in pending["action_requests"]:
             print(f"\n[{judge_name}] approval required for {req['name']}:")
-            for key, value in req["args"].items():
-                if isinstance(value, str):
-                    wrapped = textwrap.wrap(value, width=44) or [""]
-                    indent = " " * (len(key) + 4)
-                    print(f"  {key}: {wrapped[0]}")
-                    for line in wrapped[1:]:
-                        print(f"{indent}{line}")
-                else:
-                    print(f"  {key}: {value}")
+            if req["name"] == "post_card":
+                render_mock_post(req["args"].get("caption", ""), posted=False)
+            else:
+                for key, value in req["args"].items():
+                    if isinstance(value, str):
+                        wrapped = textwrap.wrap(value, width=44) or [""]
+                        indent = " " * (len(key) + 4)
+                        print(f"  {key}: {wrapped[0]}")
+                        for line in wrapped[1:]:
+                            print(f"{indent}{line}")
+                    else:
+                        print(f"  {key}: {value}")
             choice = input("Approve, edit, or reject? (approve/edit/reject): ").strip().lower()
             if choice in ("approve", "accept", "yes", "y"):
                 decisions.append({"type": "approve"})

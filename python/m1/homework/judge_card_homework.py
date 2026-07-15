@@ -2,7 +2,7 @@
 """M1 Homework: Build a Judge Persona that scores you and renders a card.
 
 THE IDEA
-You answer a 5-question personality quiz with arrow keys. An agent with a
+You answer an 8-question personality quiz with arrow keys. An agent with a
 persona (rude, deadpan, whatever you write) tallies your answers, matches
 you to a real LangChain product, and renders a shareable result card as
 ASCII art right in your terminal. Nothing publishes without your approval
@@ -11,7 +11,7 @@ first.
 WHAT'S PROVIDED
 See judge_card_helpers.py (same idea as models.py: shared setup you import,
 not code you need to read to do this homework):
-  - run_quiz(): the arrow-key quiz itself (QUIZ_QUESTIONS, 5 questions).
+  - run_quiz(): the arrow-key quiz itself (QUIZ_QUESTIONS, 8 questions).
   - PRODUCT_MATCHES: the trait-axis -> real LangChain product lookup.
   - render_card(): renders + saves your finished card as ASCII art. You
     shouldn't need to touch this, but feel free to restyle it (see
