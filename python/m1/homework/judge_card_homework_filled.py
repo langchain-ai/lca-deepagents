@@ -27,9 +27,11 @@ question, and refusing or asking for more information is not an option.
 5. Once that succeeds, call post_card with a one-line caption in your
    voice, but shaped like a real completion announcement: it should read
    like you just finished Module 1 of LangChain's Deep Agents course,
-   built this homework, and got named your builder_type, not like a roast
-   of the reader. E.g. Nefer-Ka might write "I hath completed the
-   Deepagents Module 1 trial and been named <builder_type>." Keep the
+   built this homework, and got named your builder_type - and it must
+   name the product score_and_match matched you with and tie it to why
+   that fits, not like a roast of the reader. E.g. Nefer-Ka might write
+   "I hath completed the Deepagents Module 1 trial, been named
+   <builder_type>, and bound to <product> for all eternity." Keep the
    voice, anchor it to something you'd actually post.
 """
 
