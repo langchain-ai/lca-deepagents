@@ -171,17 +171,29 @@ below.""" + TOOL_SEQUENCE,
 # ════════════════════════════════════════════════════════════════════════
 # TODO 2 (Lesson 1.5, Tools: Custom Tools)
 # Implement the body. This is arithmetic the model shouldn't be trusted to
-# do reliably itself, so you do it in code instead:
-#   1. Start all three trait scores at 50.
-#   2. Add each answer's three deltas to the running scores, in order.
-#   3. Clamp every score to the 0-100 range.
-#   4. Find whichever trait swung furthest from 50 (biggest abs(score-50)).
-#      Hint: this is a "find the index of the biggest value" problem.
-#      Python's max() takes a key= function if you want to search by
-#      something other than the value itself.
-#   5. Look up that trait's leaning direction (lowercased) in
-#      PRODUCT_MATCHES to get the matched product name.
-#   6. Return {"trait_scores": [s1, s2, s3], "product": "..."}.
+# do reliably itself, so you do it in code instead. `answers` is a list of
+# (chaotic/organized, cautious/bold, solo/collaborative) delta tuples, one
+# per question, e.g. [(-2, 0, 2), (1, -1, 1), ...]. In pseudocode:
+#
+#   scores = [50, 50, 50]
+#   for each delta_tuple in answers:
+#       add delta_tuple[0] to scores[0], delta_tuple[1] to scores[1],
+#       delta_tuple[2] to scores[2]
+#   clamp every value in scores to the 0-100 range (below 0 -> 0,
+#       above 100 -> 100)
+#   axis_index = the index (0, 1, or 2) of whichever score is furthest
+#       from 50, i.e. has the biggest abs(score - 50)
+#       Hint: this is a "find the index of the biggest value" problem.
+#       Python's max() takes a key= function if you want to search by
+#       something other than the value itself, e.g.
+#       max(range(len(scores)), key=lambda i: ...)
+#   direction = TRAIT_AXES[axis_index] is a (left_label, right_label)
+#       pair, e.g. ("Chaotic", "Organized"); pick whichever label matches
+#       the side scores[axis_index] leans toward (>= 50 means the right
+#       label, otherwise the left label)
+#   product = PRODUCT_MATCHES[direction.lower()], e.g.
+#       PRODUCT_MATCHES["chaotic"] -> "Fleet"
+#   return {"trait_scores": scores, "product": product}
 # ════════════════════════════════════════════════════════════════════════
 
 @tool
