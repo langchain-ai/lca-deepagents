@@ -127,6 +127,9 @@ below.""" + TOOL_SEQUENCE,
 #   2. Add each answer's three deltas to the running scores, in order.
 #   3. Clamp every score to the 0-100 range.
 #   4. Find whichever trait swung furthest from 50 (biggest abs(score-50)).
+#      Hint: this is a "find the index of the biggest value" problem.
+#      Python's max() takes a key= function if you want to search by
+#      something other than the value itself.
 #   5. Look up that trait's leaning direction (lowercased) in
 #      PRODUCT_MATCHES to get the matched product name.
 #   6. Return {"trait_scores": [s1, s2, s3], "product": "..."}.
