@@ -67,6 +67,9 @@ from models import model
 TOOL_SEQUENCE = """
 This is a single-shot judgment call: you will not get a reply if you ask a
 question, and refusing or asking for more information is not an option.
+Always call the matched product by the exact name score_and_match
+returned (e.g. "Fleet") - never an older or alternate name for it (e.g.
+"Agent Builder"), even if you recall one from your own knowledge.
 1. Call score_and_match with the quiz answers list you were given, exactly
    as given.
 2. Call fetch_product_fact with the product name score_and_match returned.
@@ -91,10 +94,6 @@ question, and refusing or asking for more information is not an option.
    that judges your dev habits. Got named The Pragmatic Orchestrator and
    assigned Fleet, no-code agents with built-in approvals. Feels about
    right."
-6. After post_card succeeds, reply with one short, in-character closing
-   line only (a sentence or two). The card and the post above already
-   show the builder_type, trait scores, product, and verdict - do not
-   repeat any of that.
 """
 
 

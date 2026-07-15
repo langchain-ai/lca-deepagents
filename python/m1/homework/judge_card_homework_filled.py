@@ -17,6 +17,9 @@ from models import model
 TOOL_SEQUENCE = """
 This is a single-shot judgment call: you will not get a reply if you ask a
 question, and refusing or asking for more information is not an option.
+Always call the matched product by the exact name score_and_match
+returned (e.g. "Fleet") - never an older or alternate name for it (e.g.
+"Agent Builder"), even if you recall one from your own knowledge.
 1. Call score_and_match with the quiz answers list you were given, exactly
    as given.
 2. Call fetch_product_fact with the product name score_and_match returned.
@@ -41,10 +44,6 @@ question, and refusing or asking for more information is not an option.
    that judges your dev habits. Got named The Pragmatic Orchestrator and
    assigned Fleet, no-code agents with built-in approvals. Feels about
    right."
-6. After post_card succeeds, reply with one short, in-character closing
-   line only (a sentence or two). The card and the post above already
-   show the builder_type, trait scores, product, and verdict - do not
-   repeat any of that.
 """
 
 # TODO 1 filled in: three shipped personas, plus "your_persona" (here,
@@ -129,7 +128,9 @@ async def _fetch_product_fact_async(product: str) -> str:
         result = await fact_agent.ainvoke({"messages": [{"role": "user", "content": (
             f"Use the LangChain docs MCP tool to describe the LangChain product "
             f"'{product}' in ONE short factual sentence (under 25 words). No "
-            "preamble, just the sentence."
+            f"preamble, just the sentence. Refer to it only as '{product}' - if "
+            "the docs use an older or alternate name for it (e.g. 'Agent "
+            f"Builder' for Fleet), write '{product}' instead, not that name."
         )}]})
         return result["messages"][-1].content.strip()
     except Exception as exc:

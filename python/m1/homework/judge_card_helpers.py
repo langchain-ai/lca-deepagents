@@ -267,30 +267,6 @@ PERSONA_STYLES: dict[str, dict] = {
 }
 
 
-def print_boxed(label: str, text: str, width: int = 56) -> None:
-    """Print text in a bordered box under a bold label, instead of letting
-    it just hang in the terminal. Splits into one bullet per sentence (with
-    a blank line between) so a long reply reads as short lines instead of
-    one dense paragraph. Used for the agent's own replies (e.g. the final
-    wrap-up, or its follow-up if you reject a card)."""
-    text = re.sub(r"\s*—\s*", " - ", text.replace("**", ""))
-    sentences = [s for s in re.split(r"(?<=[.!?])\s+", text.strip()) if s]
-    body: list[str] = []
-    for sentence in sentences:
-        if body:
-            body.append("")
-        wrapped = textwrap.wrap(sentence, width=width - 2) or [""]
-        body.append(f"- {wrapped[0]}")
-        body.extend(f"  {line}" for line in wrapped[1:])
-    lines = [
-        f"[{label}]",
-        "┌" + "─" * (width + 2) + "┐",
-        *(f"│ {line}".ljust(width + 2) + "│" for line in body),
-        "└" + "─" * (width + 2) + "┘",
-    ]
-    print("\n" + "\n".join(lines))
-
-
 PLATFORM = "X"
 HANDLE = "@you"
 
@@ -423,5 +399,3 @@ def run_judge(
                 else:
                     print("  Please type approve, edit, or reject.")
         result = agent.invoke(Command(resume={"decisions": decisions}), config=config, version="v2")
-
-    print_boxed(judge_name, result.value["messages"][-1].content)
