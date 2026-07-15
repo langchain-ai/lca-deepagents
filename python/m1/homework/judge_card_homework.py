@@ -65,6 +65,7 @@ from judge_card_helpers import (
     OUTPUT_DIR,
     PRODUCT_MATCHES,
     TOOL_SEQUENCE,
+    TRAIT_AXES,
     post_card,
     render_card,
     run_judge,
@@ -136,17 +137,11 @@ below.""" + TOOL_SEQUENCE,
 
 # ════════════════════════════════════════════════════════════════════════
 # TODO 2 (Lesson 1.5, Tools: Custom Tools)
-# Implement the body. This is arithmetic the model shouldn't be trusted to
-# do reliably itself, so you do it in code instead. `answers` is a list of
-# (chaotic/organized, cautious/bold, solo/collaborative) delta tuples, one
-# per question, e.g. [(-2, 0, 2), (1, -1, 1), ...]. In pseudocode:
+# The tallying below is done for you: scores starts at [50, 50, 50] and
+# each answer's (chaotic/organized, cautious/bold, solo/collaborative)
+# delta tuple gets added in, clamped to 0-100. Your job is to turn that
+# finished `scores` list into a matched product:
 #
-#   scores = [50, 50, 50]
-#   for each delta_tuple in answers:
-#       add delta_tuple[0] to scores[0], delta_tuple[1] to scores[1],
-#       delta_tuple[2] to scores[2]
-#   clamp every value in scores to the 0-100 range (below 0 -> 0,
-#       above 100 -> 100)
 #   axis_index = the index (0, 1, or 2) of whichever score is furthest
 #       from 50, i.e. has the biggest abs(score - 50)
 #       Hint: this is a "find the index of the biggest value" problem.
@@ -167,6 +162,12 @@ def score_and_match(answers: list[tuple[int, int, int]]) -> dict:
     """Tally the quiz answers into three 0-100 trait scores and pick a
     matching LangChain product. Call this first, with the exact answers
     list you were given."""
+    scores = [50, 50, 50]
+    for delta_tuple in answers:
+        for i in range(3):
+            scores[i] += delta_tuple[i]
+    scores = [max(0, min(100, score)) for score in scores]
+
     raise NotImplementedError("TODO 2: see the comment block above")
 
 
