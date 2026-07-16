@@ -44,7 +44,7 @@ agent = create_deep_agent(
     model=model,
     system_prompt=SYSTEM_PROMPT,
     tools=[summon_tea],
-    name="Extra Posh Butler Agent",
+    name="Extra_Posh_Butler_Agent",
 )
 
 result = agent.invoke({"messages": [{"role": "user", "content": "What is an LLM?"}]})
