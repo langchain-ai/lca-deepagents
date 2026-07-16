@@ -1,5 +1,5 @@
-# python/m1/homework/judge_card_helpers.py
-"""Provided setup for judge_card_homework.py: the quiz, the ASCII card
+# python/m1/Practice/judge_card_helpers.py
+"""Provided setup for judge_card_practice.py: the quiz, the ASCII card
 renderer, persona styling, the "publish" tool, and the invoke/interrupt-
 resume loop.
 
@@ -60,7 +60,7 @@ will be.
    English, not your persona's voice, the way you'd actually post it
    yourself. It should read like a real completion announcement: you
    just finished Module 1 of LangChain's Deep Agents course, built this
-   homework, and got named your builder_type. Name the product
+   practice exercise, and got named your builder_type. Name the product
    score_and_match matched you with explicitly and plainly (e.g.
    "assigned: Fleet"), then give one concrete reason it fits, not a
    vague invented tagline about what the product does. E.g. "Just
@@ -82,7 +82,7 @@ DEFAULT_MASCOT = "\n".join([
 ])
 
 # The 3 fixed personality axes the quiz scores you on. Each trait score
-# (0-100, from score_and_match in judge_card_homework.py) says how far
+# (0-100, from score_and_match in judge_card_practice.py) says how far
 # toward the *right* label you land.
 TRAIT_AXES = [("Chaotic", "Organized"), ("Cautious", "Bold"), ("Solo", "Collaborative")]
 
@@ -417,7 +417,7 @@ def run_judge(
     tools: list,
     model,
     interrupt_on: dict | None = None,
-    thread_prefix: str = "m1-homework",
+    thread_prefix: str = "m1-practice",
 ) -> None:
     """Build the agent for one judge persona, run the quiz, and walk through
     any human-in-the-loop approval prompts until it's done."""

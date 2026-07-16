@@ -1,7 +1,7 @@
-# python/m1/homework/judge_card_homework_filled.py
-"""Personal reference copy of judge_card_homework.py with TODOs 1, 2, 3, 4,
+# python/m1/Practice/judge_card_practice_filled.py
+"""Personal reference copy of judge_card_practice.py with TODOs 1, 2, 3, 4,
 and 5 filled in so you can run it end to end and see what the finished
-homework looks like. Not the student deliverable, safe to delete."""
+practice exercise looks like. Not the student deliverable, safe to delete."""
 
 from __future__ import annotations
 
@@ -153,6 +153,6 @@ if __name__ == "__main__":
             tools=[score_and_match, fetch_product_fact, render_card, post_card],
             model=model,
             interrupt_on={"post_card": True},  # TODO 5 filled in
-            thread_prefix="m1-homework-filled",
+            thread_prefix="m1-practice-filled",
         )
     print(f"\nCards saved to {OUTPUT_DIR}/")

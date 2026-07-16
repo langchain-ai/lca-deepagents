@@ -1,5 +1,5 @@
-# python/m1/homework/judge_card_homework.py
-"""M1 Homework: Build a Judge Persona that scores you and renders a card.
+# python/m1/Practice/judge_card_practice.py
+"""M1 Practice: Build a Judge Persona that scores you and renders a card.
 
 THE IDEA
 You answer an 8-question personality quiz using arrow keys. An agent with a
@@ -9,7 +9,7 @@ ASCII art right in your terminal.
 
 WHAT'S PROVIDED
 See judge_card_helpers.py (same idea as models.py: shared setup you import,
-not code you need to read to do this homework):
+not code you need to read to do this practice):
   - run_quiz(): the arrow-key quiz itself (QUIZ_QUESTIONS, 8 questions).
   - PRODUCT_MATCHES: the trait-axis -> real LangChain product lookup.
   - render_card(): renders + saves your finished card as ASCII art. You
@@ -49,7 +49,7 @@ Give your judge a completely different personality from the three examples.
 
 
 RUN
-  cd python && uv run python m1/homework/judge_card_homework.py
+  cd python && uv run python m1/Practice/judge_card_practice.py
 
 ════════════════════════════════════════════════════════════════════════
   SHARE IT: got a card you like? Screenshot it, tag @LangChain
@@ -200,7 +200,7 @@ def score_and_match(answers: list[tuple[int, int, int]]) -> dict:
 # and call that helper with asyncio.run(...) from inside fetch_product_fact.
 
 # On any failure (no network, tool error), fall back to PLACEHOLDER_FACT so
-# the homework stays runnable either way.
+# the practice stays runnable either way.
 # ════════════════════════════════════════════════════════════════════════
 
 # No login, API key, or account needed here: docs.langchain.com/mcp is a
