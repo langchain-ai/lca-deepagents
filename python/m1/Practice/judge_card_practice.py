@@ -15,8 +15,8 @@ not code you need to read to do this practice):
   - render_card(): renders + saves your finished card as ASCII art. You
     shouldn't need to touch this, but feel free to restyle it (see
     PERSONA_STYLES there if you want your persona to have its own mascot).
-  - post_card(): a "publish" tool. Mock by default; posts a real tweet if
-    you set the X_* keys in .env (see .env.example).
+  - post_card(): a "publish" tool that renders a mock post on our fake X
+    platform. Nothing ever leaves your terminal.
   - run_judge(): the invoke / interrupt-resume loop. You've already written
     this once in the Human-In-The-Loop lesson, no need to write it again.
   - TOOL_SEQUENCE: the tool-calling steps every persona shares, appended to

@@ -9,13 +9,11 @@ restyle a card, otherwise you shouldn't need to open this file.
 
 from __future__ import annotations
 
-import os
 import re
 import textwrap
 from pathlib import Path
 
 import questionary
-import requests
 from langchain_core.tools import tool
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.types import Command
@@ -386,27 +384,16 @@ def render_card(
 
 @tool
 def post_card(caption: str) -> str:
-    """Publish the finished result card as a mock post on X. Posts a real
-    tweet instead if X API credentials are set in .env (so this lab is
-    safe to run without any credentials). Only call this after render_card
-    has produced the card."""
-    keys = [os.environ.get(k) for k in ("X_API_KEY", "X_API_SECRET", "X_ACCESS_TOKEN", "X_ACCESS_SECRET")]
-    if not all(keys):
-        render_mock_post(caption, posted=True)
-        print(
-            "\n  * Reminder: that's a mock post, nothing left this terminal. "
-            "Screenshot your real card and share it on X or LinkedIn, tag "
-            "@LangChain, if you want it to count for real!"
-        )
-        return f"Posted with caption: {caption!r}"
-    from requests_oauthlib import OAuth1Session
-
-    session = OAuth1Session(*keys)
-    response = session.post("https://api.x.com/2/tweets", json={"text": caption})
-    response.raise_for_status()
-    tweet_id = response.json()["data"]["id"]
+    """Publish the finished result card as a mock post on X. Nothing ever
+    leaves this terminal. Only call this after render_card has produced
+    the card."""
     render_mock_post(caption, posted=True)
-    return f"Posted: https://x.com/i/web/status/{tweet_id}"
+    print(
+        "\n  * Reminder: that's a mock post, nothing left this terminal. "
+        "Screenshot your real card and share it on X or LinkedIn, tag "
+        "@LangChain, if you want it to count for real!"
+    )
+    return f"Posted with caption: {caption!r}"
 
 
 def run_judge(
