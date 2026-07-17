@@ -5,6 +5,7 @@ import { writeFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
+import { context } from "langchain";
 import { LangSmithSandbox, createDeepAgent } from "deepagents";
 import { SandboxClient } from "langsmith/sandbox";
 
@@ -34,12 +35,12 @@ for (const result of uploadResults) {
 const agent = createDeepAgent({
   model,
   backend,
-  systemPrompt:
-    "You are a sales data analyst with access to the Chinook music store database " +
-    "at /chinook.db. Use sqlite3 and matplotlib to answer questions with charts. " +
-    "Install any packages you need with pip before importing them. " +
-    "When asked to produce a chart, write a Python script, execute it, and confirm " +
-    "the output file was created.",
+  systemPrompt: context`
+    You are a sales data analyst with access to the Chinook music store database
+    at /chinook.db. Use sqlite3 and matplotlib to answer questions with charts.
+    Install any packages you need with pip before importing them.
+    When asked to produce a chart, write a Python script, execute it, and confirm
+    the output file was created.`,
 });
 
 try {
@@ -47,20 +48,20 @@ try {
     messages: [
       {
         role: "user",
-        content:
-          "Query the Chinook database at /chinook.db to get total revenue " +
-          "by genre. Create a clean donut chart showing each genre's share " +
-          "of total sales revenue. Group any genres that individually " +
-          "account for less than 3% of total revenue into a single 'Other' " +
-          "slice. Label each slice with the genre name and percentage. " +
-          "Use a visually distinct color palette, leave a white center hole, " +
-          "and make sure no labels overlap with each other or with the title. " +
-          "Add enough top padding so the title is fully visible. " +
-          "Save the chart to /genre_revenue.png.",
+        content: context`
+          Query the Chinook database at /chinook.db to get total revenue
+          by genre. Create a clean donut chart showing each genre's share
+          of total sales revenue. Group any genres that individually
+          account for less than 3% of total revenue into a single 'Other'
+          slice. Label each slice with the genre name and percentage.
+          Use a visually distinct color palette, leave a white center hole,
+          and make sure no labels overlap with each other or with the title.
+          Add enough top padding so the title is fully visible.
+          Save the chart to /genre_revenue.png.`,
       },
     ],
   });
-  console.log(result.messages[result.messages.length - 1].content);
+  console.log(result.messages.at(-1)?.content);
 
   const pngBytes = await ls_sandbox.read("/genre_revenue.png");
   const outPath = join(__dirname, "genre_revenue.png");

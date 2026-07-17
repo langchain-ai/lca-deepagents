@@ -1,8 +1,9 @@
 import { DatabaseSync } from "node:sqlite";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { tool } from "@langchain/core/tools";
+
 import { z } from "zod";
+import { tool } from "langchain";
 import { createDeepAgent } from "deepagents";
 
 import { model } from "../models.js";
@@ -47,4 +48,4 @@ const result = await agent.invoke({
   messages: [{ role: "user", content: "Which five genres have the most tracks?" }],
 });
 
-console.log(result.messages[result.messages.length - 1].content);
+console.log(result.messages.at(-1)?.content);

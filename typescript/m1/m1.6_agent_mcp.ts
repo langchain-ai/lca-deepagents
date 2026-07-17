@@ -12,28 +12,30 @@ const client = new MultiServerMCPClient({
   },
 });
 
-let tools = await client.getTools();
+try {
+  let tools = await client.getTools();
 
-console.log(`\ndocs-langchain: ${tools.length} tool(s)`);
-for (const t of tools) {
-  console.log(`  ${t.name}`);
-  console.log(`  ${t.description?.slice(0, 90)}`);
+  console.log(`\ndocs-langchain: ${tools.length} tool(s)`);
+  for (const t of tools) {
+    console.log(`  ${t.name}`);
+    console.log(`  ${t.description?.slice(0, 90)}`);
+  }
+
+  tools = tools.filter((t) => ALLOWED.has(t.name));
+
+  const agent = createDeepAgent({ model, tools });
+
+  const result = await agent.invoke({
+    messages: [
+      {
+        role: "user",
+        content:
+          "Use the LangChain docs MCP tool to explain what MCP is and how LangChain uses MCP tools.",
+      },
+    ],
+  });
+
+  console.log(result.messages.at(-1)?.content);
+} finally {
+  await client.close();
 }
-
-tools = tools.filter((t) => ALLOWED.has(t.name));
-
-const agent = createDeepAgent({ model, tools });
-
-const result = await agent.invoke({
-  messages: [
-    {
-      role: "user",
-      content:
-        "Use the LangChain docs MCP tool to explain what MCP is and how LangChain uses MCP tools.",
-    },
-  ],
-});
-
-console.log(result.messages[result.messages.length - 1].content);
-
-await client.close();

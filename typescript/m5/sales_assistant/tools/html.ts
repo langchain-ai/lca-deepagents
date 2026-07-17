@@ -10,8 +10,8 @@
  */
 import { marked } from "marked";
 import sanitizeHtml from "sanitize-html";
-import { tool } from "@langchain/core/tools";
 import { z } from "zod";
+import { context, tool } from "langchain";
 
 const HTML_TEMPLATE = (title: string, body: string) => `<!doctype html>
 <html lang="en">
@@ -44,9 +44,9 @@ export const markdownToHtml = tool(
   },
   {
     name: "markdown_to_html",
-    description:
-      "Convert a Markdown newsletter into a complete, styled HTML page. " +
-      "Returns the full HTML document as a string.",
+    description: context`
+      Convert a Markdown newsletter into a complete, styled HTML page.
+      Returns the full HTML document as a string.`,
     schema: z.object({
       markdownText: z.string(),
       title: z.string().default("This Week in Music"),

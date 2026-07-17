@@ -4,29 +4,29 @@ import { DatabaseSync } from "node:sqlite";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
-import { tool } from "@langchain/core/tools";
-import { createDeepAgent } from "deepagents";
 import { z } from "zod";
+import { context, tool } from "langchain";
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
 import { model } from "../models.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DB_PATH = join(__dirname, "chinook.db");
 
-const TASK =
-  "Who is our top-selling artist, what is their best-selling album, " +
-  "what is the most-purchased track on that album, " +
-  "and how many distinct customers have bought that track? " +
-  "Each answer depends on the result of the previous query.";
+const TASK = context`
+  Who is our top-selling artist, what is their best-selling album,
+  what is the most-purchased track on that album,
+  and how many distinct customers have bought that track?
+  Each answer depends on the result of the previous query.`;
 
-const SYSTEM =
-  "You are a sales analyst for Chinook Digital Music Store. " +
-  "Use the query_chinook tool to query the database. " +
-  "Key tables: Artist(ArtistId, Name), Album(AlbumId, Title, ArtistId), " +
-  "Track(TrackId, Name, AlbumId), " +
-  "InvoiceLine(InvoiceLineId, InvoiceId, TrackId, UnitPrice, Quantity). " +
-  "Revenue is InvoiceLine.UnitPrice * InvoiceLine.Quantity.";
+const SYSTEM = context`
+  You are a sales analyst for Chinook Digital Music Store.
+  Use the query_chinook tool to query the database.
+  Key tables: Artist(ArtistId, Name), Album(AlbumId, Title, ArtistId),
+  Track(TrackId, Name, AlbumId),
+  InvoiceLine(InvoiceLineId, InvoiceId, TrackId, UnitPrice, Quantity).
+  Revenue is InvoiceLine.UnitPrice * InvoiceLine.Quantity.`;
 
 const queryChinook = tool(
   ({ sql }) => {
@@ -53,13 +53,13 @@ const agentWith = createDeepAgent({
   model,
   tools: [queryChinook],
   middleware: [createCodeInterpreterMiddleware({ ptc: ["query_chinook"] })],
-  systemPrompt:
-    SYSTEM +
-    " The eval tool supports Programmatic Tool Calling (PTC): JavaScript" +
-    " running inside eval() can call query_chinook via tools.queryChinook()." +
-    " For dependent queries where each answer requires a result from the" +
-    " previous, prefer a single eval() call that chains all queries in" +
-    " JavaScript — intermediate values stay in variables and never return to the model.",
+  systemPrompt: context`
+    ${SYSTEM}
+    The eval tool supports Programmatic Tool Calling (PTC): JavaScript
+    running inside eval() can call query_chinook via tools.queryChinook().
+    For dependent queries where each answer requires a result from the
+    previous, prefer a single eval() call that chains all queries in
+    JavaScript — intermediate values stay in variables and never return to the model.`,
 });
 
 const resultWith = await agentWith.invoke(

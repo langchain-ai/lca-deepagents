@@ -14,6 +14,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { config } from "dotenv";
+import { context } from "langchain";
 import { Client } from "@langchain/langgraph-sdk";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -139,8 +140,9 @@ async function testAgentsMd(client: Client): Promise<Result> {
   try {
     const [reply] = await ask(
       client,
-      "Repeat the diagnostic token from your operating manual. " +
-        "It appears as italic text near the top of the file."
+      context`
+        Repeat the diagnostic token from your operating manual.
+        It appears as italic text near the top of the file.`
     );
     const passed = reply.includes("CHINOOK-READY");
     console.log("done");
@@ -190,8 +192,9 @@ async function testCodeInterpreter(client: Client): Promise<Result> {
   try {
     const [reply] = await ask(
       client,
-      "Use the code interpreter to calculate: 37 tracks at $0.99 each. " +
-        "What is the exact total?"
+      context`
+        Use the code interpreter to calculate: 37 tracks at $0.99 each.
+        What is the exact total?`
     );
     const passed = reply.includes("36.63");
     console.log("done");
@@ -252,9 +255,9 @@ async function testHitlInterrupt(client: Client): Promise<Result> {
         messages: [
           {
             role: "user",
-            content:
-              "Draft a reply to the email from Morgan Vale saying we will get " +
-              "back to them within 24 hours. Save the draft.",
+            content: context`
+              Draft a reply to the email from Morgan Vale saying we will get
+              back to them within 24 hours. Save the draft.`,
           },
         ],
       },
@@ -285,8 +288,9 @@ async function testRenderPieChart(client: Client): Promise<Result> {
     const [, messages] = await askInThread(
       client,
       thread.thread_id,
-      "Query the Chinook database for total revenue by genre (top 5 genres). " +
-        "Call render_pie_chart to save a pie chart as diag_genre_revenue.png."
+      context`
+        Query the Chinook database for total revenue by genre (top 5 genres).
+        Call render_pie_chart to save a pie chart as diag_genre_revenue.png.`
     );
     const toolOuts = toolOutputs(messages, "render_pie_chart");
     const exists = existsSync(target);

@@ -13,6 +13,7 @@ import { fileURLToPath } from "node:url";
 
 import { MultiServerMCPClient } from "@langchain/mcp-adapters";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+import { context } from "langchain";
 import { FilesystemBackend, createDeepAgent } from "deepagents";
 
 import { strongModel } from "../../models.js";
@@ -22,10 +23,10 @@ import { markdownToHtml } from "./tools/html.js";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 
-const SYSTEM_PROMPT =
-  "You are a sales assistant for Jane Peacock, a Sales Support Agent at " +
-  "Chinook, an online music distributor. Follow your operating manual (loaded " +
-  "from your memory) and use the matching playbook from /skills/ for each task.";
+const SYSTEM_PROMPT = context`
+  You are a sales assistant for Jane Peacock, a Sales Support Agent at
+  Chinook, an online music distributor. Follow your operating manual (loaded
+  from your memory) and use the matching playbook from /skills/ for each task.`;
 
 const enableSearch = Boolean(process.env.TAVILY_API_KEY);
 if (!enableSearch) {
