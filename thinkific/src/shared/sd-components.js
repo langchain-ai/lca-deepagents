@@ -3,17 +3,21 @@ document.addEventListener('DOMContentLoaded', function () {
   var panel = document.querySelector('.lt-panel');
   if (!panel) return;
 
-  var hasLab = false, hasQuiz = false;
+  var hasLab = false, hasQuiz = false, hasHomework = false;
   document.querySelectorAll('.lt-tab').forEach(function (t) {
     var p = t.getAttribute('data-p') || '';
     if (p.startsWith('lab')) hasLab = true;
     if (p === 'quiz') hasQuiz = true;
+    if (p.startsWith('homework')) hasHomework = true;
   });
 
+  var parts = [];
+  if (hasLab) parts.push('Lab');
+  if (hasQuiz) parts.push('Quiz');
+  if (hasHomework) parts.push('Homework');
+
   var label = '↑  Back to top';
-  if (hasLab && hasQuiz) label += ': Lab & Quiz';
-  else if (hasLab)       label += ': Lab';
-  else if (hasQuiz)      label += ': Quiz';
+  if (parts.length) label += ': ' + parts.join(' & ');
 
   var btn = document.createElement('button');
   btn.className = 'back-to-top-btn';
