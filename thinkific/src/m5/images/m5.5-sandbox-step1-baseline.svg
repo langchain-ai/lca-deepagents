@@ -1,0 +1,64 @@
+<svg width="900" height="440" viewBox="0 0 900 440" xmlns="http://www.w3.org/2000/svg"
+     font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+  <defs>
+    <marker id="arrBlue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#0A62D6"/>
+    </marker>
+    <marker id="arrSlate" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#40668D"/>
+    </marker>
+    <marker id="arrLight" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#7FC8FF"/>
+    </marker>
+    <marker id="arrWhite" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+      <polygon points="0 0, 7 2.5, 0 5" fill="#F2FAFF"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="440" fill="#030710"/>
+
+  <text x="450" y="40" text-anchor="middle" font-size="16" font-weight="600" fill="#F2FAFF">Sandboxes Isolate Code Execution</text>
+
+  <!-- Host panel -->
+  <rect x="40" y="80" width="350" height="330" rx="10" fill="#0A1626" stroke="#2F4B68" stroke-width="1.5"/>
+  <text x="60" y="108" font-size="13" font-weight="600" fill="#7FC8FF">Host</text>
+
+  <!-- Agent box with a small ReAct-loop graph icon beside the label -->
+  <g>
+    <rect x="60" y="130" width="310" height="70" rx="8" fill="#0A62D6"/>
+    <text x="140" y="172" font-size="18" font-weight="600" fill="#FFFFFF">Agent</text>
+    <!-- top node: agent -->
+    <circle cx="260" cy="148" r="5" fill="#F2FAFF"/>
+    <!-- bottom-left node: tools (loops back) -->
+    <circle cx="240" cy="187" r="5" fill="#F2FAFF"/>
+    <!-- bottom-right node: end (terminal) -->
+    <circle cx="282" cy="187" r="5" fill="#F2FAFF"/>
+    <!-- agent -> tools -->
+    <line x1="255" y1="153" x2="244" y2="182" stroke="#F2FAFF" stroke-width="1.5" marker-end="url(#arrWhite)"/>
+    <!-- agent -> end -->
+    <line x1="265" y1="153" x2="278" y2="182" stroke="#F2FAFF" stroke-width="1.5" marker-end="url(#arrWhite)"/>
+    <!-- tools loops back to agent -->
+    <path d="M 235 182 Q 218 163 255 151" fill="none" stroke="#F2FAFF" stroke-width="1.5" marker-end="url(#arrWhite)"/>
+  </g>
+
+  <!-- LLM API key: flows from Workspace secrets up to the Agent -->
+  <line x1="100" y1="330" x2="100" y2="204" stroke="#7FC8FF" stroke-width="1.75" stroke-dasharray="5,4" marker-end="url(#arrLight)"/>
+  <text x="130" y="273" text-anchor="middle" font-size="20" font-family="'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif">🔑</text>
+  <text x="144" y="277" font-size="10" fill="#B2DEFF">LLM API key</text>
+
+  <!-- Workspace secrets -->
+  <rect x="60" y="330" width="310" height="56" rx="8" fill="#3E5D7E"/>
+  <text x="215" y="363" text-anchor="middle" font-size="12" font-weight="600" fill="#F2FAFF">Workspace secrets</text>
+
+  <!-- Sandbox panel -->
+  <rect x="510" y="80" width="350" height="330" rx="10" fill="#0A1626" stroke="#2F4B68" stroke-width="1.5"/>
+  <text x="530" y="108" font-size="13" font-weight="600" fill="#7FC8FF">Sandbox</text>
+
+  <rect x="530" y="150" width="310" height="70" rx="8" fill="#3E5D7E"/>
+  <text x="685" y="180" text-anchor="middle" font-size="13" font-weight="600" fill="#F2FAFF">Sandboxed code</text>
+  <text x="685" y="200" text-anchor="middle" font-size="10" fill="#CBD9E8">plotting script</text>
+
+  <!-- execute arrow -->
+  <line x1="390" y1="165" x2="520" y2="165" stroke="#0A62D6" stroke-width="2.5" marker-end="url(#arrBlue)"/>
+  <text x="455" y="152" text-anchor="middle" font-size="15" font-weight="600" fill="#7FC8FF">execute</text>
+</svg>

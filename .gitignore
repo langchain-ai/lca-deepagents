@@ -52,6 +52,7 @@ langsmith_traces/
 # IDE
 .vscode/
 .idea/
+.cursor/
 pyrightconfig.json
 *.swp
 *.swo
@@ -83,7 +84,18 @@ python/m5/sales_assistant/mcp/mail_store.json
 python/m5/sales_assistant/outputs/
 python/m5/sales_assistant/retrieve/
 python/m5/sales_assistant/research/
+python/m5/sales_assistant_sandbox/mcp/mail_store.json
+python/m5/sales_assistant_sandbox/outputs/
+python/m5/sales_assistant_sandbox/retrieve/
+python/m5/sales_assistant_sandbox/research/
 .langgraph_api/
+
+# agent-chat-ui (Module 5.5 — forked Next.js app)
+agent-chat-ui/node_modules/
+agent-chat-ui/.next/
+agent-chat-ui/next-env.d.ts
+agent-chat-ui/*.tsbuildinfo
+agent-chat-ui/package-lock.json
 
 # Working docs (not checked in)
 checklist.md
