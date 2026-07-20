@@ -53,6 +53,7 @@ hr {
 .step-hidden  { opacity: 0; pointer-events: none; }
 .step-past    { opacity: 1; }
 .step-current { opacity: 1; }
+.step-dim     { opacity: 0.12; pointer-events: none; }
 
 /* Sequence diagram element colors */
 .al  { stroke: #40668D; fill: none; }
