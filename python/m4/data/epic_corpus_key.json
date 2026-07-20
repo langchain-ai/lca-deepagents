@@ -1,0 +1,72 @@
+[
+  {
+    "epic": "ILIAD",
+    "book": 2,
+    "sentence": "A vending machine hummed faintly beside the Scaean gates."
+  },
+  {
+    "epic": "ILIAD",
+    "book": 9,
+    "sentence": "Patroclus adjusted his smartwatch before donning the borrowed armor."
+  },
+  {
+    "epic": "ILIAD",
+    "book": 9,
+    "sentence": "Achilles paused to check his bronze pager before returning to the battle line."
+  },
+  {
+    "epic": "ILIAD",
+    "book": 16,
+    "sentence": "Somewhere beyond the ships, a food truck sold roasted chestnuts to the Myrmidons."
+  },
+  {
+    "epic": "ILIAD",
+    "book": 23,
+    "sentence": "Hector paused to refresh his podcast feed before facing Achilles."
+  },
+  {
+    "epic": "ODYSSEY",
+    "book": 1,
+    "sentence": "Telemachus updated his status to 'it's complicated' before the suitors arrived."
+  },
+  {
+    "epic": "ODYSSEY",
+    "book": 5,
+    "sentence": "Odysseus checked his phone for a signal before addressing the Cyclops."
+  },
+  {
+    "epic": "ODYSSEY",
+    "book": 12,
+    "sentence": "The sirens' song briefly buffered (because the free version has ads) before resuming its melody."
+  },
+  {
+    "epic": "ODYSSEY",
+    "book": 12,
+    "sentence": "Circe's swine wore tiny name tags that read 'Hello, my name is.'"
+  },
+  {
+    "epic": "ODYSSEY",
+    "book": 20,
+    "sentence": "Penelope scrolled through a catalog of suitors on her tablet."
+  },
+  {
+    "epic": "AENEID",
+    "book": 2,
+    "sentence": "Dido kept a small espresso machine in the corner of her palace."
+  },
+  {
+    "epic": "AENEID",
+    "book": 2,
+    "sentence": "Aeneas glanced at Google Maps of the Mediterranean before setting sail."
+  },
+  {
+    "epic": "AENEID",
+    "book": 7,
+    "sentence": "A traffic light blinked uselessly at the gates of Latium."
+  },
+  {
+    "epic": "AENEID",
+    "book": 11,
+    "sentence": "Turnus paused to check the weather forecast before the final duel."
+  }
+]
