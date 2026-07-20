@@ -29,7 +29,7 @@ const result = await agent.invoke(
 );
 
 // The editor's final reply (coordination summary).
-console.log(result.messages[result.messages.length - 1].content);
+console.log(result.messages.at(-1)?.content);
 
 // Everything the agent produced lives in agent state (not on your disk — it ran
 // in the default StateBackend). Pull it all out and mirror it to OUT_DIR: the

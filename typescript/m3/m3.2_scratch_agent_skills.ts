@@ -2,6 +2,7 @@
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { context } from "langchain";
 import { createDeepAgent, FilesystemBackend } from "deepagents";
 
 import { model } from "../models.js";
@@ -21,13 +22,13 @@ const result = await agent.invoke({
   messages: [
     {
       role: "user",
-      content:
-        "Qualify this lead: Acme Corp, 200-person logistics company. I spoke with " +
-        "Sarah Chen, VP of Sales: she's the decision maker. They have $45k budgeted " +
-        "for CRM this year. Main pain: deals are slipping through the cracks due to " +
-        "poor pipeline visibility. They want a solution live by end of Q3.",
+      content: context`
+        Qualify this lead: Acme Corp, 200-person logistics company. I spoke with
+        Sarah Chen, VP of Sales: she's the decision maker. They have $45k budgeted
+        for CRM this year. Main pain: deals are slipping through the cracks due to
+        poor pipeline visibility. They want a solution live by end of Q3.`,
     },
   ],
 });
 
-console.log(result.messages[result.messages.length - 1].content);
+console.log(result.messages.at(-1)?.content);

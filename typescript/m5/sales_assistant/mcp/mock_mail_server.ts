@@ -16,6 +16,7 @@ import { createServer } from "node:http";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { z } from "zod";
+import { context } from "langchain";
 
 import { loadStore, nextId, saveStore } from "./mail_store.js";
 
@@ -29,12 +30,12 @@ function buildServer(): McpServer {
   mcp.registerTool(
     "mail_list_messages",
     {
-      description:
-        "List messages in the inbox. Returns a summary (id, from, subject, " +
-        "date, snippet) for each message — not the full body. Use " +
-        "mail_read_message to open one. The optional query is a " +
-        "case-insensitive substring matched against the subject and sender, " +
-        "mostly to mirror Gmail's search box; leave it empty to list everything.",
+      description: context`
+        List messages in the inbox. Returns a summary (id, from, subject,
+        date, snippet) for each message — not the full body. Use
+        mail_read_message to open one. The optional query is a
+        case-insensitive substring matched against the subject and sender,
+        mostly to mirror Gmail's search box; leave it empty to list everything.`,
       inputSchema: { query: z.string().default("") },
     },
     async ({ query }) => {
@@ -70,11 +71,11 @@ function buildServer(): McpServer {
   mcp.registerTool(
     "mail_create_draft",
     {
-      description:
-        "Save a reply to the drafts folder. Does NOT send. Mirrors a real " +
-        "Gmail \"create draft\" call: the message is staged for the human to " +
-        "review and send later. In this course a human-in-the-loop gate runs " +
-        "before this tool, so a draft is only written after explicit approval.",
+      description: context`
+        Save a reply to the drafts folder. Does NOT send. Mirrors a real
+        Gmail "create draft" call: the message is staged for the human to
+        review and send later. In this course a human-in-the-loop gate runs
+        before this tool, so a draft is only written after explicit approval.`,
       inputSchema: { to: z.string(), subject: z.string(), body: z.string() },
     },
     async ({ to, subject, body }) => {

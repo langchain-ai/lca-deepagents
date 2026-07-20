@@ -13,16 +13,17 @@
  * and writes it to disk.
  */
 
+import { z } from "zod";
 import { marked } from "marked";
 import sanitizeHtml from "sanitize-html";
-import { TavilySearchAPIWrapper } from "@langchain/tavily";
-import { tool } from "@langchain/core/tools";
-import { z } from "zod";
+
+import { context, tool } from "langchain";
 import {
   createDeepAgent,
   type FilesystemPermission,
   type SubAgent,
 } from "deepagents";
+import { TavilySearchAPIWrapper } from "@langchain/tavily";
 
 import { model, strongModel } from "../models.js";
 
@@ -35,7 +36,7 @@ const tavilyApiKey = process.env.TAVILY_API_KEY;
 if (!tavilyApiKey) {
   throw new Error(
     "TAVILY_API_KEY is required for the Module 4.2 newsletter lab. " +
-      "Set it in your environment before running m4.2_run_newsletter.ts."
+    "Set it in your environment before running m4.2_run_newsletter.ts."
   );
 }
 
@@ -47,9 +48,9 @@ const internetSearch = tool(
   },
   {
     name: "internet_search",
-    description:
-      "Search the web for recent news. Use this to research what's new in a " +
-      "music genre — new releases, notable artists, trends, and events.",
+    description: context`
+      Search the web for recent news. Use this to research what's new in a
+      music genre — new releases, notable artists, trends, and events.`,
     schema: z.object({
       query: z.string(),
       maxResults: z.number().default(8),
@@ -92,9 +93,9 @@ const markdownToHtml = tool(
   },
   {
     name: "markdown_to_html",
-    description:
-      "Convert a Markdown newsletter into a complete, styled HTML page. " +
-      "Returns the full HTML document as a string.",
+    description: context`
+      Convert a Markdown newsletter into a complete, styled HTML page.
+      Returns the full HTML document as a string.`,
     schema: z.object({
       markdownText: z.string(),
       title: z.string().default("This Week in Music"),
@@ -103,27 +104,28 @@ const markdownToHtml = tool(
 );
 
 // --- The research subagent -------------------------------------------------
-const GENRE_PROMPT = `You are a music journalist researching one genre for an
-online music distributor's weekly newsletter.
+const GENRE_PROMPT = context`
+  You are a music journalist researching one genre for an
+  online music distributor's weekly newsletter.
 
-You will be given a single genre and an assigned research folder to work in.
+  You will be given a single genre and an assigned research folder to work in.
 
-How to work:
-1. Use internet_search to find recent, noteworthy developments in that genre
-   — new releases, notable artists, trends, or events. Run a few searches.
-2. Save the COMPLETE, verbatim output of ALL your searches to a single file:
-   write_file("/research/<genre>/sources.md", ...). Paste the results exactly
-   as the tool returned them — every result's title, URL, and full content
-   snippet. Do NOT summarize, trim, or reformat. This one file is your raw
-   archive: all the bulky material stays here so it never clutters the
-   editor's context.
-3. Only then, from what you found, write one tight newsletter segment.
+  How to work:
+  1. Use internet_search to find recent, noteworthy developments in that genre
+     — new releases, notable artists, trends, or events. Run a few searches.
+  2. Save the COMPLETE, verbatim output of ALL your searches to a single file:
+     write_file("/research/<genre>/sources.md", ...). Paste the results exactly
+     as the tool returned them — every result's title, URL, and full content
+     snippet. Do NOT summarize, trim, or reformat. This one file is your raw
+     archive: all the bulky material stays here so it never clutters the
+     editor's context.
+  3. Only then, from what you found, write one tight newsletter segment.
 
-Return ONLY the finished segment as your reply:
-- A markdown section: a "## <Genre>" heading followed by ~120-180 words.
-- Lively but factual newsletter tone; name specific artists and releases.
-- Do NOT paste raw search results or link dumps into your reply — those live
-  in your research files. Return just the polished segment.`;
+  Return ONLY the finished segment as your reply:
+  - A markdown section: a "## <Genre>" heading followed by ~120-180 words.
+  - Lively but factual newsletter tone; name specific artists and releases.
+  - Do NOT paste raw search results or link dumps into your reply — those live
+    in your research files. Return just the polished segment.`;
 
 // Researchers may write under /research/** and are denied writes elsewhere.
 const researchPermissions: FilesystemPermission[] = [
@@ -133,9 +135,9 @@ const researchPermissions: FilesystemPermission[] = [
 
 const genreResearcher: SubAgent = {
   name: "genre-researcher",
-  description:
-    "Research one music genre and write a short newsletter segment about " +
-    "what's new in it. Delegate one genre per call.",
+  description: context`
+    Research one music genre and write a short newsletter segment about
+    what's new in it. Delegate one genre per call.`,
   systemPrompt: GENRE_PROMPT, // its own brain — never inherited
   tools: [internetSearch], // override — replaces the inherited set
   model, // override — the cheaper Haiku 4.5
@@ -143,21 +145,22 @@ const genreResearcher: SubAgent = {
 };
 
 // --- The editor (main agent) -----------------------------------------------
-const EDITOR_PROMPT = `You are the editor of an online music distributor's weekly
-newsletter. This week you are featuring the distributor's top genres:
-${TOP_GENRES.join(", ")}.
+const EDITOR_PROMPT = context`
+  You are the editor of an online music distributor's weekly
+  newsletter. This week you are featuring the distributor's top genres:
+  ${TOP_GENRES.join(", ")}.
 
-Your job:
-1. For EACH genre, delegate to the genre-researcher subagent using the task
-   tool — fire them off in parallel. Tell each one which genre to cover and
-   which assigned folder to use (/research/<genre>/), and ask for one segment.
-2. Collect the four returned segments. Do NOT research genres yourself.
-3. Assemble them into one Markdown newsletter: a top-level "# This Week in
-   Music" title, a one-sentence intro, then the four "## <Genre>" sections.
-4. Call markdown_to_html on the assembled Markdown, then write_file the
-   returned HTML to /output/newsletter.html.
+  Your job:
+  1. For EACH genre, delegate to the genre-researcher subagent using the task
+     tool — fire them off in parallel. Tell each one which genre to cover and
+     which assigned folder to use (/research/<genre>/), and ask for one segment.
+  2. Collect the four returned segments. Do NOT research genres yourself.
+  3. Assemble them into one Markdown newsletter: a top-level "# This Week in
+     Music" title, a one-sentence intro, then the four "## <Genre>" sections.
+  4. Call markdown_to_html on the assembled Markdown, then write_file the
+     returned HTML to /output/newsletter.html.
 
-Keep your own context focused on coordination and assembly.`;
+  Keep your own context focused on coordination and assembly.`;
 
 // The editor uses the stronger shared model; the researcher overrides to the
 // cheaper `model` (Haiku 4.5) above. Both come from models.ts.

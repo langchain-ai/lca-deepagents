@@ -78,7 +78,7 @@ const result = await agent.invoke(
   demoConfig
 );
 console.log("--- Question 1 ---");
-console.log(result.messages[result.messages.length - 1].content);
+console.log(result.messages.at(-1)?.content);
 
 // Second invoke: agent writes to memory
 const result2 = await agent.invoke(

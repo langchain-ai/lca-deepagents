@@ -12,8 +12,8 @@
 //     npx tsx m3/m3.1_summarization.ts
 
 import { createDeepAgent } from "deepagents";
+import { HumanMessage } from "langchain";
 import { MemorySaver } from "@langchain/langgraph";
-import { HumanMessage } from "@langchain/core/messages";
 
 import { model } from "../models.js";
 
@@ -47,7 +47,7 @@ async function turn(message: string): Promise<unknown> {
     { messages: [new HumanMessage(message)] },
     THREAD
   );
-  return result.messages[result.messages.length - 1].content;
+  return result.messages.at(-1)?.content;
 }
 
 async function showState(): Promise<void> {
