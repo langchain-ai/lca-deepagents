@@ -297,31 +297,54 @@ pre .copy-button-inline:hover {
   background-color: rgba(127, 200, 255, 0.30);
 }
 
-/* ── Page-level language switch (page-switch: scope is the whole lesson) ── */
+/* ── Page-level language switch (page-switch: scope is the whole lesson) ──
+   Fixed full-width bar pinned to the top of the viewport, auto-hides on
+   scroll-down and reappears on scroll-up — matches the reliable-agents
+   LanguageSelector look exactly (colors, shape, layout included). Also acts
+   as the single global toggle — see sd-components.js — so it stays in sync
+   with any .code-tabs (block-switch) blocks on the same page. A JS-measured
+   spacer (inserted right after this element) reserves its height so content
+   doesn't jump when it goes fixed. */
 .page-lang-switch {
-  display: inline-flex;
-  gap: 18px;
-  margin: 0 0 28px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 1rem 0;
+  background: #ffffff;
+  border-bottom: 2px solid #e5e7eb;
+  border-radius: 0;
+  box-shadow: none;
+  transition: transform 0.3s ease-in-out;
+}
+
+.page-lang-switch.pls-hidden {
+  transform: translateY(-100%);
 }
 
 .page-lang-btn {
-  padding: 0 0 5px;
+  padding: 0.5rem 1.5rem;
   border: none;
-  border-bottom: 2px solid transparent;
-  background: transparent;
-  color: #40668D;
-  font: 500 12px 'IBM Plex Mono', monospace;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  border-radius: 8px;
+  background: #fafafa;
+  color: #6b7280;
+  font: 600 0.9375rem/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: normal;
+  text-transform: none;
   cursor: pointer;
-  transition: color 0.15s, border-color 0.15s;
+  transition: all 0.2s;
 }
 
-.page-lang-btn:hover { color: #006DDD; }
+.page-lang-btn:hover { color: #1f2937; }
 
 .page-lang-btn.active {
-  color: #006DDD;
-  border-bottom-color: #006DDD;
+  background: #d1d5db;
+  color: #1f2937;
 }
 
 /* ── Back to Top button ── */

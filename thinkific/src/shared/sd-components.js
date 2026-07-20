@@ -1,56 +1,87 @@
 // ── Page components ──────────────────────────────────────────────────────────
+// Global language state: one language choice drives everything on the page —
+// the page-level switch (data-page-lang-switch) AND every per-block code-tabs
+// (data-code-tabs) toggle move together. Persisted in localStorage so the
+// choice also carries across lessons.
 document.addEventListener('DOMContentLoaded', function () {
-  document.querySelectorAll('[data-code-tabs]').forEach(function (wrap) {
-    var tabs = wrap.querySelectorAll('[data-code-tab]');
-    var panels = wrap.querySelectorAll('[data-code-panel]');
+  var codeTabWraps = document.querySelectorAll('[data-code-tabs]');
+  var pageSwitchButtons = document.querySelectorAll('[data-page-lang-switch] [data-page-lang]');
 
-    function activate(lang) {
+  function setGlobalLang(lang) {
+    pageSwitchButtons.forEach(function (btn) {
+      var active = btn.getAttribute('data-page-lang') === lang;
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+
+    document.querySelectorAll('[data-lang]').forEach(function (el) {
+      el.hidden = el.getAttribute('data-lang') !== lang;
+    });
+
+    codeTabWraps.forEach(function (wrap) {
+      var tabs = wrap.querySelectorAll('[data-code-tab]');
+      var hasLang = Array.prototype.some.call(tabs, function (tab) {
+        return tab.getAttribute('data-code-tab') === lang;
+      });
+      if (!hasLang) return; // this block doesn't offer that language — leave it as-is
+
+      var panels = wrap.querySelectorAll('[data-code-panel]');
       tabs.forEach(function (tab) {
         var active = tab.getAttribute('data-code-tab') === lang;
         tab.classList.toggle('active', active);
         tab.setAttribute('aria-selected', active ? 'true' : 'false');
       });
-
       panels.forEach(function (panel) {
         panel.classList.toggle('active', panel.getAttribute('data-code-panel') === lang);
       });
-    }
+    });
 
+    try { localStorage.setItem('lca-page-lang', lang); } catch (e) {}
+  }
+
+  codeTabWraps.forEach(function (wrap) {
+    var tabs = wrap.querySelectorAll('[data-code-tab]');
     tabs.forEach(function (tab) {
       tab.addEventListener('click', function () {
-        activate(tab.getAttribute('data-code-tab'));
+        setGlobalLang(tab.getAttribute('data-code-tab'));
       });
     });
   });
 
-  // Page-level language switch (page-switch: scope is the whole lesson).
-  // Persisted in localStorage so the choice carries across lessons.
-  document.querySelectorAll('[data-page-lang-switch]').forEach(function (wrap) {
-    var buttons = wrap.querySelectorAll('[data-page-lang]');
-    if (!buttons.length) return;
-
-    function activate(lang) {
-      buttons.forEach(function (btn) {
-        var active = btn.getAttribute('data-page-lang') === lang;
-        btn.classList.toggle('active', active);
-        btn.setAttribute('aria-selected', active ? 'true' : 'false');
-      });
-      document.querySelectorAll('[data-lang]').forEach(function (el) {
-        el.hidden = el.getAttribute('data-lang') !== lang;
-      });
-      try { localStorage.setItem('lca-page-lang', lang); } catch (e) {}
-    }
-
-    buttons.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        activate(btn.getAttribute('data-page-lang'));
-      });
+  pageSwitchButtons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      setGlobalLang(btn.getAttribute('data-page-lang'));
     });
+  });
 
+  if (codeTabWraps.length || pageSwitchButtons.length) {
     var stored = null;
     try { stored = localStorage.getItem('lca-page-lang'); } catch (e) {}
-    activate(stored || buttons[0].getAttribute('data-page-lang'));
-  });
+    setGlobalLang(stored || 'python');
+  }
+
+  // Fixed page-lang-switch: reserve its height with a spacer (it's taken out
+  // of flow by position:fixed), then auto-hide on scroll-down, reappear on
+  // scroll-up.
+  var switchEl = document.querySelector('[data-page-lang-switch]');
+  if (switchEl) {
+    var spacer = document.createElement('div');
+    switchEl.parentNode.insertBefore(spacer, switchEl.nextSibling);
+    function syncSpacerHeight() { spacer.style.height = switchEl.offsetHeight + 'px'; }
+    syncSpacerHeight();
+    window.addEventListener('resize', syncSpacerHeight);
+
+    var lastScrollY = window.scrollY;
+    window.addEventListener('scroll', function () {
+      var currentScrollY = window.scrollY;
+      if (currentScrollY < lastScrollY || currentScrollY < 10) {
+        switchEl.classList.remove('pls-hidden');
+      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        switchEl.classList.add('pls-hidden');
+      }
+      lastScrollY = currentScrollY;
+    }, { passive: true });
+  }
 
   var panel = document.querySelector('.lt-panel');
   if (!panel) return;
