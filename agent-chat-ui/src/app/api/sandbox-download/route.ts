@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { SandboxClient } from "langsmith/sandbox";
+import { SandboxClient, LangSmithSandboxNotReadyError } from "langsmith/sandbox";
 
 // Non-agentic extraction: reads a file straight out of a thread's sandbox
 // via the sandbox SDK's dataplane, with no LLM tool call involved.
@@ -29,6 +29,35 @@ function isSafeOutputPath(path: string): boolean {
   return OUTPUT_PATH_RE.test(path);
 }
 
+// The platform auto-resumes a stopped sandbox on the first dataplane
+// request, but a request that lands before it's ready throws
+// LangSmithSandboxNotReadyError rather than blocking until ready — so a
+// stopped sandbox needs a couple of retries here, not a restart call.
+const READ_RETRY_ATTEMPTS = 3;
+const READ_RETRY_DELAY_MS = 1500;
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function readWithRetry(
+  sandbox: Awaited<ReturnType<SandboxClient["getSandbox"]>>,
+  path: string,
+): Promise<Uint8Array> {
+  for (let attempt = 1; attempt <= READ_RETRY_ATTEMPTS; attempt++) {
+    try {
+      return await sandbox.read(path);
+    } catch (error) {
+      const isLastAttempt = attempt === READ_RETRY_ATTEMPTS;
+      if (!(error instanceof LangSmithSandboxNotReadyError) || isLastAttempt) {
+        throw error;
+      }
+      await sleep(READ_RETRY_DELAY_MS);
+    }
+  }
+  throw new Error("unreachable");
+}
+
 export async function GET(request: NextRequest) {
   const threadId = request.nextUrl.searchParams.get("threadId");
   const path = request.nextUrl.searchParams.get("path");
@@ -44,7 +73,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const sandbox = await client.getSandbox(`thread-${threadId}`);
-    const content = await sandbox.read(path);
+    const content = await readWithRetry(sandbox, path);
     const extension = path.split(".").pop()?.toLowerCase() ?? "";
     const filename = path.split("/").pop() ?? "download";
 
@@ -55,6 +84,12 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
+    if (error instanceof LangSmithSandboxNotReadyError) {
+      return NextResponse.json(
+        { error: "Sandbox is starting, please try again in a moment." },
+        { status: 503 },
+      );
+    }
     return NextResponse.json(
       { error: "File not found" },
       { status: 404 },
