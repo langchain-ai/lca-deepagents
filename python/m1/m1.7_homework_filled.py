@@ -21,6 +21,8 @@ agent = create_deep_agent(
 thread_a = {"configurable": {"thread_id": "m1-7-homework-thread-a"}}
 thread_b = {"configurable": {"thread_id": "m1-7-homework-thread-b"}}
 
+FACT_QUESTION = "What's my iguana's name and what does he eat?"
+
 
 # TODO 2 filled in
 def run_scenario():
@@ -32,18 +34,33 @@ def run_scenario():
     print(result["messages"][-1].content)
 
     result = agent.invoke(
-        {"messages": [{"role": "user", "content": "What's my iguana's name and what does he eat?"}]},
+        {"messages": [{"role": "user", "content": FACT_QUESTION}]},
         config=thread_a,
     )
     print("\nThread A, turn 2 (same thread, should remember Steve):")
     print(result["messages"][-1].content)
 
     result = agent.invoke(
-        {"messages": [{"role": "user", "content": "What's my iguana's name and what does he eat?"}]},
+        {"messages": [{"role": "user", "content": FACT_QUESTION}]},
         config=thread_b,
     )
     print("\nThread B, turn 1 (different thread, should NOT know):")
     print(result["messages"][-1].content)
+
+    # A brand-new agent with its own fresh MemorySaver has no history to
+    # load, even reused on thread_a's exact thread_id.
+    fresh_agent = create_deep_agent(model=model, checkpointer=MemorySaver())
+    result = fresh_agent.invoke(
+        {"messages": [{"role": "user", "content": FACT_QUESTION}]},
+        config=thread_a,
+    )
+    print("\nFresh agent, thread_a's thread_id (should NOT know):")
+    print(result["messages"][-1].content)
+    print(
+        "Same thread_id, but a different MemorySaver instance has no record "
+        "of it: persistence is scoped to the checkpointer, not the thread_id "
+        "string alone."
+    )
 
 
 run_scenario()

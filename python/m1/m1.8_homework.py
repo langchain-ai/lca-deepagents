@@ -79,6 +79,11 @@ SYSTEM_PROMPT = "TODO 2: replace this with your own system prompt."
 INITIAL_REQUEST = "TODO 2: replace this with a request that would trigger your tool."
 INTERRUPT_ON = {"your_action_tool": True}  # TODO 2: replace with your own allowed_decisions config
 
+if "TODO 1" in your_action_tool.description:
+    raise NotImplementedError("TODO 1: see the comment block above")
+if "TODO 2" in SYSTEM_PROMPT or "TODO 2" in INITIAL_REQUEST:
+    raise NotImplementedError("TODO 2: see the comment block above")
+
 agent = create_deep_agent(
     model=model,
     tools=[your_action_tool],

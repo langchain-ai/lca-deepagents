@@ -24,10 +24,13 @@ SYSTEM_PROMPT = (
 )
 
 # TODO 2 filled in
-TASK = (
-    "Write a Python script that simulates rolling two six-sided dice "
-    "10,000 times, save it to dice_sim.py, and run it. Report the "
-    "distribution of sums from 2 to 12 and which sum came up most often."
+TASK_ONE = (
+    "Write a Python script that generates 20 random integers between 1 "
+    "and 100, saves them to numbers.json, and prints the list."
+)
+TASK_TWO = (
+    "Read numbers.json (don't regenerate the numbers) and write a second "
+    "script that loads it and prints the mean and max of those numbers."
 )
 
 agent = create_deep_agent(
@@ -37,7 +40,12 @@ agent = create_deep_agent(
 )
 
 try:
-    result = agent.invoke({"messages": [{"role": "user", "content": TASK}]})
+    result = agent.invoke({"messages": [{"role": "user", "content": TASK_ONE}]})
+    print("--- Task 1 ---")
+    print(result["messages"][-1].content)
+
+    result = agent.invoke({"messages": [{"role": "user", "content": TASK_TWO}]})
+    print("\n--- Task 2 (same sandbox, should see Task 1's file) ---")
     print(result["messages"][-1].content)
 finally:
     client.delete_sandbox(ls_sandbox.name)

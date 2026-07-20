@@ -4,10 +4,10 @@
 THE IDEA
 Lab 1 wired up a sandboxed coding assistant for one fixed task: writing
 and running a Fibonacci script. This homework asks you to pick your own
-small task for the sandbox to run: any code or shell command you want the
-agent to write, save, and execute safely inside the LangSmith sandbox
-instead of on your machine. There's no single right task here, that's the
-point. Two students doing this homework could end up with completely
+PAIR of tasks for the SAME sandbox to run, one after another, so you can
+see that the sandbox's filesystem sticks around between invoke() calls
+instead of resetting each time. There's no single right task here, that's
+the point. Two students doing this homework could end up with completely
 different scripts.
 
 WHAT YOU FILL IN
@@ -15,9 +15,11 @@ WHAT YOU FILL IN
     you want (a persona, a set of working rules, whatever you like), the
     same way the lab's system prompt told the agent to write a file
     before executing it.
-  TODO 2: write the user message describing YOUR task: any code or shell
-    command you want the agent to write, save, and run inside the
-    sandbox.
+  TODO 2: write TWO task messages for the same agent/sandbox. TASK_ONE
+    should have the agent write and run code that saves a file. TASK_TWO
+    must depend on that file already being there (read it, extend it,
+    reuse a value from it) WITHOUT recreating it, so TASK_TWO only
+    succeeds if the sandbox actually kept TASK_ONE's state around.
 
 RUN
   cd python
@@ -50,18 +52,23 @@ SYSTEM_PROMPT = None  # TODO 1: replace with your own system prompt
 
 
 # ════════════════════════════════════════════════════════════════════════
-# TODO 2: Write your own task.
+# TODO 2: Write two tasks that share the sandbox's state.
 #
-# Pick any code or shell command you want the agent to write, save to a
-# file, and execute inside the sandbox. It can be Python, a shell
-# one-liner, anything the sandbox can run.
+# TASK_ONE: any code you want the agent to write, save to a file, and run.
+# TASK_TWO: a SEPARATE request, sent afterward to the same agent, that
+#   only makes sense if TASK_ONE's file is still there (e.g. "read the
+#   file you just made and compute the average of the numbers in it"
+#   rather than "make a new list of numbers and average those"). Don't
+#   have TASK_TWO regenerate the data itself, that would work even
+#   without a persistent sandbox and wouldn't prove anything.
 # ════════════════════════════════════════════════════════════════════════
 
-TASK = None  # TODO 2: replace with your own task message
+TASK_ONE = None  # TODO 2: replace with your first task message
+TASK_TWO = None  # TODO 2: replace with a second task that reuses TASK_ONE's file
 
 if SYSTEM_PROMPT is None:
     raise NotImplementedError("TODO 1: see the comment block above")
-if TASK is None:
+if TASK_ONE is None or TASK_TWO is None:
     raise NotImplementedError("TODO 2: see the comment block above")
 
 agent = create_deep_agent(
@@ -71,7 +78,12 @@ agent = create_deep_agent(
 )
 
 try:
-    result = agent.invoke({"messages": [{"role": "user", "content": TASK}]})
+    result = agent.invoke({"messages": [{"role": "user", "content": TASK_ONE}]})
+    print("--- Task 1 ---")
+    print(result["messages"][-1].content)
+
+    result = agent.invoke({"messages": [{"role": "user", "content": TASK_TWO}]})
+    print("\n--- Task 2 (same sandbox, should see Task 1's file) ---")
     print(result["messages"][-1].content)
 finally:
     client.delete_sandbox(ls_sandbox.name)

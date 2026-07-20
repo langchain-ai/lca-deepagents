@@ -67,6 +67,10 @@ def your_custom_tool(query: str) -> str:
 
 SYSTEM_PROMPT = """TODO 2: replace this with your own system prompt."""
 
+if "TODO 1" in your_custom_tool.description:
+    raise NotImplementedError("TODO 1: see the comment block above")
+if "TODO 2" in SYSTEM_PROMPT:
+    raise NotImplementedError("TODO 2: see the comment block above")
 
 agent = create_deep_agent(
     model=model,

@@ -5,17 +5,20 @@ THE IDEA
 The lab used one topic (favorite color) across two threads to show that
 thread_a remembers it and thread_b doesn't. This homework asks you to
 design your own multi-turn scenario, on a topic of your own choosing, and
-prove the same two things: that state persists within a thread across
-separate invoke() calls, and that a different thread_id starts with no
-memory of it. There's no single correct topic here: a recipe, a project
-deadline, a game character's backstory, anything you want the agent to
-remember.
+prove three things: that state persists within a thread across separate
+invoke() calls, that a different thread_id starts with no memory of it,
+AND that this persistence lives in the MemorySaver instance rather than
+the thread_id string itself, by asking a brand-new agent with its own
+fresh MemorySaver the same question on thread_a's thread_id. There's no
+single correct topic here: a recipe, a project deadline, a game
+character's backstory, anything you want the agent to remember.
 
 WHAT YOU FILL IN
   TODO 1: pick your own topic/fact for the agent to remember, and set up
     two or more of your own thread configs (different thread_ids).
   TODO 2: run the turns that demonstrate persistence (same thread
-    remembers) and isolation (a different thread doesn't).
+    remembers), isolation (a different thread doesn't), and checkpointer
+    scope (a fresh MemorySaver on the same thread_id doesn't either).
 
 RUN
   cd python
@@ -52,7 +55,8 @@ thread_b = None  # TODO 1: replace with your own thread config
 
 
 # ════════════════════════════════════════════════════════════════════════
-# TODO 2: Run the turns that demonstrate persistence and isolation.
+# TODO 2: Run the turns that demonstrate persistence, isolation, and
+# checkpointer scope.
 #
 # Requirements:
 #   - In thread_a, send at least two turns: one that gives the agent your
@@ -60,6 +64,11 @@ thread_b = None  # TODO 1: replace with your own thread config
 #   - In thread_b (a different thread_id), ask the same follow-up
 #     question with no prior context, and print the response. It should
 #     NOT know the fact from thread_a.
+#   - Build a SECOND agent with its own fresh MemorySaver(), and invoke it
+#     on thread_a's thread_id, asking the same follow-up question. Print
+#     the response and a line explaining why it doesn't know the fact
+#     even though the thread_id matches: memory lives in the MemorySaver
+#     instance, not in the thread_id string alone.
 # ════════════════════════════════════════════════════════════════════════
 
 def run_scenario():
