@@ -16,18 +16,18 @@ let result = await agent.invoke(
   threadA
 );
 console.log("Thread A, turn 1:");
-console.log(result.messages[result.messages.length - 1].content);
+console.log(result.messages.at(-1)?.content);
 
 result = await agent.invoke(
   { messages: [{ role: "user", content: "What is my favorite color?" }] },
   threadA
 );
 console.log("\nThread A, turn 2:");
-console.log(result.messages[result.messages.length - 1].content);
+console.log(result.messages.at(-1)?.content);
 
 result = await agent.invoke(
   { messages: [{ role: "user", content: "What is my favorite color?" }] },
   threadB
 );
 console.log("\nThread B, turn 1:");
-console.log(result.messages[result.messages.length - 1].content);
+console.log(result.messages.at(-1)?.content);

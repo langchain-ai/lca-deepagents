@@ -21,8 +21,8 @@ import { DatabaseSync } from "node:sqlite";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { tool } from "@langchain/core/tools";
 import { z } from "zod";
+import { context, tool } from "langchain";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 // The database ships with the agent under data/.
@@ -66,12 +66,12 @@ export const queryChinook = tool(
   },
   {
     name: "query_chinook",
-    description:
-      "Run a read-only SQL SELECT against the Chinook database. Returns a " +
-      "JSON array of row objects. Only a single SELECT statement is allowed " +
-      "— any attempt to modify the database is rejected. Use this for all " +
-      "lookups: catalogue prices, a customer's purchase history, territory " +
-      "metrics, and so on.",
+    description: context`
+      Run a read-only SQL SELECT against the Chinook database. Returns a
+      JSON array of row objects. Only a single SELECT statement is allowed
+      — any attempt to modify the database is rejected. Use this for all
+      lookups: catalogue prices, a customer's purchase history, territory
+      metrics, and so on.`,
     schema: z.object({ sql: z.string() }),
   }
 );
@@ -96,10 +96,10 @@ export const introspectSchema = tool(
   },
   {
     name: "introspect_schema",
-    description:
-      "Return the full database schema (CREATE statements for every table). " +
-      "Call this once to learn the schema, then record it in your memory so " +
-      "you don't have to rediscover it on every task.",
+    description: context`
+      Return the full database schema (CREATE statements for every table).
+      Call this once to learn the schema, then record it in your memory so
+      you don't have to rediscover it on every task.`,
     schema: z.object({}),
   }
 );
@@ -172,11 +172,11 @@ export const addCustomer = tool(
   },
   {
     name: "add_customer",
-    description:
-      "Add a NEW customer to the database, assigned to the current sales " +
-      "rep. Use this only after confirming the customer is not already in " +
-      "the system (search by email or name first). A human approves this " +
-      "write before it runs. Returns the new CustomerId on success.",
+    description: context`
+      Add a NEW customer to the database, assigned to the current sales
+      rep. Use this only after confirming the customer is not already in
+      the system (search by email or name first). A human approves this
+      write before it runs. Returns the new CustomerId on success.`,
     schema: z.object({
       firstName: z.string(),
       lastName: z.string(),

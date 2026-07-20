@@ -18,4 +18,4 @@ const result = await agent.invoke({
   ],
 });
 
-console.log(result.messages[result.messages.length - 1].content);
+console.log(result.messages.at(-1)?.content);

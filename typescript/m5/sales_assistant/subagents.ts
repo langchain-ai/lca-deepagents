@@ -21,14 +21,17 @@
  * `mail_create_draft` and `add_customer` solely on gated specialists means the
  * only path to either write runs through its human-approval gate.
  */
-import type { StructuredTool } from "@langchain/core/tools";
 import {
   type AnyBackendProtocol,
   type FilesystemPermission,
   type SubAgent,
   createMemoryMiddleware,
 } from "deepagents";
-import type { InterruptOnConfig } from "langchain";
+import {
+  context,
+  type InterruptOnConfig,
+  type StructuredTool,
+} from "langchain";
 
 import { model, strongModel } from "../../models.js";
 import { internetSearch } from "./tools/search.js";
@@ -39,65 +42,69 @@ const APPROVE_EDIT_REJECT: InterruptOnConfig = {
   allowedDecisions: ["approve", "edit", "reject"],
 };
 
-const ANALYST_PROMPT = `You are the chinook-analyst, the data specialist for the \
-Chinook Sales Assistant. You are the only agent that touches the database.
+const ANALYST_PROMPT = context`
+  You are the chinook-analyst, the data specialist for the
+  Chinook Sales Assistant. You are the only agent that touches the database.
 
-Detailed operating instructions and the database schema live in your memory \
-(loaded automatically). Follow them. In short: answer with exact figures from \
-\`query_chinook\`, learn the schema once with \`introspect_schema\` and record it \
-in your memory, and use \`add_customer\` only when asked to add a genuinely new \
-customer (a human approves that write).`;
+  Detailed operating instructions and the database schema live in your memory
+  (loaded automatically). Follow them. In short: answer with exact figures from
+  \`query_chinook\`, learn the schema once with \`introspect_schema\` and record it
+  in your memory, and use \`add_customer\` only when asked to add a genuinely new
+  customer (a human approves that write).`;
 
-const INBOX_PROMPT = `You are the inbox-manager, the email specialist for the \
-Chinook Sales Assistant. You own Jane's inbox and are the only agent that \
-touches it.
+const INBOX_PROMPT = context`
+  You are the inbox-manager, the email specialist for the
+  Chinook Sales Assistant. You own Jane's inbox and are the only agent that
+  touches it.
 
-Your tools (MCP, prefixed with the server name "mail"):
-- \`mail_list_messages\` — list inbox messages (optionally filtered by a query).
-- \`mail_read_message\` — read one message in full by id.
-- \`mail_create_draft\` — save a reply to the drafts folder. It NEVER sends.
+  Your tools (MCP, prefixed with the server name "mail"):
+  - \`mail_list_messages\` — list inbox messages (optionally filtered by a query).
+  - \`mail_read_message\` — read one message in full by id.
+  - \`mail_create_draft\` — save a reply to the drafts folder. It NEVER sends.
 
-When asked to find or read mail, return a tight summary the caller can act on \
-(sender, subject, and the key content) — not the raw dump.
+  When asked to find or read mail, return a tight summary the caller can act on
+  (sender, subject, and the key content) — not the raw dump.
 
-When asked to save a draft, just call \`mail_create_draft\` with the given \
-recipient, subject, and body. Saving a draft pauses automatically for Jane to \
-approve, edit, or reject — that pause IS the approval, so don't ask for \
-permission in prose first; make the call. Never invent a send tool; you only \
-ever create drafts.`;
+  When asked to save a draft, just call \`mail_create_draft\` with the given
+  recipient, subject, and body. Saving a draft pauses automatically for Jane to
+  approve, edit, or reject — that pause IS the approval, so don't ask for
+  permission in prose first; make the call. Never invent a send tool; you only
+  ever create drafts.`;
 
-const REVIEWER_PROMPT = `You are the quote-reviewer. You receive a drafted quote — \
-line items (description, quantity, unit price, line total), any discount, and \
-the grand total — and you check it before it goes to the customer.
+const REVIEWER_PROMPT = context`
+  You are the quote-reviewer. You receive a drafted quote —
+  line items (description, quantity, unit price, line total), any discount, and
+  the grand total — and you check it before it goes to the customer.
 
-Verify:
-- The arithmetic: quantity x unit price for each line, and the grand total.
-- Internal consistency: any stated discount is actually applied; nothing is \
-double-counted or missing.
-- Plausibility: unit prices look like catalogue prices (tracks are normally \
-about $0.99); totals aren't off by an order of magnitude.
+  Verify:
+  - The arithmetic: quantity x unit price for each line, and the grand total.
+  - Internal consistency: any stated discount is actually applied; nothing is
+    double-counted or missing.
+  - Plausibility: unit prices look like catalogue prices (tracks are normally
+    about $0.99); totals aren't off by an order of magnitude.
 
-Reply concisely: either "Looks correct" with a one-line confirmation, or a \
-short list of specific corrections. Do not rewrite the customer email — just \
-review the numbers and terms.`;
+  Reply concisely: either "Looks correct" with a one-line confirmation, or a
+  short list of specific corrections. Do not rewrite the customer email — just
+  review the numbers and terms.`;
 
-const GENRE_PROMPT = `You are a music journalist researching one genre for an \
-online music distributor's weekly newsletter.
+const GENRE_PROMPT = context`
+  You are a music journalist researching one genre for an
+  online music distributor's weekly newsletter.
 
-You will be given a single genre and a private research folder to work in.
+  You will be given a single genre and a private research folder to work in.
 
-How to work:
-1. Use internet_search to find recent, noteworthy developments in that genre \
-   — new releases, notable artists, trends, or events. Run a few searches.
-2. Save the COMPLETE, verbatim output of ALL your searches to a single file: \
-   write_file("/research/<genre>/sources.md", ...). Do NOT summarize or trim. \
-   This keeps the bulky material out of the editor's context.
-3. Only then, from what you found, write one tight newsletter segment.
+  How to work:
+  1. Use internet_search to find recent, noteworthy developments in that genre
+     — new releases, notable artists, trends, or events. Run a few searches.
+  2. Save the COMPLETE, verbatim output of ALL your searches to a single file:
+     write_file("/research/<genre>/sources.md", ...). Do NOT summarize or trim.
+     This keeps the bulky material out of the editor's context.
+  3. Only then, from what you found, write one tight newsletter segment.
 
-Return ONLY the finished segment as your reply:
-- A markdown section: a "## <Genre>" heading followed by ~120-180 words.
-- Lively but factual; name specific artists and releases.
-- Do NOT paste raw search results into your reply — those live in your files.`;
+  Return ONLY the finished segment as your reply:
+  - A markdown section: a "## <Genre>" heading followed by ~120-180 words.
+  - Lively but factual; name specific artists and releases.
+  - Do NOT paste raw search results into your reply — those live in your files.`;
 
 export interface BuildSubagentsOptions {
   enableSearch: boolean;
@@ -111,10 +118,10 @@ export function buildSubagents(
 ): SubAgent[] {
   const chinookAnalyst: SubAgent = {
     name: "chinook-analyst",
-    description:
-      "Query the Chinook database for catalogue prices, customer records, " +
-      "purchase history, and territory metrics, and add new customers " +
-      "(with approval). Delegate all database work here.",
+    description: context`
+      Query the Chinook database for catalogue prices, customer records,
+      purchase history, and territory metrics, and add new customers
+      (with approval). Delegate all database work here.`,
     systemPrompt: ANALYST_PROMPT,
     tools: [queryChinook, introspectSchema, addCustomer],
     model,
@@ -132,19 +139,19 @@ export function buildSubagents(
 
   const quoteReviewer: SubAgent = {
     name: "quote-reviewer",
-    description:
-      "Review a drafted quote (line items, discount, total) for correct " +
-      "arithmetic and sane pricing before it is sent. Send it the numbers.",
+    description: context`
+      Review a drafted quote (line items, discount, total) for correct
+      arithmetic and sane pricing before it is sent. Send it the numbers.`,
     systemPrompt: REVIEWER_PROMPT,
     model: strongModel,
   };
 
   const inboxManager: SubAgent = {
     name: "inbox-manager",
-    description:
-      "Read Jane's inbox and save reply drafts. Delegate any " +
-      "email work here: finding/reading messages and creating a " +
-      "draft reply (which pauses for Jane's approval).",
+    description: context`
+      Read Jane's inbox and save reply drafts. Delegate any
+      email work here: finding/reading messages and creating a
+      draft reply (which pauses for Jane's approval).`,
     systemPrompt: INBOX_PROMPT,
     tools: mailTools,
     model,
@@ -161,9 +168,9 @@ export function buildSubagents(
 
     const genreResearcher: SubAgent = {
       name: "genre-researcher",
-      description:
-        "Research one music genre and write a short newsletter segment " +
-        "about what's new in it. Delegate one genre per call.",
+      description: context`
+        Research one music genre and write a short newsletter segment
+        about what's new in it. Delegate one genre per call.`,
       systemPrompt: GENRE_PROMPT,
       tools: [internetSearch],
       model,

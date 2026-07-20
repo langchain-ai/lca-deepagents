@@ -3,6 +3,7 @@ import { dirname, join } from "node:path";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
+import { context } from "langchain";
 import {
   CompositeBackend,
   FilesystemBackend,
@@ -59,15 +60,15 @@ try {
       messages: [
         {
           role: "user",
-          content:
-            "Read /reference/chinook-sales.md, then add this note to it: " +
-            "'Current promotion: 20% off all Jazz albums through end of month.'",
+          content: context`
+            Read /reference/chinook-sales.md, then add this note to it:
+            'Current promotion: 20% off all Jazz albums through end of month.'`,
         },
       ],
     },
     { configurable: { thread_id: "lab-m2.2" } }
   );
-  console.log(result.messages[result.messages.length - 1].content);
+  console.log(result.messages.at(-1)?.content);
 } catch (e) {
   const err = e instanceof Error ? e : new Error(String(e));
   const cause = err.cause instanceof Error ? err.cause : undefined;

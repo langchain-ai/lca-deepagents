@@ -1,9 +1,8 @@
 import { createInterface } from "node:readline/promises";
-import { tool } from "@langchain/core/tools";
-import { isToolMessage } from "@langchain/core/messages";
 import { z } from "zod";
-import { MemorySaver } from "@langchain/langgraph";
-import { Command, INTERRUPT, isInterrupted } from "@langchain/langgraph";
+
+import { tool, ToolMessage } from "langchain";
+import { Command, INTERRUPT, isInterrupted, MemorySaver } from "@langchain/langgraph";
 import { createDeepAgent } from "deepagents";
 
 import { model } from "../models.js";
@@ -97,7 +96,7 @@ while (isInterrupted<ApprovalRequest>(result) && result[INTERRUPT].length) {
 
 rl.close();
 for (const msg of result.messages) {
-  if (isToolMessage(msg) && msg.name === "send_email") {
+  if (ToolMessage.isInstance(msg) && msg.name === "send_email") {
     console.log(msg.content);
     break;
   }

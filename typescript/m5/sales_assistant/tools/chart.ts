@@ -16,8 +16,8 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { createCanvas } from "canvas";
-import { tool } from "@langchain/core/tools";
 import { z } from "zod";
+import { context, tool } from "langchain";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUTPUTS_DIR = join(__dirname, "..", "outputs");
@@ -112,13 +112,13 @@ export const renderPieChart = tool(
   },
   {
     name: "render_pie_chart",
-    description:
-      "Render a labeled pie chart and save it as a PNG in outputs/. " +
-      "Args: title (chart title), labels (one per slice, e.g. genre names), " +
-      "values (one numeric value per label, same length as labels), " +
-      "filename (e.g. \"territory_chart.png\" — any directory components are " +
-      "stripped and the extension is forced to .png; the file is always " +
-      "saved into outputs/).",
+    description: context`
+      Render a labeled pie chart and save it as a PNG in outputs/.
+      Args: title (chart title), labels (one per slice, e.g. genre names),
+      values (one numeric value per label, same length as labels),
+      filename (e.g. "territory_chart.png" — any directory components are
+      stripped and the extension is forced to .png; the file is always
+      saved into outputs/).`,
     schema: z.object({
       title: z.string(),
       labels: z.array(z.string()),
