@@ -12,7 +12,7 @@ const backend = new FilesystemBackend({ rootDir: m3Dir, virtualMode: true });
 
 const agent = createDeepAgent({
   model,
-  name: "Sales Assistant",
+  name: "Sales_Assistant",
   backend,
   skills: ["/skills"],
   systemPrompt: "You are a sales assistant.",

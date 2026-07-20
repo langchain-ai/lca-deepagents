@@ -13,7 +13,7 @@ SYSTEM_PROMPT = (
 agent = create_deep_agent(
     model=model,
     system_prompt=SYSTEM_PROMPT,
-    name="Butler Agent",
+    name="butler_agent",
 )
 
 result = agent.invoke({"messages": [{"role": "user", "content": "What is an LLM?"}]})

@@ -1,0 +1,39 @@
+<svg width="1040" height="600" viewBox="0 0 1040 600" xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="1040" height="600" fill="#030710" rx="10"/>
+  <text x="520" y="34" text-anchor="middle" font-size="18" font-weight="500" fill="#F2FAFF">Sandboxes Isolate Code Execution</text>
+  <text x="520" y="54" text-anchor="middle" font-size="12" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Step 4 of 6 &#183; Code calls the proxy, not the API</text>
+
+  <rect x="40" y="80" width="380" height="460" rx="12" fill="none" stroke="#2F4B68" stroke-width="1.5"/>
+  <text x="60" y="108" font-size="15" fill="#7FC8FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Host</text>
+
+  <rect x="460" y="80" width="380" height="460" rx="12" fill="none" stroke="#2F4B68" stroke-width="1.5"/>
+  <text x="480" y="108" font-size="15" fill="#7FC8FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Sandbox</text>
+
+  <rect x="70" y="150" width="320" height="76" rx="6" fill="#1D6FE0"/>
+  <text x="230" y="194" text-anchor="middle" font-size="17" fill="#F2FAFF">Agent</text>
+
+  <rect x="490" y="150" width="320" height="76" rx="6" fill="#3A4A63"/>
+  <text x="650" y="188" text-anchor="middle" font-size="17" fill="#F2FAFF">Sandboxed code</text>
+  <text x="650" y="207" text-anchor="middle" font-size="12" fill="#8CA3C2" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">(no credentials)</text>
+
+  <rect x="484" y="398" width="332" height="88" rx="9" fill="none" stroke="#FFD166" stroke-width="2" stroke-dasharray="5,4"/>
+  <rect x="490" y="404" width="320" height="76" rx="6" fill="#8FCBFF"/>
+  <text x="650" y="442" text-anchor="middle" font-size="17" fill="#030710">Auth proxy</text>
+  <text x="650" y="461" text-anchor="middle" font-size="12" fill="#0B3A5E" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">(no secret yet)</text>
+
+  <rect x="880" y="404" width="140" height="76" rx="6" fill="#5B6B1E" stroke="#A8C020" stroke-width="1.5"/>
+  <text x="950" y="442" text-anchor="middle" font-size="17" fill="#F2FAFF">External API</text>
+  <text x="950" y="461" text-anchor="middle" font-size="10" fill="#DDE9B0" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">(third-party API)</text>
+
+  <defs>
+    <marker id="arr1" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
+      <polygon points="0 0, 9 3.5, 0 7" fill="#7FC8FF"/>
+    </marker>
+  </defs>
+
+  <line x1="390" y1="188" x2="486" y2="188" stroke="#7FC8FF" stroke-width="2" marker-end="url(#arr1)"/>
+  <text x="438" y="176" text-anchor="middle" font-size="14" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">spawn</text>
+
+  <line x1="650" y1="226" x2="650" y2="400" stroke="#7FC8FF" stroke-width="2" marker-end="url(#arr1)"/>
+  <text x="700" y="318" text-anchor="middle" font-size="14" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">request</text>
+</svg>

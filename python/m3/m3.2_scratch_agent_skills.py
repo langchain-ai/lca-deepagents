@@ -10,7 +10,7 @@ backend = FilesystemBackend(root_dir=str(m3_dir), virtual_mode=True)
 
 agent = create_deep_agent(
     model=model,
-    name="Sales Assistant",
+    name="Sales_Assistant",
     backend=backend,
     skills=["/skills"],
     system_prompt="You are a sales assistant.",

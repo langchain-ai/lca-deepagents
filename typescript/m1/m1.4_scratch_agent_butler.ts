@@ -13,7 +13,7 @@ const SYSTEM_PROMPT = context`
 const agent = createDeepAgent({
   model,
   systemPrompt: SYSTEM_PROMPT,
-  name: "Butler Agent",
+  name: "butler_agent",
 });
 
 const result = await agent.invoke({

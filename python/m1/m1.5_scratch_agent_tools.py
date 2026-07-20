@@ -33,7 +33,7 @@ def read_sql(query: str) -> str:
 
 agent = create_deep_agent(
     model=model,
-    name="SQL Agent",
+    name="SQL_Agent",
     tools=[read_sql],
     system_prompt=SYSTEM_PROMPT,
 )

@@ -9,6 +9,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@inquirer/prompts": "^8.0.0",
     "@langchain/anthropic": "latest",
     "@langchain/core": "^1.0.0",
     "@langchain/langgraph": "^1.0.0",

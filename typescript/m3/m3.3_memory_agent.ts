@@ -57,7 +57,7 @@ await store.put(
 
 const agent = createDeepAgent({
   model,
-  name: "Memory Agent",
+  name: "Memory_Agent",
   backend: new CompositeBackend(new StateBackend(), {
     "/memories/": new StoreBackend({ namespace: memoryNamespace }),
   }),

@@ -44,7 +44,7 @@ store.put(
 
 agent = create_deep_agent(
     model=model,
-    name="Memory Agent",
+    name="Memory_Agent",
     backend=CompositeBackend(
         default=StateBackend(),
         routes={"/memories/": StoreBackend(namespace=memory_namespace)},

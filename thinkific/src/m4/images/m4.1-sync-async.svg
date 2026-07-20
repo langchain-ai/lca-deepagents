@@ -42,7 +42,7 @@
   <line x1="408" y1="300" x2="695" y2="300" stroke="#2F4B68" stroke-width="1"/>
   <text x="695" y="316" text-anchor="end" font-size="8" fill="#5BADDF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">time →</text>
   <line x1="468" y1="118" x2="468" y2="300" stroke="#40668D" stroke-width="1" stroke-dasharray="3 3"/>
-  <text x="468" y="132" text-anchor="middle" font-size="8" fill="#B2DEFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">launch → job_id</text>
+  <text x="468" y="132" text-anchor="middle" font-size="8" fill="#B2DEFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">launch</text>
 
   <!-- main agent lane: never blocks -->
   <text x="404" y="155" text-anchor="end" font-size="8.5" fill="#CCE9FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">main</text>
@@ -57,10 +57,10 @@
   <!-- background subagent lane -->
   <text x="404" y="214" text-anchor="end" font-size="8.5" fill="#B2DEFF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">sub (bg)</text>
   <rect x="468" y="205" width="172" height="13" rx="3" fill="#161F34" stroke="#99D3FF" stroke-width="1.2" stroke-dasharray="5 3"/>
-  <!-- get result arrow back up to main -->
+  <!-- result arrow back up to main -->
   <line x1="640" y1="205" x2="640" y2="162" stroke="#99D3FF" stroke-width="1.5"/>
   <polygon points="636,168 640,160 644,168" fill="#99D3FF"/>
-  <text x="650" y="200" text-anchor="start" font-size="7.5" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">get_result</text>
+  <text x="650" y="200" text-anchor="start" font-size="7.5" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">result</text>
 
   <text x="545" y="346" text-anchor="middle" font-size="9" fill="#CCE9FF">The main agent keeps working and</text>
   <text x="545" y="360" text-anchor="middle" font-size="9" fill="#CCE9FF">collects the result when it's ready.</text>

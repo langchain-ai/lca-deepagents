@@ -39,7 +39,7 @@ const readSql = tool(
 
 const agent = createDeepAgent({
   model,
-  name: "SQL Agent",
+  name: "SQL_Agent",
   tools: [readSql],
   systemPrompt: SYSTEM_PROMPT,
 });
