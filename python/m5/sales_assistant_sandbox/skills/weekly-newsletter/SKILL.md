@@ -20,11 +20,11 @@ researches every genre and assembles the finished HTML itself.
   assemble this week's newsletter for these genres: Rock, Latin, Jazz,
   Classical"). It returns a task ID immediately; it does not block.
 - Tell Jane the newsletter is being put together in the background, then
-  **stop**. Do not poll — newsletter-agent notifies you when it's done.
+  **stop**. Do not poll — check on it the next time she asks.
 - Do **not** research genres or assemble the newsletter yourself — that's
   entirely newsletter-agent's job.
 
-## 3. When woken by a completion notification (or asked for a status check)
+## 3. When asked whether it's ready
 
 - Get the task_id: call `list_async_tasks()` and read the `task_id:` field for
   the newsletter-agent entry. Don't rely on the task_id from earlier in the
@@ -32,7 +32,7 @@ researches every genre and assembles the finished HTML itself.
   `list_async_tasks` reads it from durable state, not memory.
 - Call `check_async_task(task_id)`.
 - If `status` isn't terminal yet (`success` or `error`), report progress to
-  Jane and stop — you'll be woken again when it finishes.
+  Jane and stop — check again the next time she asks.
 - If `status` is `error`, tell Jane the newsletter couldn't be put together
   this week and stop — there's no HTML to save.
 - If `status` is `success`, `result` is the finished HTML, verbatim — no
@@ -43,7 +43,7 @@ researches every genre and assembles the finished HTML itself.
 
 ## 4. Save (once)
 
-- You can be woken more than once for the same task_id (e.g. Jane asks "is
+- You can be asked more than once for the same task_id (e.g. Jane asks "is
   it ready?" again after you already saved it) — don't save a duplicate
   file. Check deterministically, not from conversation memory (which can be
   summarized away): call `glob("/outputs/newsletter-*-<task_id, first 8

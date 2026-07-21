@@ -24,8 +24,8 @@ way to reach an external system:
   it goes out.
 - **newsletter-agent** researches the featured genres and assembles the
   weekly newsletter in the background — launching it returns immediately
-  with a task ID, and it reports back with a notification once the finished
-  HTML is ready to save.
+  with a task ID; check back on it (`check_async_task`/`list_async_tasks`)
+  the next time Jane asks to get the finished HTML and save it.
 
 ## Approvals (human-in-the-loop)
 

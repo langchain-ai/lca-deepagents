@@ -24,7 +24,12 @@ const DONE_DISPLAY_MS = 8000;
 // lands in one of these, there's nothing left to poll for.
 const TERMINAL = new Set(["success", "error", "cancelled", "timeout", "interrupted"]);
 
-type ReportPhase = "assembling" | "done" | null;
+// "ready" is its own persistent state, not just "research complete and
+// nothing to show": with no completion notifier, nothing wakes the main
+// thread automatically, so this badge is the only signal telling the user
+// it's time to ask for the newsletter. It has to stay up until the user
+// actually does that (or research failed), not flash briefly and vanish.
+type ReportPhase = "assembling" | "done" | "ready" | null;
 
 function TaskStatusIcon({ status }: { status: string }) {
   if (!TERMINAL.has(status)) {
@@ -38,12 +43,12 @@ function TaskStatusIcon({ status }: { status: string }) {
   return <XCircle className="size-3 shrink-0 text-red-500" />;
 }
 
-// A run created server-side by the completion notifier (see
-// completion_notifier.py) doesn't push into this tab's SSE stream — only
-// runs the browser itself submitted do. So this badge polls the thread's
-// state directly instead of relying on `stream.values`, which is a snapshot
-// of the browser's own stream and can go stale the moment a background
-// task's notifier wakes the thread from the server side.
+// A run created outside this tab (another tab, or a follow-up message sent
+// after a reload) doesn't push into this tab's SSE stream — only runs the
+// browser itself submitted do. So this badge polls the thread's state
+// directly instead of relying on `stream.values`, which is a snapshot of the
+// browser's own stream and can go stale the moment the thread advances from
+// somewhere else.
 //
 // Beyond "N tasks running", this also distinguishes "assembling the report"
 // (all research tasks terminal, but the thread is still busy — the
@@ -89,8 +94,29 @@ export function AsyncTaskStatus({ threadId }: { threadId: string | null }) {
       try {
         const state = await stream.client.threads.getState(activeThreadId);
         const values = state.values as Record<string, unknown> | undefined;
-        const nextTasks = (values?.async_tasks ?? {}) as Record<string, AsyncTask>;
+        const cachedTasks = (values?.async_tasks ?? {}) as Record<string, AsyncTask>;
         const messages = (values?.messages ?? []) as Message[];
+        if (cancelled) return;
+
+        // The cached `status` field only advances server-side as a side
+        // effect of check_async_task/list_async_tasks being called (see
+        // deepagents' _fetch_live_status) — nothing calls those tools on
+        // the no-notifier design, so it can sit stale at "running" forever.
+        // Fetch each non-terminal task's live run status directly instead,
+        // falling back to the cached value on a per-task fetch error.
+        const nextTasks: Record<string, AsyncTask> = { ...cachedTasks };
+        await Promise.all(
+          Object.entries(cachedTasks)
+            .filter(([, t]) => !TERMINAL.has(t.status))
+            .map(async ([id, t]) => {
+              try {
+                const run = await stream.client.runs.get(t.thread_id, t.run_id);
+                nextTasks[id] = { ...t, status: run.status };
+              } catch {
+                // keep cached status
+              }
+            }),
+        );
         if (cancelled) return;
 
         setTasks(nextTasks);
@@ -141,9 +167,18 @@ export function AsyncTaskStatus({ threadId }: { threadId: string | null }) {
             hadWorkInFlight = false;
             return;
           }
+          // A failed task set never gets assembled — nothing left to wait
+          // for, so resolve now and let the render-time failure check
+          // (based on `tasks` directly, not reportPhase) take over.
+          if (taskList.some((t) => t.status !== "success")) {
+            resolvedTaskKeyRef.current = taskKey;
+            setReportPhase(null);
+            hadWorkInFlight = false;
+            return;
+          }
           // Research is done but no report path yet — check whether the
-          // thread is actively assembling it, or has stopped (e.g. every
-          // genre failed, so there's nothing to assemble).
+          // thread is actively assembling it, or is idle waiting on the
+          // user to ask.
           const thread = await stream.client.threads.get(activeThreadId);
           if (cancelled) return;
           if (thread.status === "busy") {
@@ -152,13 +187,13 @@ export function AsyncTaskStatus({ threadId }: { threadId: string | null }) {
             timer = setTimeout(poll, POLL_INTERVAL_MS);
             return;
           }
-          resolvedTaskKeyRef.current = taskKey;
-          setReportPhase(null);
-          if (hadWorkInFlight) {
-            setJustFinished(true);
-            setTimeout(() => setJustFinished(false), DONE_DISPLAY_MS);
-          }
-          hadWorkInFlight = false;
+          // All research succeeded, thread idle, no report yet — this IS
+          // the "ask now" signal, so it stays up (keep polling) rather than
+          // resolving/hiding, until the user's next message either starts
+          // assembly or produces a report.
+          hadWorkInFlight = true;
+          setReportPhase("ready");
+          timer = setTimeout(poll, POLL_INTERVAL_MS);
         }
       } catch {
         if (!cancelled) timer = setTimeout(poll, POLL_INTERVAL_MS);
@@ -179,6 +214,13 @@ export function AsyncTaskStatus({ threadId }: { threadId: string | null }) {
   const taskList = Object.values(tasks);
   const running = taskList.filter((t) => !TERMINAL.has(t.status));
   const showSpinner = running.length > 0 || reportPhase === "assembling";
+  // Once nothing is running, every remaining task is terminal by definition
+  // (see `running` above) — "terminal" doesn't mean "succeeded", so check
+  // explicitly rather than defaulting to a success headline/icon.
+  const hasFailure =
+    running.length === 0 &&
+    taskList.length > 0 &&
+    taskList.some((t) => t.status !== "success");
 
   if (running.length === 0 && !reportPhase && !justFinished) return null;
 
@@ -189,7 +231,11 @@ export function AsyncTaskStatus({ threadId }: { threadId: string | null }) {
         ? "Assembling report..."
         : reportPhase === "done"
           ? "Report ready"
-          : "Research complete";
+          : reportPhase === "ready"
+            ? "Research done — ask for your newsletter"
+            : hasFailure
+              ? "Research failed"
+              : "Research complete";
 
   return (
     <div className="relative">
@@ -200,11 +246,17 @@ export function AsyncTaskStatus({ threadId }: { threadId: string | null }) {
           "flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs",
           showSpinner
             ? "text-muted-foreground"
-            : "border-green-200 bg-green-50 text-green-700",
+            : hasFailure
+              ? "border-red-200 bg-red-50 text-red-700"
+              : reportPhase === "ready"
+                ? "border-amber-200 bg-amber-50 text-amber-700"
+                : "border-green-200 bg-green-50 text-green-700",
         )}
       >
         {showSpinner ? (
           <LoaderCircle className="size-3 animate-spin" />
+        ) : hasFailure ? (
+          <XCircle className="size-3" />
         ) : (
           <CheckCircle2 className="size-3" />
         )}
@@ -225,7 +277,7 @@ export function AsyncTaskStatus({ threadId }: { threadId: string | null }) {
                 <span className="truncate">{t.label || t.agent_name}</span>
               </li>
             ))}
-            {(reportPhase || reportPath) && (
+            {(reportPhase === "assembling" || reportPath) && (
               <li className="flex items-center gap-2 border-t pt-1.5 text-xs font-medium">
                 {reportPhase === "assembling" ? (
                   <LoaderCircle className="size-3 shrink-0 animate-spin text-muted-foreground" />

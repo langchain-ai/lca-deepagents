@@ -36,7 +36,12 @@ Write a short Python script with `write_file` that plots the revenue-by-genre
 figures as a pie chart with matplotlib and saves it to
 `/outputs/territory_chart-<timestamp>.png` (same timestamp as step 2), then
 run it with `execute` (installing matplotlib first if it isn't already
-available). Reference the image in the report.
+available). Reference the image in the report using just the bare filename
+(e.g. `![Revenue by Genre](territory_chart-<timestamp>.png)`), not the
+absolute `/outputs/...` path — when Jane downloads the report and chart,
+both land together in the same local folder with no `outputs` subdirectory,
+so a relative filename is what actually resolves; the absolute path is only
+correct for the chat-reply embed below.
 
 ## Done
 

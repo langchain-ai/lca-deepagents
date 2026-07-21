@@ -12,38 +12,52 @@ launches the main agent has to fan back in. Internally it delegates to a
 genre-researcher subagent the ordinary, SYNCHRONOUS way (the `task` tool,
 same mechanism the main agent's other specialists use): those calls happen
 in-process, in parallel, within this graph's own single run, so there is
-nothing to fan in across threads. Only ONE async boundary exists per
-newsletter request — the main agent's single `start_async_task` launch of
-*this* graph — so only one completion notification ever fires per request.
+nothing to fan in across threads.
 
-The graph is an async factory rather than a single object built once: each
-run needs its own `CompletionNotifierMiddleware`, scoped to whichever main-
-agent thread launched it. `parent_thread_id`/`parent_assistant_id` come from
-`config.configurable`, written by the main agent's custom `start_async_task`
-tool (see async_research.py) — not from end-user input.
+No completion-notification middleware here (see git history:
+completion_notifier.py) — the main agent finds out this task is done the
+ordinary way, by checking `check_async_task`/`list_async_tasks` the next time
+it's asked, rather than being woken by a cross-thread run. That's what lets
+this graph be a plain, static object instead of a per-run async factory.
 
-Storage: a `StoreBackend` namespaced by this run's own thread_id. Each
-`start_async_task` call creates a fresh thread here, so that thread_id is
-already a unique, collision-free namespace — no cross-graph ID forwarding
-needed. Omitting `store=` resolves to `get_store()` at runtime, which is the
-same store instance the main graph uses (both graphs share one deployment).
-The genre-researcher subagent inherits this same backend (subagents inherit
-their parent's backend unless they set their own), so its
+Storage: a `StoreBackend` namespaced by this run's own thread_id, resolved
+lazily via `get_config()` inside the namespace lambda — called only when the
+backend actually does a store operation during a real run, not at graph
+construction time, so no factory/`config` param is needed to build this
+graph. Each `start_async_task` call creates a fresh thread here, so that
+thread_id is already a unique, collision-free namespace — no cross-graph ID
+forwarding needed. Omitting `store=` resolves to `get_store()` at runtime,
+which is the same store instance the main graph uses (both graphs share one
+deployment). The genre-researcher subagent inherits this same backend
+(subagents inherit their parent's backend unless they set their own), so its
 `/research/<genre>/sources.md` dumps land in this run's own namespace too.
 """
 
 from __future__ import annotations
 
-import contextlib
+import os
 
-from completion_notifier import build_completion_notifier
 from deepagents import create_deep_agent
 from deepagents.backends.store import StoreBackend
-from langchain_core.runnables import RunnableConfig
+from langgraph.config import get_config
 from subagents import GENRE_PROMPT
 from tools.html import markdown_to_html
 
 from models import model, strong_model
+
+# This module is always imported by the langgraph platform (it's a
+# registered graph in langgraph.json) regardless of whether the main agent
+# ever exposes the launch tool for it — so importing tools.search (which
+# instantiates a Tavily client from TAVILY_API_KEY at import time) has to
+# stay conditional here too, matching agent.py's own `_enable_search` guard,
+# even though there's no factory body left to defer the import inside.
+_enable_search = bool(os.environ.get("TAVILY_API_KEY"))
+if _enable_search:
+    from tools.search import internet_search
+
+    _genre_researcher_tools = [internet_search]
+else:
+    _genre_researcher_tools = []
 
 NEWSLETTER_AGENT_PROMPT = """You assemble Chinook's weekly "This Week in \
 Music" customer newsletter. You run in the background — the sales assistant \
@@ -69,47 +83,26 @@ Reply with ONLY the tool's returned HTML — nothing before it, nothing after \
 it, no commentary. Your reply is written directly to a file verbatim; any \
 extra sentence you add around the HTML ends up inside that file too."""
 
+_genre_researcher = {
+    "name": "genre-researcher",
+    "description": (
+        "Research one music genre and write a newsletter segment about "
+        "what's new in it. Call once per genre, in parallel."
+    ),
+    "system_prompt": GENRE_PROMPT,
+    "tools": _genre_researcher_tools,
+    "model": model,
+}
 
-@contextlib.asynccontextmanager
-async def graph(config: RunnableConfig):
-    # Imported here, not at module load: tools.search instantiates a Tavily
-    # client from TAVILY_API_KEY at import time, and this graph is always
-    # registered in langgraph.json regardless of whether that key is set —
-    # deferring the import keeps a missing key from breaking deployment
-    # startup, matching this project's existing "search is optional" design
-    # (see tools/search.py, agent.py's `_enable_search` guard).
-    from tools.search import internet_search
+_backend = StoreBackend(
+    namespace=lambda rt: (get_config()["configurable"]["thread_id"], "research")
+)
 
-    configurable = config.get("configurable", {})
-    notifier = build_completion_notifier(
-        parent_thread_id=configurable.get("parent_thread_id"),
-        parent_assistant_id=configurable.get("parent_assistant_id"),
-        subagent_name="newsletter-agent",
-    )
-    # `Runtime` (passed to namespace factories) has no `.config` attribute —
-    # close over this run's own thread_id instead, captured from the graph
-    # factory's own `config` (already available here, and this graph is
-    # rebuilt fresh per run, so the closure is correctly scoped to one run).
-    thread_id = configurable.get("thread_id")
-    backend = StoreBackend(namespace=lambda rt: (thread_id, "research"))
-
-    genre_researcher = {
-        "name": "genre-researcher",
-        "description": (
-            "Research one music genre and write a newsletter segment about "
-            "what's new in it. Call once per genre, in parallel."
-        ),
-        "system_prompt": GENRE_PROMPT,
-        "tools": [internet_search],
-        "model": model,
-    }
-
-    yield create_deep_agent(
-        model=strong_model,
-        tools=[markdown_to_html],
-        system_prompt=NEWSLETTER_AGENT_PROMPT,
-        subagents=[genre_researcher],
-        backend=backend,
-        middleware=[notifier],
-        name="newsletter-agent",
-    )
+graph = create_deep_agent(
+    model=strong_model,
+    tools=[markdown_to_html],
+    system_prompt=NEWSLETTER_AGENT_PROMPT,
+    subagents=[_genre_researcher],
+    backend=_backend,
+    name="newsletter-agent",
+)

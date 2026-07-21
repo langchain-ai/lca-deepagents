@@ -292,7 +292,7 @@ async def test_sandbox_chart(client) -> Result:
 
 
 async def test_async_genre_research(client) -> Result:
-    label = "newsletter-agent (async) — background launch + notifier-driven newsletter save"
+    label = "newsletter-agent (async) — background launch + ask-again newsletter save"
     print(f"  Running: {label}...", end=" ", flush=True)
     try:
         thread = await client.threads.create()
@@ -317,37 +317,44 @@ async def test_async_genre_research(client) -> Result:
             return Result(label, "FAIL",
                           f"expected exactly 1 async task after launch turn, got {len(tasks)}: {textwrap.shorten(launch_reply, 80)}")
 
-        # Wait for the completion notifier to wake this thread once the task
-        # reaches a terminal status, and for the assembled newsletter to land
-        # in the sandbox — polling live server state, not the (necessarily
-        # stale) launch-turn snapshot above.
+        # There's no completion notifier anymore — nothing wakes this thread
+        # on its own, and nothing calls `check_async_task`/`list_async_tasks`
+        # either, so the cached `status` field on the task sitting in this
+        # thread's own state never gets refreshed (deepagents only refreshes
+        # it as a side effect of those tools — see `_afetch_live_status` in
+        # `deepagents.middleware.async_subagents`). Poll the subagent run's
+        # actual live status directly via the SDK instead, then explicitly
+        # ask the thread whether it's ready, which is what actually triggers
+        # the main agent's check-and-save turn.
+        task = next(iter(tasks.values()))
+        deadline = asyncio.get_event_loop().time() + 600
+        run_status = task["status"]
+        while asyncio.get_event_loop().time() < deadline:
+            run_state = await client.runs.get(thread_id=task["thread_id"], run_id=task["run_id"])
+            run_status = run_state["status"]
+            if run_status in ("success", "error", "cancelled", "timeout", "interrupted"):
+                break
+            print(".", end="", flush=True)
+            await asyncio.sleep(5)
+        else:
+            print("done")
+            return Result(label, "FAIL", f"task never reached a terminal status: {run_status}")
+        statuses = {task["task_id"]: run_status}
+
+        _, followup_messages = await _ask_in_thread(client, thread_id, "Is the newsletter ready?")
+
         from langsmith.sandbox import SandboxClient
 
         sandbox_client = SandboxClient()
-        # newsletter-agent itself does several rounds of Tavily search + LLM
-        # calls per genre (sequentially, inside its own single run), so this
-        # can take a while even for two genres.
-        deadline = asyncio.get_event_loop().time() + 900
-        newsletter_files: list[str] = []
-        while asyncio.get_event_loop().time() < deadline:
-            state = await client.threads.get_state(thread_id)
-            tasks = state["values"].get("async_tasks", {})
-            all_terminal = len(tasks) == 1 and all(t["status"] in ("success", "error", "cancelled") for t in tasks.values())
-            if all_terminal:
-                sandbox = await asyncio.to_thread(sandbox_client.get_sandbox, f"thread-{thread_id}")
-                listing = await asyncio.to_thread(
-                    sandbox.run, "find /outputs -maxdepth 1 -type f -name 'newsletter-*.html'"
-                )
-                newsletter_files = [line for line in listing.stdout.splitlines() if line.strip()]
-                if newsletter_files:
-                    break
-            print(".", end="", flush=True)
-            await asyncio.sleep(5)
+        sandbox = await asyncio.to_thread(sandbox_client.get_sandbox, f"thread-{thread_id}")
+        listing = await asyncio.to_thread(
+            sandbox.run, "find /outputs -maxdepth 1 -type f -name 'newsletter-*.html'"
+        )
+        newsletter_files = [line for line in listing.stdout.splitlines() if line.strip()]
 
         passed = bool(newsletter_files)
-        statuses = {tid: t["status"] for tid, t in tasks.items()}
         detail = f"newsletter: {newsletter_files}, task statuses: {statuses}" if passed else \
-            f"no newsletter after timeout; task statuses: {statuses}"
+            f"no newsletter after follow-up; task statuses: {statuses}, reply: {textwrap.shorten(_last_ai_text(followup_messages), 80)}"
         print("done")
         return Result(label, "PASS" if passed else "FAIL", detail)
     except Exception as exc:
