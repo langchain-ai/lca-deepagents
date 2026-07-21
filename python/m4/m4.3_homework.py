@@ -5,13 +5,19 @@ THE IDEA
 The lab gave the main agent a 2MB manuscript split into labeled books and
 had it write a "workflow" that dispatched one book-scanner subagent per
 book, so the full corpus never entered the main model's own context. This
-homework asks you to do the same shape of thing on a scenario YOU pick: a
-synthetic "corpus" of your own, split into your own labeled sections, and a
-subagent that scans each section for something OTHER than anachronisms (a
-support-ticket log scanning for a specific complaint type, meeting notes
-scanning for action items, a stack of reviews scanning for a recurring
-complaint, whatever you're into). There's no single correct scenario here,
-that's the point.
+homework asks you to do the same shape of thing on a scenario of your own
+choosing: a synthetic corpus of your own, split into your own labeled
+sections, and a subagent that scans each section for something other than
+anachronisms.
+
+A few starting points, if you want one:
+  - A Sherlock Holmes story, split by chapter, scanned for clues the
+    detective mentions but never actually explains.
+  - The script of Bee Movie or Shrek, split by scene, scanned for lines
+    that don't match the character who supposedly says them.
+  - Your own corrupted classic, like the lab's, but seeded with a
+    different kind of error: wrong units, swapped character names,
+    continuity errors between chapters.
 
 WHAT YOU FILL IN
   TODO 1: write your own corpus, a single string split into at least 5

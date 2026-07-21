@@ -1,7 +1,8 @@
 # python/m5/homework_filled/agent.py
 """Reference copy of the m5.2 homework starter with TODOs 1 and 2 filled
-in so you can deploy it and chat with it in Studio. This is just one
-possible answer, so yours might be different. Explore!"""
+in so you can deploy it and chat with it in Studio, or query it over the
+API with call_agent_api.py in this same folder. This is just one possible
+answer, so yours might be different. Explore!"""
 
 from langchain_core.tools import tool
 
