@@ -2,21 +2,20 @@
 """M1.8 Homework: Gate Your Own Action Tool.
 
 THE IDEA
-The lab gated one action tool, send_email, behind interrupt_on and walked
+Lab 1 gated one action tool, send_email, behind interrupt_on and walked
 through approve/edit/reject on it. This homework asks you to do the same
 thing for an action tool of your own choosing: post a tweet, book a
-meeting room, place an order, delete a file, whatever you like. There's
-no single correct tool or decision setup here.
+meeting room, place an order, delete a file, whatever you like.
 
 WHAT YOU FILL IN
   TODO 1: define your own @tool-decorated action tool. Pick any
     side-effecting action you like; the function body can just return a
-    confirmation string, the same way the lab's send_email did.
+    confirmation string, the same way Lab 1's send_email did.
   TODO 2: configure interrupt_on for your tool with an allowed_decisions
     list of your choosing, and write a system prompt plus an initial user
     request that would lead the model to propose calling it.
 
-The review loop below (borrowed from the lab, unchanged) prints any
+The review loop below (borrowed from Lab 1, unchanged) prints any
 pending tool call and asks you to approve, edit, or reject it. Run the
 script more than once, picking a different choice each time, to see both
 an approve/edit path and a reject path.

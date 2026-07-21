@@ -13,7 +13,7 @@ different scripts.
 WHAT YOU FILL IN
   TODO 1: write a system prompt describing the kind of coding assistant
     you want (a persona, a set of working rules, whatever you like), the
-    same way the lab's system prompt told the agent to write a file
+    same way Lab 1's system prompt told the agent to write a file
     before executing it.
   TODO 2: write TWO task messages for the same agent/sandbox. TASK_ONE
     should have the agent write and run code that saves a file. TASK_TWO
@@ -45,7 +45,7 @@ backend = LangSmithSandbox(sandbox=ls_sandbox)
 #
 # Give it a persona or a set of working rules, whatever you like, as long
 # as it tells the agent to write code to a file before running it (the
-# same pattern the lab used).
+# same pattern Lab 1 used).
 # ════════════════════════════════════════════════════════════════════════
 
 SYSTEM_PROMPT = None  # TODO 1: replace with your own system prompt

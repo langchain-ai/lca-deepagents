@@ -2,7 +2,7 @@
 """M1.6 Homework: Connect to a Different MCP Server.
 
 THE IDEA
-The lab connected to the LangChain docs MCP server and filtered its tools
+Lab 1 connected to the LangChain docs MCP server and filtered its tools
 down to just search_docs_by_lang_chain. This homework asks you to connect
 to a different public MCP server entirely, one that requires no auth
 beyond what your labs already use, and put one of its tools to work.
@@ -18,7 +18,7 @@ WHAT YOU FILL IN
   TODO 1: build and return the filtered list of MCP tools to use from a
     server and filter of your own choosing.
   TODO 2: write a question suited to your chosen server's own domain,
-    not the lab's "what is MCP..." question, which won't make sense to
+    not Lab 1's "what is MCP..." question, which won't make sense to
     ask a server about GitHub repos, API docs, or whatever you picked.
 
 RUN
@@ -41,12 +41,12 @@ from models import model
 # TODO 1: Build your MCP client and return its filtered tool list.
 #
 # Requirements:
-#   - Point "url" at a different public MCP server than the lab's
+#   - Point "url" at a different public MCP server than Lab 1's
 #     docs-langchain server (no auth/API key required beyond what your
 #     labs already use). See the module docstring for two ready-to-use
 #     options.
 #   - Fetch tools with client.get_tools() and filter them the same way
-#     the lab did, with an ALLOWED set.
+#     Lab 1 did, with an ALLOWED set.
 #
 # Example shape (delete this and write your own):
 #   async def build_tools():
@@ -66,7 +66,7 @@ async def build_tools():
 
 # ════════════════════════════════════════════════════════════════════════
 # TODO 2: Write a question suited to your chosen server's own domain,
-# not the lab's "what is MCP..." question.
+# not Lab 1's "what is MCP..." question.
 # ════════════════════════════════════════════════════════════════════════
 
 QUESTION = "TODO 2: replace with a question that puts your chosen tool(s) to work."
