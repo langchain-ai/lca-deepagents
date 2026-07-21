@@ -1,23 +1,25 @@
 # python/m1/m1.6_homework.py
-"""M1.6 Homework: Explore a Different Corner of MCP.
+"""M1.6 Homework: Connect to a Different MCP Server.
 
 THE IDEA
 The lab connected to the LangChain docs MCP server and filtered its tools
-down to just search_docs_by_lang_chain. This homework asks you to explore
-a different corner of MCP, in one of two ways, whichever you like:
-  (a) connect to a different public MCP server entirely, or
-  (b) keep the docs-langchain server from the lab, but change the
-      ALLOWED filter to a different tool than the lab used (the lab
-      printed every tool name available on that server, so you already
-      know what else is there).
-Either way, ask the agent something the lab's own question didn't cover.
-There's no single correct server, filter, or question here.
+down to just search_docs_by_lang_chain. This homework asks you to connect
+to a different public MCP server entirely, one that requires no auth
+beyond what your labs already use, and put one of its tools to work.
+
+Don't know where to look? A few free, no-auth public servers to try:
+  - DeepWiki (https://mcp.deepwiki.com/mcp): ask questions about any
+    public GitHub repo's code and docs.
+  - X Docs (https://docs.x.com/mcp): search and retrieve X's public API
+    documentation.
+Or find your own!
 
 WHAT YOU FILL IN
-  TODO 1: build and return the filtered list of MCP tools to use, from a
+  TODO 1: build and return the filtered list of MCP tools to use from a
     server and filter of your own choosing.
-  TODO 2: write a question that puts your chosen tool(s) to work, on a
-    topic the lab's question ("what is MCP...") didn't cover.
+  TODO 2: write a question suited to your chosen server's own domain,
+    not the lab's "what is MCP..." question, which won't make sense to
+    ask a server about GitHub repos, API docs, or whatever you picked.
 
 RUN
   cd python
@@ -39,10 +41,10 @@ from models import model
 # TODO 1: Build your MCP client and return its filtered tool list.
 #
 # Requirements:
-#   - Either point "url" at a different public MCP server than the lab's
+#   - Point "url" at a different public MCP server than the lab's
 #     docs-langchain server (no auth/API key required beyond what your
-#     labs already use), or keep docs-langchain and set ALLOWED to a tool
-#     other than search_docs_by_lang_chain.
+#     labs already use). See the module docstring for two ready-to-use
+#     options.
 #   - Fetch tools with client.get_tools() and filter them the same way
 #     the lab did, with an ALLOWED set.
 #
@@ -63,8 +65,8 @@ async def build_tools():
 
 
 # ════════════════════════════════════════════════════════════════════════
-# TODO 2: Write a question that puts your chosen tool(s) to work, on a
-# topic the lab's question didn't cover.
+# TODO 2: Write a question suited to your chosen server's own domain,
+# not the lab's "what is MCP..." question.
 # ════════════════════════════════════════════════════════════════════════
 
 QUESTION = "TODO 2: replace with a question that puts your chosen tool(s) to work."

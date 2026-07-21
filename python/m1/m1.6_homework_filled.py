@@ -14,26 +14,25 @@ from langchain_mcp_adapters.client import MultiServerMCPClient
 from models import model
 
 
-# TODO 1 filled in: same docs-langchain server as the lab, but this time
-# we filter to the OTHER tool the lab printed and never used.
+# TODO 1 filled in: a different public MCP server than the lab's,
+# DeepWiki, which answers questions about any public GitHub repo.
 async def build_tools():
     client = MultiServerMCPClient({
-        "docs-langchain": {
+        "deepwiki": {
             "transport": "http",
-            "url": "https://docs.langchain.com/mcp",
+            "url": "https://mcp.deepwiki.com/mcp",
         }
     })
     tools = await client.get_tools()
 
-    ALLOWED = {"query_docs_filesystem_docs_by_lang_chain"}
+    ALLOWED = {"ask_question"}
     return [t for t in tools if t.name in ALLOWED]
 
 
 # TODO 2 filled in
 QUESTION = (
-    "Use the LangChain docs filesystem tool to list what's under the root "
-    "directory of the docs, and tell me whether there's a folder related "
-    "to deepagents."
+    "Use the DeepWiki tool to ask the langchain-ai/deepagents GitHub repo: "
+    "what filesystem backends does deepagents support?"
 )
 
 
