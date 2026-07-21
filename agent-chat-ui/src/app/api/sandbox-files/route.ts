@@ -13,13 +13,19 @@ const THREAD_ID_RE = /^[a-zA-Z0-9-]{1,100}$/;
 // there's no injection surface even though it runs inside the sandbox's
 // shell-command execution path.
 //
+// No -maxdepth: the agent may write into subdirectories of /outputs (e.g.
+// /outputs/customers/). %P prints each match's path relative to /outputs
+// (e.g. "customers/Foo.txt") rather than just the basename, so nested files
+// stay distinguishable and their relative path can be reused directly in
+// the download link.
+//
 // %TS prints seconds with GNU find's full fractional part (e.g.
 // "39.6489742380") — trimmed below in parseListing rather than in the
 // command itself, since find's printf precision modifiers (e.g. `%.0TS`)
 // aren't actually supported on the time directives and silently produce an
 // empty field instead of an error.
 const LIST_COMMAND =
-  "find /outputs -maxdepth 1 -type f -printf '%f\\t%s\\t%TY-%Tm-%TdT%TH:%TM:%TS\\n'";
+  "find /outputs -type f -printf '%P\\t%s\\t%TY-%Tm-%TdT%TH:%TM:%TS\\n'";
 
 type SandboxFile = { name: string; size: number; modifiedAt: string };
 

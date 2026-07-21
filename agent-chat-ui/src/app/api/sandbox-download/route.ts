@@ -21,12 +21,23 @@ const CONTENT_TYPES: Record<string, string> = {
   html: "text/html",
 };
 
-// Restricted to a flat /outputs/<filename> shape: no traversal, no nested
-// directories, no characters that could smuggle a header value.
-const OUTPUT_PATH_RE = /^\/outputs\/[A-Za-z0-9._-]{1,255}$/;
+// Allows nested paths under /outputs/ (e.g. /outputs/customers/Foo.txt), not
+// just a flat filename — but still blocks traversal and header-injection
+// characters: every path segment must be a plain filename component, and
+// "." / ".." segments are rejected explicitly, since the character class
+// alone would otherwise still match them.
+const OUTPUT_PREFIX = "/outputs/";
+const SEGMENT_RE = /^[A-Za-z0-9._-]+$/;
+const MAX_PATH_LENGTH = 255;
 
 function isSafeOutputPath(path: string): boolean {
-  return OUTPUT_PATH_RE.test(path);
+  if (path.length > MAX_PATH_LENGTH || !path.startsWith(OUTPUT_PREFIX)) {
+    return false;
+  }
+  const segments = path.slice(OUTPUT_PREFIX.length).split("/");
+  return segments.every(
+    (segment) => segment !== "." && segment !== ".." && SEGMENT_RE.test(segment),
+  );
 }
 
 // The platform auto-resumes a stopped sandbox on the first dataplane

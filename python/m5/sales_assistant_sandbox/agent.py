@@ -26,7 +26,7 @@ from pathlib import Path
 
 from async_research import build_async_research_middleware
 from deepagents import create_deep_agent
-from deepagents.backends import FilesystemBackend
+from deepagents.backends import StateBackend
 from deepagents.backends.langsmith import LangSmithSandbox
 from langchain_core.runnables import RunnableConfig
 from langchain_mcp_adapters.client import MultiServerMCPClient
@@ -122,29 +122,36 @@ def _seed_skills_and_memory(ls_backend: LangSmithSandbox) -> None:
             logger.warning("Failed to seed %s into sandbox: %s", path, result.error)
 
 
+async def _sandbox_backend_for_thread(thread_id: str) -> LangSmithSandbox:
+    """Look up (or create) this thread's sandbox and seed it if it's new."""
+    sandbox, freshly_created = await asyncio.to_thread(_lookup_or_create, f"thread-{thread_id}")
+    backend = LangSmithSandbox(sandbox)
+    if freshly_created:
+        await asyncio.to_thread(_seed_skills_and_memory, backend)
+    return backend
+
+
 # Thread-scoped sandbox pattern:
 # https://docs.langchain.com/langsmith/graph-rebuild#context-manager-factory
 #
 # The factory accepts ServerRuntime so the server can signal whether it is
 # processing an actual run (execution_runtime is non-None) or handling
 # introspection calls (get_schema, get_graph, assistants.read, …). When
-# execution_runtime is None we skip sandbox setup and fall back to a plain
-# local backend — same graph topology, no sandbox, no MCP round-trip. Real
-# runs get their own thread-scoped sandbox looked up by thread_id.
+# execution_runtime is None we skip sandbox setup and fall back to an
+# in-memory backend — same graph topology, no sandbox, no real filesystem
+# access at all. Real runs get their own thread-scoped sandbox looked up by
+# thread_id.
 @contextlib.asynccontextmanager
 async def make_graph(config: RunnableConfig, runtime: ServerRuntime):
     if runtime.execution_runtime:
         thread_id = config.get("configurable", {}).get("thread_id")
-        sandbox, freshly_created = await asyncio.to_thread(_lookup_or_create, f"thread-{thread_id}")
-        backend = LangSmithSandbox(sandbox)
-        if freshly_created:
-            await asyncio.to_thread(_seed_skills_and_memory, backend)
+        backend = await _sandbox_backend_for_thread(thread_id)
     else:
-        backend = FilesystemBackend(root_dir=str(HERE), virtual_mode=True)
+        backend = StateBackend()
 
     client = MultiServerMCPClient({"mock-mail": MAIL_SERVER})
     mail_tools = await client.get_tools()
-    middleware = [CodeInterpreterMiddleware()]
+    middleware = [CodeInterpreterMiddleware(ptc=["execute", "write_file"])]
     if _enable_search:
         middleware.append(build_async_research_middleware())
     yield create_deep_agent(
