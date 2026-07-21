@@ -12,21 +12,21 @@ const threadA = { configurable: { thread_id: "m1-7-thread-a" } };
 const threadB = { configurable: { thread_id: "m1-7-thread-b" } };
 
 let result = await agent.invoke(
-  { messages: [{ role: "user", content: "Remember that my favorite color is blue." }] },
+  { messages: [{ role: "user", content: "Remember that my favorite colour is blue." }] },
   threadA
 );
 console.log("Thread A, turn 1:");
 console.log(result.messages.at(-1)?.content);
 
 result = await agent.invoke(
-  { messages: [{ role: "user", content: "What is my favorite color?" }] },
+  { messages: [{ role: "user", content: "What is my favorite colour?" }] },
   threadA
 );
 console.log("\nThread A, turn 2:");
 console.log(result.messages.at(-1)?.content);
 
 result = await agent.invoke(
-  { messages: [{ role: "user", content: "What is my favorite color?" }] },
+  { messages: [{ role: "user", content: "What is my favorite colour?" }] },
   threadB
 );
 console.log("\nThread B, turn 1:");

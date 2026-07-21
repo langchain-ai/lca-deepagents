@@ -1,7 +1,7 @@
 # python/m1/Practice/judge_card_practice_filled.py
 """Personal reference copy of judge_card_practice.py with TODOs 1, 2, 3, 4,
 and 5 filled in so you can run it end to end and see what the finished
-practice exercise looks like. Not the student deliverable, safe to delete."""
+practice exercise looks like."""
 
 from __future__ import annotations
 

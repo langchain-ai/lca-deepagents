@@ -2,7 +2,7 @@
 /**
  * Personal reference copy of judge_card_practice.ts with TODOs 1, 2, 3, 4,
  * and 5 filled in so you can run it end to end and see what the finished
- * practice exercise looks like. Not the student deliverable, safe to delete.
+ * practice exercise looks like.
  */
 
 import { context, tool } from "langchain";
