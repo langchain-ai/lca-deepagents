@@ -1,23 +1,26 @@
 # python/m1/m1.4_homework.py
-"""M1.4 Homework: Write Your Own Persona.
+"""M1.4 Homework: Scope the Agent to One Domain.
 
 THE IDEA
-Lab 1 had you swap between a handful of premade personas (pirate, cowboy,
-Shakespeare) layered on top of the butler system prompt already in that
-file. This homework asks you to write an entirely new persona from
-scratch, for a domain of your own choosing: a sports coach, a noir
-detective, a kindergarten teacher, a support bot for a made-up company,
-whatever you like. There's no single correct persona here, that's the
-point. Two students doing this homework could end up with two completely
-different agents.
+Lab 1 had you swap personas (pirate, cowboy, Shakespeare) on top of the
+butler system prompt, which only changes the agent's voice. This homework
+uses `system_prompt` differently: instead of persona, write a constraint
+that scopes the agent to a single domain of your choosing (cooking,
+houseplants, retro video games, personal finance, etc.) and
+instructs it to refuse or redirect anything outside that domain.
+
+There's no single correct domain here, that's the point. What matters is
+that the refusal actually holds, not just that the agent sounds like
+something.
 
 WHAT YOU FILL IN
-  TODO 1: write your own SYSTEM_PROMPT string that gives the agent a
-    persona AND a domain of your choosing (not a butler, not pirate,
-    cowboy, or Shakespeare from Lab 1's examples).
-  TODO 2: invoke the agent with at least two different test prompts and
-    print both responses, so you can see the persona hold up across more
-    than one question.
+  TODO 1: write your own SYSTEM_PROMPT string that scopes the agent to a
+    single domain of your choosing and tells it to refuse or redirect
+    anything outside that domain (no persona/voice requirement here,
+    just the scope + refusal instruction).
+  TODO 2: invoke the agent with two test prompts, one inside your domain
+    and one clearly outside it, and print both responses so you can see
+    whether the refusal actually held.
 
 RUN
   cd python
@@ -33,21 +36,23 @@ from models import model
 
 
 # ════════════════════════════════════════════════════════════════════════
-# TODO 1: Write your own persona system prompt.
+# TODO 1: Write a system prompt that scopes the agent to one domain and
+# tells it to refuse or redirect anything outside that domain.
 #
 # Requirements:
-#   - Give the agent a persona AND a domain (a role it plays, a voice it
-#     speaks in, a subject it's an expert in).
-#   - Make it specific enough that the persona clearly shows up in the
-#     agent's replies, the way the butler's "indeed" and "quite" did.
+#   - Pick one domain (a subject, not a persona).
+#   - State clearly what the agent should do when asked about something
+#     outside that domain (e.g. say it can't help, redirect back to the
+#     domain, ask a domain-relevant follow-up).
 #
 # Example shape (delete this and write your own):
 #   SYSTEM_PROMPT = (
-#       "You are a ... . You always ... . You never ... ."
+#       "You only answer questions about ... . If asked about anything "
+#       "else, ... ."
 #   )
 # ════════════════════════════════════════════════════════════════════════
 
-SYSTEM_PROMPT = "TODO 1: replace this with your own persona system prompt."
+SYSTEM_PROMPT = "TODO 1: replace this with your own domain-scoping system prompt."
 
 
 agent = create_deep_agent(
@@ -58,13 +63,14 @@ agent = create_deep_agent(
 
 
 # ════════════════════════════════════════════════════════════════════════
-# TODO 2: Run at least two different test prompts through the agent and
-# print both responses, so the persona's voice shows up more than once.
+# TODO 2: Run one in-domain prompt and one out-of-domain prompt through
+# the agent and print both responses, so you can check whether the
+# refusal actually held.
 # ════════════════════════════════════════════════════════════════════════
 
 def run_test_prompts():
-    """TODO 2: invoke `agent` with at least two different test prompts
-    and print each response."""
+    """TODO 2: invoke `agent` with one in-domain prompt and one
+    out-of-domain prompt, and print each response."""
     raise NotImplementedError("TODO 2: see the comment block above")
 
 

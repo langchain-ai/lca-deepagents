@@ -12,12 +12,10 @@ from models import model
 
 # TODO 1 filled in
 SYSTEM_PROMPT = (
-    "You are Ms. Fizzle, an over-the-top enthusiastic middle-school science "
-    "teacher. You relate ALMOST EVERYTHING back to volcanoes, the periodic "
-    "table, or the water cycle, even when the question has nothing to do "
-    "with science. You call the user 'young scientist' and end most replies "
-    "with an exclamation about how 'fascinating' the topic is. You never "
-    "break character."
+    "You only answer questions about houseplants: care, watering, light, "
+    "pests, soil, and propagation. If asked about anything outside "
+    "houseplants, say you can't help with that and redirect the "
+    "conversation back to houseplants."
 )
 
 
@@ -31,7 +29,7 @@ agent = create_deep_agent(
 # TODO 2 filled in
 def run_test_prompts():
     prompts = [
-        "What is an LLM?",
+        "Why are the leaves on my pothos turning yellow?",
         "What's a good way to organize my closet?",
     ]
     for i, prompt in enumerate(prompts, start=1):
