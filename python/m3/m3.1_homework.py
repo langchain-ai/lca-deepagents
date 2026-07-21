@@ -1,26 +1,29 @@
 # python/m3/m3.1_homework.py
-"""M3.1 Homework: Summarize Your Own Long-Running Conversation.
+"""M3.1 Homework: Trigger Chained Summarization.
 
 THE IDEA
-The lab watched SummarizationMiddleware compress a short demo conversation
-(a name, a math question, a project note, and so on) once the context
-window filled past 85%. This homework asks you to do the same thing on a
-SCENARIO YOU pick: something with enough substance that talking about it
-for several turns would plausibly build up real context (planning a trip,
-outlining a story, debugging a project, prepping for an interview, whatever
-you're into). There's no single correct topic or turn count here, that's
-the point. Two students doing this homework could end up with completely
-different conversations and completely different summarization timing.
+In the lesson, you watched SummarizationMiddleware compress a demo
+conversation ONCE, past the 85% threshold. But summarization doesn't just
+fire once and stop: on a long enough conversation it fires again, and again
+each time it re-summarizes the previous summary plus whatever's new since,
+while the FULL evicted history keeps piling up in a single backend file at
+/conversation_history/{thread_id}.md. 
+
+This homework asks you to build a conversation on a topic you pick that's 
+long enough to trigger summarization AT LEAST TWICE, then confirm two things: 
+the model can still recall a detail from your very first turn (after being 
+compacted multiple times), and the conversation history file on the backend 
+actually accumulated multiple "Summarized at ..." sections 
+instead of losing earlier ones.
 
 WHAT YOU FILL IN
-  TODO 1: write your own list of user turns (at least 5) about a topic YOU
-    pick. Each turn should read like something a real person would type
-    across a multi-turn conversation on that topic, with earlier turns
-    containing details a later turn asks the agent to recall.
-  TODO 2: choose model.profile["max_input_tokens"] so that summarization
-    fires partway through your conversation, not on turn 1 and not so late
-    it never fires by your last turn. Tune it by trial and error, same as
-    the lab did with 700.
+  TODO 1: write your own list of user turns (at least 8) about a topic YOU
+    pick. Put an important detail in one of your first two turns, then keep
+    talking about the topic for several more turns, and end with a turn
+    that asks the agent to recall that early detail.
+  TODO 2: choose model.profile["max_input_tokens"] so summarization fires
+    at least twice before your last turn, not just once. Tune it by trial
+    and error, same as the lesson did with 700.
 
 RUN
   cd python
@@ -40,23 +43,25 @@ from models import model
 # TODO 1: Write your own multi-turn scenario.
 #
 # Requirements:
-#   - At least 5 user turns, all about ONE topic of your choosing (not the
-#     lab's "new coworker" chit-chat).
-#   - The topic should have enough substance that a real conversation about
-#     it would build up context over several turns: earlier turns should
-#     contain details that a later turn asks the agent to recall.
+#   - At least 8 user turns, all about ONE topic of your choosing.
+#   - One of your first two turns should state a concrete detail (a number,
+#     a name, a decision).
+#   - Your last turn should ask the agent to recall that detail, after
+#     several more turns of unrelated follow-up on the same topic.
 #
 # Example shape (delete this and write your own):
 #   return [
 #       "I'm planning a two-week trip to ...",
-#       "My budget is ...",
-#       ...
-#       "Quick recap: what did I say my budget was?",
+#       "My total budget is ...",
+#       ...,
+#       ...,
+#       ...,
+#       "Quick recap: what was my total budget?",
 #   ]
 # ════════════════════════════════════════════════════════════════════════
 
 def build_turns() -> list[str]:
-    """TODO 1: return your own list of user turns (at least 5)."""
+    """TODO 1: return your own list of user turns (at least 8)."""
     raise NotImplementedError("TODO 1: see the comment block above")
 
 
@@ -64,10 +69,10 @@ def build_turns() -> list[str]:
 # TODO 2: Choose the summarization threshold.
 #
 # Lower model.profile["max_input_tokens"] to a value that makes
-# SummarizationMiddleware fire (at 85% of that number) somewhere in the
-# MIDDLE of your conversation from TODO 1, not immediately and not never.
-# The lab used 700 for its 5-turn demo; your number depends on how long
-# your own turns are.
+# SummarizationMiddleware fire (at 85% of that number) AT LEAST TWICE
+# across your conversation from TODO 1, not just once. The lesson used 700
+# for a 5-turn demo that fired once; your number depends on how many turns
+# you wrote and how long they are.
 # ════════════════════════════════════════════════════════════════════════
 
 MAX_INPUT_TOKENS = None  # TODO 2: replace None with your chosen integer threshold
@@ -81,6 +86,7 @@ agent = create_deep_agent(
 )
 
 THREAD = {"configurable": {"thread_id": "homework"}}
+HISTORY_PATH = f"/conversation_history/{THREAD['configurable']['thread_id']}.md"
 
 
 async def turn(message: str) -> str:
@@ -91,24 +97,49 @@ async def turn(message: str) -> str:
     return result["messages"][-1].content
 
 
-async def show_state() -> None:
+async def show_state(seen_cutoffs: set) -> bool:
+    """Print state after a turn. Returns True if this turn produced a NEW
+    summarization event (as opposed to still living under a previous one)."""
     state = await agent.aget_state(THREAD)
     messages = state.values.get("messages", [])
     event = state.values.get("_summarization_event")
     print(f"  stored : {len(messages)} message(s) (raw history, never trimmed)")
-    if event:
-        cutoff = event.get("cutoff_index", "?")
-        print(f"  model saw : summary + messages[{cutoff}:]  [SUMMARIZED]")
+    if not event:
+        return False
+    cutoff = event.get("cutoff_index", "?")
+    is_new_event = cutoff not in seen_cutoffs
+    seen_cutoffs.add(cutoff)
+    tag = "  <-- NEW EVENT" if is_new_event else ""
+    print(f"  model saw : summary + messages[{cutoff}:]  [SUMMARIZED]{tag}")
+    return is_new_event
 
 
 async def main() -> None:
     turns = build_turns()
+    seen_cutoffs: set = set()
+    event_count = 0
     for i, message in enumerate(turns, 1):
         print(f"\n{'─' * 50}")
         print(f"Turn {i}  User:  {message}")
         response = await turn(message)
         print(f"Turn {i}  Agent: {response}")
-        await show_state()
+        if await show_state(seen_cutoffs):
+            event_count += 1
+
+    print(f"\nSummarization fired {event_count} time(s) across {len(turns)} turns.")
+    if event_count < 2:
+        print(
+            "That's fewer than 2. Lower MAX_INPUT_TOKENS, or add more turns/detail, "
+            "so it fires again before the conversation ends."
+        )
+
+    state = await agent.aget_state(THREAD)
+    history_file = state.values.get("files", {}).get(HISTORY_PATH)
+    if history_file:
+        content = history_file["content"] if isinstance(history_file, dict) else history_file
+        sections = content.count("## Summarized at")
+        print(f"\n--- {HISTORY_PATH} ({sections} section(s)) ---")
+        print(content)
 
 
 if __name__ == "__main__":

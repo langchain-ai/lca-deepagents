@@ -26,7 +26,9 @@ function createFileData(content: string): FileData {
 const store = new InMemoryStore();
 const memoryPath = "/memories/AGENTS.md";
 const storeMemoryPath = "/AGENTS.md";
-const demoContext = { workspace_id: "homework", user_id: "u_you" };
+
+const CONTEXT_A = { workspace_id: "homework", user_id: "u_you" };
+const CONTEXT_B = { workspace_id: "homework", user_id: "u_teammate" };
 
 function namespaceFromContext(context: { workspace_id: string; user_id: string }): string[] {
   return ["memory", context.workspace_id, context.user_id];
@@ -41,7 +43,7 @@ function memoryNamespace(context: StoreBackendContext): string[] {
 }
 
 // TODO 1 filled in
-function buildSeedMemory(): string {
+function buildSeedMemoryA(): string {
   return `# Houseplant Notes
 
 ## Watering
@@ -56,10 +58,27 @@ function buildSeedMemory(): string {
 `;
 }
 
+function buildSeedMemoryB(): string {
+  return `# Herb Garden Notes
+
+## Watering
+- Basil and mint want consistently moist soil; check daily in summer.
+- Rosemary is drought-tolerant; only water when the top two inches are dry.
+
+## Light
+- All three herbs live on the kitchen windowsill, which gets morning sun.
+`;
+}
+
 await store.put(
-  namespaceFromContext(demoContext),
+  namespaceFromContext(CONTEXT_A),
   storeMemoryPath,
-  createFileData(buildSeedMemory())
+  createFileData(buildSeedMemoryA())
+);
+await store.put(
+  namespaceFromContext(CONTEXT_B),
+  storeMemoryPath,
+  createFileData(buildSeedMemoryB())
 );
 
 const agent = createDeepAgent({
@@ -79,25 +98,47 @@ const RECALL_QUESTION =
 const REMEMBER_MESSAGE =
   "Remember: I just repotted the fiddle-leaf fig, so skip watering it for " +
   "the next 3 weeks while the roots settle. Update your memory.";
+const LEAK_CHECK_QUESTION =
+  "How often should I water the fiddle-leaf fig, and where does the pothos live?";
 
-const demoConfig = { configurable: demoContext };
+const configA = { configurable: CONTEXT_A };
+const configB = { configurable: CONTEXT_B };
 
-// First invoke: agent answers using memory content
-const result = await agent.invoke(
+// 1. Context A recalls from its own seed.
+const resultA1 = await agent.invoke(
   { messages: [{ role: "user", content: RECALL_QUESTION }] },
-  demoConfig
+  configA
 );
-console.log("--- Question 1 ---");
-console.log(result.messages.at(-1)?.content);
+console.log("--- Context A, Question 1 ---");
+console.log(resultA1.messages.at(-1)?.content);
 
-// Second invoke: agent writes to memory
-const result2 = await agent.invoke(
+// 2. Context A learns a new, distinctive fact.
+const resultA2 = await agent.invoke(
   { messages: [{ role: "user", content: REMEMBER_MESSAGE }] },
-  demoConfig
+  configA
 );
-console.log("\n--- Question 2 ---");
-console.log(result2.messages[result2.messages.length - 1].content);
+console.log("\n--- Context A, Question 2 (remember) ---");
+console.log(resultA2.messages.at(-1)?.content);
 
-console.log("\n--- AGENTS.md after write ---");
-const storedMemory = await store.get(namespaceFromContext(demoContext), storeMemoryPath);
-console.log((storedMemory!.value as FileData).content);
+// 3. Context B asks the same question. It should NOT see anything from A.
+const resultB = await agent.invoke(
+  { messages: [{ role: "user", content: LEAK_CHECK_QUESTION }] },
+  configB
+);
+console.log("\n--- Context B, leak-check question ---");
+console.log(resultB.messages.at(-1)?.content);
+
+const memoryA = ((await store.get(namespaceFromContext(CONTEXT_A), storeMemoryPath))!
+  .value as FileData).content;
+const memoryB = ((await store.get(namespaceFromContext(CONTEXT_B), storeMemoryPath))!
+  .value as FileData).content;
+console.log("\n--- Context A's stored AGENTS.md ---");
+console.log(memoryA);
+console.log("\n--- Context B's stored AGENTS.md ---");
+console.log(memoryB);
+
+if (memoryA === memoryB) {
+  console.log("\nISOLATION FAILED: both contexts share identical stored memory.");
+} else {
+  console.log("\nStored memories differ between contexts, as expected.");
+}
