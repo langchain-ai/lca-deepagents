@@ -13,7 +13,9 @@ from models import model
 store = InMemoryStore()
 memory_path = "/memories/AGENTS.md"
 store_memory_path = "/AGENTS.md"
-demo_context = {"workspace_id": "homework", "user_id": "u_you"}
+
+CONTEXT_A = {"workspace_id": "homework", "user_id": "u_you"}
+CONTEXT_B = {"workspace_id": "homework", "user_id": "u_teammate"}
 
 
 def namespace_from_context(context):
@@ -25,7 +27,7 @@ def memory_namespace(runtime):
 
 
 # TODO 1 filled in
-def build_seed_memory() -> str:
+def build_seed_memory_a() -> str:
     return """\
 # Houseplant Notes
 
@@ -41,11 +43,21 @@ def build_seed_memory() -> str:
 """
 
 
-store.put(
-    namespace_from_context(demo_context),
-    store_memory_path,
-    create_file_data(build_seed_memory()),
-)
+def build_seed_memory_b() -> str:
+    return """\
+# Herb Garden Notes
+
+## Watering
+- Basil and mint want consistently moist soil; check daily in summer.
+- Rosemary is drought-tolerant; only water when the top two inches are dry.
+
+## Light
+- All three herbs live on the kitchen windowsill, which gets morning sun.
+"""
+
+
+store.put(namespace_from_context(CONTEXT_A), store_memory_path, create_file_data(build_seed_memory_a()))
+store.put(namespace_from_context(CONTEXT_B), store_memory_path, create_file_data(build_seed_memory_b()))
 
 agent = create_deep_agent(
     model=model,
@@ -66,23 +78,31 @@ REMEMBER_MESSAGE = (
     "Remember: I just repotted the fiddle-leaf fig, so skip watering it for "
     "the next 3 weeks while the roots settle. Update your memory."
 )
+LEAK_CHECK_QUESTION = "How often should I water the fiddle-leaf fig, and where does the pothos live?"
 
-# First invoke: agent answers using memory content
-result = agent.invoke(
-    {"messages": [{"role": "user", "content": RECALL_QUESTION}]},
-    context=demo_context,
-)
-print("--- Question 1 ---")
-print(result["messages"][-1].content)
+# 1. Context A recalls from its own seed.
+result_a1 = agent.invoke({"messages": [{"role": "user", "content": RECALL_QUESTION}]}, context=CONTEXT_A)
+print("--- Context A, Question 1 ---")
+print(result_a1["messages"][-1].content)
 
-# Second invoke: agent writes to memory
-result2 = agent.invoke(
-    {"messages": [{"role": "user", "content": REMEMBER_MESSAGE}]},
-    context=demo_context,
-)
-print("\n--- Question 2 ---")
-print(result2["messages"][-1].content)
+# 2. Context A learns a new, distinctive fact.
+result_a2 = agent.invoke({"messages": [{"role": "user", "content": REMEMBER_MESSAGE}]}, context=CONTEXT_A)
+print("\n--- Context A, Question 2 (remember) ---")
+print(result_a2["messages"][-1].content)
 
-print("\n--- AGENTS.md after write ---")
-stored_memory = store.get(namespace_from_context(demo_context), store_memory_path)
-print(stored_memory.value["content"])
+# 3. Context B asks the same question. It should NOT see anything from A.
+result_b = agent.invoke({"messages": [{"role": "user", "content": LEAK_CHECK_QUESTION}]}, context=CONTEXT_B)
+print("\n--- Context B, leak-check question ---")
+print(result_b["messages"][-1].content)
+
+memory_a = store.get(namespace_from_context(CONTEXT_A), store_memory_path).value["content"]
+memory_b = store.get(namespace_from_context(CONTEXT_B), store_memory_path).value["content"]
+print("\n--- Context A's stored AGENTS.md ---")
+print(memory_a)
+print("\n--- Context B's stored AGENTS.md ---")
+print(memory_b)
+
+if memory_a == memory_b:
+    print("\nISOLATION FAILED: both contexts share identical stored memory.")
+else:
+    print("\nStored memories differ between contexts, as expected.")
