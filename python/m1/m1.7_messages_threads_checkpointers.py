@@ -12,21 +12,21 @@ thread_a = {"configurable": {"thread_id": "m1-7-thread-a"}}
 thread_b = {"configurable": {"thread_id": "m1-7-thread-b"}}
 
 result = agent.invoke(
-    {"messages": [{"role": "user", "content": "Remember that my favorite color is blue."}]},
+    {"messages": [{"role": "user", "content": "Remember that my favorite colour is blue."}]},
     config=thread_a,
 )
 print("Thread A, turn 1:")
 print(result["messages"][-1].content)
 
 result = agent.invoke(
-    {"messages": [{"role": "user", "content": "What is my favorite color?"}]},
+    {"messages": [{"role": "user", "content": "What is my favorite colour?"}]},
     config=thread_a,
 )
 print("\nThread A, turn 2:")
 print(result["messages"][-1].content)
 
 result = agent.invoke(
-    {"messages": [{"role": "user", "content": "What is my favorite color?"}]},
+    {"messages": [{"role": "user", "content": "What is my favorite colour?"}]},
     config=thread_b,
 )
 print("\nThread B, turn 1:")

@@ -2,16 +2,14 @@
 """M1.7 Homework: Design Your Own Multi-Thread Scenario.
 
 THE IDEA
-The lab used one topic (favorite color) across two threads to show that
+The lab used one topic (favorite colour) across two threads to show that
 thread_a remembers it and thread_b doesn't. This homework asks you to
-design your own multi-turn scenario, on a topic of your own choosing, and
-prove three things: that state persists within a thread across separate
-invoke() calls, that a different thread_id starts with no memory of it,
-AND that this persistence lives in the MemorySaver instance rather than
-the thread_id string itself, by asking a brand-new agent with its own
-fresh MemorySaver the same question on thread_a's thread_id. There's no
-single correct topic here: a recipe, a project deadline, a game
-character's backstory, anything you want the agent to remember.
+design your own multi-turn scenario and prove three things:
+  1. that state persists within a thread across separate invoke() calls,
+  2. that a different thread_id starts with no memory of it, and
+  3. that this persistence lives in the MemorySaver instance rather than
+     the thread_id string itself, by asking a brand-new agent with its
+     own fresh MemorySaver the same question on thread_a's thread_id.
 
 WHAT YOU FILL IN
   TODO 1: pick your own topic/fact for the agent to remember, and set up
@@ -44,7 +42,7 @@ agent = create_deep_agent(
 # TODO 1: Pick your own topic and set up two or more thread configs.
 #
 # Requirements:
-#   - Use a topic/fact of your own choosing (not favorite color, the
+#   - Use a topic/fact of your own choosing (not favorite colour, the
 #     lab's example).
 #   - Define at least two thread configs with different thread_ids, e.g.
 #     thread_a = {"configurable": {"thread_id": "my-thread-a"}}
@@ -69,6 +67,13 @@ thread_b = None  # TODO 1: replace with your own thread config
 #     the response and a line explaining why it doesn't know the fact
 #     even though the thread_id matches: memory lives in the MemorySaver
 #     instance, not in the thread_id string alone.
+#
+# Example shape for the second agent (delete this and write your own):
+#   fresh_agent = create_deep_agent(model=model, checkpointer=MemorySaver())
+#   result = fresh_agent.invoke(
+#       {"messages": [{"role": "user", "content": "..."}]},
+#       config=thread_a,
+#   )
 # ════════════════════════════════════════════════════════════════════════
 
 def run_scenario():
