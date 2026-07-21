@@ -50,7 +50,7 @@ REFERENCE_PATH = f"/skills/{SKILL_NAME}/reference.md"
 #     `description` (a specific sentence describing WHEN to use this skill).
 #   - Steps that tell the agent to open `reference.md` (in this same skill
 #     directory) for the specific details it needs to do the task well.
-#   - Do NOT put those details in SKILL.md itself — if the agent could do
+#   - Do NOT put those details in SKILL.md itself; if the agent could do
 #     the task correctly without ever reading reference.md, this doesn't
 #     exercise progressive disclosure.
 #
@@ -96,6 +96,7 @@ _skill_dir.mkdir(parents=True, exist_ok=True)
 (_skill_dir / "reference.md").write_text(build_reference_md())
 
 backend = FilesystemBackend(root_dir=str(_tmp_root), virtual_mode=True)
+print(f"Skill files written to: {_skill_dir}")
 
 
 # ════════════════════════════════════════════════════════════════════════

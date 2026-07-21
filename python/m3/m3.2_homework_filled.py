@@ -76,6 +76,7 @@ _skill_dir.mkdir(parents=True, exist_ok=True)
 (_skill_dir / "reference.md").write_text(build_reference_md())
 
 backend = FilesystemBackend(root_dir=str(_tmp_root), virtual_mode=True)
+print(f"Skill files written to: {_skill_dir}")
 
 
 # TODO 3 filled in
