@@ -28,10 +28,14 @@
  */
 
 import { dirname, join } from "node:path";
+import { mkdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import {
   createDeepAgent,
+  FilesystemBackend,
+  StateBackend,
+  CompositeBackend,
   type AnyBackendProtocol,
   type FilesystemPermission,
 } from "deepagents";

@@ -11,25 +11,26 @@ import { createDeepAgent } from "deepagents";
 import { model } from "../models.js";
 
 // TODO 1 filled in: a different public MCP server than the lab's,
-// DeepWiki, which answers questions about any public GitHub repo.
+// X Docs, which searches X's public API documentation.
 async function buildTools() {
   const client = new MultiServerMCPClient({
-    "deepwiki": {
+    "x-docs": {
       transport: "http",
-      url: "https://mcp.deepwiki.com/mcp",
+      url: "https://docs.x.com/mcp",
     },
   });
 
   const tools = await client.getTools();
 
-  const ALLOWED = new Set(["ask_question"]);
+  const ALLOWED = new Set(["search_x"]);
   return { client, tools: tools.filter((t) => ALLOWED.has(t.name)) };
 }
 
 // TODO 2 filled in
 const QUESTION =
-  "Use the DeepWiki tool to ask the langchain-ai/deepagents GitHub repo: " +
-  "what filesystem backends does deepagents support?";
+  "Use the X Docs tool to search the X API documentation: what HTTP " +
+  "status code and error code does the API return when a rate limit " +
+  "is exceeded?";
 
 const { client, tools } = await buildTools();
 

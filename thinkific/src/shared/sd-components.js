@@ -60,13 +60,14 @@ document.addEventListener('DOMContentLoaded', function () {
     setGlobalLang(stored || 'python');
   }
 
-  // Fixed page-lang-switch: reserve its height with a spacer (it's taken out
-  // of flow by position:fixed), then auto-hide on scroll-down, reappear on
-  // scroll-up.
+  // Fixed page-lang-switch: reserve its height at the start of its container
+  // (it's taken out of flow by position:fixed), then auto-hide on scroll-down,
+  // reappear on scroll-up. Putting the spacer first keeps any content authored
+  // before the switch (such as the translation link) from sitting behind it.
   var switchEl = document.querySelector('[data-page-lang-switch]');
   if (switchEl) {
     var spacer = document.createElement('div');
-    switchEl.parentNode.insertBefore(spacer, switchEl.nextSibling);
+    switchEl.parentNode.insertBefore(spacer, switchEl.parentNode.firstChild);
     function syncSpacerHeight() { spacer.style.height = switchEl.offsetHeight + 'px'; }
     syncSpacerHeight();
     window.addEventListener('resize', syncSpacerHeight);
