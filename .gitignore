@@ -75,6 +75,7 @@ htmlcov/
 thinkific/docs/
 python/m2/genre_revenue.png
 python/m4/output/
+python/m4/homework_data/
 python/temp/
 
 # Module 5 — runtime/generated artifacts
