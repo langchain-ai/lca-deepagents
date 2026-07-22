@@ -1,0 +1,79 @@
+<svg width="840" height="460" xmlns="http://www.w3.org/2000/svg"
+     font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="840" height="460" fill="#030710" rx="8"/>
+
+  <!-- Title -->
+  <text x="420" y="30" text-anchor="middle" font-size="15" font-weight="300" fill="#F2FAFF">Anatomy of agent.ts</text>
+  <text x="420" y="50" text-anchor="middle" font-size="11" fill="#99D3FF"
+        font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">How the agent is assembled at startup</text>
+
+  <!-- Editor window -->
+  <rect x="24" y="65" width="440" height="358" rx="8" fill="#0D1322" stroke="#2F4B68" stroke-width="1.5"/>
+  <rect x="24" y="65" width="440" height="24" rx="8" fill="#1E3A5F"/>
+  <rect x="24" y="81" width="440" height="8" fill="#1E3A5F"/>
+  <circle cx="40" cy="77" r="4" fill="#441E33"/>
+  <circle cx="54" cy="77" r="4" fill="#634643"/>
+  <circle cx="68" cy="77" r="4" fill="#2E3900"/>
+  <text x="84" y="81" font-size="9" fill="#99D3FF"
+        font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">agent.ts</text>
+
+  <!-- Highlight: FilesystemBackend (BLUE, 2 lines) -->
+  <rect x="28" y="93" width="432" height="36" rx="3" fill="#0D1F3A" stroke="#006DDD" stroke-width="1.5"/>
+  <!-- Highlight: const mailTools = (PURPLE) -->
+  <rect x="28" y="147" width="432" height="18" rx="3" fill="#1E1A34" stroke="#7E65AE" stroke-width="1.5"/>
+  <!-- Highlight: await client.getTools() (GREEN) -->
+  <rect x="28" y="165" width="432" height="18" rx="3" fill="#2E3900" stroke="#6E8900" stroke-width="1.5"/>
+  <!-- Highlight: entire createDeepAgent block (PLUM) -->
+  <rect x="28" y="183" width="432" height="198" rx="3" fill="#200C22" stroke="#C78EAD" stroke-width="1.5"/>
+
+  <!-- Code -->
+  <g font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11">
+    <text x="50"  y="105" fill="#7FC8FF">const backend = new FilesystemBackend({</text>
+    <text x="76"  y="123" fill="#7FC8FF">rootDir: HERE, virtualMode: true });</text>
+    <text x="50"  y="141" fill="#40668D">const client = new MultiServerMCPClient(...);</text>
+    <text x="50"  y="159" fill="#D5C3F7">const mailTools =</text>
+    <text x="76"  y="177" fill="#E3FF8F">await client.getTools();</text>
+    <text x="50"  y="195" fill="#C78EAD">export const graph = createDeepAgent({</text>
+    <text x="76"  y="213" fill="#40668D">model: strongModel,</text>
+    <text x="76"  y="231" fill="#40668D">tools: [markdownToHtml, ...mailTools],</text>
+    <text x="76"  y="249" fill="#40668D">systemPrompt: SYSTEM_PROMPT,</text>
+    <text x="76"  y="267" fill="#40668D">subagents: buildSubagents(...),</text>
+    <text x="76"  y="285" fill="#40668D">skills: ["/skills"],</text>
+    <text x="76"  y="303" fill="#40668D">memory: ["/AGENTS.md"],</text>
+    <text x="76"  y="321" fill="#40668D">backend,</text>
+    <text x="76"  y="339" fill="#40668D">middleware: [...],</text>
+    <text x="76"  y="357" fill="#40668D">name: "chinook-sales-assistant",</text>
+    <text x="50"  y="375" fill="#99D3FF">});</text>
+  </g>
+
+  <!-- Connectors -->
+  <line x1="464" y1="111" x2="476" y2="99"  stroke="#006DDD" stroke-width="1.5"/>
+  <line x1="464" y1="156" x2="476" y2="149" stroke="#7E65AE" stroke-width="1.5"/>
+  <line x1="464" y1="174" x2="476" y2="197" stroke="#6E8900" stroke-width="1.5"/>
+  <line x1="464" y1="282" x2="476" y2="312" stroke="#C78EAD" stroke-width="1.5"/>
+
+  <!-- Box 1: LOCAL FILESYSTEM (BLUE) -->
+  <rect x="476" y="75" width="340" height="48" rx="6" fill="#0D1322" stroke="#006DDD" stroke-width="1.5"/>
+  <text x="487" y="94"  font-size="12" font-weight="400" fill="#7FC8FF">LOCAL FILESYSTEM</text>
+  <text x="487" y="112" font-size="11" fill="#B2DEFF">virtualMode restricts access to rootDir</text>
+
+  <!-- Box 2: TOP-LEVEL AWAIT (PURPLE) -->
+  <rect x="476" y="127" width="340" height="44" rx="6" fill="#0D1322" stroke="#7E65AE" stroke-width="1.5"/>
+  <text x="487" y="146" font-size="12" font-weight="400" fill="#D5C3F7">TOP-LEVEL AWAIT</text>
+  <text x="487" y="162" font-size="11" fill="#B2DEFF">no factory fn — langgraphjs dev awaits this module</text>
+
+  <!-- Box 3: MCP DISCOVERY (GREEN) -->
+  <rect x="476" y="175" width="340" height="44" rx="6" fill="#0D1322" stroke="#6E8900" stroke-width="1.5"/>
+  <text x="487" y="194" font-size="12" font-weight="400" fill="#E3FF8F">MCP DISCOVERY</text>
+  <text x="487" y="210" font-size="11" fill="#B2DEFF">mail tools fetched live from the mock server</text>
+
+  <!-- Box 4: THE ASSEMBLY (PLUM) -->
+  <rect x="476" y="280" width="340" height="64" rx="6" fill="#0D1322" stroke="#C78EAD" stroke-width="1.5"/>
+  <text x="487" y="299" font-size="12" font-weight="400" fill="#C78EAD">THE ASSEMBLY</text>
+  <text x="487" y="317" font-size="11" fill="#B2DEFF">the full agent wired in one call</text>
+  <text x="487" y="333" font-size="11" fill="#B2DEFF">model, tools, subagents, skills, memory</text>
+
+  <!-- Footer -->
+  <text x="420" y="438" text-anchor="middle" font-size="10" fill="#40668D"
+        font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">The dimmed lines inside createDeepAgent are detailed in the code listing below.</text>
+</svg>

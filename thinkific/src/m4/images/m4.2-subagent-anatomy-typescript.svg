@@ -1,0 +1,75 @@
+<svg width="800" height="446" viewBox="0 0 800 446" xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="800" height="446" fill="#030710" rx="8"/>
+
+  <text x="400" y="32" text-anchor="middle" font-size="15" font-weight="300" fill="#F2FAFF">Anatomy of a subagent</text>
+  <text x="400" y="51" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">What each field does, and whether it inherits from the main agent or overrides it</text>
+
+  <!-- editor window -->
+  <rect x="36" y="66" width="400" height="318" rx="8" fill="#0D1322" stroke="#2F4B68" stroke-width="1.5"/>
+  <rect x="36" y="66" width="400" height="26" rx="8" fill="#161F34"/>
+  <rect x="36" y="84" width="400" height="8" fill="#161F34"/>
+  <circle cx="52" cy="79" r="4" fill="#441E33"/>
+  <circle cx="66" cy="79" r="4" fill="#634643"/>
+  <circle cx="80" cy="79" r="4" fill="#2E3900"/>
+  <text x="96" y="83" font-size="9" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">subagents.ts</text>
+
+  <!-- highlight rects -->
+  <rect x="40" y="138" width="392" height="24" rx="3" fill="#161F34" stroke="#7FC8FF" stroke-width="1.4"/>
+  <rect x="40" y="174" width="392" height="24" rx="3" fill="#161F34" stroke="#99D3FF" stroke-width="1.4"/>
+  <rect x="40" y="210" width="392" height="24" rx="3" fill="#161F34" stroke="#C78EAD" stroke-width="1.4"/>
+  <rect x="40" y="246" width="392" height="24" rx="3" fill="#161F34" stroke="#6E8900" stroke-width="1.4"/>
+  <rect x="40" y="282" width="392" height="24" rx="3" fill="#161F34" stroke="#7E65AE" stroke-width="1.4"/>
+  <rect x="40" y="318" width="392" height="24" rx="3" fill="#161F34" stroke="#B27D75" stroke-width="1.4"/>
+
+  <!-- code -->
+  <g font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5" xml:space="preserve">
+    <text x="58" y="120" fill="#B2DEFF">const genreResearcher: SubAgent = {</text>
+    <text x="58" y="155" fill="#F2FAFF">  name: "genre-researcher",</text>
+    <text x="58" y="191" fill="#F2FAFF">  description: "Research one genre…",</text>
+    <text x="58" y="227" fill="#F2FAFF">  systemPrompt: GENRE_PROMPT,</text>
+    <text x="58" y="263" fill="#F2FAFF">  tools: [internetSearch],</text>
+    <text x="58" y="299" fill="#F2FAFF">  model, // "anthropic:claude-haiku-4-5"</text>
+    <text x="58" y="335" fill="#F2FAFF">  permissions: researchPermissions,</text>
+    <text x="58" y="370" fill="#B2DEFF">};</text>
+  </g>
+
+  <!-- callout: name -->
+  <line x1="432" y1="150" x2="470" y2="148" stroke="#7FC8FF" stroke-width="1.4"/>
+  <rect x="470" y="128" width="312" height="40" rx="6" fill="#0D1322" stroke="#7FC8FF" stroke-width="1.4"/>
+  <text x="480" y="144" font-size="10" fill="#7FC8FF">THE HANDLE</text>
+  <text x="480" y="159" font-size="8.5" fill="#B2DEFF">the main agent calls task("genre-researcher", …)</text>
+
+  <!-- callout: description -->
+  <line x1="432" y1="186" x2="470" y2="190" stroke="#99D3FF" stroke-width="1.4"/>
+  <rect x="470" y="170" width="312" height="40" rx="6" fill="#0D1322" stroke="#99D3FF" stroke-width="1.4"/>
+  <text x="480" y="186" font-size="10" fill="#99D3FF">HOW IT'S CHOSEN</text>
+  <text x="480" y="201" font-size="8.5" fill="#B2DEFF">the main agent reads this to decide when to delegate</text>
+
+  <!-- callout: systemPrompt -->
+  <line x1="432" y1="222" x2="470" y2="232" stroke="#C78EAD" stroke-width="1.4"/>
+  <rect x="470" y="212" width="312" height="40" rx="6" fill="#0D1322" stroke="#C78EAD" stroke-width="1.4"/>
+  <text x="480" y="228" font-size="10" fill="#C78EAD">ITS OWN BRAIN · never inherited</text>
+  <text x="480" y="243" font-size="8.5" fill="#EBD0F0">how it works + "return only the segment"</text>
+
+  <!-- callout: tools -->
+  <line x1="432" y1="258" x2="470" y2="274" stroke="#6E8900" stroke-width="1.4"/>
+  <rect x="470" y="254" width="312" height="40" rx="6" fill="#0D1322" stroke="#6E8900" stroke-width="1.4"/>
+  <text x="480" y="270" font-size="10" fill="#E3FF8F">OVERRIDE · replaces the inherited set</text>
+  <text x="480" y="285" font-size="8.5" fill="#B2DEFF">Tavily search lives only in the subagent</text>
+
+  <!-- callout: model -->
+  <line x1="432" y1="294" x2="470" y2="316" stroke="#7E65AE" stroke-width="1.4"/>
+  <rect x="470" y="296" width="312" height="40" rx="6" fill="#0D1322" stroke="#7E65AE" stroke-width="1.4"/>
+  <text x="480" y="312" font-size="10" fill="#D5C3F7">OVERRIDE · cheaper model</text>
+  <text x="480" y="327" font-size="8.5" fill="#B2DEFF">Haiku 4.5 for fast, parallel research</text>
+
+  <!-- callout: permissions -->
+  <line x1="432" y1="330" x2="470" y2="358" stroke="#B27D75" stroke-width="1.4"/>
+  <rect x="470" y="338" width="312" height="40" rx="6" fill="#0D1322" stroke="#B27D75" stroke-width="1.4"/>
+  <text x="480" y="354" font-size="10" fill="#FBB0A5">OVERRIDE · scoped write access</text>
+  <text x="480" y="369" font-size="8.5" fill="#B2DEFF">may write only /research/** (the main agent reads)</text>
+
+  <!-- footer -->
+  <text x="400" y="408" text-anchor="middle" font-size="10" fill="#B2DEFF">A subagent must define its own systemPrompt; tools, model, and permissions override the parent only when set.</text>
+  <text x="400" y="426" text-anchor="middle" font-size="9" fill="#40668D" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Everything else: model &amp; tool defaults, the shared backend, built-in filesystem tools, runtime context; inherits from the main agent.</text>
+</svg>
