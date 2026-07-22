@@ -1,10 +1,10 @@
 # Agent Chat UI
 
 > **Fork notice:** this is a fork of [langchain-ai/agent-chat-ui](https://github.com/langchain-ai/agent-chat-ui),
-> vendored into this course repo for lesson **m5.5 (Sandbox Security)**.
+> vendored into this course repo for lesson **m5.5, "The Sales Assistant (Advanced)"**.
 > Additions specific to that lesson: `/api/sandbox-files` and
 > `/api/sandbox-download` routes, an async-task status badge, and a
-> sandbox-files panel — see `../thinkific/src/m5/m5.5-sandbox-security.md`.
+> sandbox-files panel. See `../thinkific/src/m5/m5.5-sandbox-async-agent.md`.
 > Other lessons (e.g. m5.3) use the hosted UI or a plain checkout of the
 > upstream repo instead; this fork isn't needed for those.
 >

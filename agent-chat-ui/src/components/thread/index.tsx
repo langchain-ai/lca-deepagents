@@ -250,7 +250,7 @@ export function Thread() {
   // Regenerate ("Refresh") is deliberately not offered in this fork: resubmitting
   // from an earlier checkpoint forks the thread, which can strand a completed
   // async-subagent result (e.g. the assembled newsletter) behind an unreachable
-  // branch — see thinkific/src/m5/m5.5-sandbox-security.md.
+  // branch. See thinkific/src/m5/m5.5-sandbox-async-agent.md.
   const chatStarted = !!threadId || !!messages.length;
   const hasNoAIOrToolMessages = !messages.find(
     (m) => m.type === "ai" || m.type === "tool",
