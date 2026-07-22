@@ -5,11 +5,18 @@
  * possible answer, so yours might be different. Explore!
  */
 
-import { createDeepAgent } from "deepagents";
+import { existsSync, readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { createDeepAgent, FilesystemBackend } from "deepagents";
 import { HumanMessage } from "langchain";
 import { MemorySaver } from "@langchain/langgraph";
 
 import { model } from "../models.js";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const historyDir = join(__dirname, "m3.1_history");
 
 // TODO 1 filled in
 function buildTurns(): string[] {
@@ -37,6 +44,7 @@ Object.defineProperty(model, "profile", {
 
 const agent = createDeepAgent({
   model,
+  backend: new FilesystemBackend({ rootDir: historyDir, virtualMode: true }),
   checkpointer: new MemorySaver(),
   systemPrompt: "You are a helpful assistant. Keep every response to one sentence.",
 });
@@ -47,21 +55,10 @@ interface SummarizationEvent {
   cutoffIndex?: number;
 }
 
-interface FileData {
-  content?: string | string[];
-}
-
 interface AgentStateValues {
   messages?: unknown[];
   _summarizationEvent?: SummarizationEvent;
   _summarizationSessionId?: string;
-  files?: Record<string, FileData | string>;
-}
-
-function fileContentToString(file: FileData | string): string {
-  const content = typeof file === "string" ? file : file.content;
-  if (Array.isArray(content)) return content.join("\n");
-  return content ?? "";
 }
 
 async function turn(message: string): Promise<unknown> {
@@ -111,20 +108,14 @@ async function main(): Promise<void> {
   const state = await (agent.getState as (config: unknown) => Promise<{ values: AgentStateValues }>)(THREAD);
   const sessionId = state.values._summarizationSessionId;
   const historyPath = sessionId ? `/conversation_history/${sessionId}.md` : null;
-  const historyFile = historyPath ? state.values.files?.[historyPath] : undefined;
-  if (historyFile) {
-    const content = fileContentToString(historyFile);
+  const historyFileOnDisk = historyPath ? join(historyDir, historyPath) : null;
+  if (historyFileOnDisk && existsSync(historyFileOnDisk)) {
+    const content = readFileSync(historyFileOnDisk, "utf8");
     const sections = content.split("## Summarized at").length - 1;
     console.log(`\n--- ${historyPath} (${sections} section(s)) ---`);
     console.log(content);
   } else if (historyPath) {
-    // Some deepagents versions don't yet surface the summarization
-    // middleware's backend offload in state.files for the default
-    // StateBackend; that's a package limitation, not a bug in this script.
-    console.log(
-      `\nNo offloaded history file found at ${historyPath} in state.files ` +
-      "(this is a known gap in some deepagents versions, not a bug in your code)."
-    );
+    console.log(`\nNo offloaded history file found at ${historyFileOnDisk}.`);
   }
 }
 

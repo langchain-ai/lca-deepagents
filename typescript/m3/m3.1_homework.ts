@@ -8,7 +8,8 @@
  * fire once and stop: on a long enough conversation it fires again, and again
  * each time it re-summarizes the previous summary plus whatever's new since,
  * while the FULL evicted history keeps piling up in a single backend file at
- * /conversation_history/{threadId}.md.
+ * /conversation_history/{sessionId}.md (a session ID generated the first time
+ * summarization fires on a thread, not the thread_id itself).
  *
  * This homework asks you to build a conversation on a topic you pick that's
  * long enough to trigger summarization AT LEAST TWICE, then confirm two
@@ -31,11 +32,19 @@
  *   pnpm tsx ./m3/m3.1_homework.ts
  */
 
-import { createDeepAgent } from "deepagents";
+import { existsSync, readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { createDeepAgent, FilesystemBackend } from "deepagents";
 import { HumanMessage } from "langchain";
 import { MemorySaver } from "@langchain/langgraph";
 
 import { model } from "../models.js";
+
+// FilesystemBackend writes to real disk instead of state.files.
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const historyDir = join(__dirname, "m3.1_history");
 
 // ════════════════════════════════════════════════════════════════════════
 // TODO 1: Write your own multi-turn scenario.
@@ -84,6 +93,7 @@ Object.defineProperty(model, "profile", {
 
 const agent = createDeepAgent({
   model,
+  backend: new FilesystemBackend({ rootDir: historyDir, virtualMode: true }),
   checkpointer: new MemorySaver(),
   systemPrompt: "You are a helpful assistant. Keep every response to one sentence.",
 });
@@ -94,21 +104,10 @@ interface SummarizationEvent {
   cutoffIndex?: number;
 }
 
-interface FileData {
-  content?: string | string[];
-}
-
 interface AgentStateValues {
   messages?: unknown[];
   _summarizationEvent?: SummarizationEvent;
   _summarizationSessionId?: string;
-  files?: Record<string, FileData | string>;
-}
-
-function fileContentToString(file: FileData | string): string {
-  const content = typeof file === "string" ? file : file.content;
-  if (Array.isArray(content)) return content.join("\n");
-  return content ?? "";
 }
 
 async function turn(message: string): Promise<unknown> {
@@ -158,20 +157,14 @@ async function main(): Promise<void> {
   const state = await (agent.getState as (config: unknown) => Promise<{ values: AgentStateValues }>)(THREAD);
   const sessionId = state.values._summarizationSessionId;
   const historyPath = sessionId ? `/conversation_history/${sessionId}.md` : null;
-  const historyFile = historyPath ? state.values.files?.[historyPath] : undefined;
-  if (historyFile) {
-    const content = fileContentToString(historyFile);
+  const historyFileOnDisk = historyPath ? join(historyDir, historyPath) : null;
+  if (historyFileOnDisk && existsSync(historyFileOnDisk)) {
+    const content = readFileSync(historyFileOnDisk, "utf8");
     const sections = content.split("## Summarized at").length - 1;
     console.log(`\n--- ${historyPath} (${sections} section(s)) ---`);
     console.log(content);
   } else if (historyPath) {
-    // Some deepagents versions don't yet surface the summarization
-    // middleware's backend offload in state.files for the default
-    // StateBackend; that's a package limitation, not a bug in your code.
-    console.log(
-      `\nNo offloaded history file found at ${historyPath} in state.files ` +
-      "(this is a known gap in some deepagents versions, not a bug in your code)."
-    );
+    console.log(`\nNo offloaded history file found at ${historyFileOnDisk}.`);
   }
 }
 
