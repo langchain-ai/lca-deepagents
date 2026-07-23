@@ -2,11 +2,10 @@
 /**
  * GitHub MCP agent — OAuth via the MCP SDK's OAuthClientProvider interface.
  *
- * GitHubTokenStorage implements OAuthClientProvider directly (the MCP
- * TypeScript SDK has no OAuthClientProvider base class to subclass, unlike
- * the Python SDK). It pre-seeds the registered client credentials so the SDK
- * skips dynamic client registration (which GitHub does not support), and
- * drives the browser-consent + loopback-callback dance itself inside
+ * GitHubTokenStorage implements OAuthClientProvider directly. It pre-seeds
+ * the registered client credentials so the SDK skips dynamic client
+ * registration (which GitHub does not support), and drives the
+ * browser-consent + loopback-callback dance itself inside
  * redirectToAuthorization.
  *
  * Run:  pnpm tsx ./m1/gh_auth/github_agent.ts

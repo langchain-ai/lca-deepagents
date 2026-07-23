@@ -11,7 +11,7 @@ import { InMemoryStore } from "@langchain/langgraph";
 
 import { model } from "../models.js";
 
-// deepagents does not export create_file_data, so build the FileDataV2 shape by hand.
+// createFileData is a helper function to create a FileData object.
 function createFileData(content: string): FileData {
   const now = new Date().toISOString();
   return { content, mimeType: "text/markdown", created_at: now, modified_at: now };
@@ -28,7 +28,7 @@ function namespaceFromContext(context: { workspace_id: string; user_id: string }
 
 // StoreBackend's namespace factory only has access to the runnable config (not the
 // LangGraph "context" object directly), so workspace_id/user_id are threaded through
-// via `configurable` rather than Python's `runtime.context`.
+// via `configurable`.
 function memoryNamespace(context: StoreBackendContext): string[] {
   const configurable = (context.config?.configurable ?? {}) as {
     workspace_id: string;
