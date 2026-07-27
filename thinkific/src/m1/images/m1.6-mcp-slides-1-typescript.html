@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../shared/sd-components.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { background: #030710; overflow: hidden; }
+  .sd-wrap { margin: 0; border-radius: 0; box-shadow: none; height: 100%; display: flex; flex-direction: column; }
+  .sd-stage { flex: 1; overflow: hidden; position: relative; cursor: pointer; }
+  #slides { height: 100%; }
+  .slide { display: none; height: 100%; }
+  .slide.active { display: block; }
+  .slide svg { width: 100%; height: 100%; display: block; }
+  .sd-dots { padding: 13px 18px 20px; }
+</style>
+</head>
+<body>
+<div class="sd-wrap">
+
+  <div class="sd-stage" id="stage" tabindex="0">
+
+    <div id="slides">
+
+      <!-- STEP 1: MCP overview -->
+      <div class="slide active">
+        <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg" font-family="'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+          <defs><marker id="s3fa" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L5,3 L0,6 Z" fill="#7FC8FF"/></marker></defs>
+          <rect width="800" height="380" fill="#030710"/>
+          <text x="400" y="38" text-anchor="middle" font-size="22" font-weight="300" fill="#F2FAFF">MCP: one standard interface</text>
+          <text x="400" y="63" text-anchor="middle" font-size="12.5" fill="#99D3FF" font-family="'IBM Plex Mono',monospace">any MCP-aware client connects to any MCP server</text>
+
+          <!-- Your Agent box -->
+          <rect x="32" y="106" width="208" height="168" rx="10" fill="#0D1322" stroke="#7FC8FF" stroke-width="2"/>
+          <text x="136" y="183" text-anchor="middle" font-size="17" font-weight="400" fill="#7FC8FF">Your Agent</text>
+          <text x="136" y="206" text-anchor="middle" font-size="13" fill="#B2DEFF">LangChain / deepagents</text>
+
+          <!-- Arrow 1 -->
+          <line x1="240" y1="190" x2="282" y2="190" stroke="#7FC8FF" stroke-width="2" marker-end="url(#s3fa)"/>
+
+          <!-- MCP Server box -->
+          <rect x="284" y="92" width="232" height="196" rx="10" fill="#0D1322" stroke="#40668D" stroke-width="2"/>
+          <text x="400" y="146" text-anchor="middle" font-size="17" font-weight="400" fill="#B2DEFF">MCP Server</text>
+          <text x="400" y="173" text-anchor="middle" font-size="14" fill="#5BADDF">standard protocol</text>
+          <text x="400" y="194" text-anchor="middle" font-size="14" fill="#5BADDF">run by anyone, anywhere</text>
+          <line x1="302" y1="213" x2="498" y2="213" stroke="#2F4B68" stroke-width="1"/>
+          <text x="400" y="235" text-anchor="middle" font-size="12" fill="#40668D" font-family="'IBM Plex Mono',monospace">no custom code in your agent</text>
+
+          <!-- Arrow 2 -->
+          <line x1="516" y1="190" x2="558" y2="190" stroke="#7FC8FF" stroke-width="2" marker-end="url(#s3fa)"/>
+
+          <!-- Service box -->
+          <rect x="560" y="106" width="208" height="168" rx="10" fill="#0D1322" stroke="#6E8900" stroke-width="2"/>
+          <text x="664" y="174" text-anchor="middle" font-size="17" font-weight="400" fill="#E3FF8F">Service</text>
+          <text x="664" y="197" text-anchor="middle" font-size="13" fill="#B2DEFF">Gmail, GitHub,</text>
+          <text x="664" y="217" text-anchor="middle" font-size="13" fill="#B2DEFF">LangChain Docs…</text>
+
+          <!-- Footer -->
+          <text x="400" y="306" text-anchor="middle" font-size="13.5" fill="#B2DEFF">The MCP server handles the service-specific details.</text>
+          <text x="400" y="328" text-anchor="middle" font-size="13.5" fill="#B2DEFF">Your agent only speaks the MCP protocol.</text>
+        </svg>
+      </div>
+
+      <!-- STEP 2: What an MCP server exposes -->
+      <div class="slide">
+        <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg" font-family="'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+          <rect width="800" height="380" fill="#030710"/>
+          <text x="400" y="38" text-anchor="middle" font-size="22" font-weight="300" fill="#F2FAFF">What an MCP server exposes</text>
+          <text x="400" y="63" text-anchor="middle" font-size="12.5" fill="#99D3FF" font-family="'IBM Plex Mono',monospace">this course focuses on tools</text>
+
+          <!-- Outer MCP Server box -->
+          <rect x="130" y="78" width="540" height="248" rx="12" fill="#0D1322" stroke="#40668D" stroke-width="2"/>
+          <text x="400" y="108" text-anchor="middle" font-size="16" font-weight="400" fill="#B2DEFF">MCP Server</text>
+
+          <!-- Tools inner box -->
+          <rect x="150" y="120" width="500" height="58" rx="8" fill="#161F34" stroke="#7FC8FF" stroke-width="1.5"/>
+          <text x="400" y="146" text-anchor="middle" font-size="15" font-weight="400" fill="#7FC8FF">Tools</text>
+          <text x="400" y="165" text-anchor="middle" font-size="13" fill="#B2DEFF">functions the agent can call: search, read, write, query</text>
+
+          <!-- Resources inner box -->
+          <rect x="150" y="188" width="500" height="58" rx="8" fill="#161F34" stroke="#2F4B68" stroke-width="1.2"/>
+          <text x="400" y="214" text-anchor="middle" font-size="15" font-weight="400" fill="#99D3FF">Resources</text>
+          <text x="400" y="233" text-anchor="middle" font-size="13" fill="#5BADDF">structured data the server exposes: files, records, configs</text>
+
+          <!-- Prompts inner box -->
+          <rect x="150" y="256" width="500" height="58" rx="8" fill="#161F34" stroke="#2F4B68" stroke-width="1.2"/>
+          <text x="400" y="282" text-anchor="middle" font-size="15" font-weight="400" fill="#99D3FF">Prompts</text>
+          <text x="400" y="301" text-anchor="middle" font-size="13" fill="#5BADDF">reusable prompt templates the server provides</text>
+
+          <!-- Footer -->
+          <text x="400" y="346" text-anchor="middle" font-size="13" fill="#B2DEFF">This course uses tools. Resources and prompts are part of the MCP spec</text>
+          <text x="400" y="364" text-anchor="middle" font-size="13" fill="#B2DEFF">but require separate client calls and are not covered here.</text>
+        </svg>
+      </div>
+
+      <!-- STEP 3: MCP tools are just DynamicStructuredTool objects -->
+      <div class="slide">
+        <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg" font-family="'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+          <defs><marker id="s5a" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L5,3 L0,6 Z" fill="#7FC8FF"/></marker></defs>
+          <rect width="800" height="380" fill="#030710"/>
+          <text x="400" y="38" text-anchor="middle" font-size="22" font-weight="300" fill="#F2FAFF">MCP tools are just DynamicStructuredTool objects</text>
+          <text x="400" y="63" text-anchor="middle" font-size="12.5" fill="#99D3FF" font-family="'IBM Plex Mono',monospace">the agent cannot tell them apart from locally-defined tools</text>
+
+          <!-- MCP Server box -->
+          <rect x="20" y="90" width="192" height="192" rx="10" fill="#0D1322" stroke="#40668D" stroke-width="1.5"/>
+          <text x="116" y="118" text-anchor="middle" font-size="14" font-weight="400" fill="#B2DEFF">MCP Server</text>
+          <rect x="38" y="130" width="156" height="30" rx="5" fill="#161F34" stroke="#40668D" stroke-width="1"/>
+          <text x="116" y="149" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono',monospace">list_emails</text>
+          <rect x="38" y="168" width="156" height="30" rx="5" fill="#161F34" stroke="#40668D" stroke-width="1"/>
+          <text x="116" y="187" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono',monospace">read_email</text>
+          <rect x="38" y="206" width="156" height="30" rx="5" fill="#161F34" stroke="#40668D" stroke-width="1"/>
+          <text x="116" y="225" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono',monospace">search_emails</text>
+
+          <!-- Arrow MCP → adapters -->
+          <line x1="212" y1="186" x2="252" y2="186" stroke="#7FC8FF" stroke-width="1.5" marker-end="url(#s5a)"/>
+
+          <!-- Adapters box -->
+          <rect x="254" y="156" width="148" height="72" rx="8" fill="#161F34" stroke="#2F4B68" stroke-width="1.2"/>
+          <text x="328" y="182" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono',monospace">langchain-mcp-</text>
+          <text x="328" y="198" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono',monospace">adapters</text>
+          <text x="328" y="216" text-anchor="middle" font-size="7.6" fill="#40668D">wraps as DynamicStructuredTool</text>
+
+          <!-- Arrow adapters → agent -->
+          <line x1="402" y1="186" x2="442" y2="186" stroke="#7FC8FF" stroke-width="1.5" marker-end="url(#s5a)"/>
+
+          <!-- Agent's tool list box -->
+          <rect x="444" y="86" width="336" height="210" rx="10" fill="#0D1322" stroke="#7FC8FF" stroke-width="1.5"/>
+          <text x="612" y="114" text-anchor="middle" font-size="14" font-weight="400" fill="#7FC8FF">Agent's tool list</text>
+          <text x="612" y="134" text-anchor="middle" font-size="11" fill="#40668D" font-family="'IBM Plex Mono',monospace">source is invisible</text>
+          <rect x="462" y="148" width="300" height="30" rx="5" fill="#161F34" stroke="#6E8900" stroke-width="1.2"/>
+          <text x="598" y="167" text-anchor="middle" font-size="12" fill="#E3FF8F" font-family="'IBM Plex Mono',monospace">web_search</text>
+          <text x="730" y="167" font-size="10" fill="#6E8900">local</text>
+          <rect x="462" y="186" width="300" height="30" rx="5" fill="#161F34" stroke="#40668D" stroke-width="1.2"/>
+          <text x="598" y="205" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono',monospace">list_emails</text>
+          <text x="730" y="205" font-size="10" fill="#40668D">MCP</text>
+          <rect x="462" y="224" width="300" height="30" rx="5" fill="#161F34" stroke="#40668D" stroke-width="1.2"/>
+          <text x="598" y="243" text-anchor="middle" font-size="12" fill="#CCE9FF" font-family="'IBM Plex Mono',monospace">read_email</text>
+          <text x="730" y="243" font-size="10" fill="#40668D">MCP</text>
+
+          <!-- Footer -->
+          <text x="400" y="328" text-anchor="middle" font-size="13" fill="#B2DEFF">Tool results come back as ToolMessages in the conversation history.</text>
+          <text x="400" y="350" text-anchor="middle" font-size="13" fill="#B2DEFF">The model decides what to do next exactly as it would with any other tool.</text>
+        </svg>
+      </div>
+
+    </div><!-- #slides -->
+
+  </div><!-- .sd-stage -->
+
+  <div class="sd-bar">
+    <div class="sd-caption">
+      <strong id="tag">Click → to begin</strong>
+      <span id="cap">Step through the MCP overview one diagram at a time. Click the diagram or use the arrows to advance. The three diagrams cover the standard interface, what servers expose, and how tools reach your agent.</span>
+    </div>
+    <div class="sd-controls">
+      <button class="sd-btn" id="prev" disabled title="Previous">&#8592;</button>
+      <button class="sd-btn" id="next" title="Next">&#8594;</button>
+    </div>
+  </div>
+
+  <div class="sd-dots" id="dots"></div>
+
+</div><!-- .sd-wrap -->
+
+<script>
+(function () {
+  var STEPS = [
+    { tag: 'MCP: one standard interface',
+      cap: 'MCP replaces the one-integration-per-service pattern with a single standard protocol. Any MCP-aware client connects to any MCP server; the MCP server handles all service-specific details.' },
+    { tag: 'What an MCP server exposes',
+      cap: 'Servers can expose three primitives: tools (callable functions), resources (structured data to read), and prompts (reusable prompt templates). This course focuses on tools; getTools() retrieves them as DynamicStructuredTool objects ready to pass to your agent. Resources and prompts require separate client calls.' },
+    { tag: 'MCP tools as DynamicStructuredTool objects',
+      cap: '@langchain/mcp-adapters wraps each server tool as a standard DynamicStructuredTool. The agent sees MCP tools identically to locally-defined tools; results come back as ToolMessages in the conversation history.' }
+  ];
+
+  var slides = document.querySelectorAll('#slides .slide');
+  var dotsEl = document.getElementById('dots');
+  var tagEl  = document.getElementById('tag');
+  var capEl  = document.getElementById('cap');
+  var prevBtn = document.getElementById('prev');
+  var nextBtn = document.getElementById('next');
+  var stage  = document.getElementById('stage');
+  var cur = 0;
+
+  slides.forEach(function (_, i) {
+    var d = document.createElement('div');
+    d.className = 'sd-dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', function () { goTo(i); });
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(n) {
+    if (n < 0 || n >= slides.length) return;
+    slides[cur].classList.remove('active');
+    dotsEl.children[cur].classList.remove('active');
+    cur = n;
+    slides[cur].classList.add('active');
+    dotsEl.children[cur].classList.add('active');
+    tagEl.textContent = STEPS[cur].tag;
+    capEl.textContent = STEPS[cur].cap;
+    prevBtn.disabled = cur === 0;
+    nextBtn.disabled = cur === slides.length - 1;
+  }
+
+  stage.addEventListener('click', function () {
+    if (cur < slides.length - 1) goTo(cur + 1);
+  });
+
+  prevBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (cur > 0) goTo(cur - 1);
+  });
+
+  nextBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (cur < slides.length - 1) goTo(cur + 1);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { if (cur < slides.length - 1) goTo(cur + 1); }
+    if (e.key === 'ArrowLeft')  { if (cur > 0) goTo(cur - 1); }
+  });
+})();
+</script>
+</body>
+</html>
