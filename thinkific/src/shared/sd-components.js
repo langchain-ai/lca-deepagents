@@ -84,48 +84,48 @@ document.addEventListener('DOMContentLoaded', function () {
     }, { passive: true });
   }
 
-  var panel = document.querySelector('.lt-panel');
-  if (!panel) return;
+  var panels = document.querySelectorAll('.lt-panel');
+  if (!panels.length) return;
 
-  var hasLab = false, hasQuiz = false, hasHomework = false;
-  document.querySelectorAll('.lt-tab').forEach(function (t) {
-    var p = t.getAttribute('data-p') || '';
-    if (p.startsWith('lab')) hasLab = true;
-    if (p === 'quiz') hasQuiz = true;
-    if (p.startsWith('homework')) hasHomework = true;
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.lt-tab')).map(function (t) {
+    return { key: t.getAttribute('data-p') || '', label: t.textContent.trim() };
   });
+  if (!tabs.length) return;
 
-  var parts = [];
-  if (hasLab) parts.push('Lab');
-  if (hasQuiz) parts.push('Quiz');
-  if (hasHomework) parts.push('Homework');
+  panels.forEach(function (panel) {
+    var key = panel.id.replace(/^p-/, '');
+    var idx = tabs.findIndex(function (t) { return t.key === key; });
+    // Only point forward to tabs later in the flow (Lesson -> Lab 1 -> Lab 2 -> Quiz -> Homework),
+    // never back to a tab already completed.
+    var parts = (idx === -1 ? tabs.slice(1) : tabs.slice(idx + 1)).map(function (t) { return t.label; });
 
-  var label = '↑  Back to top';
-  if (parts.length) label += ': ' + parts.join(' & ');
+    var label = '↑  Back to top';
+    if (parts.length) label += ': ' + parts.join(', ');
 
-  function makeBackToTopBtn() {
-    var b = document.createElement('button');
-    b.className = 'back-to-top-btn';
-    b.textContent = label;
-    b.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'instant' }); });
-    return b;
-  }
+    function makeBackToTopBtn() {
+      var b = document.createElement('button');
+      b.className = 'back-to-top-btn';
+      b.textContent = label;
+      b.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'instant' }); });
+      return b;
+    }
 
-  var refHeadings = [];
-  panel.querySelectorAll('h2').forEach(function (h) {
-    if (h.textContent.trim() === 'References') refHeadings.push(h);
-  });
-
-  if (refHeadings.length) {
-    // Insert relative to each heading's own parent (not always `panel`) since
-    // per-language lessons nest each language's References one level deeper,
-    // inside a [data-lang] wrapper — insertBefore requires a direct child.
-    refHeadings.forEach(function (h) {
-      h.parentNode.insertBefore(makeBackToTopBtn(), h);
+    var refHeadings = [];
+    panel.querySelectorAll('h2').forEach(function (h) {
+      if (h.textContent.trim() === 'References') refHeadings.push(h);
     });
-  } else {
-    panel.appendChild(makeBackToTopBtn());
-  }
+
+    if (refHeadings.length) {
+      // Insert relative to each heading's own parent (not always `panel`) since
+      // per-language lessons nest each language's References one level deeper,
+      // inside a [data-lang] wrapper — insertBefore requires a direct child.
+      refHeadings.forEach(function (h) {
+        h.parentNode.insertBefore(makeBackToTopBtn(), h);
+      });
+    } else {
+      panel.appendChild(makeBackToTopBtn());
+    }
+  });
 });
 
 // ── SVG fragment helpers ──────────────────────────────────────────────────────
