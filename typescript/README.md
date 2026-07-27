@@ -6,7 +6,7 @@ You can find the course at [Deep Agents](https://academy.langchain.com/courses/f
 
 ### Prerequisites
 
-- Node.js 20+
+- Node.js 24.15+
 - [pnpm](https://pnpm.io/): [how to install](#installing-pnpm)
 - LLM Model API key: choose your favorite provider. The course defaults to Anthropic ([sign up for an Anthropic API key here](https://console.anthropic.com/))
 - LangSmith API key: [how to get one](#getting-started-with-langsmith)
@@ -106,9 +106,9 @@ If you see tracing errors at runtime, check that both `LANGSMITH_TRACING=true` a
 <details>
 <summary>Wrong Node.js version</summary>
 
-The course requires Node.js 20+.
+The course requires Node.js 24.15+.
 
-**Solution:** Install Node.js 20+ from [nodejs.org](https://nodejs.org/), or use a version manager like [nvm](https://github.com/nvm-sh/nvm) / [fnm](https://github.com/Schniz/fnm).
+**Solution:** Install Node.js 24.15+ from [nodejs.org](https://nodejs.org/), or use a version manager like [nvm](https://github.com/nvm-sh/nvm) / [fnm](https://github.com/Schniz/fnm).
 
 </details>
 
