@@ -103,17 +103,29 @@ document.addEventListener('DOMContentLoaded', function () {
   var label = '↑  Back to top';
   if (parts.length) label += ': ' + parts.join(' & ');
 
-  var btn = document.createElement('button');
-  btn.className = 'back-to-top-btn';
-  btn.textContent = label;
-  btn.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'instant' }); });
+  function makeBackToTopBtn() {
+    var b = document.createElement('button');
+    b.className = 'back-to-top-btn';
+    b.textContent = label;
+    b.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'instant' }); });
+    return b;
+  }
 
-  var refH2 = null;
+  var refHeadings = [];
   panel.querySelectorAll('h2').forEach(function (h) {
-    if (h.textContent.trim() === 'References') refH2 = h;
+    if (h.textContent.trim() === 'References') refHeadings.push(h);
   });
-  if (refH2) panel.insertBefore(btn, refH2);
-  else panel.appendChild(btn);
+
+  if (refHeadings.length) {
+    // Insert relative to each heading's own parent (not always `panel`) since
+    // per-language lessons nest each language's References one level deeper,
+    // inside a [data-lang] wrapper — insertBefore requires a direct child.
+    refHeadings.forEach(function (h) {
+      h.parentNode.insertBefore(makeBackToTopBtn(), h);
+    });
+  } else {
+    panel.appendChild(makeBackToTopBtn());
+  }
 });
 
 // ── SVG fragment helpers ──────────────────────────────────────────────────────
