@@ -59,9 +59,9 @@ strong_model = init_chat_model("anthropic:claude-sonnet-4-6")
 # Ollama: run models locally (no API key required)
 # langchain-ollama is already installed (default dep)
 # Install the Ollama app first: https://ollama.com
-# Pull a model first, e.g.:  ollama pull llama3.2
+# Pull a model first, e.g.:  ollama pull qwen2.5:7b
 #
-# model = init_chat_model("ollama:llama3.2")
+# model = init_chat_model("ollama:qwen2.5:7b")
 
 # Kimi (Moonshot AI): OpenAI-compatible hosted API
 # No extra install needed (langchain-openai is already a default dep)

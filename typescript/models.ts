@@ -46,9 +46,9 @@ export const strongModel = await initChatModel("anthropic:claude-sonnet-4-6");
 
 // Ollama: run models locally (no API key required)
 // Install the Ollama app first: https://ollama.com
-// Pull a model first, e.g.:  ollama pull llama3.2
+// Pull a model first, e.g.:  ollama pull qwen2.5:7b
 //
-// export const model = await initChatModel("ollama:llama3.2");
+// export const model = await initChatModel("ollama:qwen2.5:7b");
 
 // OpenRouter: hosted open-source models via OpenAI-compatible API
 // Free models available; sign up at openrouter.ai and get an API key
