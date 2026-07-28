@@ -9,6 +9,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "16": "^0.0.2",
     "@inquirer/prompts": "^8.5.2",
     "@langchain/anthropic": "latest",
     "@langchain/core": "^1.2.3",
@@ -41,6 +42,13 @@
   },
   "engines": {
     "node": ">=24.15.0"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">=24.15.0",
+      "onFail": "download"
+    }
   },
   "packageManager": "pnpm@11.8.0+sha512.c1f5e7c4cb241c8f174b743851d82f42b802324afc8b0f116b96adb15aa06664948dde36960a3ba1079ba5b4b29dd0140135b94b5b5f5263592249d68e555f26"
 }
