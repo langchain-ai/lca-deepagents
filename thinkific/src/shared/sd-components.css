@@ -24,6 +24,8 @@ div[style*="background:"] > p:last-child { margin-bottom: 0; }
   font-size: 15.5px;
   color: #030710;
 }
+.callout p:first-child { margin-top: 0; }
+.callout p:last-child { margin-bottom: 0; }
 
 hr {
   border: none;
