@@ -123,7 +123,22 @@ document.addEventListener('DOMContentLoaded', function () {
         h.parentNode.insertBefore(makeBackToTopBtn(), h);
       });
     } else {
-      panel.appendChild(makeBackToTopBtn());
+      // No References heading anywhere in this panel. If the panel splits by
+      // language, scope one button per [data-lang] child instead of appending
+      // one bare button to the panel itself — an unscoped button would stay
+      // visible under every language, not just the one it was meant for.
+      // A [data-lang] child can opt out entirely (e.g. a short "not yet
+      // translated" placeholder with nothing to navigate) via data-no-back-to-top.
+      var langChildren = Array.prototype.filter.call(panel.children, function (el) {
+        return el.hasAttribute && el.hasAttribute('data-lang');
+      });
+      if (langChildren.length) {
+        langChildren.forEach(function (div) {
+          if (!div.hasAttribute('data-no-back-to-top')) div.appendChild(makeBackToTopBtn());
+        });
+      } else {
+        panel.appendChild(makeBackToTopBtn());
+      }
     }
   });
 });
