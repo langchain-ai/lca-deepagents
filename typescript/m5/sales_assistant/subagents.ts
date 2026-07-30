@@ -96,9 +96,9 @@ const GENRE_PROMPT = context`
   How to work:
   1. Use internet_search to find recent, noteworthy developments in that genre
      — new releases, notable artists, trends, or events. Run a few searches.
-  2. Save the COMPLETE, verbatim output of ALL your searches to a single file:
-     write_file("/research/<genre>/sources.md", ...). Do NOT summarize or trim.
-     This keeps the bulky material out of the editor's context.
+  2. Save the COMPLETE, verbatim output of ALL your searches to a single file
+     in the private folder you were given: write_file("<your folder>/sources.md", ...).
+     Do NOT summarize or trim. This keeps the bulky material out of the editor's context.
   3. Only then, from what you found, write one tight newsletter segment.
 
   Return ONLY the finished segment as your reply:
