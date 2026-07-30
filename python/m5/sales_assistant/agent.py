@@ -56,4 +56,4 @@ async def make_graph():
         backend=_backend,
         middleware=[CodeInterpreterMiddleware()],
         name="chinook-sales-assistant",
-    )
+    ).with_config({"recursion_limit": 50})

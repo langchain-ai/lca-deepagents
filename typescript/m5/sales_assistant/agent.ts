@@ -48,6 +48,6 @@ export const graph = createDeepAgent({
   skills: ["/skills"],
   memory: ["/AGENTS.md"],
   backend,
-  middleware: [createCodeInterpreterMiddleware()],
+  middleware: [createCodeInterpreterMiddleware({ executionTimeoutMs: 180_000 })],
   name: "chinook-sales-assistant",
-});
+}).withConfig({ recursionLimit: 50 });
