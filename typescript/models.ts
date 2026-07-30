@@ -26,7 +26,15 @@
  */
 
 import "dotenv/config";
+import { Agent, setGlobalDispatcher } from "undici";
 import { initChatModel } from "langchain";
+
+// Node's default global fetch (undici) connection pool serializes concurrent
+// requests once it fills, causing multi-minute client-side queueing when
+// several subagents call the same LLM endpoint concurrently (see
+// STALL_FIX_REPORT.md). Widen it once here, before any model is constructed,
+// so every lesson that imports this file is covered.
+setGlobalDispatcher(new Agent({ connections: 64 }));
 
 // ═══ Default Models ══════════════════════════════════════════════════════════
 // Workshop default: Anthropic claude-haiku-4-5, fast and cost-effective.
