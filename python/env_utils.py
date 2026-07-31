@@ -481,7 +481,8 @@ if __name__ == "__main__":
     check_venv()
     check_manual_installs(".env.example")
 
-    # Load environment variables from .env file
+    # override=True so .env wins over any same-named variable already
+    # exported in the shell, matching the other lesson scripts.
     load_dotenv(override=True)
 
     # Check environment variables and API keys
