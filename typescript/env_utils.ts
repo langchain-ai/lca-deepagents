@@ -215,14 +215,14 @@ function doublecheckEnv(examplePath: string, envPath: string): void {
     }
   }
 
-  // `dotenv/config` (used by the lesson scripts) does not override variables
-  // already present in the shell environment, so mirror that precedence here.
+  // The lesson scripts load `.env` with `override: true`, so `.env` wins over
+  // any same-named variable already present in the shell; mirror that here.
   const envFileValues = parseEnvFile(envPath);
   const issues: string[] = [];
 
   console.log("Environment Variables:");
   for (const key of Object.keys(allExampleValues)) {
-    const current = process.env[key] ?? envFileValues[key];
+    const current = envFileValues[key] ?? process.env[key];
     const exampleVal = allExampleValues[key];
 
     if (current !== undefined && current !== "") {
