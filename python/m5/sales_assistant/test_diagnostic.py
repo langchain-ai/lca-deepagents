@@ -21,7 +21,7 @@ from dotenv import load_dotenv
 from langgraph_sdk import get_client
 
 # Load the same .env that langgraph.json points at.
-load_dotenv(Path(__file__).parent / "../../.env")
+load_dotenv(Path(__file__).parent / "../../.env", override=True)
 
 API_URL = "http://127.0.0.1:2024"
 Status = Literal["PASS", "FAIL", "SKIP"]

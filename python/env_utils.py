@@ -482,7 +482,7 @@ if __name__ == "__main__":
     check_manual_installs(".env.example")
 
     # Load environment variables from .env file
-    load_dotenv()
+    load_dotenv(override=True)
 
     # Check environment variables and API keys
     doublecheck_env(".env.example")

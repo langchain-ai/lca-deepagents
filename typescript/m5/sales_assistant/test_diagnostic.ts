@@ -20,7 +20,7 @@ import { Client } from "@langchain/langgraph-sdk";
 const HERE = dirname(fileURLToPath(import.meta.url));
 
 // Load the same .env that langgraph.json points at.
-config({ path: join(HERE, "../../.env") });
+config({ path: join(HERE, "../../.env"), override: true });
 
 // langgraphjs dev binds its loopback listener to ::1 rather than 127.0.0.1;
 // "localhost" resolves to whichever loopback address is actually listening.

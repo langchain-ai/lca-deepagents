@@ -25,9 +25,17 @@
  *   3. Set the provider's env vars in `.env` (see notes inline).
  */
 
-import "dotenv/config";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { config } from "dotenv";
 import { Agent, setGlobalDispatcher } from "undici";
 import { initChatModel } from "langchain";
+
+// Force `.env` to win over any same-named variable already exported by the
+// shell (default dotenv behavior leaves pre-existing shell vars in place,
+// which silently ignores this file's values).
+config({ path: join(dirname(fileURLToPath(import.meta.url)), ".env"), override: true });
 
 // Node's default global fetch (undici) connection pool serializes concurrent
 // requests once it fills, causing multi-minute client-side queueing when
