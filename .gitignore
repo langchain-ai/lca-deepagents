@@ -81,6 +81,8 @@ python/m2/genre_revenue.png
 python/m4/output/
 python/m4/homework_data/
 python/temp/
+typescript/m4/output/
+typescript/m4/homework_data/
 
 # Module 5 — runtime/generated artifacts
 .mcp.generated.json
