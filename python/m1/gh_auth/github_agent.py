@@ -162,6 +162,21 @@ async def main() -> None:
 
     async with client.session("github") as session:
         tools = await load_mcp_tools(session)
+        for tool in tools:
+            # BaseTool.handle_tool_error only catches ToolException, not the MCP
+            # server's own errors (e.g. McpError on a 404), which would otherwise
+            # crash the whole run. Wrap the coroutine so failures become a normal
+            # tool result the agent can see and react to.
+            def _make_safe(coro):
+                async def _safe(*args, **kwargs):
+                    try:
+                        return await coro(*args, **kwargs)
+                    except Exception as e:  # noqa: BLE001
+                        # response_format="content_and_artifact" expects a 2-tuple
+                        return f"Tool call failed: {e}", None
+                return _safe
+
+            tool.coroutine = _make_safe(tool.coroutine)
         print(f"github: {len(tools)} tool(s) available")
 
         agent = create_deep_agent(model=model, tools=tools)

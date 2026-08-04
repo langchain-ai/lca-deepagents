@@ -22,7 +22,7 @@ new instructions, cancel the other, and check on what's left.
 from deepagents import AsyncSubAgent, create_deep_agent
 from models import model
 
-async_subagents = [
+subagents = [
     AsyncSubAgent(
         name="analyst",
         description=(
@@ -40,4 +40,4 @@ async_subagents = [
 ]
 
 # langgraph.json points at this module-level variable: "./agent.py:graph"
-graph = create_deep_agent(model=model, subagents=async_subagents)
+graph = create_deep_agent(model=model, subagents=subagents)
