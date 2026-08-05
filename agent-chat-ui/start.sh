@@ -21,7 +21,13 @@ if [ ! -d node_modules ]; then
 fi
 
 ENV_FILE="${ENV_FILE:-$SCRIPT_DIR/../python/.env}"
-CORRECT_KEY=$(node -e "require('dotenv').config({path: '$ENV_FILE'}); console.log(process.env.LANGSMITH_API_KEY || '')")
+# `override: true` so the file's value wins over an already-set shell var, and
+# `.parsed` so the value comes straight from the file rather than through
+# process.env at all. Either alone would fix this; both together mean it can't
+# silently pick up an outer shell's key pointing at a different workspace.
+# `quiet: true` stops dotenv v17+ printing its startup banner to stdout, which
+# would otherwise be captured into CORRECT_KEY along with the key itself.
+CORRECT_KEY=$(node -e "const parsed = require('dotenv').config({path: '$ENV_FILE', override: true, quiet: true}).parsed || {}; process.stdout.write(parsed.LANGSMITH_API_KEY || '')")
 
 if [ -z "$CORRECT_KEY" ]; then
     echo "Could not read LANGSMITH_API_KEY from $ENV_FILE — check that file exists and has the key set." >&2
