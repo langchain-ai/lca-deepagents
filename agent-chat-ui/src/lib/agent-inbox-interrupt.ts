@@ -38,6 +38,22 @@ export function isAgentInboxInterruptSchema(
   });
 
   const hasValidConfigs = reviewConfigs.every((config) => {
+    if (
+      config &&
+      typeof config === "object" &&
+      !("action_name" in config) &&
+      "actionName" in config &&
+      typeof (config as { actionName?: unknown }).actionName === "string"
+    ) {
+      // @langchain/langgraph-sdk's normalizeHitlInterruptPayload aliases
+      // allowedDecisions <-> allowed_decisions but not actionName -> action_name.
+      // Backfill here so downstream consumers (ThreadActionsView, utils.ts) that
+      // read the snake_case key see it too, since they share this same object.
+      (config as Record<string, unknown>).action_name = (
+        config as { actionName: string }
+      ).actionName;
+    }
+
     return (
       config &&
       typeof config === "object" &&
