@@ -12,6 +12,7 @@ import {
 import { TooltipIconButton } from "./tooltip-icon-button";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
+import { useStreamContext } from "@/providers/Stream";
 
 type SandboxFile = { name: string; size: number; modifiedAt: string };
 
@@ -27,6 +28,7 @@ function formatSize(bytes: number): string {
 // same as before — this panel doesn't replace it, just fills the gap where
 // a file exists but the agent never named its exact path in the chat.
 export function SandboxFilesPanel({ threadId }: { threadId: string | null }) {
+  const stream = useStreamContext();
   const [open, setOpen] = useState(false);
   const [files, setFiles] = useState<SandboxFile[]>([]);
   const [loading, setLoading] = useState(false);
@@ -50,7 +52,12 @@ export function SandboxFilesPanel({ threadId }: { threadId: string | null }) {
     }
   }
 
-  if (!threadId) return null;
+  // `async_tasks` only appears in a thread's state when the graph includes
+  // deepagents' AsyncSubAgentMiddleware -- the same middleware that
+  // provisions this thread's LangSmith Sandbox. Its presence (even as an
+  // empty object) is the only client-visible signal that a sandbox exists at
+  // all, so it doubles as this panel's visibility gate.
+  if (!threadId || stream.values?.async_tasks === undefined) return null;
 
   return (
     <Sheet
