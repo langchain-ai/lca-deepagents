@@ -52,8 +52,14 @@ from models import model
 #   )
 # ════════════════════════════════════════════════════════════════════════
 
-SYSTEM_PROMPT = "TODO 1: replace this with your own domain-scoping system prompt."
-
+SYSTEM_PROMPT = SYSTEM_PROMPT = (
+    "You are an assistant specialized only in personal finance. "
+    "Answer questions related to budgeting, saving, investing, taxes, "
+    "loans, credit, and other personal finance topics. "
+    "If the user asks about anything outside personal finance, politely "
+    "explain that you can only help with personal finance questions and "
+    "redirect them toward a relevant personal finance topic."
+)
 
 agent = create_deep_agent(
     model=model,
@@ -69,9 +75,29 @@ agent = create_deep_agent(
 # ════════════════════════════════════════════════════════════════════════
 
 def run_test_prompts():
-    """TODO 2: invoke `agent` with one in-domain prompt and one
-    out-of-domain prompt, and print each response."""
-    raise NotImplementedError("TODO 2: see the comment block above")
+    in_domain = agent.invoke({
+        "messages": [
+            {
+                "role": "user",
+                "content": "How can I create a monthly budget and save more money?"
+            }
+        ]
+    })
+
+    out_of_domain = agent.invoke({
+        "messages": [
+            {
+                "role": "user",
+                "content": "What is the capital of France?"
+            }
+        ]
+    })
+
+    print("In-domain response:")
+    print(in_domain["messages"][-1].content)
+
+    print("\nOut-of-domain response:")
+    print(out_of_domain["messages"][-1].content)
 
 
 run_test_prompts()

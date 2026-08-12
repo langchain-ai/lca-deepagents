@@ -1,4 +1,3 @@
-# python/m1/m1.5_homework.py
 """M1.5 Homework: Build Your Own Custom Tool.
 
 THE IDEA
@@ -11,15 +10,15 @@ students doing this homework could end up with two completely different
 tools and agents.
 
 WHAT YOU FILL IN
-  TODO 1: write your own custom tool with the @tool decorator. Pick any
-    topic, store a small lookup (a dict is fine, no API needed) of facts
-    about it, and return one back based on the argument the model passes.
-  TODO 2: write a system prompt that gives the agent a persona of your
-    choosing and tells it to use your tool before answering.
+TODO 1: write your own custom tool with the @tool decorator. Pick any
+topic, store a small lookup (a dict is fine, no API needed) of facts
+about it, and return one back based on the argument the model passes.
+TODO 2: write a system prompt that gives the agent a persona of your
+choosing and tells it to use your tool before answering.
 
 RUN
-  cd python
-  uv run ./m1/m1.5_homework.py
+cd python
+uv run ./m1/m1.5_homework.py
 """
 
 import warnings
@@ -30,44 +29,51 @@ from langchain_core.tools import tool
 
 from deepagents import create_deep_agent
 from models import model
-
-
 # ════════════════════════════════════════════════════════════════════════
+
 # TODO 1: Define your own custom tool.
-#
-# Requirements:
-#   - Keep the @tool decorator.
-#   - Give it a real docstring: one sentence the model will read to decide
-#     when to call this tool.
-#   - Have it take at least one argument and return a string.
-#   - The lookup data can just live in this file (a dict, a list, whatever
-#     fits your topic). No external API or key needed.
-#
-# Example shape (delete this and write your own):
-#   @tool
-#   def lookup_something(query: str) -> str:
-#       """One sentence describing what this returns and when to call it."""
-#       ...
-# ════════════════════════════════════════════════════════════════════════
 
 @tool
-def your_custom_tool(query: str) -> str:
-    """TODO 1: replace this docstring and body with your own tool."""
-    raise NotImplementedError("TODO 1: see the comment block above")
+def lookup_virat_kohli_fact(query: str) -> str:
+    """Returns a relevant fact about Virat Kohli based on the user's query."""
 
+    facts = {
+        "role": "Virat Kohli is a right-handed top-order batter and former captain of the Indian cricket team.",
+        "country": "Virat Kohli represents India in international cricket.",
+        "ipl": "Virat Kohli has played for Royal Challengers Bengaluru throughout his IPL career.",
+        "batting": "Virat Kohli is known for his aggressive batting, consistency, and ability to chase targets.",
+        "nickname": "Virat Kohli is popularly known as King Kohli.",
+    }
+
+    query = query.lower()
+
+    for key, fact in facts.items():
+        if key in query:
+            return fact
+
+    return (
+        "I could not find a specific fact for that query. "
+        "Try asking about Virat Kohli's role, country, IPL career, "
+        "batting style, or nickname."
+    )
 
 # ════════════════════════════════════════════════════════════════════════
+
 # TODO 2: Write a system prompt for your agent.
-#
-# Give it a persona (a name, a voice, a personality, anything you want)
-# and tell it to call your_custom_tool (rename it if you like) before
-# answering, the same way the lab's SYSTEM_PROMPT pointed the agent at
-# read_sql.
-# ════════════════════════════════════════════════════════════════════════
 
-SYSTEM_PROMPT = """TODO 2: replace this with your own system prompt."""
+SYSTEM_PROMPT = """
+You are Virat, a knowledgeable cricket assistant who specializes in
+Virat Kohli and his cricket career.
 
-if "TODO 1" in your_custom_tool.description:
+Before answering any question about Virat Kohli, you must use the
+lookup_virat_kohli_fact tool to retrieve the relevant information.
+
+Use the information returned by the tool as the basis for your answer.
+If the question is unrelated to Virat Kohli, politely explain that you
+specialize in Virat Kohli and redirect the user to a question about him.
+"""
+
+if "TODO 1" in lookup_virat_kohli_fact.description:
     raise NotImplementedError("TODO 1: see the comment block above")
 if "TODO 2" in SYSTEM_PROMPT:
     raise NotImplementedError("TODO 2: see the comment block above")
@@ -75,12 +81,19 @@ if "TODO 2" in SYSTEM_PROMPT:
 agent = create_deep_agent(
     model=model,
     name="Homework_Agent",
-    tools=[your_custom_tool],
+    tools=[lookup_virat_kohli_fact],
     system_prompt=SYSTEM_PROMPT,
 )
 
 result = agent.invoke(
-    {"messages": [{"role": "user", "content": "Ask your agent a question that needs your tool."}]}
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "What is Virat Kohli's role in cricket?"
+            }
+        ]
+    }
 )
 
 print(result["messages"][-1].content)
