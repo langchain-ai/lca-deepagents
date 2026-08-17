@@ -10,6 +10,7 @@ restyle a card, otherwise you shouldn't need to open this file.
 from __future__ import annotations
 
 import re
+import sys
 import textwrap
 from pathlib import Path
 
@@ -396,6 +397,21 @@ def post_card(caption: str) -> str:
     return f"Posted with caption: {caption!r}"
 
 
+def _invoke_checked(agent, agent_input, config):
+    """Run one agent.invoke() call, turning an unfinished TODO's
+    NotImplementedError into a short, readable message instead of the full
+    LangGraph/tool-call traceback it would otherwise surface as."""
+    try:
+        return agent.invoke(agent_input, config=config, version="v2")
+    except NotImplementedError as e:
+        print(f"\nStopped: {e}")
+        print(
+            "A tool call raised that above (not a crash elsewhere): finish "
+            "the TODO it's from, then rerun."
+        )
+        sys.exit(1)
+
+
 def run_judge(
     judge_name: str,
     *,
@@ -417,10 +433,8 @@ def run_judge(
     )
     config = {"configurable": {"thread_id": f"{thread_prefix}-{judge_name}"}}
 
-    result = agent.invoke(
-        {"messages": [{"role": "user", "content": user_prompt}]},
-        config=config,
-        version="v2",
+    result = _invoke_checked(
+        agent, {"messages": [{"role": "user", "content": user_prompt}]}, config
     )
 
     while result.interrupts:
@@ -455,4 +469,4 @@ def run_judge(
                     break
                 else:
                     print("  Please type approve, edit, or reject.")
-        result = agent.invoke(Command(resume={"decisions": decisions}), config=config, version="v2")
+        result = _invoke_checked(agent, Command(resume={"decisions": decisions}), config)
