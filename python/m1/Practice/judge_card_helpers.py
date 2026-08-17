@@ -379,7 +379,7 @@ def render_card(
     safe_type = re.sub(r"[^a-z0-9]+", "_", builder_type.lower()).strip("_")
     safe_judge = re.sub(r"[^a-z0-9]+", "_", judge_name.lower()).strip("_")
     out_path = OUTPUT_DIR / f"{safe_judge}_{safe_type}.txt"
-    out_path.write_text(f"{card_text}\n\n  matched product: {product}\n")
+    out_path.write_text(f"{card_text}\n\n  matched product: {product}\n", encoding="utf-8")
     return f"Card printed above and saved to {out_path}. Matched LangChain product: {product}."
 
 
