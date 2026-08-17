@@ -245,6 +245,36 @@ details[open].video-walkthrough > summary { border-bottom-color: #F4ABCD; }
 /* ── Tip box: remove bottom margin on last paragraph ── */
 .tip p:last-child { margin-bottom: 0; }
 
+/* ── Case study callout: green box with LangChain logo, for real-world customer examples ── */
+.case-study {
+  margin: 1.5rem 0;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #86EFAC;
+  background-color: #ECFDF5;
+  color: #065F46;
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+.case-study img {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  object-fit: contain;
+}
+.case-study p { margin: 0 0 0.5rem; }
+.case-study p:last-child { margin-bottom: 0; }
+.case-study strong { color: #065F46; }
+.case-study code { background-color: #D1FAE5; color: #065F46; }
+.case-study a {
+  color: #047857;
+  font-weight: 600;
+  text-decoration: underline;
+}
+.case-study a:hover { color: #065F46; }
+
 /* ── Code tabs (block-switch: language choice scoped to one code block) ── */
 .code-tabs {
   position: relative;
