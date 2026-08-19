@@ -282,6 +282,34 @@ details[open].video-walkthrough > summary { border-bottom-color: #F4ABCD; }
 }
 .case-study a:hover { color: #065F46; }
 
+/* ── Demo tip: blue box with a hand-pointer icon, for "try it yourself" prompts next to a live embedded demo ── */
+.demo-tip {
+  margin: 1.5rem 0;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #9adbb0;
+  background-color: #e6f7ec;
+  color: #1e5e3a;
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+.demo-tip svg {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: #1e5e3a;
+  transform: scaleY(1.15);
+}
+.demo-tip > p { margin: 0; }
+.demo-tip > div p { margin: 0 0 0.5rem; }
+.demo-tip > div p:last-child { margin-bottom: 0; }
+.demo-tip ul, .demo-tip ol { margin: 0.5rem 0; padding-left: 2.25rem; }
+.demo-tip li:last-child { margin-bottom: 0; }
+.demo-tip strong { color: #1e5e3a; }
+.demo-tip code { background-color: #cdf0da; color: #1e5e3a; }
+
 /* ── Code tabs (block-switch: language choice scoped to one code block) ── */
 .code-tabs {
   position: relative;
