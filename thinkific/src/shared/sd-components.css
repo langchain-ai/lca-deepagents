@@ -27,6 +27,13 @@ div[style*="background:"] > p:last-child { margin-bottom: 0; }
 .callout p:first-child { margin-top: 0; }
 .callout p:last-child { margin-bottom: 0; }
 
+mark.hl {
+  background: #FFF3B0;
+  color: inherit;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
 hr {
   border: none;
   border-top: 1px solid #CCE9FF;
