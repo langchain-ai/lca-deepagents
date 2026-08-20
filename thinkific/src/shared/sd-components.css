@@ -298,7 +298,7 @@ details[open].video-walkthrough > summary { border-bottom-color: #F4ABCD; }
   width: 26px;
   height: 26px;
   flex-shrink: 0;
-  margin-top: 3px;
+  margin-top: 0px;
   color: #1e5e3a;
   transform: scaleY(1.15);
 }
