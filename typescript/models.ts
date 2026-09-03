@@ -70,4 +70,9 @@ export const strongModel = await initChatModel("anthropic:claude-sonnet-4-6", { 
 // Free models available; sign up at openrouter.ai and get an API key
 // Requires OPENROUTER_API_KEY in .env
 //
-// export const model = await initChatModel("openrouter:nvidia/nemotron-3-ultra-550b-a55b:free");
+// import { ChatOpenAI } from "@langchain/openai";
+// export const model = new ChatOpenAI({
+//   model: "nvidia/nemotron-3-ultra-550b-a55b:free",
+//   apiKey: process.env.OPENROUTER_API_KEY,
+//   configuration: { baseURL: "https://openrouter.ai/api/v1" },
+// });

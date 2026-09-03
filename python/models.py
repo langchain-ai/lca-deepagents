@@ -82,8 +82,8 @@ strong_model = init_chat_model("anthropic:claude-sonnet-4-6", timeout=120, max_r
 # ═══ Cloud Provider Models (extra install required, see table above) ═════════
 # ─── Azure OpenAI ─────────────────────────────────────────────────────────────
 # Install first:  uv sync --extra azure
-# Requires AZURE_OPENAI_API_KEY, AZURE_OPENAI_ENDPOINT,
-#          OPENAI_API_VERSION, AZURE_OPENAI_DEPLOYMENT_NAME in .env
+# Requires AZURE_OPENAI_API_KEY, AZURE_OPENAI_ENDPOINT, OPENAI_API_VERSION in .env
+# Set your deployment name directly below (it isn't read from .env)
 #
 # from langchain_openai import AzureChatOpenAI
 # model = AzureChatOpenAI(azure_deployment="gpt-4.1", api_version="2024-12-01-preview")
@@ -91,7 +91,8 @@ strong_model = init_chat_model("anthropic:claude-sonnet-4-6", timeout=120, max_r
 
 # ─── AWS Bedrock ──────────────────────────────────────────────────────────────
 # Install first:  uv sync --extra bedrock
-# Requires AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION_NAME in .env
+# Requires AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY in .env
+# Set your region directly below (it isn't read from .env)
 #
 # from langchain_aws import ChatBedrockConverse
 # model = ChatBedrockConverse(model_id="anthropic.claude-sonnet-4-6", region_name="us-east-1")
