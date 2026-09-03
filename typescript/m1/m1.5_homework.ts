@@ -76,6 +76,8 @@ const yourCustomTool = tool(
 
 const SYSTEM_PROMPT = "TODO 2: replace this with your own system prompt.";
 
+// Guards against running with an unfilled placeholder; the filled
+// reference doesn't need this since there's no placeholder text left.
 if (yourCustomTool.description.includes("TODO 1")) {
   throw new Error("TODO 1: see the comment block above");
 }
