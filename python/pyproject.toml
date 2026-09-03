@@ -32,6 +32,21 @@ dependencies = [
     "questionary>=2.0.0",
 ]
 
+# Provider extras referenced by the install table in models.py
+# (`uv sync --extra azure|bedrock|google`).
+[project.optional-dependencies]
+# AzureChatOpenAI ships with langchain-openai (already a core dependency);
+# defining the extra keeps the documented command valid.
+azure = [
+    "langchain-openai",
+]
+bedrock = [
+    "langchain-aws",
+]
+google = [
+    "langchain-google-genai",
+]
+
 [tool.ruff]
 lint.select = ["E", "F", "I", "UP"]
 lint.ignore = ["T201", "E501", "UP006", "UP007", "E402"]
