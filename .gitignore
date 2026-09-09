@@ -13,6 +13,7 @@ client_secret_*.json
 *.pfx
 secrets/
 credentials/
+credentials.json
 
 # Editor autosave / lock files (can mirror .env and leak secrets)
 \#*\#
@@ -82,6 +83,8 @@ python/m2/genre_revenue.png
 python/m4/output/
 python/m4/homework_data/
 python/temp/
+typescript/m4/output/
+typescript/m4/homework_data/
 
 # Module 5 — runtime/generated artifacts
 .mcp.generated.json
@@ -93,6 +96,10 @@ python/m5/sales_assistant_sandbox/mcp/mail_store.json
 python/m5/sales_assistant_sandbox/outputs/
 python/m5/sales_assistant_sandbox/retrieve/
 python/m5/sales_assistant_sandbox/research/
+typescript/m5/sales_assistant_sandbox/mcp/mail_store.json
+typescript/m5/sales_assistant_sandbox/outputs/
+typescript/m5/sales_assistant_sandbox/retrieve/
+typescript/m5/sales_assistant_sandbox/research/
 .langgraph_api/
 
 # agent-chat-ui (Module 5.5 — forked Next.js app)
