@@ -52,12 +52,19 @@ export function SandboxFilesPanel({ threadId }: { threadId: string | null }) {
     }
   }
 
-  // `async_tasks` only appears in a thread's state when the graph includes
-  // deepagents' AsyncSubAgentMiddleware -- the same middleware that
-  // provisions this thread's LangSmith Sandbox. Its presence (even as an
-  // empty object) is the only client-visible signal that a sandbox exists at
-  // all, so it doubles as this panel's visibility gate.
-  if (!threadId || stream.values?.async_tasks === undefined) return null;
+  // `async_tasks`/`asyncTasks` only appears in a thread's state when the
+  // graph includes deepagents' async subagent middleware -- the same
+  // middleware that provisions this thread's LangSmith Sandbox. Its presence
+  // (even as an empty object) is the only client-visible signal that a
+  // sandbox exists at all, so it doubles as this panel's visibility gate.
+  // Python's middleware writes the snake_case key; the TS SDK's
+  // `createAsyncSubAgentMiddleware` writes camelCase -- check both so this
+  // gate works for graphs written in either language.
+  if (
+    !threadId ||
+    (stream.values?.async_tasks === undefined && stream.values?.asyncTasks === undefined)
+  )
+    return null;
 
   return (
     <Sheet
