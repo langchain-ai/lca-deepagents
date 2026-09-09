@@ -189,6 +189,22 @@ async function main(): Promise<void> {
       tools = await client.getTools();
     }
 
+    for (const mcpTool of tools) {
+      // DynamicStructuredTool.func only surfaces exceptions the SDK itself throws,
+      // not the MCP server's own errors (e.g. an McpError on a 404), which would
+      // otherwise crash the whole run. Wrap it so failures become a normal tool
+      // result the agent can see and react to.
+      const originalFunc = mcpTool.func;
+      mcpTool.func = async (...args: Parameters<typeof originalFunc>) => {
+        try {
+          return await originalFunc(...args);
+        } catch (err) {
+          // responseFormat: "content_and_artifact" expects a 2-tuple
+          return [`Tool call failed: ${err instanceof Error ? err.message : err}`, undefined];
+        }
+      };
+    }
+
     console.log(`github: ${tools.length} tool(s) available`);
 
     const agent = createDeepAgent({ model, tools });

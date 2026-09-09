@@ -1,10 +1,10 @@
 # python/m4/m4.3_run_manuscript.py
 """Run the manuscript agent, then self-check its findings against the known
-seeded corruptions in data/epic_corpus_key.json — an immediate, exact way to
+seeded corruptions in data/epic_corpus_key.json, an immediate, exact way to
 see whether the workflow's book-by-book dispatch actually covered everything.
 
 This check is for your own feedback while working through the lab, not a
-submitted grade — the key ships openly alongside the corpus.
+submitted grade: the key ships openly alongside the corpus.
 """
 
 import json

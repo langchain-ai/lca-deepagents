@@ -96,6 +96,8 @@ const SYSTEM_PROMPT = "TODO 2: replace this with your own system prompt.";
 const INITIAL_REQUEST = "TODO 2: replace this with a request that would trigger your tool.";
 const INTERRUPT_ON = { your_action_tool: true }; // TODO 2: replace with your own allowedDecisions config
 
+// Guards against running with an unfilled placeholder; the filled
+// reference doesn't need this since there's no placeholder text left.
 if (yourActionTool.description.includes("TODO 1")) {
   throw new Error("TODO 1: see the comment block above");
 }

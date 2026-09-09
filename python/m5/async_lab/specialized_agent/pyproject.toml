@@ -8,7 +8,7 @@ version = "0.1.0"
 requires-python = ">=3.11,<3.15"
 
 dependencies = [
-    "deepagents>=0.5.9",
+    "deepagents==0.7.0",
     "langgraph>=1.0.0,<2.0",
     "langchain-anthropic",
     "langgraph-cli[inmem]>=0.4.0",

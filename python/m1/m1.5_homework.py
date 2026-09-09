@@ -67,6 +67,8 @@ def your_custom_tool(query: str) -> str:
 
 SYSTEM_PROMPT = """TODO 2: replace this with your own system prompt."""
 
+# Guards against running with an unfilled placeholder; the filled
+# reference doesn't need this since there's no placeholder text left.
 if "TODO 1" in your_custom_tool.description:
     raise NotImplementedError("TODO 1: see the comment block above")
 if "TODO 2" in SYSTEM_PROMPT:

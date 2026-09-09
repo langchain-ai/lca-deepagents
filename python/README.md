@@ -4,6 +4,12 @@ You can find the course at [Deep Agents](https://academy.langchain.com/courses/f
 
 ## Setup
 
+> **Already set up?** As of August 5, 2026 this course runs on `deepagents==0.7.0`. If you cloned before this date, pull the latest changes and resync your environment:
+> ```bash
+> git pull
+> uv sync
+> ```
+
 ### Prerequisites
 
 - Python 3.11–3.14

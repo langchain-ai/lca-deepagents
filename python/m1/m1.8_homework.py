@@ -78,6 +78,8 @@ SYSTEM_PROMPT = "TODO 2: replace this with your own system prompt."
 INITIAL_REQUEST = "TODO 2: replace this with a request that would trigger your tool."
 INTERRUPT_ON = {"your_action_tool": True}  # TODO 2: replace with your own allowed_decisions config
 
+# Guards against running with an unfilled placeholder; the filled
+# reference doesn't need this since there's no placeholder text left.
 if "TODO 1" in your_action_tool.description:
     raise NotImplementedError("TODO 1: see the comment block above")
 if "TODO 2" in SYSTEM_PROMPT or "TODO 2" in INITIAL_REQUEST:

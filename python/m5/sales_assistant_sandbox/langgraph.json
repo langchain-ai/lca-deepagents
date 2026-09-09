@@ -1,0 +1,8 @@
+{
+  "dependencies": ["../.."],
+  "graphs": {
+    "agent": "./agent.py:make_graph",
+    "newsletter-agent": "./newsletter_agent_graph.py:graph"
+  },
+  "env": "../../.env"
+}
