@@ -92,6 +92,10 @@ python/m5/sales_assistant/mcp/mail_store.json
 python/m5/sales_assistant/outputs/
 python/m5/sales_assistant/retrieve/
 python/m5/sales_assistant/research/
+typescript/m2/genre_revenue.png
+typescript/m5/sales_assistant/outputs/
+typescript/m5/sales_assistant/retrieve/
+typescript/m5/sales_assistant/research/
 python/m5/sales_assistant_sandbox/mcp/mail_store.json
 python/m5/sales_assistant_sandbox/outputs/
 python/m5/sales_assistant_sandbox/retrieve/
