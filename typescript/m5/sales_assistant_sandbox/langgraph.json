@@ -1,0 +1,8 @@
+{
+  "dependencies": ["../.."],
+  "graphs": {
+    "agent": "./agent.ts:graph",
+    "newsletter-agent": "./newsletter-agent.ts:graph"
+  },
+  "env": "../../.env"
+}
