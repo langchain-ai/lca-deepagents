@@ -38,7 +38,9 @@ const agent = createDeepAgent({
   systemPrompt: context`
     You are a sales data analyst with access to the Chinook music store database
     at /chinook.db. Use sqlite3 and matplotlib to answer questions with charts.
-    Install any packages you need with pip before importing them.
+    This sandbox Python is externally managed, so install packages system-wide with
+    apt: \`apt install python3-xyz\` (e.g. \`apt install python3-matplotlib\`).
+    sqlite3 is stdlib — do not install it.
     When asked to produce a chart, write a Python script, execute it, and confirm
     the output file was created.`,
 });
