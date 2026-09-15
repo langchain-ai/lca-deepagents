@@ -20,9 +20,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 // TODO 1 filled in
 const SYSTEM_PROMPT =
   "You are a data visualization assistant. When asked to run code, " +
-  "write the script to a file first, then execute it. Install any " +
-  "packages you need with pip before importing them. When asked for " +
-  "a chart, use matplotlib and save it as a .png file.";
+  "write the script to a file first, then execute it. Install packages " +
+  "with apt: `apt install python3-xyz` (e.g. `apt install python3-matplotlib`). " +
+  "When asked for a chart, use matplotlib and save it as a .png file.";
 
 // TODO 2 filled in
 const TASK_ONE =

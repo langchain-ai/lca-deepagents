@@ -49,16 +49,17 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 //   - Give it a persona (data analyst, scientist, whatever fits your data).
 //   - Tell it to write code to a file before running it (the same pattern
 //     Lab 1 used).
-//   - Tell it to install any packages it needs with pip before importing
-//     them (the same pattern Lab 2 used) - matplotlib is not preinstalled.
+//   - Tell it to install packages with apt (`apt install python3-xyz`,
+//     e.g. `apt install python3-matplotlib`) — the sandbox Python is
+//     externally managed, so pip will fail (the same pattern Lab 2 used).
 //   - Tell it to use matplotlib when asked to build a chart.
 //
 // Example (delete this and write your own):
 //   const SYSTEM_PROMPT =
 //     "You are a data visualization assistant. When asked to run code, " +
-//     "write the script to a file first, then execute it. Install any " +
-//     "packages you need with pip before importing them. When asked " +
-//     "for a chart, use matplotlib and save it as a .png file.";
+//     "write the script to a file first, then execute it. Install packages " +
+//     "with apt: `apt install python3-xyz` (e.g. `apt install python3-matplotlib`). " +
+//     "When asked for a chart, use matplotlib and save it as a .png file.";
 // ════════════════════════════════════════════════════════════════════════
 
 const SYSTEM_PROMPT: string | null = null; // TODO 1: replace with your own system prompt
