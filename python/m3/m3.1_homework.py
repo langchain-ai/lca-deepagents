@@ -23,7 +23,8 @@ WHAT YOU FILL IN
     that asks the agent to recall that early detail.
   TODO 2: choose model.profile["max_input_tokens"] so summarization fires
     at least twice before your last turn, not just once. Tune it by trial
-    and error, same as the lesson did with 700.
+    and error, same as the lesson did with 700. Keep it in the low
+    thousands; much lower and the final recall fails.
 
 RUN
   cd python
@@ -73,6 +74,10 @@ def build_turns() -> list[str]:
 # across your conversation from TODO 1, not just once. The lesson used 700
 # for a 5-turn demo that fired once; your number depends on how many turns
 # you wrote and how long they are.
+#
+# Keep it in the low thousands; the filled copy uses 3000 for ten turns. Set
+# it much lower and summarization fires on nearly every turn, each summary
+# gets compacted away before the next one lands, and the final recall fails.
 # ════════════════════════════════════════════════════════════════════════
 
 MAX_INPUT_TOKENS = None  # TODO 2: replace None with your chosen integer threshold
@@ -94,7 +99,7 @@ async def turn(message: str) -> str:
         {"messages": [HumanMessage(content=message)]},
         config=THREAD,
     )
-    return result["messages"][-1].content
+    return result["messages"][-1].text
 
 
 async def show_state(seen_cutoffs: set) -> bool:

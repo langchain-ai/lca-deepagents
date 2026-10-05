@@ -64,7 +64,7 @@ result = agent.invoke(
     context=demo_context,
 )
 print("--- Question 1 ---")
-print(result["messages"][-1].content)
+print(result["messages"][-1].text)
 
 # Second invoke: agent writes to memory
 result2 = agent.invoke(
@@ -79,7 +79,7 @@ result2 = agent.invoke(
     context=demo_context,
 )
 print("\n--- Question 2 ---")
-print(result2["messages"][-1].content)
+print(result2["messages"][-1].text)
 
 print("\n--- AGENTS.md after write ---")
 stored_memory = store.get(namespace_from_context(demo_context), store_memory_path)

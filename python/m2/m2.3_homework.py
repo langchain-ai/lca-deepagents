@@ -123,11 +123,11 @@ agent = create_deep_agent(
 try:
     result = agent.invoke({"messages": [{"role": "user", "content": TASK_ONE}]})
     print("--- Task 1 ---")
-    print(result["messages"][-1].content)
+    print(result["messages"][-1].text)
 
     result = agent.invoke({"messages": [{"role": "user", "content": TASK_TWO}]})
     print("\n--- Task 2 (same sandbox, should see Task 1's file) ---")
-    print(result["messages"][-1].content)
+    print(result["messages"][-1].text)
 
     chart_bytes = ls_sandbox.read(CHART_PATH)
     out_path = Path(__file__).parent / "homework_chart.png"

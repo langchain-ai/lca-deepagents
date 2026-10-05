@@ -25,7 +25,8 @@
  *     turn that asks the agent to recall that early detail.
  *   TODO 2: choose model.profile.maxInputTokens so summarization fires at
  *     least twice before your last turn, not just once. Tune it by trial
- *     and error, same as the lesson did with 400.
+ *     and error, same as the lesson did with 400. Keep it in the low
+ *     thousands; much lower and the final recall fails.
  *
  * RUN
  *   cd typescript
@@ -82,6 +83,10 @@ function buildTurns(): string[] {
 // for a 5-turn demo that fired once; your number depends on how many turns
 // you wrote and how long they are. Must use Object.defineProperty, since a
 // plain assignment to model.profile won't work.
+//
+// Keep it in the low thousands; the filled copy uses 3000 for ten turns. Set
+// it much lower and summarization fires on nearly every turn, each summary
+// gets compacted away before the next one lands, and the final recall fails.
 // ════════════════════════════════════════════════════════════════════════
 
 const MAX_INPUT_TOKENS: number | null = null; // TODO 2: replace null with your chosen threshold
@@ -115,7 +120,7 @@ async function turn(message: string): Promise<unknown> {
     { messages: [new HumanMessage(message)] },
     THREAD
   );
-  return result.messages.at(-1)?.content;
+  return result.messages.at(-1)?.text;
 }
 
 async function showState(seenCutoffs: Set<number | string>): Promise<boolean> {

@@ -36,21 +36,21 @@ async function runScenario() {
     threadA
   );
   console.log("Thread A, turn 1:");
-  console.log(result.messages.at(-1)?.content);
+  console.log(result.messages.at(-1)?.text);
 
   result = await agent.invoke(
     { messages: [{ role: "user", content: FACT_QUESTION }] },
     threadA
   );
   console.log("\nThread A, turn 2 (same thread, should remember Steve):");
-  console.log(result.messages.at(-1)?.content);
+  console.log(result.messages.at(-1)?.text);
 
   result = await agent.invoke(
     { messages: [{ role: "user", content: FACT_QUESTION }] },
     threadB
   );
   console.log("\nThread B, turn 1 (different thread, should NOT know):");
-  console.log(result.messages.at(-1)?.content);
+  console.log(result.messages.at(-1)?.text);
 
   // A brand-new agent with its own fresh MemorySaver has no history to
   // load, even reused on threadA's exact thread_id.
@@ -60,7 +60,7 @@ async function runScenario() {
     threadA
   );
   console.log("\nFresh agent, threadA's thread_id (should NOT know):");
-  console.log(result.messages.at(-1)?.content);
+  console.log(result.messages.at(-1)?.text);
   console.log(
     "Same thread_id, but a different MemorySaver instance has no record " +
       "of it: persistence is scoped to the checkpointer, not the thread_id " +

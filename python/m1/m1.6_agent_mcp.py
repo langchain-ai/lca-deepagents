@@ -33,7 +33,7 @@ async def main():
     result = await agent.ainvoke({
         "messages": [{"role": "user", "content": "Use the LangChain docs MCP tool to explain what MCP is and how LangChain uses MCP tools."}]
     })
-    print(result["messages"][-1].content)
+    print(result["messages"][-1].text)
 
 
 asyncio.run(main())

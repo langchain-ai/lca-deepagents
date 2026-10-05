@@ -120,7 +120,7 @@ agent = create_deep_agent(
 )
 
 result = agent.invoke({"messages": [{"role": "user", "content": USER_QUESTION}]})
-print(result["messages"][-1].content)
+print(result["messages"][-1].text)
 
 read_calls = [
     call

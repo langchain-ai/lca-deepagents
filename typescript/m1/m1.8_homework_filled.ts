@@ -97,7 +97,7 @@ while (isInterrupted<ApprovalRequest>(result) && result[INTERRUPT].length) {
 rl.close();
 for (const msg of result.messages) {
   if (ToolMessage.isInstance(msg) && msg.name === "post_tweet") {
-    console.log(msg.content);
+    console.log(msg.text);
     break;
   }
 }

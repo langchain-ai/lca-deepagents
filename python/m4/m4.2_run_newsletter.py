@@ -24,7 +24,7 @@ result = agent.invoke(
 )
 
 # The editor's final reply (coordination summary).
-print(result["messages"][-1].content)
+print(result["messages"][-1].text)
 
 # Everything the agent produced lives in agent state (not on your disk — it ran
 # in the default StateBackend). Pull it all out and mirror it to OUT_DIR: the

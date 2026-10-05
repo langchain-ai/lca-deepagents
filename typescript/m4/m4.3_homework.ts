@@ -125,7 +125,7 @@ const result = await agent.invoke(
   },
   { recursionLimit: 100 }
 );
-console.log(result.messages.at(-1)?.content);
+console.log(result.messages.at(-1)?.text);
 
 // The interpreter's QuickJS runtime can throw during its own async teardown
 // after many subagent dispatches (a known @langchain/quickjs beta issue) —

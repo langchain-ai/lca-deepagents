@@ -47,7 +47,7 @@ async function turn(message: string): Promise<unknown> {
     { messages: [new HumanMessage(message)] },
     THREAD
   );
-  return result.messages.at(-1)?.content;
+  return result.messages.at(-1)?.text;
 }
 
 async function showState(): Promise<void> {

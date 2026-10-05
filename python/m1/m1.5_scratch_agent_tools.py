@@ -42,4 +42,4 @@ result = agent.invoke(
     {"messages": [{"role": "user", "content": "Which five genres have the most tracks?"}]}
 )
 
-print(result["messages"][-1].content)
+print(result["messages"][-1].text)

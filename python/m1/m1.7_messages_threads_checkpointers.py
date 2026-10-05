@@ -16,18 +16,18 @@ result = agent.invoke(
     config=thread_a,
 )
 print("Thread A, turn 1:")
-print(result["messages"][-1].content)
+print(result["messages"][-1].text)
 
 result = agent.invoke(
     {"messages": [{"role": "user", "content": "What is my favorite colour?"}]},
     config=thread_a,
 )
 print("\nThread A, turn 2:")
-print(result["messages"][-1].content)
+print(result["messages"][-1].text)
 
 result = agent.invoke(
     {"messages": [{"role": "user", "content": "What is my favorite colour?"}]},
     config=thread_b,
 )
 print("\nThread B, turn 1:")
-print(result["messages"][-1].content)
+print(result["messages"][-1].text)

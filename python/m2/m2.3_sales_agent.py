@@ -57,7 +57,7 @@ try:
             ]
         }
     )
-    print(result["messages"][-1].content)
+    print(result["messages"][-1].text)
 
     png_bytes = ls_sandbox.read("/genre_revenue.png")
     out_path = Path(__file__).parent / "genre_revenue.png"

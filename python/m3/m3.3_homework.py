@@ -118,17 +118,17 @@ LEAK_CHECK_QUESTION = "TODO 2: replace with the SAME question as RECALL_QUESTION
 # 1. Context A recalls from its own seed.
 result_a1 = agent.invoke({"messages": [{"role": "user", "content": RECALL_QUESTION}]}, context=CONTEXT_A)
 print("--- Context A, Question 1 ---")
-print(result_a1["messages"][-1].content)
+print(result_a1["messages"][-1].text)
 
 # 2. Context A learns a new, distinctive fact.
 result_a2 = agent.invoke({"messages": [{"role": "user", "content": REMEMBER_MESSAGE}]}, context=CONTEXT_A)
 print("\n--- Context A, Question 2 (remember) ---")
-print(result_a2["messages"][-1].content)
+print(result_a2["messages"][-1].text)
 
 # 3. Context B asks the same question. It should NOT see anything from A.
 result_b = agent.invoke({"messages": [{"role": "user", "content": LEAK_CHECK_QUESTION}]}, context=CONTEXT_B)
 print("\n--- Context B, leak-check question ---")
-print(result_b["messages"][-1].content)
+print(result_b["messages"][-1].text)
 
 memory_a = store.get(namespace_from_context(CONTEXT_A), store_memory_path).value["content"]
 memory_b = store.get(namespace_from_context(CONTEXT_B), store_memory_path).value["content"]

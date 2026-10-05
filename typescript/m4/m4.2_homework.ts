@@ -137,7 +137,7 @@ const result = await agent.invoke(
   { messages: [{ role: "user", content: USER_REQUEST }] },
   { recursionLimit: 50 }
 );
-console.log(result.messages.at(-1)?.content);
+console.log(result.messages.at(-1)?.text);
 
 const files: Record<string, FileData> = (result as { files?: Record<string, FileData> }).files ?? {};
 console.log("\n--- Scratch folder isolation check ---");

@@ -24,7 +24,7 @@ result = agent.invoke(
     config={"recursion_limit": 200},
 )
 
-report = result["messages"][-1].content
+report = result["messages"][-1].text
 print(report)
 
 seeded = json.loads((DATA_DIR / "epic_corpus_key.json").read_text())

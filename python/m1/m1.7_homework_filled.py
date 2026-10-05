@@ -31,21 +31,21 @@ def run_scenario():
         config=thread_a,
     )
     print("Thread A, turn 1:")
-    print(result["messages"][-1].content)
+    print(result["messages"][-1].text)
 
     result = agent.invoke(
         {"messages": [{"role": "user", "content": FACT_QUESTION}]},
         config=thread_a,
     )
     print("\nThread A, turn 2 (same thread, should remember Steve):")
-    print(result["messages"][-1].content)
+    print(result["messages"][-1].text)
 
     result = agent.invoke(
         {"messages": [{"role": "user", "content": FACT_QUESTION}]},
         config=thread_b,
     )
     print("\nThread B, turn 1 (different thread, should NOT know):")
-    print(result["messages"][-1].content)
+    print(result["messages"][-1].text)
 
     # A brand-new agent with its own fresh MemorySaver has no history to
     # load, even reused on thread_a's exact thread_id.
@@ -55,7 +55,7 @@ def run_scenario():
         config=thread_a,
     )
     print("\nFresh agent, thread_a's thread_id (should NOT know):")
-    print(result["messages"][-1].content)
+    print(result["messages"][-1].text)
     print(
         "Same thread_id, but a different MemorySaver instance has no record "
         "of it: persistence is scoped to the checkpointer, not the thread_id "

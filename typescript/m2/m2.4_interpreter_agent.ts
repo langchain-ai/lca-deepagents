@@ -68,7 +68,7 @@ const resultWith = await agentWith.invoke(
 );
 
 console.log("=== With interpreter ===");
-console.log(resultWith.messages[resultWith.messages.length - 1].content);
+console.log(resultWith.messages[resultWith.messages.length - 1].text);
 
 // --- Agent without interpreter ---
 
@@ -84,4 +84,4 @@ const resultWithout = await agentWithout.invoke(
 );
 
 console.log("\n=== Without interpreter ===");
-console.log(resultWithout.messages[resultWithout.messages.length - 1].content);
+console.log(resultWithout.messages[resultWithout.messages.length - 1].text);

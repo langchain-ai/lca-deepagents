@@ -91,4 +91,4 @@ const result = await agent.invoke({
   messages: [{ role: "user", content: "What is an LLM?" }],
 });
 
-console.log(result.messages.at(-1)?.content);
+console.log(result.messages.at(-1)?.text);

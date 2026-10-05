@@ -77,5 +77,5 @@ while result.interrupts:
 
 for msg in result.value["messages"]:
     if hasattr(msg, "name") and msg.name == "post_tweet":
-        print(msg.content)
+        print(msg.text)
         break

@@ -47,4 +47,4 @@ result = agent.invoke(
     config={"configurable": {"thread_id": "homework-m2.2"}},
 )
 
-print(result["messages"][-1].content)
+print(result["messages"][-1].text)

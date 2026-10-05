@@ -63,7 +63,7 @@ try {
       },
     ],
   });
-  console.log(result.messages.at(-1)?.content);
+  console.log(result.messages.at(-1)?.text);
 
   const pngBytes = await ls_sandbox.read("/genre_revenue.png");
   const outPath = join(__dirname, "genre_revenue.png");

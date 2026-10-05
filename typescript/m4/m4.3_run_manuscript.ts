@@ -26,7 +26,7 @@ const result = await agent.invoke(
   { recursionLimit: 200 }
 );
 
-const report = result.messages.at(-1)?.content as string;
+const report = result.messages.at(-1)?.text as string;
 console.log(report);
 
 const seeded: { sentence: string }[] = JSON.parse(readFileSync(join(DATA_DIR, "epic_corpus_key.json"), "utf-8"));

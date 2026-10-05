@@ -108,4 +108,4 @@ result = agent.invoke(
     },
     config={"recursion_limit": 100},
 )
-print(result["messages"][-1].content)
+print(result["messages"][-1].text)

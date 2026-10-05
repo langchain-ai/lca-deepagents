@@ -114,6 +114,6 @@ const result = await agent.invoke(
   { configurable: { thread_id: randomUUID() } }
 );
 
-const answer = String(result.messages.at(-1)?.content ?? "");
+const answer = String(result.messages.at(-1)?.text ?? "");
 console.log(answer);
 evalAnswer(answer);

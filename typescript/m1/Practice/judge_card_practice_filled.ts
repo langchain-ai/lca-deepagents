@@ -145,7 +145,7 @@ async function fetchProductFactAsync(product: string): Promise<string> {
         },
       ],
     });
-    const content = result.messages.at(-1)?.content;
+    const content = result.messages.at(-1)?.text;
     return typeof content === "string" ? content.trim() : String(content ?? "").trim();
   } catch (exc) {
     console.log(`[product fact] falling back to placeholder (${exc})`);

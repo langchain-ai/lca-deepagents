@@ -60,4 +60,4 @@ const result = await agent.invoke({
   messages: [{ role: "user", content: "Give me the scoop on Tetris." }],
 });
 
-console.log(result.messages.at(-1)?.content);
+console.log(result.messages.at(-1)?.text);

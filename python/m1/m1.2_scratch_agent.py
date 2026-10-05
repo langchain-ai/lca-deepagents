@@ -6,4 +6,4 @@ agent = create_deep_agent(model=model)
 
 result = agent.invoke({"messages": [{"role": "user", "content": "What is an LLM?"}]})
 
-print(result["messages"][-1].content)
+print(result["messages"][-1].text)

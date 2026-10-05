@@ -123,7 +123,7 @@ async def _fetch_product_fact_async(product: str) -> str:
             "the docs use an older or alternate name for it (e.g. 'Agent "
             f"Builder' for Fleet), write '{product}' instead, not that name."
         )}]})
-        return result["messages"][-1].content.strip()
+        return result["messages"][-1].text.strip()
     except Exception as exc:
         print(f"[product fact] falling back to placeholder ({exc})")
         return PLACEHOLDER_FACT

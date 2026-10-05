@@ -68,7 +68,7 @@ try {
     },
     { configurable: { thread_id: "lab-m2.2" } }
   );
-  console.log(result.messages.at(-1)?.content);
+  console.log(result.messages.at(-1)?.text);
 } catch (e) {
   const err = e instanceof Error ? e : new Error(String(e));
   const cause = err.cause instanceof Error ? err.cause : undefined;

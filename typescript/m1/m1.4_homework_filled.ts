@@ -34,7 +34,7 @@ async function runTestPrompts() {
       messages: [{ role: "user", content: prompt }],
     });
     console.log(`=== Test prompt ${i + 1}: ${prompt} ===`);
-    console.log(result.messages.at(-1)?.content);
+    console.log(result.messages.at(-1)?.text);
     console.log();
   }
 }

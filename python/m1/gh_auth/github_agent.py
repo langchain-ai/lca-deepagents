@@ -186,7 +186,7 @@ async def main() -> None:
                 "What is my GitHub username and what repositories do I have?"
             )}]
         })
-        print("\n" + result["messages"][-1].content)
+        print("\n" + result["messages"][-1].text)
 
 
 if __name__ == "__main__":

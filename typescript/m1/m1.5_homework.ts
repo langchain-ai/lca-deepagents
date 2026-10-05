@@ -96,4 +96,4 @@ const result = await agent.invoke({
   messages: [{ role: "user", content: "Ask your agent a question that needs your tool." }],
 });
 
-console.log(result.messages.at(-1)?.content);
+console.log(result.messages.at(-1)?.text);

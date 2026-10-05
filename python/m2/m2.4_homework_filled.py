@@ -110,6 +110,6 @@ result = agent.invoke(
     config={"configurable": {"thread_id": str(uuid.uuid4())}},
 )
 
-answer = result["messages"][-1].content
+answer = result["messages"][-1].text
 print(answer)
 eval_answer(answer)

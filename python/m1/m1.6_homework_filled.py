@@ -40,7 +40,7 @@ async def main():
     tools = await build_tools()
     agent = create_deep_agent(model=model, tools=tools)
     result = await agent.ainvoke({"messages": [{"role": "user", "content": QUESTION}]})
-    print(result["messages"][-1].content)
+    print(result["messages"][-1].text)
 
 
 asyncio.run(main())

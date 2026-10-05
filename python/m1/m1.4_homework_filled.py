@@ -35,7 +35,7 @@ def run_test_prompts():
     for i, prompt in enumerate(prompts, start=1):
         result = agent.invoke({"messages": [{"role": "user", "content": prompt}]})
         print(f"=== Test prompt {i}: {prompt} ===")
-        print(result["messages"][-1].content)
+        print(result["messages"][-1].text)
         print()
 
 

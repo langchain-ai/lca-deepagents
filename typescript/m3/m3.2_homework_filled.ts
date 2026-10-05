@@ -10,7 +10,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 import { createDeepAgent, FilesystemBackend } from "deepagents";
-import { isAIMessage } from "@langchain/core/messages";
+import { AIMessage } from "@langchain/core/messages";
 
 import { model } from "../models.js";
 
@@ -97,10 +97,10 @@ const result = await agent.invoke({
   messages: [{ role: "user", content: USER_QUESTION }],
 });
 
-console.log(result.messages.at(-1)?.content);
+console.log(result.messages.at(-1)?.text);
 
 const readCalls = result.messages
-  .filter(isAIMessage)
+  .filter(AIMessage.isInstance)
   .flatMap((msg) => msg.tool_calls ?? [])
   .filter((call) => call.name === "read_file");
 const referenceWasRead = readCalls.some((call) => call.args.file_path === REFERENCE_PATH);

@@ -65,7 +65,7 @@ result_with = agent_with.invoke(
 )
 
 print("=== With interpreter ===")
-print(result_with["messages"][-1].content)
+print(result_with["messages"][-1].text)
 
 # --- Agent without interpreter ---
 
@@ -81,4 +81,4 @@ result_without = agent_without.invoke(
 )
 
 print("\n=== Without interpreter ===")
-print(result_without["messages"][-1].content)
+print(result_without["messages"][-1].text)

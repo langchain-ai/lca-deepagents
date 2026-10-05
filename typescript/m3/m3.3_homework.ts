@@ -149,7 +149,7 @@ const resultA1 = await agent.invoke(
   configA
 );
 console.log("--- Context A, Question 1 ---");
-console.log(resultA1.messages.at(-1)?.content);
+console.log(resultA1.messages.at(-1)?.text);
 
 // 2. Context A learns a new, distinctive fact.
 const resultA2 = await agent.invoke(
@@ -157,7 +157,7 @@ const resultA2 = await agent.invoke(
   configA
 );
 console.log("\n--- Context A, Question 2 (remember) ---");
-console.log(resultA2.messages.at(-1)?.content);
+console.log(resultA2.messages.at(-1)?.text);
 
 // 3. Context B asks the same question. It should NOT see anything from A.
 const resultB = await agent.invoke(
@@ -165,7 +165,7 @@ const resultB = await agent.invoke(
   configB
 );
 console.log("\n--- Context B, leak-check question ---");
-console.log(resultB.messages.at(-1)?.content);
+console.log(resultB.messages.at(-1)?.text);
 
 const memoryA = ((await store.get(namespaceFromContext(CONTEXT_A), storeMemoryPath))!
   .value as FileData).content;

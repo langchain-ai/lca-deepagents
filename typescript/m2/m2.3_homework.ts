@@ -127,11 +127,11 @@ const agent = createDeepAgent({
 try {
   let result = await agent.invoke({ messages: [{ role: "user", content: TASK_ONE }] });
   console.log("--- Task 1 ---");
-  console.log(result.messages.at(-1)?.content);
+  console.log(result.messages.at(-1)?.text);
 
   result = await agent.invoke({ messages: [{ role: "user", content: TASK_TWO }] });
   console.log("\n--- Task 2 (same sandbox, should see Task 1's file) ---");
-  console.log(result.messages.at(-1)?.content);
+  console.log(result.messages.at(-1)?.text);
 
   const chartBytes = await ls_sandbox.read(CHART_PATH);
   const outPath = join(__dirname, "homework_chart.png");

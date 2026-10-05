@@ -217,7 +217,7 @@ async function main(): Promise<void> {
         },
       ],
     });
-    console.log(`\n${result.messages.at(-1)?.content}`);
+    console.log(`\n${result.messages.at(-1)?.text}`);
   } finally {
     await client.close();
   }

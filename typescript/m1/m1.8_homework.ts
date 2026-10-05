@@ -157,7 +157,7 @@ while (isInterrupted<ApprovalRequest>(result) && result[INTERRUPT].length) {
 rl.close();
 for (const msg of result.messages) {
   if (ToolMessage.isInstance(msg) && msg.name === "your_action_tool") {
-    console.log(msg.content);
+    console.log(msg.text);
     break;
   }
 }

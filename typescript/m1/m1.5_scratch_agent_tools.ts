@@ -48,4 +48,4 @@ const result = await agent.invoke({
   messages: [{ role: "user", content: "Which five genres have the most tracks?" }],
 });
 
-console.log(result.messages.at(-1)?.content);
+console.log(result.messages.at(-1)?.text);

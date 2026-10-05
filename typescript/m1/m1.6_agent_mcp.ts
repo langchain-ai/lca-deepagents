@@ -35,7 +35,7 @@ try {
     ],
   });
 
-  console.log(result.messages.at(-1)?.content);
+  console.log(result.messages.at(-1)?.text);
 } finally {
   await client.close();
 }

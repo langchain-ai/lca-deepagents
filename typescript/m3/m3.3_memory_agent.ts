@@ -78,7 +78,7 @@ const result = await agent.invoke(
   demoConfig
 );
 console.log("--- Question 1 ---");
-console.log(result.messages.at(-1)?.content);
+console.log(result.messages.at(-1)?.text);
 
 // Second invoke: agent writes to memory
 const result2 = await agent.invoke(
@@ -93,7 +93,7 @@ const result2 = await agent.invoke(
   demoConfig
 );
 console.log("\n--- Question 2 ---");
-console.log(result2.messages[result2.messages.length - 1].content);
+console.log(result2.messages[result2.messages.length - 1].text);
 
 console.log("\n--- AGENTS.md after write ---");
 const storedMemory = await store.get(namespaceFromContext(demoContext), storeMemoryPath);

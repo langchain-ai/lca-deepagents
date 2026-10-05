@@ -48,7 +48,7 @@ async def turn(message: str) -> str:
         {"messages": [HumanMessage(content=message)]},
         config=THREAD,
     )
-    return result["messages"][-1].content
+    return result["messages"][-1].text
 
 
 async def show_state(seen_cutoffs: set) -> bool:

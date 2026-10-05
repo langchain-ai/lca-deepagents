@@ -100,5 +100,5 @@ while result.interrupts:
 
 for msg in result.value["messages"]:
     if hasattr(msg, "name") and msg.name == "send_email":
-        print(msg.content)
+        print(msg.text)
         break
