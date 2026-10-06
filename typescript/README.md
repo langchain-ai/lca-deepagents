@@ -27,10 +27,10 @@ Make a copy of `.env.example`:
 cp .env.example .env
 ```
 
-Insert API keys directly into `.env` — LangSmith (required) and your model provider (required):
+Insert API keys directly into `.env`: LangSmith (required) and your model provider (required):
 
 ```bash
-# LangSmith — tracing and observability
+# LangSmith: tracing and observability
 LANGSMITH_API_KEY=lsv2_...
 LANGSMITH_TRACING=true
 LANGSMITH_PROJECT=lca-deepagents
@@ -38,7 +38,7 @@ LANGSMITH_PROJECT=lca-deepagents
 # LANGSMITH_ENDPOINT=https://eu.api.smith.langchain.com    # GCP EU
 # LANGSMITH_ENDPOINT=https://apac.api.smith.langchain.com  # GCP APAC
 
-# Model provider API keys — set the one you're using
+# Model provider API keys: set the one you're using
 ANTHROPIC_API_KEY=your-anthropic-api-key
 # OPENAI_API_KEY=your-openai-api-key
 # GOOGLE_API_KEY=your-google-api-key
@@ -47,13 +47,13 @@ ANTHROPIC_API_KEY=your-anthropic-api-key
 # Get a free key at https://openrouter.ai/keys
 # OPENROUTER_API_KEY=sk-or-v1-...
 
-# Tavily web search — for the research labs (Module 4 and the Module 5
+# Tavily web search: for the research labs (Module 4 and the Module 5
 # newsletter). Leave blank to run those labs without web search.
 # Get a free key at https://app.tavily.com
 TAVILY_API_KEY=
 ```
 
-This course uses `dotenv/config` — `.env` values are loaded automatically when a lesson script starts.
+This course uses `dotenv/config`, so `.env` values are loaded automatically when a lesson script starts.
 
 Install dependencies:
 
