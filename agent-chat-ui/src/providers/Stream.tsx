@@ -48,6 +48,7 @@ export type StateType = {
   messages: Message[];
   ui?: UIMessage[];
   async_tasks?: Record<string, AsyncTask>;
+  asyncTasks?: Record<string, AsyncTask>;
 };
 
 const useTypedStream = useStream<
