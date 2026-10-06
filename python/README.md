@@ -12,7 +12,7 @@ You can find the course at [Deep Agents](https://academy.langchain.com/courses/f
 
 ### Prerequisites
 
-- Python 3.11–3.14
+- Python 3.11 to 3.14
 - [uv](https://docs.astral.sh/uv/): [how to install](#installing-uv)
 - LLM Model API key: choose your favorite provider. The course defaults to Anthropic ([sign up for an Anthropic API key here](https://console.anthropic.com/))
 - LangSmith API key: [how to get one](#getting-started-with-langsmith)
@@ -34,10 +34,10 @@ Make a copy of `.env.example`:
 cp .env.example .env
 ```
 
-Insert API keys directly into `.env` — LangSmith (required) and your model provider (required):
+Insert API keys directly into `.env`: LangSmith (required) and your model provider (required):
 
 ```bash
-# LangSmith — tracing and observability
+# LangSmith: tracing and observability
 LANGSMITH_API_KEY=lsv2_...
 LANGSMITH_TRACING=true
 LANGSMITH_PROJECT=lca-deepagents
@@ -45,7 +45,7 @@ LANGSMITH_PROJECT=lca-deepagents
 # LANGSMITH_ENDPOINT=https://eu.api.smith.langchain.com    # GCP EU
 # LANGSMITH_ENDPOINT=https://apac.api.smith.langchain.com  # GCP APAC
 
-# Model provider API keys — set the one you're using
+# Model provider API keys: set the one you're using
 ANTHROPIC_API_KEY=your-anthropic-api-key
 # OPENAI_API_KEY=your-openai-api-key
 # GOOGLE_API_KEY=your-google-api-key
@@ -54,13 +54,13 @@ ANTHROPIC_API_KEY=your-anthropic-api-key
 # Get a free key at https://openrouter.ai/keys
 # OPENROUTER_API_KEY=sk-or-v1-...
 
-# Tavily web search — for the research labs (Module 4 and the Module 5
+# Tavily web search: for the research labs (Module 4 and the Module 5
 # newsletter). Leave blank to run those labs without web search.
 # Get a free key at https://app.tavily.com
 TAVILY_API_KEY=
 ```
 
-This course uses `load_dotenv(override=True)` — `.env` values always win over OS environment variables.
+This course uses `load_dotenv(override=True)`, so `.env` values always win over OS environment variables.
 
 Install dependencies:
 
@@ -115,9 +115,9 @@ If you see tracing errors at runtime, check that both `LANGSMITH_TRACING=true` a
 <details>
 <summary>Wrong Python version</summary>
 
-The course requires Python 3.11–3.14.
+The course requires Python 3.11 to 3.14.
 
-**Solution:** If using `uv`, run `uv sync` — it will install the correct Python version automatically. If using pip, install Python 3.11–3.14 from [python.org](https://www.python.org/downloads/).
+**Solution:** If using `uv`, run `uv sync`; it will install the correct Python version automatically. If using pip, install Python 3.11 to 3.14 from [python.org](https://www.python.org/downloads/).
 
 </details>
 
