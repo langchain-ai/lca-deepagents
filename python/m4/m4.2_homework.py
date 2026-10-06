@@ -31,7 +31,7 @@ RUN
 
 from deepagents import FilesystemPermission, create_deep_agent
 
-from models import model, strong_model
+from models import strong_model
 
 SCRATCH_ROOT = "/scratch"
 

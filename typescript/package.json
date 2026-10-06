@@ -26,6 +26,7 @@
     "langsmith": "^0.9.0",
     "marked": "latest",
     "sanitize-html": "latest",
+    "undici": "^8.9.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -36,8 +37,7 @@
     "node": "^24.18.1",
     "oxlint": "^1.76.0",
     "tsx": "^4.23.1",
-    "typescript": "^5.9.3",
-    "undici": "^8.9.0"
+    "typescript": "^5.9.3"
   },
   "engines": {
     "node": ">=24.15.0 <25.0.0"

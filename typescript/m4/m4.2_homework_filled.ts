@@ -7,7 +7,7 @@
 
 import { createDeepAgent, type FilesystemPermission, type SubAgent, type FileData } from "deepagents";
 
-import { model, strongModel } from "../models.js";
+import { strongModel } from "../models.js";
 
 const SCRATCH_ROOT = "/scratch";
 

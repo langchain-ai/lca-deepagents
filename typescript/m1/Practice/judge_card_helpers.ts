@@ -75,11 +75,11 @@ export const TOOL_SEQUENCE = context`
      right."
 `;
 
-export const RESET = "[0m";
-export const BOLD = "[1m";
-export const DEFAULT_COLOR = "[92m"; // bright green (unstyled personas, e.g. your own)
+const RESET = "[0m";
+const BOLD = "[1m";
+const DEFAULT_COLOR = "[92m"; // bright green (unstyled personas, e.g. your own)
 
-export const DEFAULT_MASCOT = [" ___", "[o_o]", "/|_|\\", " | |"].join("\n");
+const DEFAULT_MASCOT = [" ___", "[o_o]", "/|_|\\", " | |"].join("\n");
 
 // The 3 fixed personality axes the quiz scores you on. Each trait score
 // (0-100, from scoreAndMatch in judge_card_practice.ts) says how far
@@ -100,7 +100,7 @@ interface QuizQuestion {
 // 8 fixed quiz questions. Each choice carries a (chaotic/organized,
 // cautious/bold, solo/collaborative) delta applied to a running score that
 // starts at 50 per axis.
-export const QUIZ_QUESTIONS: QuizQuestion[] = [
+const QUIZ_QUESTIONS: QuizQuestion[] = [
   {
     question: "It's 9am, you have 3 unread pings and one big task due today.",
     choices: [
@@ -237,7 +237,7 @@ function center(text: string, width: number): string {
  *
  * mascot/color: optional per-persona styling (see PERSONA_STYLES).
  */
-export function renderResultCard(
+function renderResultCard(
   builderType: string,
   meters: Array<[string, string, number]>,
   verdict: string,
@@ -323,7 +323,7 @@ interface PersonaStyle {
 // persona not listed here just gets the default look (default mascot,
 // green bars). Add an entry for your own persona if you want a distinct
 // theme: PERSONA_STYLES["your_persona_name"] = {...}.
-export const PERSONA_STYLES: Record<string, PersonaStyle> = {
+const PERSONA_STYLES: Record<string, PersonaStyle> = {
   "Captain Hardcode": {
     mascot: [
       "                  ______",
@@ -371,10 +371,10 @@ export const PERSONA_STYLES: Record<string, PersonaStyle> = {
   },
 };
 
-export const PLATFORM = "X";
-export const HANDLE = "@you";
+const PLATFORM = "X";
+const HANDLE = "@you";
 
-export const POSTED_BANNER = [
+const POSTED_BANNER = [
   "                                    ░██                      ░██",
   "                                    ░██                      ░██",
   "░████████   ░███████   ░███████  ░████████  ░███████   ░████████",
@@ -393,7 +393,7 @@ export const POSTED_BANNER = [
  * with a big "posted" banner instead of repeating the same caption).
  * Returns the plain text too.
  */
-export function renderMockPost(caption: string, posted: boolean): string {
+function renderMockPost(caption: string, posted: boolean): string {
   const cleanedCaption = caption.replace(/\s*—\s*/g, ", ");
   let width: number;
   let body: string[];
