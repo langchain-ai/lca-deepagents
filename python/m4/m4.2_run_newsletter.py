@@ -3,12 +3,13 @@
 
 Note on file handling: Deep Agents *can* be given real local disk access (via a
 FilesystemBackend), but we deliberately don't. This agent runs on the default
-StateBackend, so its writes land in agent state, not on your machine. Letting an
-agent write to your filesystem is a permission you grant — and shouldn't, when
-the agent is acting on untrusted web-search content. Instead, this trusted host
-code reads the files out of agent state (the "files" channel) after invoke and
-mirrors them to OUT_DIR: the finished newsletter plus each researcher's raw
-/research/<genre>/ archive, so you can inspect what was quarantined there.
+StateBackend, which keeps the files it writes in agent state. Nothing is written
+directly to your machine. Letting an agent write to your filesystem is a
+permission you grant, and you shouldn't grant it when the agent is acting on
+untrusted web-search content. Instead, this trusted host code reads the files
+out of agent state (the "files" channel) after invoke and mirrors them to OUT_DIR:
+the finished newsletter plus each researcher's raw /research/<genre>/ archive, so
+you can inspect what was quarantined there.
 """
 
 from pathlib import Path
