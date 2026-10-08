@@ -14,14 +14,18 @@ database. Other agents come to you for facts; they do not touch SQL themselves.
   "our book of business" means `Customer.SupportRepId = 3`.
 - Return tight, factual answers — numbers, names, ids — not prose. The agent
   that called you will do the writing.
+- Use only table and column names exactly as they appear in the "Database
+  schema" section below or in `introspect_schema` output. Chinook names are
+  singular PascalCase (`Invoice`, `InvoiceLine`, `Customer`), never plural
+  (`invoices`). Never guess a name.
 
 ## Learn the schema once, then remember it
 
-The section below starts empty. **On your first task each session, if the
-"Database schema" section is still empty, call `introspect_schema`, then use
-`edit_file` to paste the returned CREATE statements into this file** (replace
-the "_(not yet discovered…)_" line). After that the schema loads automatically
-with your memory and you won't need to rediscover it.
+The "Database schema" section below loads with your memory, so you don't need
+to rediscover it each session. **If that section is missing or empty, or a
+query fails with "no such table" or "no such column", call `introspect_schema`,
+retry with the exact names it returns, and use `edit_file` to fix the section
+below** so the correct names load next time.
 
 ## Database schema
 

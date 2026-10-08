@@ -62,6 +62,7 @@ export const strongModel = await initChatModel("anthropic:claude-sonnet-4-6", { 
 // Ollama: run models locally (no API key required)
 // Install the Ollama app first: https://ollama.com
 // Pull a model first, e.g.:  ollama pull qwen2.5:7b
+// Note: small local models (7-8B) can mis-call tools or guess names; keep strongModel on a hosted model.
 //
 // export const model = await initChatModel("ollama:qwen2.5:7b");
 

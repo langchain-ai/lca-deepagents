@@ -50,7 +50,12 @@ const ANALYST_PROMPT = context`
   (loaded automatically). Follow them. In short: answer with exact figures from
   \`query_chinook\`, learn the schema once with \`introspect_schema\` and record it
   in your memory, and use \`add_customer\` only when asked to add a genuinely new
-  customer (a human approves that write).`;
+  customer (a human approves that write).
+
+  Use only table and column names exactly as they appear in your memory or in
+  \`introspect_schema\` output. Chinook names are singular (\`Invoice\`, not
+  \`invoices\`). If a query fails with "no such table" or "no such column",
+  call \`introspect_schema\` and retry; never guess a name.`;
 
 const INBOX_PROMPT = context`
   You are the inbox-manager, the email specialist for the

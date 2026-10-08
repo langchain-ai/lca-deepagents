@@ -13,7 +13,7 @@
     "@langchain/anthropic": "latest",
     "@langchain/core": "^1.2.11",
     "@langchain/langgraph": "^1.4.10",
-    "@langchain/mcp-adapters": "latest",
+    "@langchain/mcp-adapters": "^1.1.4",
     "@langchain/ollama": "latest",
     "@langchain/openai": "latest",
     "@langchain/quickjs": "latest",

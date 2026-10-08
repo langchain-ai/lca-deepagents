@@ -60,6 +60,7 @@ strong_model = init_chat_model("anthropic:claude-sonnet-4-6", timeout=120, max_r
 # langchain-ollama is already installed (default dep)
 # Install the Ollama app first: https://ollama.com
 # Pull a model first, e.g.:  ollama pull qwen2.5:7b
+# Note: small local models (7-8B) can mis-call tools or guess names; keep strong_model on a hosted model.
 #
 # model = init_chat_model("ollama:qwen2.5:7b")
 
