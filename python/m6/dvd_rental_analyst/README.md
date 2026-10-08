@@ -35,13 +35,22 @@ cd python/m6/dvd_rental_analyst
 cp .env.example .env     # then fill in your keys
 ```
 
-Install the SDK and CLI per the instructions in
-[managed-deepagents-sdk](https://github.com/langchain-ai/managed-deepagents-sdk).
+Install the SDK and the `mda` CLI. Both ship in the
+[`managed-deepagents`](https://pypi.org/project/managed-deepagents/) package on
+PyPI, which `pyproject.toml` pins to the version this project was built against:
+
+```bash
+uv sync
+uv run mda --version
+```
+
+Run every `mda` command through `uv run` so it uses that pinned version. No
+`uv`? Install it from [docs.astral.sh/uv](https://docs.astral.sh/uv/getting-started/installation/).
 
 ## Deploy it
 
 ```bash
-mda deploy .
+uv run mda deploy .
 ```
 
 That prints an Agent Server URL and a LangSmith dashboard URL. Open the
@@ -75,7 +84,7 @@ a live demo.
 ## Tear down
 
 ```bash
-mda delete .
+uv run mda delete .
 ```
 
 Removes the deployment, its tracing project, its Context Hub repo, and any
@@ -85,12 +94,15 @@ Note that the deployment **name stays reserved for about 7 days** after a
 delete. To redeploy sooner, use a different name:
 
 ```bash
-mda deploy . --name dvd-rental-analyst-2
+uv run mda deploy . --name dvd-rental-analyst-2
 ```
 
 ## Caveat
 
-`define_deep_agent`, `define_sandbox`, `define_identity`, and
-`auth.langsmith_api_key()` were checked against the SDK shipped in an `mda`
-build and match. `channels.slack()` takes runtime options only, not
-`name`/`description`.
+MDA is in public beta and its SDK moves quickly. This project is pinned to
+`managed-deepagents==0.8.3`; `define_deep_agent`, `define_sandbox`,
+`define_identity`, `auth.langsmith_api_key()`, and `channels.slack()` were
+checked against that version. If you install a newer version and a call
+doesn't match, the
+[Managed Deep Agents docs](https://docs.langchain.com/langsmith/managed-deep-agents)
+are the source of truth.
