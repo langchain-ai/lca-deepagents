@@ -53,8 +53,8 @@ export const strongModel = await initChatModel("anthropic:claude-sonnet-5-5", { 
 
 // ═══ Alternative Models (comment out default above, uncomment one below) ═════
 // export const model = await initChatModel("anthropic:claude-sonnet-5-5");
-// export const model = await initChatModel("openai:gpt-6-luna");
-// export const strongModel = await initChatModel("openai:gpt-6.1-sol");
+// export const model = await initChatModel("openai:gpt-6-luna", { useResponsesApi: true });
+// export const strongModel = await initChatModel("openai:gpt-6.1-sol", { useResponsesApi: true });
 
 // ═══ Open-Source / Alternative Hosted Models ══════════════════════════════════
 
