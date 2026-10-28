@@ -23,7 +23,7 @@
     "deepagents": "latest",
     "dotenv": "^17.4.2",
     "langchain": "^1.5.10",
-    "langsmith": "^0.9.0",
+    "langsmith": "^0.11.2",
     "marked": "latest",
     "sanitize-html": "latest",
     "undici": "^8.9.0",
