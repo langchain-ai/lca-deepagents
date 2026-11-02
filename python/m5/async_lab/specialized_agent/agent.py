@@ -53,6 +53,8 @@ def analyze_sales(group_by: str = "region") -> str:
 
 
 # Separate environment, so no shared models.py: edit this string to switch providers.
+# For providers other than Anthropic or OpenAI, also run `uv add <provider package>`
+# in this folder. API keys still load from the shared .env (see langgraph.json).
 model = init_chat_model("anthropic:claude-haiku-4-5")
 
 # langgraph.json points at this module-level variable: "./agent.py:graph"

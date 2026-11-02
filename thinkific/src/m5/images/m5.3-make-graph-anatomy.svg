@@ -35,7 +35,7 @@
     <text x="76"  y="195" fill="#E3FF8F">mail_tools = await client.get_tools()</text>
     <text x="76"  y="213" fill="#C78EAD">return create_deep_agent(</text>
     <text x="102" y="231" fill="#40668D">model=strong_model,</text>
-    <text x="102" y="249" fill="#40668D">tools=[markdown_to_html] + mail_tools,</text>
+    <text x="102" y="249" fill="#40668D">tools=[markdown_to_html, render_pie_chart],</text>
     <text x="102" y="267" fill="#40668D">system_prompt=SYSTEM_PROMPT,</text>
     <text x="102" y="285" fill="#40668D">subagents=build_subagents(...),</text>
     <text x="102" y="303" fill="#40668D">skills=["/skills"],</text>

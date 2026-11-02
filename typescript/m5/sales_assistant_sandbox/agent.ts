@@ -177,7 +177,7 @@ export async function graph(config: LangGraphRunnableConfig) {
 
   return createDeepAgent({
     model: strongModel,
-    tools: [markdownToHtml, ...tools],
+    tools: [markdownToHtml],
     systemPrompt: SYSTEM_PROMPT,
     subagents: buildSubagents(backend, { mailTools: tools }),
     skills: ["/skills"],
