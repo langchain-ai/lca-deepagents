@@ -40,7 +40,8 @@ Insert API keys directly into `.env`: LangSmith (required) and your model provid
 # LangSmith: tracing and observability
 LANGSMITH_API_KEY=lsv2_...
 LANGSMITH_TRACING=true
-LANGSMITH_PROJECT=lca-deepagents
+LANGSMITH_AGENT_ID=lca-deepagents
+LANGSMITH_AGENT_ENVIRONMENT=development
 # Non-US region? Uncomment your endpoint (else your API key won't authenticate):
 # LANGSMITH_ENDPOINT=https://eu.api.smith.langchain.com    # GCP EU
 # LANGSMITH_ENDPOINT=https://apac.api.smith.langchain.com  # GCP APAC
@@ -61,6 +62,8 @@ TAVILY_API_KEY=
 ```
 
 This course uses `load_dotenv(override=True)`, so `.env` values always win over OS environment variables.
+
+Set `LANGSMITH_AGENT_ID` to your LangSmith agent ID and keep `LANGSMITH_AGENT_ENVIRONMENT=development` for local lessons. Set both values together, and remove any legacy `LANGSMITH_PROJECT` setting from `.env` and your shell to avoid conflicting trace destinations.
 
 Install dependencies:
 
@@ -125,6 +128,7 @@ The course requires Python 3.11 to 3.14.
 
 - Create a [LangSmith](https://smith.langchain.com/) account
 - Go to **Settings → API Keys** and create a new API key
+- Create or select an agent, copy its ID into `LANGSMITH_AGENT_ID`, and use its `development` environment for the course
 
 ### Installing uv
 

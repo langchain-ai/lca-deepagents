@@ -19,7 +19,7 @@ dependencies = [
     "langchain-openai",
     "langgraph-cli[inmem]>=0.4.0",
     "python-dotenv",
-    "langsmith[sandbox]",
+    "langsmith[sandbox]>=0.14.14,<0.15",
     "langchain-ollama>=1.1.0",
     "langchain-community>=0.4.2",
     "deepagents-code",
