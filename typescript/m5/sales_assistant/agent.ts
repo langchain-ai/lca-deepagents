@@ -42,7 +42,7 @@ const mailTools = await client.getTools();
 
 export const graph = createDeepAgent({
   model: strongModel,
-  tools: [markdownToHtml, renderPieChart, ...mailTools],
+  tools: [markdownToHtml, renderPieChart],
   systemPrompt: SYSTEM_PROMPT,
   subagents: buildSubagents(backend, { enableSearch, mailTools }),
   skills: ["/skills"],

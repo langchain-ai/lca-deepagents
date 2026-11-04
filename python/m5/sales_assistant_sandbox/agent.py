@@ -158,7 +158,7 @@ async def make_graph(config: RunnableConfig, runtime: ServerRuntime):
         middleware.append(build_async_research_middleware())
     yield create_deep_agent(
         model=strong_model,
-        tools=[markdown_to_html] + mail_tools,
+        tools=[markdown_to_html],
         system_prompt=SYSTEM_PROMPT,
         subagents=build_subagents(backend, mail_tools=mail_tools),
         skills=["/skills"],

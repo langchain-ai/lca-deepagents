@@ -35,7 +35,7 @@
     <text x="76"  y="177" fill="#E3FF8F">await client.getTools();</text>
     <text x="50"  y="195" fill="#C78EAD">export const graph = createDeepAgent({</text>
     <text x="76"  y="213" fill="#40668D">model: strongModel,</text>
-    <text x="76"  y="231" fill="#40668D">tools: [markdownToHtml, ...mailTools],</text>
+    <text x="76"  y="231" fill="#40668D">tools: [markdownToHtml, renderPieChart],</text>
     <text x="76"  y="249" fill="#40668D">systemPrompt: SYSTEM_PROMPT,</text>
     <text x="76"  y="267" fill="#40668D">subagents: buildSubagents(...),</text>
     <text x="76"  y="285" fill="#40668D">skills: ["/skills"],</text>
