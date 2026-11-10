@@ -30,6 +30,7 @@ from deepagents.backends import StateBackend
 from deepagents.backends.langsmith import LangSmithSandbox
 from langchain_core.runnables import RunnableConfig
 from langchain_mcp_adapters.client import MultiServerMCPClient
+from langchain_mcp_adapters.sessions import StreamableHttpConnection
 from langchain_quickjs import CodeInterpreterMiddleware
 from langgraph_sdk.runtime import ServerRuntime
 from subagents import build_subagents
@@ -54,7 +55,7 @@ SYSTEM_PROMPT = (
     "<script>`), saving the image under /outputs/."
 )
 
-MAIL_SERVER = {"transport": "streamable-http", "url": "http://127.0.0.1:5002/mcp"}
+MAIL_SERVER: StreamableHttpConnection = {"transport": "streamable_http", "url": "http://127.0.0.1:5002/mcp"}
 
 _enable_search = bool(os.environ.get("TAVILY_API_KEY"))
 if not _enable_search:

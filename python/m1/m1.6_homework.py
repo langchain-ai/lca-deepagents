@@ -36,7 +36,6 @@ from langchain_mcp_adapters.client import MultiServerMCPClient
 
 from models import model
 
-
 # ════════════════════════════════════════════════════════════════════════
 # TODO 1: Build your MCP client and return its filtered tool list.
 #
@@ -51,7 +50,7 @@ from models import model
 # Example shape (delete this and write your own):
 #   async def build_tools():
 #       client = MultiServerMCPClient({
-#           "my-server": {"transport": "http", "url": "https://..."}
+#           "my-server": {"transport": "streamable_http", "url": "https://..."}
 #       })
 #       tools = await client.get_tools()
 #       ALLOWED = {"some_tool_name"}

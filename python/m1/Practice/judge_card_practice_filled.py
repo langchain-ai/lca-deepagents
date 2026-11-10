@@ -7,20 +7,20 @@ from __future__ import annotations
 
 import asyncio
 
-from langchain_core.tools import tool
-from langchain_mcp_adapters.client import MultiServerMCPClient
-
 from deepagents import create_deep_agent
 from judge_card_helpers import (
     OUTPUT_DIR,
-    TRAIT_AXES,
     PRODUCT_MATCHES,
     TOOL_SEQUENCE,
+    TRAIT_AXES,
     post_card,
     render_card,
     run_judge,
     run_quiz,
 )
+from langchain_core.tools import tool
+from langchain_mcp_adapters.client import MultiServerMCPClient
+
 from models import model
 
 # TODO 1 filled in: three shipped personas, plus "your_persona" (here,
@@ -111,7 +111,7 @@ PLACEHOLDER_FACT = "No docs fact available. Base the verdict on the trait scores
 async def _fetch_product_fact_async(product: str) -> str:
     try:
         client = MultiServerMCPClient({
-            "docs-langchain": {"transport": "http", "url": "https://docs.langchain.com/mcp"},
+            "docs-langchain": {"transport": "streamable_http", "url": "https://docs.langchain.com/mcp"},
         })
         tools = await client.get_tools()
         tools = [t for t in tools if t.name == "search_docs_by_lang_chain"]

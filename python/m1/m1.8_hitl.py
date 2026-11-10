@@ -1,4 +1,5 @@
 from deepagents import create_deep_agent
+from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import tool
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.types import Command
@@ -29,7 +30,7 @@ agent = create_deep_agent(
     checkpointer=MemorySaver(),
 )
 
-config = {"configurable": {"thread_id": "m1-8-hitl-demo"}}
+config: RunnableConfig = {"configurable": {"thread_id": "m1-8-hitl-demo"}}
 
 result = agent.invoke(
     {

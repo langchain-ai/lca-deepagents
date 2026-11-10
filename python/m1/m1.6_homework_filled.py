@@ -19,7 +19,7 @@ from models import model
 async def build_tools():
     client = MultiServerMCPClient({
         "deepwiki": {
-            "transport": "http",
+            "transport": "streamable_http",
             "url": "https://mcp.deepwiki.com/mcp",
         }
     })

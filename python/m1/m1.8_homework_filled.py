@@ -8,6 +8,8 @@ import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 from deepagents import create_deep_agent
+from langchain.agents.middleware import InterruptOnConfig
+from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import tool
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.types import Command
@@ -31,7 +33,7 @@ Rules:
 - Do not claim a tweet was posted until the tool result confirms it.
 """
 INITIAL_REQUEST = "Post a tweet announcing that our new product launches this Friday."
-INTERRUPT_ON = {"post_tweet": {"allowed_decisions": ["approve", "edit", "reject"]}}
+INTERRUPT_ON: dict[str, bool | InterruptOnConfig] = {"post_tweet": {"allowed_decisions": ["approve", "edit", "reject"]}}
 
 agent = create_deep_agent(
     model=model,
@@ -41,7 +43,7 @@ agent = create_deep_agent(
     checkpointer=MemorySaver(),
 )
 
-config = {"configurable": {"thread_id": "m1-8-homework-demo"}}
+config: RunnableConfig = {"configurable": {"thread_id": "m1-8-homework-demo"}}
 
 result = agent.invoke(
     {"messages": [{"role": "user", "content": INITIAL_REQUEST}]},

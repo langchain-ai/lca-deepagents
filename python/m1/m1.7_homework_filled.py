@@ -8,6 +8,7 @@ import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 from deepagents import create_deep_agent
+from langchain_core.runnables import RunnableConfig
 from langgraph.checkpoint.memory import MemorySaver
 
 from models import model
@@ -18,8 +19,8 @@ agent = create_deep_agent(
 )
 
 # TODO 1 filled in
-thread_a = {"configurable": {"thread_id": "m1-7-homework-thread-a"}}
-thread_b = {"configurable": {"thread_id": "m1-7-homework-thread-b"}}
+thread_a: RunnableConfig = {"configurable": {"thread_id": "m1-7-homework-thread-a"}}
+thread_b: RunnableConfig = {"configurable": {"thread_id": "m1-7-homework-thread-b"}}
 
 FACT_QUESTION = "What's my iguana's name and what does he eat?"
 

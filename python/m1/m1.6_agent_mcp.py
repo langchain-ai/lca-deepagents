@@ -9,7 +9,7 @@ from models import model
 async def main():
     client = MultiServerMCPClient({
         "docs-langchain": {
-            "transport": "http",
+            "transport": "streamable_http",
             "url": "https://docs.langchain.com/mcp",
         }
     })

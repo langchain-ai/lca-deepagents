@@ -7,6 +7,7 @@ import asyncio
 
 from deepagents import create_deep_agent
 from langchain_core.messages import HumanMessage
+from langchain_core.runnables import RunnableConfig
 from langgraph.checkpoint.memory import MemorySaver
 
 from models import model
@@ -39,7 +40,7 @@ agent = create_deep_agent(
     system_prompt="You are a helpful assistant. Keep every response to one sentence.",
 )
 
-THREAD = {"configurable": {"thread_id": "homework"}}
+THREAD: RunnableConfig = {"configurable": {"thread_id": "homework"}}
 HISTORY_PATH = f"/conversation_history/{THREAD['configurable']['thread_id']}.md"
 
 

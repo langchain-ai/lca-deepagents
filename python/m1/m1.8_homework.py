@@ -30,12 +30,13 @@ import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 from deepagents import create_deep_agent
+from langchain.agents.middleware import InterruptOnConfig
+from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import tool
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.types import Command
 
 from models import model
-
 
 # ════════════════════════════════════════════════════════════════════════
 # TODO 1: Define your own action tool.
@@ -76,7 +77,7 @@ def your_action_tool(argument: str) -> str:
 
 SYSTEM_PROMPT = "TODO 2: replace this with your own system prompt."
 INITIAL_REQUEST = "TODO 2: replace this with a request that would trigger your tool."
-INTERRUPT_ON = {"your_action_tool": True}  # TODO 2: replace with your own allowed_decisions config
+INTERRUPT_ON: dict[str, bool | InterruptOnConfig] = {"your_action_tool": True}  # TODO 2: replace with your own allowed_decisions config
 
 # Guards against running with an unfilled placeholder; the filled
 # reference doesn't need this since there's no placeholder text left.
@@ -93,7 +94,7 @@ agent = create_deep_agent(
     checkpointer=MemorySaver(),
 )
 
-config = {"configurable": {"thread_id": "m1-8-homework-demo"}}
+config: RunnableConfig = {"configurable": {"thread_id": "m1-8-homework-demo"}}
 
 result = agent.invoke(
     {"messages": [{"role": "user", "content": INITIAL_REQUEST}]},
