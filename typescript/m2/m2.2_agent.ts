@@ -50,27 +50,17 @@ const agent = createDeepAgent({
   ],
 });
 
-// Note: in Python deepagents, permission errors are returned to the LLM as tool
-// messages so it can respond gracefully. In TypeScript deepagents, they surface
-// as a thrown MiddlewareError (a langchainjs ReactAgent bug — ToolNode is not
-// constructed with handleToolErrors:true). Wrapping here until that is fixed.
-try {
-  const result = await agent.invoke(
-    {
-      messages: [
-        {
-          role: "user",
-          content: context`
-            Read /reference/chinook-sales.md, then add this note to it:
-            'Current promotion: 20% off all Jazz albums through end of month.'`,
-        },
-      ],
-    },
-    { configurable: { thread_id: "lab-m2.2" } }
-  );
-  console.log(result.messages.at(-1)?.text);
-} catch (e) {
-  const err = e instanceof Error ? e : new Error(String(e));
-  const cause = err.cause instanceof Error ? err.cause : undefined;
-  console.log("Permission enforced:", cause?.message ?? err.message);
-}
+const result = await agent.invoke(
+  {
+    messages: [
+      {
+        role: "user",
+        content: context`
+          Read /reference/chinook-sales.md, then add this note to it:
+          'Current promotion: 20% off all Jazz albums through end of month.'`,
+      },
+    ],
+  },
+  { configurable: { thread_id: "lab-m2.2" } }
+);
+console.log(result.messages.at(-1)?.text);

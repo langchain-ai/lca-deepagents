@@ -1,7 +1,7 @@
 import { createInterface } from "node:readline/promises";
 import { z } from "zod";
 
-import { tool, ToolMessage } from "langchain";
+import { tool, ToolMessage, type Decision } from "langchain";
 import { Command, INTERRUPT, isInterrupted, MemorySaver } from "@langchain/langgraph";
 import { createDeepAgent } from "deepagents";
 
@@ -65,7 +65,7 @@ const rl = createInterface({ input: process.stdin, output: process.stdout });
 
 while (isInterrupted<ApprovalRequest>(result) && result[INTERRUPT].length) {
   const pending = result[INTERRUPT][0].value!;
-  const decisions = [];
+  const decisions: Decision[] = [];
 
   for (const req of pending.actionRequests) {
     console.log(`\nApproval required for ${req.name}:`);

@@ -15,7 +15,7 @@ import { createInterface } from "node:readline/promises";
 
 import { z } from "zod";
 import { select } from "@inquirer/prompts";
-import { context, tool } from "langchain";
+import { context, tool, type Decision } from "langchain";
 import { Command, INTERRUPT, isInterrupted, MemorySaver } from "@langchain/langgraph";
 import { createDeepAgent } from "deepagents";
 
@@ -538,7 +538,7 @@ export async function runJudge(judgeName: string, options: RunJudgeOptions): Pro
   try {
     while (isInterrupted<ApprovalRequest>(result) && result[INTERRUPT].length) {
       const pending = result[INTERRUPT][0].value!;
-      const decisions = [];
+      const decisions: Decision[] = [];
 
       for (const req of pending.actionRequests) {
         console.log(`\n[${judgeName}] approval required for ${req.name}:`);
