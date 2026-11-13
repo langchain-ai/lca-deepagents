@@ -56,11 +56,13 @@ The manuscript is split into 60 books, each starting with a line formatted
 exactly as "=== EPIC BOOK N ===" (e.g. "=== ILIAD BOOK 9 ===").
 
 Run a workflow that reads the manuscript, splits it into its 60 books, and
-dispatches one book-scanner subagent call per book — never read a book's
-full text into your own context; let the interpreter hold the file, and let
-each subagent hold only its own book. Collect every subagent's findings into
-one final report, grouped by "EPIC BOOK N", listing the anachronistic
-sentence(s) found in that book (omit books with no findings).`;
+dispatches one book-scanner subagent call per book, batching 30 books per
+Promise.all round (2 rounds total) rather than the smaller batches shown in
+your tool guidance. Never read a book's full text into your own context; let
+the interpreter hold the file, and let each subagent hold only its own book.
+Collect every subagent's findings into one final report, grouped by
+"EPIC BOOK N", listing the anachronistic sentence(s) found in that book
+(omit books with no findings).`;
 
 // The scanner only needs read access to the one manuscript file — no writes.
 const manuscriptPermissions: FilesystemPermission[] = [
@@ -70,7 +72,10 @@ const manuscriptPermissions: FilesystemPermission[] = [
 
 export const agent = createDeepAgent({
   model: strongModel,
-  middleware: [createCodeInterpreterMiddleware()],
+  // Expose read_file and grep to the interpreter's JavaScript as tools.*()
+  // calls (programmatic tool calling), so the workflow code can load and split
+  // the manuscript itself. PTC is off unless you list tools here.
+  middleware: [createCodeInterpreterMiddleware({ ptc: ["read_file", "grep"] })],
   systemPrompt: MANUSCRIPT_PROMPT,
   subagents: [bookScanner],
   backend: new FilesystemBackend({ rootDir: DATA_DIR, virtualMode: true }),

@@ -1,8 +1,8 @@
-<svg width="860" height="432" viewBox="0 0 860 432" xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-  <rect width="860" height="432" fill="#030710" rx="8"/>
+<svg width="860" height="449" viewBox="0 0 860 449" xmlns="http://www.w3.org/2000/svg" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="860" height="449" fill="#030710" rx="8"/>
   <text x="430.0" y="32" text-anchor="middle" font-size="15" font-weight="300" fill="#F2FAFF">Lab overview: one scanner per book, launched from code</text>
   <text x="430.0" y="52" text-anchor="middle" font-size="11" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">What m4_3_manuscript_agent.ts sets up before you open it</text>
-  <rect x="24" y="65" width="420" height="309" rx="8" fill="#0D1322" stroke="#2F4B68" stroke-width="1.5"/>
+  <rect x="24" y="65" width="420" height="328" rx="8" fill="#0D1322" stroke="#2F4B68" stroke-width="1.5"/>
   <rect x="24" y="65" width="420" height="26" rx="8" fill="#1E3A5F"/>
   <rect x="24" y="83" width="420" height="8" fill="#1E3A5F"/>
   <circle cx="40" cy="78" r="4" fill="#441E33"/>
@@ -10,8 +10,8 @@
   <circle cx="68" cy="78" r="4" fill="#2E3900"/>
   <text x="84" y="82" font-size="9" fill="#99D3FF" font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">m4_3_manuscript_agent.ts</text>
   <rect x="28" y="107" width="412" height="93" rx="3" fill="#2E3900" stroke="#6E8900" stroke-width="1.5"/>
-  <rect x="28" y="259" width="412" height="17" rx="3" fill="#0D1F3A" stroke="#006DDD" stroke-width="1.5"/>
-  <rect x="28" y="278" width="412" height="17" rx="3" fill="#2A1A2E" stroke="#C78EAD" stroke-width="1.5"/>
+  <rect x="28" y="259" width="412" height="36" rx="3" fill="#0D1F3A" stroke="#006DDD" stroke-width="1.5"/>
+  <rect x="28" y="297" width="412" height="17" rx="3" fill="#2A1A2E" stroke="#C78EAD" stroke-width="1.5"/>
   <g font-family="'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11.5">
     <text x="40.0" y="120" fill="#E3FF8F">const bookScanner: SubAgent = {</text>
     <text x="53.8" y="139" fill="#E3FF8F">name: &quot;book-scanner&quot;,</text>
@@ -21,26 +21,27 @@
     <text x="40.0" y="215" fill="#40668D"></text>
     <text x="40.0" y="234" fill="#40668D">export const agent = createDeepAgent({</text>
     <text x="53.8" y="253" fill="#40668D">model: strongModel,</text>
-    <text x="53.8" y="272" fill="#7FC8FF">middleware: [createCodeInterpreterMiddleware()],</text>
-    <text x="53.8" y="291" fill="#C78EAD">subagents: [bookScanner],</text>
-    <text x="53.8" y="310" fill="#40668D">backend: new FilesystemBackend({ rootDir: DATA_DIR }),</text>
-    <text x="53.8" y="329" fill="#40668D">permissions: manuscriptPermissions,</text>
-    <text x="40.0" y="348" fill="#40668D">});</text>
+    <text x="53.8" y="272" fill="#7FC8FF">middleware: [createCodeInterpreterMiddleware({</text>
+    <text x="67.6" y="291" fill="#7FC8FF">ptc: [&quot;read_file&quot;, &quot;grep&quot;] })],</text>
+    <text x="53.8" y="310" fill="#C78EAD">subagents: [bookScanner],</text>
+    <text x="53.8" y="329" fill="#40668D">backend: new FilesystemBackend({ rootDir: DATA_DIR }),</text>
+    <text x="53.8" y="348" fill="#40668D">permissions: manuscriptPermissions,</text>
+    <text x="40.0" y="367" fill="#40668D">});</text>
   </g>
   <line x1="440" y1="154.0" x2="468" y2="140.0" stroke="#6E8900" stroke-width="1.5"/>
   <rect x="468" y="122.0" width="368" height="64" rx="6" fill="#0D1322" stroke="#6E8900" stroke-width="1.5"/>
   <text x="479" y="141.0" font-size="13" fill="#E3FF8F">THE WORKER</text>
   <text x="479" y="160.0" font-size="12" fill="#B2DEFF">A narrow subagent that scans one</text>
   <text x="479" y="177.0" font-size="12" fill="#B2DEFF">book per call, on a cheaper model</text>
-  <line x1="440" y1="268.0" x2="468" y2="254.0" stroke="#006DDD" stroke-width="1.5"/>
-  <rect x="468" y="236.0" width="368" height="64" rx="6" fill="#0D1322" stroke="#006DDD" stroke-width="1.5"/>
-  <text x="479" y="255.0" font-size="13" fill="#7FC8FF">THE INTERPRETER</text>
-  <text x="479" y="274.0" font-size="12" fill="#B2DEFF">The agent writes JavaScript in eval</text>
-  <text x="479" y="291.0" font-size="12" fill="#B2DEFF">to run the whole workflow as code</text>
-  <line x1="440" y1="287.0" x2="468" y2="330.0" stroke="#C78EAD" stroke-width="1.5"/>
-  <rect x="468" y="312.0" width="368" height="64" rx="6" fill="#0D1322" stroke="#C78EAD" stroke-width="1.5"/>
-  <text x="479" y="331.0" font-size="13" fill="#C78EAD">THE FAN-OUT</text>
-  <text x="479" y="350.0" font-size="12" fill="#B2DEFF">From JS, task() launches one</text>
-  <text x="479" y="367.0" font-size="12" fill="#B2DEFF">book-scanner call per book</text>
-  <text x="430.0" y="410" text-anchor="middle" font-size="10.5" fill="#CCE9FF">The main agent never reads the 2 MB manuscript itself; each scanner sees only its own book.</text>
+  <line x1="440" y1="277.5" x2="468" y2="263.5" stroke="#006DDD" stroke-width="1.5"/>
+  <rect x="468" y="245.5" width="368" height="64" rx="6" fill="#0D1322" stroke="#006DDD" stroke-width="1.5"/>
+  <text x="479" y="264.5" font-size="13" fill="#7FC8FF">THE INTERPRETER</text>
+  <text x="479" y="283.5" font-size="12" fill="#B2DEFF">The agent writes JavaScript in eval;</text>
+  <text x="479" y="300.5" font-size="12" fill="#B2DEFF">read_file and grep become tools.*() calls</text>
+  <line x1="440" y1="306.0" x2="468" y2="339.5" stroke="#C78EAD" stroke-width="1.5"/>
+  <rect x="468" y="321.5" width="368" height="64" rx="6" fill="#0D1322" stroke="#C78EAD" stroke-width="1.5"/>
+  <text x="479" y="340.5" font-size="13" fill="#C78EAD">THE FAN-OUT</text>
+  <text x="479" y="359.5" font-size="12" fill="#B2DEFF">From JS, task() launches one scanner per</text>
+  <text x="479" y="376.5" font-size="12" fill="#B2DEFF">book, 30 at a time with Promise.all</text>
+  <text x="430.0" y="427" text-anchor="middle" font-size="10.5" fill="#CCE9FF">The main agent never reads the 2 MB manuscript itself; each scanner sees only its own book.</text>
 </svg>
