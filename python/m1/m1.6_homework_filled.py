@@ -25,7 +25,7 @@ async def build_tools():
     })
     tools = await client.get_tools()
 
-    ALLOWED = {"ask_question"}
+    ALLOWED = {"ask_wiki_question"}
     return [t for t in tools if t.name in ALLOWED]
 
 
