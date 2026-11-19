@@ -20,9 +20,9 @@
     <text x="32" y="145" font-size="13" font-weight="500" fill="#F6FFDB">- Skills</text>
     <text x="32" y="163" font-size="13" font-weight="500" fill="#F6FFDB">- Model</text>
 
-    <!-- Right outer container: Managed Deep Agents -->
+    <!-- Right outer container: Managed Agents -->
     <rect x="244" y="8" width="275" height="318" rx="6" fill="#0D1322" stroke="#40668D" stroke-width="1.5"/>
-    <text x="256" y="40" font-size="15" font-weight="700" fill="#F2FAFF">Managed Deep Agents</text>
+    <text x="256" y="40" font-size="15" font-weight="700" fill="#F2FAFF">Managed Agents</text>
 
     <!-- Deep Agents harness box -->
     <rect x="271" y="58" width="230" height="110" rx="4" fill="#101E33" stroke="#7FC8FF" stroke-width="1.5"/>
