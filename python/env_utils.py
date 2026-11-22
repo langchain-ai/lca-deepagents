@@ -33,8 +33,8 @@ def check_python_executable_and_version():
     print()
 
     # Check if running in a virtual environment
-    in_venv = hasattr(sys, 'real_prefix') or (
-        hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix
+    in_venv = hasattr(sys, "real_prefix") or (
+        hasattr(sys, "base_prefix") and sys.base_prefix != sys.prefix
     )
 
     # Check if executable is in expected .venv location
@@ -56,22 +56,32 @@ def check_python_executable_and_version():
 
     if not in_venv:
         issues.append("⚠️  Not running in a virtual environment")
-        issues.append("   This may cause import errors if required packages are not installed")
+        issues.append(
+            "   This may cause import errors if required packages are not installed"
+        )
     elif not executable_in_venv:
         issues.append("⚠️  Python executable is not in expected .venv location")
         issues.append(f"   Expected: {expected_python}")
         issues.append(f"   Actual:   {executable}")
-        issues.append("   You may be using a different virtual environment or system Python")
+        issues.append(
+            "   You may be using a different virtual environment or system Python"
+        )
     else:
         print(f"✅ Running in virtual environment: {expected_venv}")
 
     # Check Python version against basic requirements (will verify against pyproject.toml later)
     if py_version.major < 3 or (py_version.major == 3 and py_version.minor < 11):
-        issues.append(f"⚠️  Python {py_version_str} is below minimum required version 3.11")
+        issues.append(
+            f"⚠️  Python {py_version_str} is below minimum required version 3.11"
+        )
     elif py_version.major == 3 and py_version.minor >= 15:
-        issues.append(f"⚠️  Python {py_version_str} is above maximum supported version (< 3.15)")
+        issues.append(
+            f"⚠️  Python {py_version_str} is above maximum supported version (< 3.15)"
+        )
     else:
-        print(f"✅ Python version {py_version_str} is in expected range (>=3.11, <3.15)")
+        print(
+            f"✅ Python version {py_version_str} is in expected range (>=3.11, <3.15)"
+        )
 
     # Check sys.prefix and base_prefix
     print("\nEnvironment paths:")
@@ -108,6 +118,7 @@ try:
     from packaging.requirements import Requirement
     from packaging.specifiers import SpecifierSet
     from packaging.version import Version
+
     EXTERNAL_IMPORTS_AVAILABLE = True
 except ImportError as e:
     EXTERNAL_IMPORTS_AVAILABLE = False
@@ -172,7 +183,6 @@ def summarize_value(key: str, value: str, example_value: str = None) -> str:
     return "****" + value[-4:] if len(value) > 4 else "****" + value
 
 
-
 def check_manual_installs(file_path: str):
     """Check if manually installed applications are available in PATH.
 
@@ -189,11 +199,11 @@ def check_manual_installs(file_path: str):
         for line in f:
             stripped = line.strip()
             # Look for the manual installs comment
-            if stripped.startswith('# Manual installs for checking:'):
+            if stripped.startswith("# Manual installs for checking:"):
                 # Extract the comma-delimited list after the colon
-                apps_str = stripped.split(':', 1)[1].strip()
+                apps_str = stripped.split(":", 1)[1].strip()
                 if apps_str:
-                    manual_installs = [app.strip() for app in apps_str.split(',')]
+                    manual_installs = [app.strip() for app in apps_str.split(",")]
                 break
 
     if not manual_installs:
@@ -218,7 +228,61 @@ def check_manual_installs(file_path: str):
     print()
 
 
-def doublecheck_env(file_path: str):
+def chat_uses_gateway(values, provider):
+    """Match automatic gateway routing for the supported lesson chat models."""
+    gateway = values.get("LANGSMITH_GATEWAY", "") or ""
+    base_keys = {
+        "anthropic": ("ANTHROPIC_API_URL", "ANTHROPIC_BASE_URL"),
+        "openai": ("OPENAI_API_BASE", "OPENAI_BASE_URL"),
+    }
+    return (
+        bool(gateway)
+        and gateway.lower() not in ("false", "0", "no")
+        and provider in ("anthropic", "openai", "google_genai")
+        and not any(values.get(key) for key in base_keys.get(provider, ()))
+    )
+
+
+def model_auth_issues(values, provider="anthropic"):
+    """Validate credentials for the selected chat provider and tracing mode."""
+
+    def valid(key):
+        value = values.get(key, "") or ""
+        return bool(value.strip()) and not re.search(
+            r"your[-_]|\.\.\.|\*{3,}|^<.*>$|^(?:changeme|placeholder|replace[-_].*|sk[-_]?(?:test|example|placeholder|here))$",
+            value,
+            re.I,
+        )
+
+    issues = []
+    if chat_uses_gateway(values, provider):
+        key = (
+            "LANGSMITH_GATEWAY_API_KEY"
+            if values.get("LANGSMITH_GATEWAY_API_KEY")
+            else "LANGSMITH_API_KEY"
+        )
+        if not valid(key):
+            issues.append(
+                f"{key} is missing, empty, or a placeholder for gateway chat authentication"
+            )
+    elif provider != "ollama":
+        key = {"google_genai": "GOOGLE_API_KEY"}.get(
+            provider, f"{provider.upper()}_API_KEY"
+        )
+        if not valid(key):
+            issues.append(
+                f"{key} is missing, empty, or a placeholder for direct {provider} chat authentication"
+            )
+    if values.get("LANGSMITH_TRACING", "").lower() == "true" and not valid(
+        "LANGSMITH_API_KEY"
+    ):
+        issues.append(
+            "LANGSMITH_TRACING is enabled but LANGSMITH_API_KEY is missing, empty, or a placeholder"
+        )
+    return issues
+
+
+def doublecheck_env(file_path: str, provider: str = "anthropic"):
     """Check environment variables against an example env file and print summaries.
 
     Args:
@@ -239,17 +303,17 @@ def doublecheck_env(file_path: str):
         for line in lines:
             stripped = line.strip()
             # Check if this is a comment line
-            if stripped.startswith('#'):
+            if stripped.startswith("#"):
                 # Check if comment contains "required" (case-insensitive)
-                if 'required' in stripped.lower():
+                if "required" in stripped.lower():
                     is_required_section = True
                 else:
                     # A different comment section starts
                     is_required_section = False
             # Check if this is a key=value line
-            elif '=' in stripped and not stripped.startswith('#'):
-                key = stripped.split('=')[0].strip()
-                value = stripped.split('=', 1)[1].strip()
+            elif "=" in stripped and not stripped.startswith("#"):
+                key = stripped.split("=")[0].strip()
+                value = stripped.split("=", 1)[1].strip()
                 # Remove quotes if present
                 if value.startswith("'") and value.endswith("'"):
                     value = value[1:-1]
@@ -276,7 +340,7 @@ def doublecheck_env(file_path: str):
 
             # Check if this required key still has the example/placeholder value
             if key in required_keys:
-                if current == example_val:
+                if not current.strip() or current == example_val:
                     issues.append(f"  ⚠️  {key} still has the example/placeholder value")
         else:
             print(f"{key}=<not set>")
@@ -285,21 +349,13 @@ def doublecheck_env(file_path: str):
 
         printed_keys.add(key)
 
-    # Special check for LangSmith tracing
-    langsmith_tracing = os.getenv("LANGSMITH_TRACING", "").lower()
-    langsmith_api_key = os.getenv("LANGSMITH_API_KEY", "")
-    langsmith_example = all_example_values.get("LANGSMITH_API_KEY", "")
-
-    if langsmith_tracing == "true":
-        # Check if API key is missing, empty, or still has the example value
-        if not langsmith_api_key:
-            issues.append("  ⚠️  LANGSMITH_TRACING is enabled but LANGSMITH_API_KEY is not set")
-        elif langsmith_api_key == langsmith_example:
-            issues.append("  ⚠️  LANGSMITH_TRACING is enabled but LANGSMITH_API_KEY still has the example/placeholder value")
-        else:
-            print("\n✅ LANGSMITH_TRACING is enabled and the LANGSMITH_API_KEY is set")
-    elif langsmith_api_key and langsmith_api_key != langsmith_example:
-        issues.append("⚠️  LANGSMITH_API_KEY is set, but LANGSMITH_TRACING is disabled")
+    mode = (
+        "LangSmith LLM Gateway (no direct provider key needed for this chat model)"
+        if chat_uses_gateway(os.environ, provider)
+        else "direct provider or local model (gateway disabled, unsupported, or overridden by a provider base URL)"
+    )
+    print(f"Chat authentication ({provider}): {mode}")
+    issues.extend(model_auth_issues(os.environ, provider))
 
     # Print any issues found
     if issues:
@@ -322,21 +378,29 @@ def check_venv(expected_venv_path: str = ".venv"):
     expected_path_obj = Path(expected_venv_path).resolve()
 
     # Check if running in a virtual environment
-    in_venv = hasattr(sys, 'real_prefix') or (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix)
+    in_venv = hasattr(sys, "real_prefix") or (
+        hasattr(sys, "base_prefix") and sys.base_prefix != sys.prefix
+    )
 
     if not in_venv:
         issues.append("⚠️  Virtual environment is not activated")
-        issues.append("   Run: source .venv/bin/activate  (or .venv\\Scripts\\activate on Windows)")
+        issues.append(
+            "   Run: source .venv/bin/activate  (or .venv\\Scripts\\activate on Windows)"
+        )
     else:
         # Virtual env is activated, check if it's the expected one
         if current_prefix != expected_path_obj:
-            issues.append(f"⚠️  Activated venv ({current_prefix}) doesn't match expected path ({expected_path_obj})")
+            issues.append(
+                f"⚠️  Activated venv ({current_prefix}) doesn't match expected path ({expected_path_obj})"
+            )
 
     # Check if uv is available
     uv_available = shutil.which("uv") is not None
 
     if not uv_available:
-        issues.append("ℹ️  'uv' command not found - this project recommends using uv for package management")
+        issues.append(
+            "ℹ️  'uv' command not found - this project recommends using uv for package management"
+        )
         issues.append("   Install uv: https://docs.astral.sh/uv/")
 
     # Print results
@@ -354,8 +418,10 @@ def check_venv(expected_venv_path: str = ".venv"):
 
 # ========== utility to check packages and python based on pyproject.toml  =====================================
 
+
 def _fmt_row(cols, widths):
     return " | ".join(str(c).ljust(w) for c, w in zip(cols, widths))
+
 
 def doublecheck_pkgs(pyproject_path="pyproject.toml", verbose=False):
     p = Path(pyproject_path)
@@ -369,7 +435,9 @@ def doublecheck_pkgs(pyproject_path="pyproject.toml", verbose=False):
     project = data.get("project", {})
     python_spec_str = project.get("requires-python") or ">=3.11"
 
-    py_ver = Version(f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}")
+    py_ver = Version(
+        f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
+    )
     py_ok = py_ver in SpecifierSet(python_spec_str)
 
     # Load deps (PEP 621)
@@ -377,7 +445,9 @@ def doublecheck_pkgs(pyproject_path="pyproject.toml", verbose=False):
     if not deps:
         if verbose or not py_ok:
             print("No [project].dependencies found in pyproject.toml.")
-            print(f"Python {py_ver} {'satisfies' if py_ok else 'DOES NOT satisfy'} requires-python: {python_spec_str}")
+            print(
+                f"Python {py_ver} {'satisfies' if py_ok else 'DOES NOT satisfy'} requires-python: {python_spec_str}"
+            )
             print(f"Executable: {sys.executable}")
         return None
 
@@ -392,7 +462,13 @@ def doublecheck_pkgs(pyproject_path="pyproject.toml", verbose=False):
         except Exception:
             name, spec = dep, "(unparsed)"
 
-        rec = {"package": name, "required": spec, "installed": "-", "path": "-", "status": "❌ Missing"}
+        rec = {
+            "package": name,
+            "required": spec,
+            "installed": "-",
+            "path": "-",
+            "status": "❌ Missing",
+        }
 
         try:
             installed_ver = metadata.version(name)
@@ -404,14 +480,16 @@ def doublecheck_pkgs(pyproject_path="pyproject.toml", verbose=False):
                 rec["path"] = "(unknown)"
 
             # Check if package is in correct Python version's site-packages
-            expected_py_version = f"python{sys.version_info.major}.{sys.version_info.minor}"
+            expected_py_version = (
+                f"python{sys.version_info.major}.{sys.version_info.minor}"
+            )
             path_str = str(rec["path"]).lower()
 
             # Check for version mismatch in path (if path contains a python version)
             wrong_version = False
             if "python" in path_str and rec["path"] != "(unknown)":
                 # Look for patterns like python3.11, python3.13, etc. that don't match current version
-                py_versions_in_path = re.findall(r'python\d+\.\d+', path_str)
+                py_versions_in_path = re.findall(r"python\d+\.\d+", path_str)
                 if py_versions_in_path:
                     # If we found python version(s) in path, check if any match current version
                     if expected_py_version.lower() not in py_versions_in_path:
@@ -419,7 +497,9 @@ def doublecheck_pkgs(pyproject_path="pyproject.toml", verbose=False):
                         rec["status"] = "⚠️ Wrong Python version"
 
             if not wrong_version:
-                if spec not in ("(any)", "(unparsed)") and any(op in spec for op in "<>="):
+                if spec not in ("(any)", "(unparsed)") and any(
+                    op in spec for op in "<>="
+                ):
                     sset = SpecifierSet(spec)
                     if Version(installed_ver) in sset:
                         rec["status"] = "✅ OK"
@@ -439,17 +519,33 @@ def doublecheck_pkgs(pyproject_path="pyproject.toml", verbose=False):
     should_print = verbose or (not py_ok) or bool(problems)
     if should_print:
         # Python status
-        print(f"Python {py_ver} {'satisfies' if py_ok else 'DOES NOT satisfy'} requires-python: {python_spec_str}")
+        print(
+            f"Python {py_ver} {'satisfies' if py_ok else 'DOES NOT satisfy'} requires-python: {python_spec_str}"
+        )
 
         # Table (no hints column)
         headers = ["package", "required", "installed", "status", "path"]
+
         def short_path(s, maxlen=80):
             s = str(s)
-            return s if len(s) <= maxlen else ("…" + s[-(maxlen-1):])
-        rows = [[r["package"], r["required"], r["installed"], r["status"], short_path(r["path"])] for r in results]
-        widths = [max(len(h), *(len(str(row[i])) for row in rows)) for i, h in enumerate(headers)]
+            return s if len(s) <= maxlen else ("…" + s[-(maxlen - 1) :])
+
+        rows = [
+            [
+                r["package"],
+                r["required"],
+                r["installed"],
+                r["status"],
+                short_path(r["path"]),
+            ]
+            for r in results
+        ]
+        widths = [
+            max(len(h), *(len(str(row[i])) for row in rows))
+            for i, h in enumerate(headers)
+        ]
         print(_fmt_row(headers, widths))
-        print(_fmt_row(["-"*w for w in widths], widths))
+        print(_fmt_row(["-" * w for w in widths], widths))
         for row in rows:
             print(_fmt_row(row, widths))
 
@@ -457,7 +553,9 @@ def doublecheck_pkgs(pyproject_path="pyproject.toml", verbose=False):
         if problems:
             print("\nIssues detected:")
             for r in problems:
-                print(f"- {r['package']}: {r['status']} (required {r['required']}, installed {r['installed']}, path {r['path']})")
+                print(
+                    f"- {r['package']}: {r['status']} (required {r['required']}, installed {r['installed']}, path {r['path']})"
+                )
 
         if verbose or problems or not py_ok:
             print("\nEnvironment:")
@@ -485,7 +583,9 @@ if __name__ == "__main__":
     load_dotenv(override=True)
 
     # Check environment variables and API keys
-    doublecheck_env(".env.example")
+    doublecheck_env(
+        ".env.example", provider=sys.argv[1] if len(sys.argv) > 1 else "anthropic"
+    )
 
     # Check packages
     doublecheck_pkgs(pyproject_path="pyproject.toml", verbose=True)

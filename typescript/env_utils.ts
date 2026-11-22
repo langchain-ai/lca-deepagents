@@ -7,6 +7,7 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 
 type Version = [number, number, number];
 
@@ -184,7 +185,36 @@ function summarizeValue(key: string, value: string, exampleValue?: string): stri
   return value.length > 4 ? `****${value.slice(-4)}` : `****${value}`;
 }
 
-function doublecheckEnv(examplePath: string, envPath: string): void {
+export function chatUsesGateway(values: Record<string, string | undefined>, provider: string): boolean {
+  const gateway = values.LANGSMITH_GATEWAY ?? "";
+  const baseKeys: Record<string, string[]> = {
+    anthropic: ["ANTHROPIC_API_URL", "ANTHROPIC_BASE_URL"],
+    openai: ["OPENAI_API_BASE", "OPENAI_BASE_URL"],
+  };
+  return Boolean(gateway) && !["false", "0", "no"].includes(gateway.toLowerCase()) &&
+    ["anthropic", "openai"].includes(provider) && !(baseKeys[provider] ?? []).some((key) => values[key]);
+}
+
+export function modelAuthIssues(values: Record<string, string | undefined>, provider = "anthropic"): string[] {
+  const valid = (key: string): boolean => {
+    const value = values[key] ?? "";
+    return Boolean(value.trim()) && !/your[-_]|\.\.\.|\*{3,}|^<.*>$|^(?:changeme|placeholder|replace[-_].*|sk[-_]?(?:test|example|placeholder|here))$/i.test(value);
+  };
+  const issues: string[] = [];
+  if (chatUsesGateway(values, provider)) {
+    const key = values.LANGSMITH_GATEWAY_API_KEY ? "LANGSMITH_GATEWAY_API_KEY" : "LANGSMITH_API_KEY";
+    if (!valid(key)) issues.push(`${key} is missing, empty, or a placeholder for gateway chat authentication`);
+  } else if (provider !== "ollama") {
+    const key = provider === "google_genai" ? "GOOGLE_API_KEY" : `${provider.toUpperCase()}_API_KEY`;
+    if (!valid(key)) issues.push(`${key} is missing, empty, or a placeholder for direct ${provider} chat authentication`);
+  }
+  if (values.LANGSMITH_TRACING?.toLowerCase() === "true" && !valid("LANGSMITH_API_KEY")) {
+    issues.push("LANGSMITH_TRACING is enabled but LANGSMITH_API_KEY is missing, empty, or a placeholder");
+  }
+  return issues;
+}
+
+export function doublecheckEnv(examplePath: string, envPath: string, provider = "anthropic"): void {
   if (!existsSync(examplePath)) {
     console.log(`Did not find file ${examplePath}.`);
     console.log("This is used to double check the key settings for the lessons.");
@@ -225,7 +255,7 @@ function doublecheckEnv(examplePath: string, envPath: string): void {
     const current = envFileValues[key] ?? process.env[key];
     const exampleVal = allExampleValues[key];
 
-    if (current !== undefined && current !== "") {
+    if (current !== undefined && current.trim() !== "") {
       console.log(`${key}=${summarizeValue(key, current, exampleVal)}`);
       if (key in requiredKeys && current === exampleVal) {
         issues.push(`  ⚠️  ${key} still has the example/placeholder value`);
@@ -238,23 +268,12 @@ function doublecheckEnv(examplePath: string, envPath: string): void {
     }
   }
 
-  const langsmithTracing = (process.env.LANGSMITH_TRACING ?? envFileValues.LANGSMITH_TRACING ?? "").toLowerCase();
-  const langsmithApiKey = process.env.LANGSMITH_API_KEY ?? envFileValues.LANGSMITH_API_KEY ?? "";
-  const langsmithExample = allExampleValues.LANGSMITH_API_KEY ?? "";
-
-  if (langsmithTracing === "true") {
-    if (!langsmithApiKey) {
-      issues.push("  ⚠️  LANGSMITH_TRACING is enabled but LANGSMITH_API_KEY is not set");
-    } else if (langsmithApiKey === langsmithExample) {
-      issues.push(
-        "  ⚠️  LANGSMITH_TRACING is enabled but LANGSMITH_API_KEY still has the example/placeholder value"
-      );
-    } else {
-      console.log("\n✅ LANGSMITH_TRACING is enabled and the LANGSMITH_API_KEY is set");
-    }
-  } else if (langsmithApiKey && langsmithApiKey !== langsmithExample) {
-    issues.push("⚠️  LANGSMITH_API_KEY is set, but LANGSMITH_TRACING is disabled");
-  }
+  const values = { ...process.env, ...envFileValues };
+  const mode = chatUsesGateway(values, provider)
+    ? "LangSmith LLM Gateway (no direct provider key needed for this chat model)"
+    : "direct provider or local model (gateway disabled, unsupported, or overridden by a provider base URL)";
+  console.log(`Chat authentication (${provider}): ${mode}`);
+  issues.push(...modelAuthIssues(values, provider));
 
   if (issues.length) {
     console.log("\nIssues found:");
@@ -341,8 +360,10 @@ function doublecheckPkgs(packageJsonPath = "package.json", verbose = false): voi
   }
 }
 
-checkNodeExecutableAndVersion();
-checkPackageManager();
-checkManualInstalls(".env.example");
-doublecheckEnv(".env.example", ".env");
-doublecheckPkgs("package.json", true);
+if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
+  checkNodeExecutableAndVersion();
+  checkPackageManager();
+  checkManualInstalls(".env.example");
+  doublecheckEnv(".env.example", ".env", process.argv[2]);
+  doublecheckPkgs("package.json", true);
+}
