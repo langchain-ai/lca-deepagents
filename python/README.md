@@ -14,7 +14,7 @@ You can find the course at [Deep Agents](https://academy.langchain.com/courses/f
 
 - Python 3.11 to 3.14
 - [uv](https://docs.astral.sh/uv/): [how to install](#installing-uv)
-- LLM Model API key: choose your favorite provider. The course defaults to Anthropic ([sign up for an Anthropic API key here](https://console.anthropic.com/))
+- Model authentication: use a direct provider API key (default), or a gateway-enabled LangSmith key as described below. For direct access, choose your favorite provider. The course defaults to Anthropic ([sign up for an Anthropic API key here](https://console.anthropic.com/))
 - LangSmith API key: [how to get one](#getting-started-with-langsmith)
 - Tavily API key (optional, for the Module 4 & 5 web-search labs): [get a free key](https://app.tavily.com)
 - Windows: supported through [WSL (Windows Subsystem for Linux)](https://learn.microsoft.com/en-us/windows/wsl/install)
@@ -34,7 +34,7 @@ Make a copy of `.env.example`:
 cp .env.example .env
 ```
 
-Insert API keys directly into `.env`: LangSmith (required) and your model provider (required):
+Choose one model authentication path. Direct provider keys remain the default: fill in LangSmith for tracing and the key for your chosen model in `.env`:
 
 ```bash
 # LangSmith: tracing and observability
@@ -65,7 +65,26 @@ This course uses `load_dotenv(override=True)`, so `.env` values always win over 
 
 Set `LANGSMITH_AGENT_ID` to your LangSmith agent ID and keep `LANGSMITH_AGENT_ENVIRONMENT=development` for local lessons. Set both values together, and remove any legacy `LANGSMITH_PROJECT` setting from `.env` and your shell to avoid conflicting trace destinations.
 
-Install dependencies:
+### Optional: LangSmith LLM Gateway
+
+If your workspace administrator has enabled [LLM Gateway](https://docs.langchain.com/langsmith/llm-gateway-direct-model-access) and configured access to your chosen provider and model, replace the model-provider key requirement for supported chat calls with:
+
+```dotenv
+LANGSMITH_GATEWAY=true
+LANGSMITH_GATEWAY_API_KEY=your-gateway-enabled-langsmith-key
+```
+
+`LANGSMITH_GATEWAY_API_KEY` overrides `LANGSMITH_API_KEY` for gateway authentication; if unset or empty, the integrations fall back to `LANGSMITH_API_KEY`. Keep native model names and provider selections unchanged. `true` (also `1` or `yes`) selects the hosted gateway; `false` (also `0` or `no`) or an unset or empty flag keeps direct access. A custom gateway root URL is also accepted; integrations append their provider paths. Remove explicit provider base URLs when using this switch, since those override gateway routing.
+
+The locked Python integrations support this switch (`langchain-anthropic>=1.5.1` and `langchain-openai>=1.4.1`, with `langchain-core>=1.5.3` for LangSmith key fallback). For the optional Google integration, use `uv sync --extra google` (`langchain-google-genai>=4.3.2`).
+
+Tracing is separate: use `LANGSMITH_TRACING=true` and a valid `LANGSMITH_API_KEY` to trace, or `LANGSMITH_TRACING=false` to turn tracing off. A dedicated gateway key does not enable tracing, and `LANGSMITH_ENDPOINT` configures LangSmith APIs, not the gateway URL.
+
+This applies to the LangChain chat models used by the lessons, not OpenRouter, Ollama, raw provider SDKs, embeddings, or external tools. Keep Tavily and GitHub OAuth credentials for the labs that use them. The Module 5 remote agents need the same model settings in their own runtime. The Module 6 managed deployment has separate server-side model configuration; do not assume local gateway variables configure it.
+
+You may export these settings in your shell instead of writing `.env`. Remove conflicting values from `.env` first: lesson loaders that use `override=True` / `override: true` prefer the file. Never commit credentials.
+
+### Install dependencies
 
 ```bash
 uv sync
@@ -80,7 +99,7 @@ cd python
 uv run python env_utils.py
 ```
 
-You should see masked values for each key in your `.env` file. If anything shows `<not set>`, see [Setup Verification Issues](#setup-verification-issues).
+You should see masked values for each key in your `.env` file. Optional keys may show `<not set>`. The checker validates the default Anthropic chat model; if you change providers, append `openai`, `google_genai`, `openrouter`, or `ollama` to the command. Address the reported issues for your selected mode, not unused provider keys.
 
 ---
 
